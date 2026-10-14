@@ -1,6 +1,6 @@
 # Estude House — ambiente de estudos da Mamba Digital
 
-Plataforma de treinamento da Mamba Digital. A primeira trilha ensina a PriceBot do zero até ensinar a ferramenta a outra pessoa: 7 módulos, 33 aulas, 13 vídeos do canal oficial (youtube.com/@pricebot), 52 quizzes e 12 simulações com números sorteados dentro das aulas, 24 telas reais do portal da PriceBot com exercícios de "ache na tela", 7 provas de módulo e uma prova final (144 questões no banco, sorteadas e embaralhadas a cada tentativa). O módulo 1 ("Conheça o sistema") ensina o portal com os prints da PriceBot.
+Plataforma de treinamento da Mamba Digital. A primeira trilha ensina a PriceBot do zero até ensinar a ferramenta a outra pessoa: 7 módulos, 33 aulas, 13 vídeos do canal oficial (youtube.com/@pricebot), 41 quizzes e 12 simulações com números sorteados dentro das aulas, 24 telas reais do portal da PriceBot com marcações explicadas, 7 provas de módulo e uma prova final (153 questões no banco, sorteadas e embaralhadas a cada tentativa). O módulo 1 ("Conheça o sistema") ensina o portal com os prints da PriceBot, sem exercícios espalhados: ele termina com um único quiz completo da ferramenta (prova de 15 questões que sempre passa pelas 9 áreas do portal).
 
 ## Como publicar no Netlify (com Git)
 
@@ -34,7 +34,7 @@ Importante: arrastar a pasta no Netlify Drop **não** serve, porque Functions e 
 
 - Aulas: `public/assets/content.js` (blocos `p`, `h`, `list`, `callout`, `video`, `steps`, `compare`, `say`, `term`, `ruler`, `quiz`, `shot` e `find` para telas do portal, e `sim` para simulações com números sorteados, em `calc.js`).
 - Telas do portal e áreas clicáveis: `public/assets/screens.js` (imagens em `public/assets/img/sistema/`).
-- Versões dos quizzes das aulas: `public/assets/practice/m0.js` a `m6.js`. A cada "tentar de novo" o aluno recebe outra pergunta, com as alternativas embaralhadas.
+- Versões dos quizzes das aulas: `public/assets/practice/m1.js` a `m6.js`. A cada "tentar de novo" o aluno recebe outra pergunta, com as alternativas embaralhadas.
 - Questões: `netlify/functions/lib/questions/` (`m0` a `m6` e `final`).
 - Estrutura e tamanho das provas: `netlify/functions/lib/manifest.mjs`.
 - Depois de mudar, rode `npm test`: ele confere o banco de questões, o currículo, as telas, as simulações e as regras de aprovação. Para checar o equilíbrio de um arquivo de questões (alternativas de tamanho parecido): `node scripts/check-bank.mjs <arquivo>`.
@@ -43,10 +43,17 @@ Importante: arrastar a pasta no Netlify Drop **não** serve, porque Functions e 
 
 ```
 npm install
-npm test          # 43 verificações de regras, provas, admin e logs + 5 de conteúdo
+npm test          # 44 verificações de regras, provas, admin e logs + 5 de conteúdo
 npm run local     # http://localhost:8888, banco em memória (zera ao reiniciar)
 ```
 
 ## Próximas formações
 
 O currículo vive em `window.CURSO`. Para uma segunda formação, o caminho é registrar outro curso (conteúdo, manifesto e banco de questões) e listar os cursos na tela inicial. A estrutura de usuários, logs e administração já é compartilhada.
+
+## Desempenho e erros do Netlify Blobs
+
+- O acesso ao Blobs (`netlify/functions/lib/db.mjs`) **nunca fica em cache** entre chamadas: o token que o Netlify entrega expira, e reaproveitá-lo causava o erro "Failed to decode token: Token expired". Cada operação (e cada nova tentativa) pede um acesso novo.
+- Cada aluno só grava nas próprias chaves (progresso e tentativas), então centenas de alunos ao mesmo tempo não disputam o mesmo dado.
+- O painel de administração lê usuários, progressos e logs em paralelo. Simulado com 150 alunos e 40 ms por operação no banco: Visão geral em cerca de 1 s.
+- O navegador tenta de novo, até 2 vezes e com espera aleatória, leituras, login e conclusão de aula quando o servidor falha por instantes.
