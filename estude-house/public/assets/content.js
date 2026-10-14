@@ -1,0 +1,767 @@
+/* Conteúdo da trilha PriceBot.
+   Tipos de bloco: p, h, list, callout, video, steps, compare, say, term, ruler, quiz.
+   Os vídeos são do canal oficial: youtube.com/@pricebot */
+window.CURSO = {
+  id: "pricebot",
+  title: "Formação PriceBot",
+  subtitle: "Do zero ao ponto de ensinar outra pessoa a usar a ferramenta.",
+  channel: "https://www.youtube.com/@pricebot",
+  modules: [
+    /* ───────────────────────── MÓDULO 1 ───────────────────────── */
+    {
+      id: "m1", n: 1,
+      title: "Entenda a PriceBot",
+      tagline: "O que é, o que resolve e por que a Mamba usa.",
+      outcome: "Explicar a PriceBot em 30 segundos e responder por que ela existe.",
+      lessons: [
+        {
+          id: "l1-1", title: "O que é a PriceBot", minutes: 12,
+          goal: "Dizer, sem consultar nada, o que a PriceBot faz e que problema ela resolve.",
+          blocks: [
+            { t: "p", html: "Pense em um seller com <strong>1.200 anúncios</strong> no Mercado Livre. Todo dia surgem campanhas novas, o preço do concorrente muda, o frete oscila e a margem de cada produto é diferente. Ninguém consegue acompanhar isso na mão, e o que escapa vira prejuízo ou venda perdida." },
+            { t: "p", html: "A <strong>PriceBot</strong> é uma plataforma que automatiza a precificação dos anúncios no Mercado Livre. Você define regras de lucro (custo, imposto e margem por produto) e ela trabalha dentro delas, o dia inteiro: entra e sai de promoções e disputa o catálogo." },
+            { t: "term", items: [
+              { term: "Precificação automática", label: "automatic pricing", def: "O bot decide, anúncio por anúncio, se vale entrar numa campanha, sempre dentro da margem combinada." },
+              { term: "Competição de catálogo", label: "catalog competition", def: "Disputar o anúncio que aparece como vencedor da página de catálogo, ajustando o preço dentro da margem." },
+              { term: "Central de promoções", label: "promotions center", def: "O lugar do Mercado Livre onde as campanhas aparecem. A PriceBot adere a elas de forma automática." },
+            ] },
+            { t: "video", id: "KF0u0gpplgE", title: "PriceBot — Sistema de Precificação Automática para o Mercado Livre", dur: "1:43", note: "Veja a visão geral da ferramenta. Anote três coisas que ela faz." },
+            { t: "video", id: "Tg5niAMLa7Q", title: "Sistema de Precificação e Competição Automática de Catálogos", dur: "0:51", note: "Versão curta, boa para mostrar a um seller." },
+            { t: "compare",
+              left: { title: "Sem a PriceBot", tone: "bad", items: [
+                "O assessor ou o seller entra em campanha na mão, quando lembra.",
+                "Campanhas relâmpago e de fim de semana passam batido.",
+                "A margem é calculada uma vez, antes de vender, e não acompanha frete e taxas.",
+                "O catálogo é analisado por amostragem, anúncio a anúncio.",
+              ] },
+              right: { title: "Com a PriceBot", tone: "good", items: [
+                "A adesão a campanhas é contínua e prioriza as mais relevantes e as com rebate.",
+                "O bot não dorme: pega campanha relâmpago e de fim de semana.",
+                "Cada decisão respeita a faixa de margem do produto.",
+                "O catálogo é monitorado em todos os anúncios cadastrados.",
+              ] } },
+            { t: "callout", tone: "dica", title: "Pílula", html: "A PriceBot é um app certificado no <strong>Centro de Partners do Mercado Livre</strong>. Se um seller desconfiar de \"ferramenta de fora\", esse é um dado concreto para mostrar." },
+            { t: "quiz", q: "Qual destas frases descreve melhor a PriceBot?", options: [
+              "Uma ferramenta de Ads que otimiza lance por ROAS.",
+              "Uma plataforma que automatiza preço, promoções e catálogo dentro de regras de margem definidas.",
+              "Um ERP para emitir nota fiscal.",
+              "Um robô que copia o preço do concorrente.",
+            ], answer: [1], why: "O bot decide dentro de regras de lucro. Ele não é de Ads e nem copia concorrente: o limite é sempre a margem do seller." },
+            { t: "say", title: "Como explicar em 30 segundos", html: "“A PriceBot é um robô de precificação do Mercado Livre. Você diz quanto precisa ganhar em cada produto, e ela entra em campanhas e disputa o catálogo o dia todo, mas só quando a conta fecha dentro dessa margem. É o que ninguém consegue fazer na mão com centenas de anúncios.”" },
+          ],
+        },
+        {
+          id: "l1-2", title: "Como ela trabalha: três passos", minutes: 14,
+          goal: "Descrever o fluxo da PriceBot e a regra que decide se um anúncio entra numa campanha.",
+          blocks: [
+            { t: "h", text: "O fluxo, em três passos" },
+            { t: "steps", items: [
+              { title: "Definir as regras de negócio", html: "Impostos, custos e margens de cada produto. Sem isso o bot não tem como saber onde pode atuar." },
+              { title: "Ativar a precificação automática", html: "Com os dados integrados, liga-se a automação nos anúncios que estão dentro da margem." },
+              { title: "Acompanhar o resultado", html: "O painel mostra margem, campanhas, catálogo e rebate. É nesse acompanhamento que o assessor mostra valor." },
+            ] },
+            { t: "h", text: "A regra que decide tudo" },
+            { t: "p", html: "Cada produto tem uma <strong>margem mínima</strong> (o menor retorno aceitável) e uma <strong>margem objetiva</strong> (o retorno que o seller quer ter). Quando surge uma campanha elegível, o bot calcula a margem que o anúncio teria <em>dentro dela</em>. Se o resultado cair na faixa entre as duas, ele entra. Se cair fora, não entra." },
+            { t: "ruler", min: 10, obj: 20, max: 30, marks: [
+              { v: 8, label: "Campanha A: 8%", ok: false },
+              { v: 15, label: "Campanha B: 15%", ok: true },
+            ], caption: "Exemplo: mínima 10% e objetiva 20%. A campanha B entra, a A não." },
+            { t: "callout", tone: "atencao", title: "Dois detalhes que mudam tudo", html: "Na configuração da Mamba, a PriceBot <strong>não altera o preço base</strong>: ela só gerencia promoções e catálogo. E ela <strong>não considera Ads nem cupom</strong> no cálculo de margem. Você vai ver na aula 2.1 como compensar isso." },
+            { t: "quiz", q: "Mínima 10%, objetiva 20%. Uma campanha deixaria o anúncio com 15%. O que o bot faz?", options: [
+              "Não entra, porque só entra com 20%.",
+              "Entra, porque 15% está dentro da faixa.",
+              "Entra e sobe o preço base depois.",
+              "Pede aprovação do seller.",
+            ], answer: [1], why: "Dentro da faixa entre mínima e objetiva, ele adere. E na configuração da Mamba nunca mexe no preço base." },
+            { t: "quiz", q: "Qual é a ordem correta?", options: [
+              "Ativar → definir regras → acompanhar.",
+              "Acompanhar → ativar → definir regras.",
+              "Definir regras → ativar a precificação → acompanhar.",
+              "Definir regras → acompanhar → ativar.",
+            ], answer: [2], why: "Regras primeiro: sem custo, imposto e margem, ligar o bot seria operar no escuro." },
+          ],
+        },
+        {
+          id: "l1-3", title: "Por que a Mamba usa a PriceBot", minutes: 12,
+          goal: "Listar os benefícios para o seller e para a assessoria, e saber o que ela não faz.",
+          blocks: [
+            { t: "video", id: "M2-NfyAkJtA", title: "Godfer conta como é usar o PriceBot no dia a dia", dur: "1:23", note: "Um depoimento de uso real. Repare no que ele destaca." },
+            { t: "p", html: "A Mamba apresenta a PriceBot ao seller como parte do ecossistema da assessoria. O ganho aparece em quatro lugares:" },
+            { t: "list", items: [
+              "<strong>Mais campanhas relevantes.</strong> Com a conta integrada, o seller recebe campanhas importantes (algumas exclusivas), que costumam ter rebate. A adesão a campanhas é uma das métricas que o Mercado Livre cobra de parceiros.",
+              "<strong>Tempo para o que importa.</strong> O assessor deixa de entrar e sair de promoção e foca em Ads, cupom, estratégia e análise de mercado.",
+              "<strong>Prova de valor.</strong> O rebate vira número na tela e na conversa com o seller.",
+              "<strong>Retenção e reversão.</strong> Fora da Mamba o seller perde uma ferramenta cara, difícil de contratar por conta própria.",
+            ] },
+            { t: "callout", tone: "regra", title: "O que a PriceBot não faz na Mamba", html: "Ela não altera o <strong>preço base</strong> (isso é contrato). Ela não considera <strong>Ads e cupom</strong> no cálculo. E o <strong>seller não tem login</strong>: o acesso e as configurações ficam com a Mamba, alinhados com ele e executados pelo assessor." },
+            { t: "quiz", q: "Quais são benefícios reais? Marque todos.", multi: true, options: [
+              "Aumenta a adesão a campanhas relevantes.",
+              "Libera tempo do assessor para Ads e estratégia.",
+              "Ajuda na retenção e na reversão de sellers.",
+              "Altera o preço base automaticamente.",
+            ], answer: [0, 1, 2], why: "A alteração do preço base não existe na configuração da Mamba. Os outros três são benefícios apresentados no treinamento." },
+            { t: "say", title: "Se o seller perguntar “vai mexer no meu preço?”", html: "“Não. O preço base fica como você definiu. A ferramenta só decide em quais campanhas o seu anúncio entra e disputa o catálogo, e só faz isso quando a margem que você combinou comigo se mantém.”" },
+          ],
+        },
+      ],
+    },
+
+    /* ───────────────────────── MÓDULO 2 ───────────────────────── */
+    {
+      id: "m2", n: 2,
+      title: "Preço, margem e rebate",
+      tagline: "A matemática por trás de cada decisão do bot.",
+      outcome: "Calcular desconto efetivo, definir faixas de margem e explicar PMA e catálogo.",
+      lessons: [
+        {
+          id: "l2-1", title: "Margem mínima, objetiva e máxima", minutes: 16,
+          goal: "Definir as faixas de margem de um seller e ajustá-las quando ele também faz Ads.",
+          blocks: [
+            { t: "video", id: "PPXul3Ff3qQ", title: "Como funcionam as margens mínima, objetivo e máxima do PriceBot?", dur: "2:46", note: "Assista antes de ler o resto da aula." },
+            { t: "term", items: [
+              { term: "Margem mínima", label: "minimum margin", def: "O menor retorno aceitável. Abaixo dela, o bot não entra em campanha." },
+              { term: "Margem objetiva", label: "target margin", def: "O retorno que o seller quer ter. O bot busca ficar nela quando entra em campanhas do Mercado Livre." },
+              { term: "Margem ativa", label: "active margin", def: "A margem que o anúncio tem agora, com o preço e a promoção em vigor." },
+            ] },
+            { t: "p", html: "Existe também uma <strong>margem máxima</strong>, mas na prática o bot trabalha <em>entre a mínima e a objetiva</em>. A máxima raramente é usada." },
+            { t: "h", text: "Quais faixas combinar" },
+            { t: "p", html: "A prática apresentada no treinamento: <strong>mínima de 10% a 15%</strong> e <strong>objetiva de 20% a 25%</strong>. Essa faixa dá espaço para o bot trabalhar promoções com rebate sem machucar o lucro." },
+            { t: "callout", tone: "atencao", title: "Mínima alta demais trava o bot", html: "Com mínima de 20%, quase nenhuma promoção cabe: só entraria se o seller subisse o preço base, e isso se faz aos poucos, em passos de cerca de 2%. Uma mínima alta é uma decisão de reprecificação, não de configuração." },
+            { t: "h", text: "O ajuste de Ads e cupom" },
+            { t: "p", html: "A PriceBot <strong>não enxerga Ads nem cupom</strong>. Se o seller investe em Ads, a margem que o bot calcula é maior do que a real. A solução é subir a mínima em cerca de <strong>5 pontos</strong>." },
+            { t: "callout", tone: "exemplo", title: "Exemplo numérico", html: "O seller trabalha com mínima de 10%. O anúncio entra numa promoção que deixa 10% de margem. Se ele também gasta 5% do preço em Ads naquele produto, a margem real cai para <strong>5%</strong>. Por isso: mínima 10% vira <strong>15%</strong>; mínima 15% vira <strong>20%</strong>." },
+            { t: "quiz", q: "Seller com mínima de 12%, que investe cerca de 5% em Ads. Qual mínima configurar na PriceBot?", options: [
+              "12%, porque Ads é outra conta.",
+              "17%, somando os 5 pontos de Ads que o bot não enxerga.",
+              "7%, subtraindo o Ads.",
+              "0%.",
+            ], answer: [1], why: "O bot ignora Ads. Sem o ajuste, uma promoção que deixa 12% na tela pode deixar só 7% no bolso." },
+            { t: "quiz", q: "Quais afirmações são verdadeiras? Marque todas.", multi: true, options: [
+              "O bot trabalha entre a mínima e a objetiva.",
+              "A margem máxima é a mais usada no dia a dia.",
+              "A margem ativa é a margem que o anúncio tem agora.",
+              "Mínima muito alta pode impedir o bot de entrar em promoções.",
+            ], answer: [0, 2, 3], why: "A máxima existe, mas raramente importa. As demais descrevem corretamente o comportamento da ferramenta." },
+          ],
+        },
+        {
+          id: "l2-2", title: "Rebate: o desconto que volta", minutes: 14,
+          goal: "Calcular o desconto efetivo de qualquer campanha e explicar por que rebate muda a escolha do bot.",
+          blocks: [
+            { t: "term", items: [
+              { term: "Rebate", label: "rebate", def: "Parte do desconto que o Mercado Livre devolve ao seller quando ele entra numa campanha." },
+              { term: "Desconto efetivo", label: "effective discount", def: "O desconto anunciado menos o rebate. É o que realmente sai do bolso do seller." },
+              { term: "Comissão reduzida", label: "reduced fee", def: "A forma como o rebate costuma chegar: o percentual de comissão por venda fica menor." },
+            ] },
+            { t: "p", html: "Entrar numa campanha de 10% de desconto e receber 2% de rebate significa que o seller paga, na prática, <strong>8%</strong>. O cliente enxerga 10% de desconto, o seller sente 8%." },
+            { t: "callout", tone: "exemplo", title: "A conta", html: "Desconto efetivo = desconto anunciado − rebate.<br>10% − 2% = <strong>8%</strong><br>15% − 5% = <strong>10%</strong><br>18% − 8% = <strong>10%</strong>" },
+            { t: "p", html: "Por isso o bot <strong>prioriza campanhas com rebate</strong>. Um desconto maior no anúncio pode render <em>mais</em> ao seller do que um menor sem rebate. E é por isso que, com a PriceBot, o alinhamento com o seller é por <strong>margem</strong>, não por percentual de desconto." },
+            { t: "p", html: "O rebate aparece no Nexus como queda na parte de <strong>taxas por venda</strong>, e na PriceBot você enxerga o valor no painel inicial e na visão geral de pedidos (filtros de 7, 30, 60 e 90 dias, em reais e em percentual)." },
+            { t: "quiz", q: "Dois anúncios iguais entram em campanhas de 15%. No primeiro não há rebate. No segundo o Mercado Livre devolve 5%. Qual rende mais?", options: [
+              "Os dois, igual: o desconto é o mesmo.",
+              "O primeiro, porque não depende de devolução.",
+              "O segundo: o custo efetivo é 10%, contra 15% do primeiro.",
+              "Depende do dia da semana.",
+            ], answer: [2], why: "15% − 5% = 10% de custo efetivo. Mesmo desconto anunciado, rentabilidade diferente." },
+            { t: "quiz", q: "A campanha X anuncia 12% sem rebate. A campanha Y anuncia 17% com 7% de rebate. Qual tem menor custo efetivo?", options: [
+              "X: 12%.",
+              "Y: 10%.",
+              "Os dois: 12%.",
+              "Y: 17%.",
+            ], answer: [1], why: "17% − 7% = 10%, abaixo dos 12% da X. É assim que um desconto aparentemente maior sai mais barato." },
+            { t: "say", title: "Se o seller pedir “desconto fixo de 10% em tudo”", html: "“Posso combinar com você a margem que quer ter em cada produto. Se uma campanha der 14% de desconto mas o Mercado Livre devolver 6%, você paga 8% e fica com margem melhor do que num desconto fixo de 10%. O bot escolhe sempre a que sobra mais para você.”" },
+          ],
+        },
+        {
+          id: "l2-3", title: "PMA: a trava de preço mínimo", minutes: 12,
+          goal: "Explicar o que o PMA faz, quando usar e como ativá-lo.",
+          blocks: [
+            { t: "video", id: "HTEHn32tTnU", title: "PMA (Preço Mínimo Anunciado): como funciona a lógica do preço mínimo no PriceBot", dur: "1:52", note: "O vídeo mostra a lógica da trava no painel." },
+            { t: "term", items: [
+              { term: "PMA", label: "preço mínimo anunciado", def: "Um preço que o anúncio nunca ultrapassa para baixo, mesmo que a margem esteja boa." },
+            ] },
+            { t: "p", html: "Margem e preço são coisas diferentes. Uma campanha com rebate grande pode deixar a margem ótima e o preço <em>muito baixo</em>. Para quem trabalha com <strong>preço tabelado</strong> (revenda de grandes marcas, por exemplo), isso é um problema: o fabricante não aceita anúncio abaixo de um valor." },
+            { t: "callout", tone: "exemplo", title: "Caso real do treinamento", html: "Anúncio de catálogo: a margem para ganhar seria 9,65%, abaixo da mínima de 10%. Mesmo assim ele entrou numa promoção a R$ 59,79 e ficou com margem ativa de <strong>12%</strong>, por causa do rebate. Se esse seller quisesse vender a R$ 60,00 no mínimo, com o PMA ativado o bot <strong>não entraria</strong> nessa campanha." },
+            { t: "h", text: "Como usar o PMA" },
+            { t: "steps", items: [
+              { title: "Combinar o preço com o seller", html: "Só vale a pena para quem tem preço tabelado ou um piso que não aceita furar." },
+              { title: "Preencher a coluna de preço mínimo no setup", html: "A planilha de setup tem a coluna do PMA." },
+              { title: "Pedir ao time da PriceBot para subir", html: "O envio é o mesmo da planilha de setup." },
+              { title: "Ativar o PMA nas configurações da plataforma", html: "Só então o sistema considera o preço mínimo. Depois de ativar, um indicador (a interrogação do preço mínimo) aparece nos anúncios." },
+            ] },
+            { t: "callout", tone: "atencao", title: "O erro mais comum", html: "Preencher a coluna e <strong>esquecer de ativar</strong> nas configurações. A trava só vale depois da ativação. O time da PriceBot costuma não ativar por você." },
+            { t: "quiz", q: "O PMA de um anúncio é R$ 60,00. Uma campanha levaria o preço a R$ 59,79, com margem de 12% (dentro da faixa). Com o PMA ativado, o que acontece?", options: [
+              "Entra, porque a margem está boa.",
+              "Entra e corrige o preço depois.",
+              "Não entra: o preço mínimo prevalece sobre a margem.",
+              "Depende do seller.",
+            ], answer: [2], why: "O PMA é uma trava de segurança. Ele sempre prioriza o preço." },
+            { t: "quiz", q: "A coluna de PMA foi preenchida e enviada. O que falta para a trava valer?", options: [
+              "Nada, ela vale sozinha.",
+              "Ativar o PMA nas configurações da plataforma.",
+              "Pedir ao seller para ativar no Mercado Livre.",
+              "Reenviar a planilha toda semana.",
+            ], answer: [1], why: "Sem a ativação, a coluna é só um dado guardado." },
+          ],
+        },
+        {
+          id: "l2-4", title: "Catálogo e promoções", minutes: 14,
+          goal: "Entender como o bot disputa catálogo e por que às vezes escolhe não disputar.",
+          blocks: [
+            { t: "term", items: [
+              { term: "Catálogo", label: "catalog", def: "A página única de um produto no Mercado Livre, onde vários vendedores disputam o anúncio que aparece como vencedor." },
+              { term: "Campanha elegível", label: "eligible campaign", def: "Uma campanha em que o anúncio pode, em tese, entrar. Cada uma tem data e margem resultante." },
+              { term: "Margem para ganhar", label: "margin to win", def: "A margem que o anúncio teria se o preço fosse o necessário para vencer o catálogo." },
+            ] },
+            { t: "p", html: "Para cada anúncio, o bot compara <strong>as campanhas elegíveis</strong> (cada uma com data e margem) e escolhe a melhor. Ele prioriza campanhas com rebate. Se nenhuma servir, procura uma campanha do Mercado Livre com mais visibilidade e, nesse caso, mira na <strong>margem objetiva</strong>, sem ficar oscilando entre mínima e objetiva." },
+            { t: "h", text: "No catálogo, o bot nem sempre disputa" },
+            { t: "p", html: "Imagine um seller com o <strong>mesmo SKU em dois anúncios (MLBs)</strong>. Se um deles já ganha o catálogo, o outro não vai baixar o preço para ganhar do próprio seller. Fica no preço atual, com mais margem. No painel, isso aparece como um anúncio que \"perde\" o catálogo mesmo tendo margem para ganhar, e a explicação é essa." },
+            { t: "callout", tone: "dica", title: "Outro uso valioso", html: "O seller dono da marca pode baixar a lista de anúncios que está <strong>perdendo</strong> o catálogo, com os links, e identificar quem vende abaixo do preço tabelado. Há sellers que usaram isso para acionar distribuidores fora do combinado." },
+            { t: "quiz", q: "Um seller tem dois MLBs do mesmo SKU. O MLB A ganha o catálogo. O que o bot faz com o MLB B?", options: [
+              "Baixa o preço de B até ganhar de A.",
+              "Mantém o B no preço atual, preservando a margem.",
+              "Pausa o B.",
+              "Troca os preços de A e B.",
+            ], answer: [1], why: "Disputar contra si mesmo só come margem. O bot mantém o B." },
+            { t: "quiz", q: "Quais critérios o bot usa para escolher entre campanhas elegíveis? Marque todos.", multi: true, options: [
+              "Margem resultante dentro da faixa.",
+              "Prioridade para campanhas com rebate.",
+              "Respeito ao PMA, quando ativado.",
+              "Qual campanha tem o nome mais curto.",
+            ], answer: [0, 1, 2], why: "Margem, rebate e PMA decidem. Nome da campanha não entra na conta." },
+          ],
+        },
+      ],
+    },
+
+    /* ───────────────────────── MÓDULO 3 ───────────────────────── */
+    {
+      id: "m3", n: 3,
+      title: "Setup: do custo à integração",
+      tagline: "Como colocar a conta de um seller dentro da PriceBot.",
+      outcome: "Conduzir um seller do primeiro pedido de custo até a conta integrada.",
+      lessons: [
+        {
+          id: "l3-1", title: "Custos, SKU e alíquota", minutes: 16,
+          goal: "Montar a base de custos de um seller a partir do Nexus, por SKU ou por MLB.",
+          blocks: [
+            { t: "p", html: "O custo é o <strong>maior gargalo</strong> da implantação. Sem ele não existe margem, e sem margem a PriceBot não decide nada. O melhor cenário é o seller já ter os custos preenchidos no Nexus, na tela de <strong>rentabilidade</strong>." },
+            { t: "term", items: [
+              { term: "Cust ID", label: "customer id", def: "O identificador do seller, que fica no Nexus. É com ele que o time da PriceBot vincula a conta." },
+              { term: "Alíquota", label: "tax rate", def: "O percentual de imposto sobre a venda. Entra no cálculo de margem." },
+              { term: "SKU e MLB", label: "SKU / listing id", def: "SKU é o código do produto do seller; MLB é o código do anúncio no Mercado Livre." },
+            ] },
+            { t: "h", text: "Se os custos já estão no Nexus" },
+            { t: "steps", items: [
+              { title: "Abrir a rentabilidade", html: "Na tela de rentabilidade do seller no Nexus." },
+              { title: "Exportar a planilha por SKU", html: "O arquivo chega pelo sininho de downloads." },
+              { title: "Filtrar as linhas sem custo", html: "Linhas sem custo, normalmente, são produtos que o seller não vai trabalhar. Apague essas linhas." },
+              { title: "Copiar para a planilha de setup", html: "Cole os custos já com o SKU correspondente." },
+            ] },
+            { t: "h", text: "SKU ou MLB?" },
+            { t: "p", html: "<strong>SKU é o mais indicado</strong>, é o padrão do e-commerce. Mas muitos sellers quase não usam SKU. Nesse caso, preencha pelo <strong>MLB</strong> e deixe o SKU em branco: o time da PriceBot cria um SKU interno com o número do MLB. Quando o mesmo SKU tem mais de um MLB, a plataforma liga o custo e as margens a cada um." },
+            { t: "h", text: "Alíquota" },
+            { t: "p", html: "A maioria dos sellers está no Simples e trabalha com algo em torno de <strong>8% a 12%</strong>. Quem tem faturamento maior pode ter alíquota diferente por produto: nesse caso, peça a alíquota <strong>por SKU</strong>. Média esconde produto com margem real diferente da esperada." },
+            { t: "quiz", q: "O seller tem custos por MLB e quase nenhum SKU cadastrado. O que fazer?", options: [
+              "Obrigá-lo a cadastrar SKU antes de começar.",
+              "Preencher por MLB e deixar o SKU vazio.",
+              "Inventar um SKU para cada anúncio.",
+              "Não usar a PriceBot nesse caso.",
+            ], answer: [1], why: "A PriceBot cria o SKU interno a partir do número do MLB. SKU é mais indicado, mas não é impeditivo." },
+            { t: "quiz", q: "Na exportação de rentabilidade, algumas linhas vieram sem custo. Qual a leitura e a ação?", options: [
+              "Custo zero: entram com margem 100%.",
+              "Provavelmente produtos que o seller não vai trabalhar: retirar da lista.",
+              "Erro do Nexus: reexportar.",
+              "Preencher com a média da carteira.",
+            ], answer: [1], why: "Falta de custo costuma indicar produto fora da operação. Se for um produto trabalhado, você pede o custo, nunca estima." },
+          ],
+        },
+        {
+          id: "l3-2", title: "A planilha de setup", minutes: 14,
+          goal: "Preencher e enviar a planilha de setup sem retrabalho.",
+          blocks: [
+            { t: "p", html: "A planilha de setup é o que o time da PriceBot usa para criar sua base. O modelo é único e fica disponível para todos os assessores." },
+            { t: "list", items: [
+              "<strong>Cust ID</strong> do seller (do Nexus).",
+              "<strong>SKU</strong> (ou MLB) de cada produto.",
+              "<strong>Custo</strong> unitário.",
+              "<strong>Alíquota</strong> de imposto, por produto quando variar.",
+              "<strong>Margem mínima</strong> e <strong>margem objetiva</strong>, por produto quando o seller quiser diferenciar.",
+              "<strong>Preço mínimo (PMA)</strong>, só para quem tem preço tabelado.",
+            ] },
+            { t: "callout", tone: "atencao", title: "Nunca peça senha", html: "Nenhuma etapa da implantação usa a senha da conta do Mercado Livre. A conexão é feita pelo link de grant, em que o próprio seller autoriza. Se alguém pedir senha, algo está errado." },
+            { t: "h", text: "Quem recebe e o que enviar" },
+            { t: "p", html: "Envie ao contato do <strong>time da PriceBot</strong> a planilha com o <strong>nome do seller</strong> e o <strong>Cust ID</strong>. O lead pode ir junto, mas nome e Cust ID já bastam para a vinculação." },
+            { t: "callout", tone: "atencao", title: "Cuidado com o destinatário", html: "Já aconteceu de o autocompletar do e-mail trazer uma pessoa da Mamba com o mesmo nome da pessoa da PriceBot. Confira o <strong>domínio</strong> antes de enviar." },
+            { t: "h", text: "Como conseguir os custos que faltam" },
+            { t: "p", html: "O assessor que mais avançou na implantação seguiu um roteiro simples:" },
+            { t: "steps", items: [
+              { title: "Vender o porquê", html: "Explicar que sem custo não há como saber onde está o gargalo de margem. O seller quer faturar, mas também quer ganhar dinheiro." },
+              { title: "Mostrar o que ele ganha", html: "Margem real por produto, precificação em massa no Nexus, controle de Ads e a automação da PriceBot." },
+              { title: "Facilitar", html: "Enviar o modelo de planilha e, quando possível, já preencher o que existe no Nexus." },
+              { title: "Cobrar com constância", html: "Anotar e voltar a cobrar a cada um ou dois dias, até chegar." },
+            ] },
+            { t: "quiz", q: "Quais itens fazem parte da planilha de setup? Marque todos.", multi: true, options: [
+              "Cust ID e SKU/MLB.",
+              "Custo e alíquota.",
+              "Margem mínima e objetiva.",
+              "Senha do Mercado Livre do seller.",
+            ], answer: [0, 1, 2], why: "A senha nunca entra. A integração é feita pelo grant." },
+            { t: "quiz", q: "O seller resiste a enviar os custos. Qual abordagem funciona melhor?", options: [
+              "Pedir uma vez e esperar.",
+              "Explicar o ganho, mostrar a ferramenta, facilitar o preenchimento e cobrar com constância.",
+              "Estimar com 50% do preço.",
+              "Ameaçar encerrar a assessoria.",
+            ], answer: [1], why: "Custo é o gargalo, e quem conseguiu implantar toda a carteira combinou clareza do porquê com acompanhamento de perto." },
+          ],
+        },
+        {
+          id: "l3-3", title: "Grant: conectar a conta do seller", minutes: 12,
+          goal: "Gerar o link de grant, orientar o seller e confirmar a integração.",
+          blocks: [
+            { t: "term", items: [
+              { term: "Grant", label: "grant", def: "A autorização que o seller dá, clicando num link, para a PriceBot ler os dados da conta dele via API." },
+            ] },
+            { t: "p", html: "A PriceBot puxa os dados do Mercado Livre por API, assim como os nossos sistemas. Para isso, o seller precisa <strong>autorizar</strong>. Esta etapa vem <em>antes</em> da planilha de setup." },
+            { t: "steps", items: [
+              { title: "Pedir a criação da conta atribuída ao seu e-mail", html: "O time da PriceBot cria o acesso do assessor." },
+              { title: "Gerar o link", html: "Na plataforma: <strong>Configurações → Integrações → Gerar link para terceiro</strong>." },
+              { title: "Enviar o link ao seller", html: "Com o aviso de atenção sobre a conta (veja abaixo)." },
+              { title: "O seller clica e conecta a conta do Mercado Livre", html: "Depois do clique, o status do seller muda de não integrado para <strong>integrado</strong>." },
+              { title: "Pedir ao time da PriceBot para subir os anúncios", html: "A plataforma passa a puxar os SKUs por MLB e a ligar custos e margens a cada um." },
+            ] },
+            { t: "callout", tone: "atencao", title: "A conta certa", html: "O grant integra <strong>a conta que estiver logada</strong>. Muitos sellers têm conta da loja e conta pessoal. Se ele abrir o link no celular com a conta pessoal logada, a vinculação sai errada. Ao enviar o link, peça: <em>“confira se está logado na conta da loja”</em>." },
+            { t: "callout", tone: "regra", title: "Toda a carteira precisa estar granteada", html: "Conta com grant recebe campanhas mais relevantes, algumas exclusivas (como as da consultoria Platinum), que costumam ter rebate. E a adesão a campanhas é uma das métricas que o Mercado Livre pede de nós." },
+            { t: "quiz", q: "Qual é a ordem correta do processo?", options: [
+              "Conta atribuída → gerar link → enviar ao seller → seller conecta → status integrado → subir anúncios.",
+              "Subir anúncios → gerar link → conta atribuída.",
+              "Seller conecta → conta atribuída → gerar link.",
+              "Gerar link → subir anúncios → conta atribuída.",
+            ], answer: [0], why: "O grant precisa acontecer antes: só com a conta integrada a plataforma encontra os MLBs." },
+            { t: "quiz", q: "Os produtos puxados não batem com a loja. Qual é a hipótese mais provável?", options: [
+              "A PriceBot está com defeito.",
+              "O seller conectou a conta pessoal, não a da loja.",
+              "O seller mudou de plano.",
+              "É normal.",
+            ], answer: [1], why: "A integração acontece na conta logada no momento do clique. A correção é refazer o grant com a conta certa." },
+          ],
+        },
+        {
+          id: "l3-4", title: "Ativação e configurações", minutes: 14,
+          goal: "Fechar a implantação: modo de precificação, PMA, anúncios abaixo da mínima e anúncios novos.",
+          blocks: [
+            { t: "video", id: "7GByUXZOqNI", title: "Entenda o modo configurável do Modelo de Precificação do PriceBot", dur: "5:16", note: "O vídeo mostra o modelo de precificação por dentro. Aqui o foco é o que a Mamba usa." },
+            { t: "callout", tone: "regra", title: "Não mexa no modo de precificação", html: "Originalmente a PriceBot também altera o preço base. Como a Mamba não faz isso por contrato, existe um modo próprio que atua só em promoções e catálogo. Ele já vem no setup. Trocar faria o bot mexer no preço base e o seller reclamaria." },
+            { t: "h", text: "Depois do upload: o que fazer com cada anúncio" },
+            { t: "compare",
+              left: { title: "Margem ativa dentro da faixa", tone: "good", items: [
+                "Ligar a precificação automática.",
+                "O bot começa a gerir promoções e catálogo.",
+              ] },
+              right: { title: "Margem ativa abaixo da mínima", tone: "bad", items: [
+                "Não ligar a precificação automática.",
+                "O time da PriceBot reporta a lista; você envia ao seller para reprecificar.",
+                "Antes se ajustava a mínima para a margem atual. Hoje não.",
+                "Ligar quando a margem voltar para a faixa.",
+              ] } },
+            { t: "h", text: "Mais três rotinas" },
+            { t: "list", items: [
+              "<strong>Ativar o PMA</strong> nas configurações, se a coluna foi preenchida.",
+              "<strong>Anúncio novo:</strong> envie ao time da PriceBot só aquele anúncio, com custo e margens, informando o lead. Não refaça a base.",
+              "<strong>Teto de contas:</strong> ele continua, mas considera a PriceBot vinculada, porque ela alivia o trabalho.",
+            ] },
+            { t: "quiz", q: "Depois do upload, 300 de 1.200 anúncios estão abaixo da mínima. O que fazer?", options: [
+              "Ligar tudo e deixar o bot resolver.",
+              "Ligar os 900 dentro da faixa e manter desligados os 300 até o seller reprecificar.",
+              "Baixar a mínima dos 300 até a margem atual.",
+              "Apagar os 300 anúncios.",
+            ], answer: [1], why: "Itens abaixo da mínima ficam desligados. Os demais operam normalmente." },
+            { t: "quiz", q: "O seller criou um anúncio novo. Qual é o caminho?", options: [
+              "Refazer toda a planilha.",
+              "Enviar só aquele anúncio ao time da PriceBot, com o lead.",
+              "Esperar a PriceBot detectar sozinha.",
+              "Pedir ao Mercado Livre.",
+            ], answer: [1], why: "Dá para incluir sem refazer a base. Basta enviar o item novo." },
+          ],
+        },
+      ],
+    },
+
+    /* ───────────────────────── MÓDULO 4 ───────────────────────── */
+    {
+      id: "m4", n: 4,
+      title: "Operando o painel",
+      tagline: "O dia a dia dentro da plataforma, tela por tela.",
+      outcome: "Navegar pelo painel, ligar e desligar o bot com segurança e editar margens e custos em massa.",
+      lessons: [
+        {
+          id: "l4-1", title: "Visão geral e abas", minutes: 14,
+          goal: "Ler a tela inicial e usar os filtros de oportunidade.",
+          blocks: [
+            { t: "p", html: "Cada assessor entra com um login próprio, e a carteira é a mesma que você tem no Nexus. Ao abrir uma conta, <strong>todos os dados passam a ser daquela conta</strong>. Confira sempre em qual conta está antes de editar algo." },
+            { t: "h", text: "A tela inicial mostra" },
+            { t: "list", items: [
+              "<strong>Faturamento</strong> do mês atual e dos últimos 30 dias, com o valor obtido em <strong>rebate</strong>.",
+              "<strong>Dias sem vender</strong>: dá para baixar a planilha e enviar ao seller.",
+              "<strong>Status do catálogo:</strong> quantos anúncios estão ganhando, perdendo e empatando.",
+              "<strong>Status dos anúncios</strong> (ativos dentro da PriceBot) e <strong>distribuição</strong> (o que é catálogo e o que não é).",
+            ] },
+            { t: "p", html: "As duas visões de trabalho são <strong>Tradicional</strong> (gestão de promoções) e <strong>Catálogo</strong> (disputa de catálogo). Cada uma tem a sua lista, com colunas como modalidade (clássico ou premium), modalidade de envio, estoque, preço ativo e link direto para o anúncio." },
+            { t: "video", id: "KISFrHkUmdI", title: "Utilizando os filtros de Oportunidades de Catálogo e Campanha no PriceBot", dur: "5:21", note: "Os filtros ajudam a achar onde existe ação possível em contas grandes." },
+            { t: "callout", tone: "dica", title: "Pílula", html: "Em contas com milhares de anúncios, ninguém olha tudo. Use os filtros de oportunidade para olhar só onde há ação a tomar." },
+            { t: "quiz", q: "Quais dados aparecem na tela inicial? Marque todos.", multi: true, options: [
+              "Faturamento do mês e dos 30 dias, com o rebate.",
+              "Dias sem vender.",
+              "Status do catálogo.",
+              "Lista de preços dos concorrentes.",
+            ], answer: [0, 1, 2], why: "A PriceBot não lista os preços de cada concorrente na tela inicial." },
+            { t: "quiz", q: "Quais são as duas visões principais de anúncios?", options: [
+              "Ativos e pausados.",
+              "Tradicional e catálogo.",
+              "Full e Flex.",
+              "Clássico e premium.",
+            ], answer: [1], why: "Clássico e premium é só uma coluna de modalidade do anúncio." },
+          ],
+        },
+        {
+          id: "l4-2", title: "Ligar e desligar a precificação automática", minutes: 12,
+          goal: "Ligar, desligar e tratar um pedido do seller sem deixar promoção \"órfã\".",
+          blocks: [
+            { t: "p", html: "Cada anúncio tem a chave de <strong>precificação automática</strong>. É o botão que coloca o bot para trabalhar naquele MLB." },
+            { t: "compare",
+              left: { title: "Ligada", tone: "good", items: [
+                "O bot faz o cálculo do anúncio.",
+                "Entra e sai de promoções.",
+                "Acompanha o catálogo dentro da margem.",
+              ] },
+              right: { title: "Desligada", tone: "bad", items: [
+                "O bot para de gerir o anúncio.",
+                "A promoção que estava ativa <strong>continua ativa</strong>.",
+                "Quem desligou precisa retirar a promoção no Mercado Livre.",
+              ] } },
+            { t: "h", text: "O seller reclamou de um anúncio" },
+            { t: "steps", items: [
+              { title: "Entender o motivo", html: "É margem? Preço abaixo do que ele aceita? Rebate mal compreendido?" },
+              { title: "Desligar a precificação do anúncio", html: "Na lista, clicando na chave." },
+              { title: "Retirar a promoção no Mercado Livre", html: "Desligar o bot não tira a promoção que já está ativa. Selecione e retire." },
+              { title: "Ajustar a configuração se for o caso", html: "Margem, PMA ou custo do anúncio. E avise o seller do que foi feito." },
+            ] },
+            { t: "callout", tone: "atencao", title: "Margem negativa", html: "Se o seller quiser queimar preço de propósito, por exemplo para ranquear, é possível: habilite a margem negativa e ajuste a <strong>margem mínima do anúncio</strong> para o valor negativo aceito. Se a mínima continuar positiva, o bot não entra. É raro. Combine o limite de prejuízo antes e revise depois." },
+            { t: "quiz", q: "Você desligou a precificação automática de um MLB. O que acontece com a promoção ativa dele?", options: [
+              "Sai sozinha.",
+              "Continua ativa, e você precisa retirá-la no Mercado Livre.",
+              "É trocada pela próxima campanha.",
+              "O anúncio é pausado.",
+            ], answer: [1], why: "Desligado, o bot para de gerir. O que estava ativo continua ativo." },
+          ],
+        },
+        {
+          id: "l4-3", title: "Edição em massa e custos", minutes: 16,
+          goal: "Alterar margens e custos de muitos anúncios com rapidez e estimar o trabalho.",
+          blocks: [
+            { t: "p", html: "Depois do setup, a margem de um anúncio pode ser alterada por <strong>SKU</strong> ou por <strong>MLB</strong>, individualmente ou em massa." },
+            { t: "h", text: "Margens" },
+            { t: "list", items: [
+              "<strong>Unitário:</strong> nos três pontinhos do anúncio, em detalhes, é possível mudar mínima, objetiva e máxima.",
+              "<strong>Em massa:</strong> selecione os anúncios, edite, salve. A edição vale por página de 100 itens, então uma conta de 4.000 anúncios exige 40 rodadas.",
+            ] },
+            { t: "callout", tone: "dica", title: "Faça a conta antes de prometer prazo", html: "4.000 anúncios ÷ 100 por página = <strong>40 rodadas</strong>. É muito melhor que 4.000 edições unitárias, mas custa tempo. Quando o volume é grande, vale combinar o ajuste com o time da PriceBot." },
+            { t: "h", text: "Custos em massa" },
+            { t: "steps", items: [
+              { title: "Abrir a aba de produtos", html: "Na plataforma." },
+              { title: "Baixar a planilha de produtos ativos", html: "O arquivo vai para a lista de downloads." },
+              { title: "Corrigir os custos no arquivo", html: "É a mesma estrutura da planilha de setup." },
+              { title: "Importar a planilha de volta", html: "Os custos são atualizados produto a produto." },
+            ] },
+            { t: "video", id: "z_BKB5JFZIQ", title: "O que são e como corrigir Anúncios Pendentes no PriceBot", dur: "2:12", note: "Antes de editar em massa, confira se há anúncios pendentes na conta." },
+            { t: "quiz", q: "A edição em massa vale por página de 100 anúncios. A conta tem 2.500 anúncios. Quantas rodadas, no mínimo?", options: ["10", "25", "250", "2.500"], answer: [1], why: "2.500 ÷ 100 = 25 rodadas." },
+            { t: "quiz", q: "O seller enviou 600 custos errados. Qual é o fluxo mais eficiente?", options: [
+              "Editar um por um.",
+              "Baixar a planilha de produtos ativos, corrigir no arquivo e importar.",
+              "Refazer a integração.",
+              "Pedir que o seller mude o preço.",
+            ], answer: [1], why: "A importação atualiza os custos de uma vez." },
+          ],
+        },
+        {
+          id: "l4-4", title: "Calculadora, campanhas e rebate", minutes: 14,
+          goal: "Usar a calculadora, ler campanhas elegíveis e mostrar o rebate ao seller.",
+          blocks: [
+            { t: "h", text: "Calculadora por anúncio" },
+            { t: "p", html: "Ao lado de cada MLB existe uma <strong>calculadora</strong>. Você digita um preço e ela mostra a margem resultante em reais e em percentual, já com comissões, impostos, frete e custo. Dá para voltar ao preço antigo a qualquer momento. É uma simulação: não altera o anúncio." },
+            { t: "callout", tone: "dica", title: "Quando usar", html: "Seller exigente com margem: simule 2 ou 3 preços com ele na reunião e mostre o resultado em reais. Fica mais fácil chegar num preço de comum acordo." },
+            { t: "h", text: "Campanhas elegíveis" },
+            { t: "p", html: "No detalhe do anúncio, a PriceBot lista as campanhas elegíveis, cada uma com <strong>data</strong> e <strong>margem</strong> resultante. O bot escolhe a melhor entre as viáveis. As que não cabem aparecem, por exemplo, por data já passada." },
+            { t: "h", text: "Mostrar o rebate" },
+            { t: "p", html: "Na tela inicial você vê o valor obtido em rebate no mês e nos últimos 30 dias. Na <strong>visão geral de pedidos</strong>, é possível filtrar 7, 30, 60 e 90 dias, em reais e em percentual." },
+            { t: "callout", tone: "regra", title: "Hábito semanal", html: "Entre na conta <strong>pelo menos uma vez por semana</strong>. Tire um print do rebate e envie ao seller, no grupo. Não espere a reunião mensal ou uma reclamação para mostrar valor." },
+            { t: "quiz", q: "Onde o assessor consulta o rebate do último mês, em reais?", options: [
+              "Só no extrato do banco.",
+              "Na tela inicial e na visão geral de pedidos, filtrando o período.",
+              "Só pedindo ao time da PriceBot.",
+              "Não é possível medir.",
+            ], answer: [1], why: "Os dois lugares mostram o rebate. A visão geral de pedidos permite filtrar 7, 30, 60 e 90 dias." },
+            { t: "quiz", q: "A calculadora do MLB altera o preço do anúncio?", options: [
+              "Sim, imediatamente.",
+              "Não: é uma simulação de margem para o preço digitado.",
+              "Sim, mas só no fim do dia.",
+              "Só para anúncios premium.",
+            ], answer: [1], why: "É simulação. Serve para apoiar a decisão e a conversa com o seller." },
+          ],
+        },
+      ],
+    },
+
+    /* ───────────────────────── MÓDULO 5 ───────────────────────── */
+    {
+      id: "m5", n: 5,
+      title: "Comportamentos e diagnóstico",
+      tagline: "Por que o bot fez (ou não fez) algo, e o que dizer ao seller.",
+      outcome: "Diagnosticar por que um anúncio não entra em campanha ou não ganha catálogo.",
+      lessons: [
+        {
+          id: "l5-1", title: "Margem abaixo do mínimo", minutes: 10,
+          goal: "Tratar anúncios abaixo da mínima sem mexer na regra do seller.",
+          blocks: [
+            { t: "video", id: "5_9xVZGl6T4", title: "(Comportamentos) Margem abaixo do mínimo", dur: "1:46", note: "Assista e anote o que o painel mostra nesse caso." },
+            { t: "p", html: "Um anúncio com margem ativa abaixo da mínima do seller <strong>não entra na precificação automática</strong>. O motivo é simples: qualquer promoção reduziria ainda mais o preço." },
+            { t: "steps", items: [
+              { title: "Identificar", html: "O time da PriceBot reporta a lista dos itens abaixo da mínima (inclusive os de margem negativa)." },
+              { title: "Mostrar ao seller com números", html: "Custo, taxas, frete e margem atual do produto dele, direto da API." },
+              { title: "Reprecificar", html: "O seller sobe o preço base, aos poucos. O Nexus tem precificação em massa e exporta a planilha com o preço novo." },
+              { title: "Ligar o bot", html: "Quando a margem voltar para a faixa, a precificação automática pode ser ligada." },
+            ] },
+            { t: "callout", tone: "atencao", title: "Não baixe a mínima para facilitar", html: "Ajustar a mínima para a margem atual faz o bot entrar, mas entrega a margem do seller. Hoje esse não é o procedimento." },
+            { t: "quiz", q: "Um anúncio está com margem ativa de 4%, e a mínima é 10%. O que fazer?", options: [
+              "Baixar a mínima para 4%.",
+              "Manter desligado e levar o item à lista de reprecificação com o seller.",
+              "Ligar e esperar uma promoção com rebate.",
+              "Pausar o anúncio.",
+            ], answer: [1], why: "O anúncio fica desligado até o preço ser reajustado, para devolver espaço de promoção." },
+          ],
+        },
+        {
+          id: "l5-2", title: "Estratégia de precificação com promoções", minutes: 12,
+          goal: "Explicar a lógica de prioridade entre campanhas.",
+          blocks: [
+            { t: "video", id: "11qQPaLwsVY", title: "(Comportamentos) Estratégia de precificação com promoções", dur: "2:19", note: "Compare o que o vídeo mostra com a ordem de prioridade abaixo." },
+            { t: "p", html: "A lógica de prioridade do bot, em ordem:" },
+            { t: "steps", items: [
+              { title: "Campanhas com rebate", html: "Priorizadas, desde que a margem resultante fique na faixa." },
+              { title: "Campanhas do Mercado Livre com mais visibilidade", html: "Se não for possível ficar na faixa com rebate, o bot busca uma campanha mais visível e, nela, mira a <strong>margem objetiva</strong>, sem oscilar entre mínima e objetiva." },
+              { title: "Nenhuma", html: "Se nada cabe na faixa, o anúncio fica fora. O bot nunca fura a mínima." },
+            ] },
+            { t: "callout", tone: "exemplo", title: "Desconto maior, rentabilidade maior", html: "Campanha X: 14% de desconto com 6% de rebate (custo efetivo 8%). Campanha Y: 8% sem rebate (custo efetivo 8%). Mesmo custo, mas a X é uma campanha com rebate, e costuma dar mais visibilidade." },
+            { t: "say", title: "Se o seller perguntar se a PriceBot vai aumentar muito o desconto", html: "“Ela só entra em promoção que cabe na margem que combinamos. Se o desconto de uma campanha derrubaria o preço abaixo do seu mínimo, ela não entra. E participar das campanhas mais relevantes costuma melhorar a visibilidade dos anúncios.”" },
+            { t: "quiz", q: "Entre uma campanha com rebate e uma sem rebate, ambas dentro da margem, qual o bot prioriza?", options: [
+              "A sem rebate.",
+              "A com rebate.",
+              "A mais antiga.",
+              "Sorteia.",
+            ], answer: [1], why: "O rebate devolve dinheiro ao seller. É a primeira prioridade." },
+            { t: "quiz", q: "14% de desconto com 6% de rebate versus 8% sem rebate. O que é verdade?", options: [
+              "O segundo custa menos.",
+              "Os dois têm o mesmo custo efetivo (8%), mas o primeiro é uma campanha com rebate.",
+              "O primeiro custa 20%.",
+              "Não dá para comparar.",
+            ], answer: [1], why: "14% − 6% = 8%." },
+          ],
+        },
+        {
+          id: "l5-3", title: "Catálogo: prioridade e falta de margem", minutes: 14,
+          goal: "Explicar ao seller por que um anúncio perde o catálogo e o que pode ser feito.",
+          blocks: [
+            { t: "video", id: "0z4xRKgOMEQ", title: "(Comportamentos) Prioridade no catálogo", dur: "3:36", note: "Foque em como o bot decide qual anúncio disputar." },
+            { t: "video", id: "KrAjBngfVTw", title: "(Comportamentos) Não há margem para ganhar catálogo", dur: "2:50", note: "Veja como o painel indica a falta de margem." },
+            { t: "h", text: "Dois motivos comuns para perder o catálogo" },
+            { t: "compare",
+              left: { title: "Prioridade no catálogo", tone: "good", items: [
+                "O seller tem outro anúncio do mesmo catálogo (mesmo SKU, outro MLB) que já ganha.",
+                "Disputar contra si mesmo só come margem.",
+                "O bot mantém o anúncio no preço atual.",
+              ] },
+              right: { title: "Não há margem para ganhar", tone: "bad", items: [
+                "O preço necessário para vencer deixaria a margem abaixo da mínima.",
+                "O bot não passa da mínima para ganhar.",
+                "A decisão passa a ser do seller.",
+              ] } },
+            { t: "h", text: "O que o assessor pode propor" },
+            { t: "list", items: [
+              "Verificar se há <strong>campanha com rebate</strong> que eleve a margem e aproxime o preço de ganhar.",
+              "Conversar sobre <strong>rever custo ou preço base</strong> do produto.",
+              "Se o seller quiser sacrificar margem para ranquear: ajustar a mínima do anúncio (inclusive negativa), com a opção habilitada e um limite combinado.",
+            ] },
+            { t: "callout", tone: "atencao", title: "O que não fazer", html: "Alterar o custo para \"fechar a conta\" ou desligar o PMA sem avisar o seller. A confiança é o ativo da assessoria." },
+            { t: "quiz", q: "Um anúncio tem margem para ganhar de 6% e mínima de 10%. Como interpretar?", options: [
+              "Defeito da PriceBot.",
+              "Não há margem para ganhar dentro da regra do seller: o bot não passa da mínima.",
+              "Está aguardando quarta-feira.",
+              "O seller deve trocar de categoria.",
+            ], answer: [1], why: "A regra de margem prevalece. As saídas são decisões do seller." },
+            { t: "quiz", q: "Marque as ações legítimas quando um anúncio importante não tem margem para ganhar.", multi: true, options: [
+              "Procurar campanha com rebate.",
+              "Conversar sobre custo ou preço base.",
+              "Combinar margem mínima menor para um objetivo específico, com limite.",
+              "Alterar o custo no painel para fechar a conta.",
+            ], answer: [0, 1, 2], why: "Mexer em custo sem alinhamento distorce a margem e quebra a confiança." },
+          ],
+        },
+        {
+          id: "l5-4", title: "Promoção não permitida e o checklist", minutes: 14,
+          goal: "Seguir um checklist de diagnóstico quando um anúncio não entra numa campanha.",
+          blocks: [
+            { t: "video", id: "eiW1iLxDjzA", title: "(Comportamentos) Promoção não permitida", dur: "3:01", note: "Assista e compare com o checklist abaixo." },
+            { t: "p", html: "Quando o seller pergunta <em>“por que meu anúncio não entrou naquela campanha?”</em>, quase sempre a resposta está em um destes pontos. Siga a ordem:" },
+            { t: "steps", items: [
+              { title: "A precificação automática está ligada?", html: "Desligada, o bot não gere o anúncio." },
+              { title: "A campanha é elegível, e a data ainda vale?", html: "No detalhe do anúncio, cada campanha mostra data e margem." },
+              { title: "A margem resultante cabe entre mínima e objetiva?", html: "Compare com a faixa configurada." },
+              { title: "O PMA bloqueia?", html: "Se o preço da campanha ficaria abaixo do preço mínimo, o bot não entra." },
+              { title: "Há outro MLB do mesmo SKU ganhando o catálogo?", html: "Nesse caso o bot não disputa contra o seller." },
+            ] },
+            { t: "callout", tone: "dica", title: "Rede de segurança temporária", html: "Durante uma reprecificação, vários anúncios podem ficar fora de campanha por causa da mínima. Um assessor manteve, na plataforma do Mercado Livre, uma campanha mínima de 5% para que esses anúncios não ficassem sem promoção. Não é o cenário ideal, mas serve como transição." },
+            { t: "callout", tone: "atencao", title: "Pedido de desconto fixo", html: "Se o seller quiser manter um MLB num desconto fixo de 5%, alinhe por margem. Se for caso pontual, desligue a automação daquele anúncio, configure a promoção desejada e lembre que o bot não vai gerenciá-lo." },
+            { t: "quiz", q: "Margem de 20%, precificação ligada e uma campanha que daria 17% (mínima 10%). Mesmo assim o bot não entrou. O que investigar?", options: [
+              "A mínima está alta.",
+              "Elegibilidade, data da campanha, PMA e catálogo ganho por outro MLB do mesmo SKU.",
+              "A margem de 17% é proibida.",
+              "O bot só entra no fim do mês.",
+            ], answer: [1], why: "17% está dentro da faixa. O motivo está em outro filtro." },
+            { t: "quiz", q: "Qual é a primeira pergunta do checklist?", options: [
+              "O PMA está ativado?",
+              "A precificação automática está ligada?",
+              "Há rebate?",
+              "O seller aprovou?",
+            ], answer: [1], why: "Se o anúncio estiver desligado, nada mais importa." },
+          ],
+        },
+      ],
+    },
+
+    /* ───────────────────────── MÓDULO 6 ───────────────────────── */
+    {
+      id: "m6", n: 6,
+      title: "Vender, reter e ensinar",
+      tagline: "Como explicar a PriceBot, defender seu valor e ensinar outra pessoa.",
+      outcome: "Conduzir a conversa de valor com o seller e ensinar a ferramenta a um colega.",
+      lessons: [
+        {
+          id: "l6-1", title: "Conseguir os custos do seller", minutes: 12,
+          goal: "Vencer a objeção \"minha planilha já diz a minha margem\".",
+          blocks: [
+            { t: "p", html: "O seller costuma calcular a margem <em>antes</em> de vender: pega o custo, abate as taxas previstas e chega a um número. O problema é o que acontece depois." },
+            { t: "callout", tone: "exemplo", title: "O furo da planilha", html: "Ao longo do mês, as taxas e principalmente o <strong>frete</strong> oscilam venda a venda, mesmo no mesmo SKU. A margem prevista deixa de fechar, e o seller pode estar tendo prejuízo sem saber." },
+            { t: "p", html: "O dado do Nexus e da PriceBot vem <strong>direto da API</strong>, venda a venda. É o dado cru da conta, e é isso que chama a atenção do seller." },
+            { t: "say", title: "Resposta para “na minha planilha eu tenho 20%”", html: "“A planilha mostra a margem que você previu. O Nexus mostra a margem que aconteceu, venda a venda: o frete e as taxas oscilam e às vezes o número não fecha. Com o custo aqui dentro eu te mostro onde está o furo, produto a produto.”" },
+            { t: "h", text: "Quatro argumentos para pedir o custo" },
+            { t: "list", items: [
+              "Sem custo, não dá para saber onde está o gargalo de margem.",
+              "Com custo, dá para precificar em massa (no Nexus, produto a produto é manual).",
+              "O seller vê quanto gasta em taxas, frete e Ads em cada produto.",
+              "A PriceBot só entra em promoção se souber a margem.",
+            ] },
+            { t: "quiz", q: "Qual é o melhor contra-argumento para \"minha planilha já mostra a margem\"?", options: [
+              "\"Sua planilha está errada.\"",
+              "A margem real oscila (principalmente o frete) e o dado da API mostra o que aconteceu venda a venda.",
+              "\"Planilha não é confiável.\"",
+              "\"É o contrato.\"",
+            ], answer: [1], why: "O argumento é concreto, e não ataca o seller." },
+          ],
+        },
+        {
+          id: "l6-2", title: "Falar de margem, não de desconto", minutes: 14,
+          goal: "Alinhar com o seller a margem como compromisso e entender TACoS.",
+          blocks: [
+            { t: "p", html: "Antes da PriceBot, o alinhamento era: <em>“vou aplicar 10% de desconto nesse anúncio”</em>. Agora o alinhamento é: <strong>“qual margem você quer ter?”</strong>. O percentual passa a ser consequência." },
+            { t: "callout", tone: "exemplo", title: "Mesmo desconto, resultados diferentes", html: "Dois anúncios, ambos com 10% de desconto. No segundo, o Mercado Livre subsidia 5%. No primeiro o seller paga 10%, no segundo 5%. E às vezes o desconto do bot é maior e a rentabilidade ainda é melhor." },
+            { t: "h", text: "A história do arroz" },
+            { t: "p", html: "O supermercado faz uma super promoção no arroz e queima a margem dele. Mas você não leva só arroz: leva outros produtos próximos, com margem maior. No fim, o mercado ganhou mais. No marketplace é igual: o que importa é o <strong>lucro entregue no fim do mês</strong>, não a margem de um anúncio isolado." },
+            { t: "term", items: [
+              { term: "TACoS", label: "total advertising cost of sales", def: "O percentual do faturamento que o seller destina à publicidade. Alinhado de comum acordo; a estratégia de uso fica com quem conduz o projeto." },
+            ] },
+            { t: "p", html: "O exemplo usado: uma franquia de fast food repassa uma parte fixa do faturamento a um fundo de publicidade. A assessoria usa o TACoS com a mesma lógica." },
+            { t: "callout", tone: "atencao", title: "Seller exigente com cada anúncio", html: "Há sellers que cobram rentabilidade alta em cada produto. Com eles, o caminho é a margem mínima por SKU. Mas a conversa de lucro total também é válida, desde que a expectativa esteja alinhada." },
+            { t: "quiz", q: "Qual é a ideia do exemplo do arroz?", options: [
+              "Que promoção sempre dá prejuízo.",
+              "Que abrir mão de margem num item pode aumentar o lucro total, e o que vale é o resultado do mês.",
+              "Que todo produto deve ter o mesmo preço.",
+              "Que o seller deve vender um produto só.",
+            ], answer: [1], why: "A lógica é olhar o resultado total da conta dentro das margens alinhadas." },
+            { t: "quiz", q: "O que é TACoS na prática da assessoria?", options: [
+              "A comissão do Mercado Livre sobre Ads.",
+              "O percentual do faturamento destinado à publicidade, combinado com o seller.",
+              "O desconto máximo de promoção.",
+              "O preço mínimo por SKU.",
+            ], answer: [1], why: "É o acordo que permite ao assessor distribuir o investimento com estratégia." },
+          ],
+        },
+        {
+          id: "l6-3", title: "Mostrar valor toda semana", minutes: 12,
+          goal: "Criar o hábito de provar valor e usar a PriceBot em retenção e reversão.",
+          blocks: [
+            { t: "p", html: "O trabalho da equipe comercial é trazer o seller. O trabalho do assessor é <strong>vender a assessoria todos os dias</strong>: se o valor entregue não estiver visível e explicado, o serviço deixa de fazer sentido para o cliente." },
+            { t: "callout", tone: "exemplo", title: "A conta de padaria", html: "Num exemplo contado no treinamento, uma conta tinha cerca de R$ 9 mil de rebate no período, o que equivalia a dois meses de mensalidade. Ou seja: mesmo que o resto não tenha ido como o seller queria, o rebate sozinho já pagou o serviço. <em>Use este exemplo para entender a lógica, e não como promessa.</em>" },
+            { t: "steps", items: [
+              { title: "Toda semana, entre na conta", html: "Uma vez por semana, no mínimo." },
+              { title: "Olhe o rebate e o faturamento", html: "7 e 30 dias, em reais e em percentual." },
+              { title: "Mande o resultado", html: "Print no grupo: “só esta semana a gente conseguiu R$ X de rebate”." },
+              { title: "Reforce nas contas boas", html: "Não guarde bons números para a reunião mensal." },
+            ] },
+            { t: "h", text: "Retenção e reversão" },
+            { t: "p", html: "A PriceBot é uma ferramenta cara, difícil de contratar por conta própria. O seller que pensa em sair precisa saber que, fora do ecossistema Mamba, perde esse benefício. Sellers com muito catálogo percebem isso rápido: em alguns casos a PriceBot ajudou a segurar quem queria sair e a trazer de volta quem tinha saído." },
+            { t: "callout", tone: "atencao", title: "Sem promessa de número", html: "O rebate depende das campanhas disponíveis, da categoria e do interesse comercial do Mercado Livre. Mostre o que já aconteceu na conta e explique o mecanismo, mas <strong>nunca prometa um valor futuro</strong>." },
+            { t: "quiz", q: "Qual hábito o treinamento recomenda?", options: [
+              "Mostrar o rebate só na reunião mensal.",
+              "Entrar na conta toda semana e enviar o resultado ao seller.",
+              "Esperar o seller perguntar.",
+              "Mostrar só quando o valor for alto.",
+            ], answer: [1], why: "Valor se constrói toda semana, não só quando há reunião ou reclamação." },
+            { t: "quiz", q: "Qual postura evita criar expectativa errada?", options: [
+              "Prometer R$ 10 mil de rebate por mês.",
+              "Explicar o mecanismo e mostrar números reais já observados, sem garantir o futuro.",
+              "Dizer que o faturamento dobra.",
+              "Não falar de rebate.",
+            ], answer: [1], why: "Rebate depende de fatores que a ferramenta não controla." },
+          ],
+        },
+        {
+          id: "l6-4", title: "Como ensinar a PriceBot", minutes: 14,
+          goal: "Ensinar a ferramenta a um colega ou seller e checar se a pessoa realmente aprendeu.",
+          blocks: [
+            { t: "p", html: "Saber usar é uma coisa. Saber <strong>explicar</strong> é outra. Você vai ensinar colegas e sellers, e a ordem em que explica muda quanto a pessoa aprende." },
+            { t: "h", text: "Uma ordem que funciona" },
+            { t: "steps", items: [
+              { title: "O problema", html: "Preço e promoção na mão não escalam e corroem a margem." },
+              { title: "A regra", html: "Faixa de margem (mínima e objetiva) e trava de preço (PMA)." },
+              { title: "Um exemplo com números", html: "O desconto de 10% com 2% de rebate vira 8% efetivo." },
+              { title: "O que a pessoa precisa fazer", html: "Custos, setup, grant." },
+              { title: "O painel", html: "Só no final. Quem entende o porquê aprende o painel muito mais rápido." },
+            ] },
+            { t: "callout", tone: "dica", title: "Regra de ouro", html: "No máximo <strong>três termos novos por conversa</strong>. Dê o nome em português primeiro (\"margem mínima\") e a etiqueta técnica depois. Se a explicação só funciona quando a pessoa já conhece o termo, você traduziu, e não ensinou." },
+            { t: "h", text: "Como saber se aprendeu" },
+            { t: "p", html: "Perguntar “entendeu?” não mede nada. Peça duas coisas:" },
+            { t: "list", items: [
+              "Que a pessoa <strong>explique de volta</strong>, com as próprias palavras, o caminho de um seller do custo ao grant.",
+              "Que resolva um <strong>caso novo</strong>: por exemplo, um anúncio com margem abaixo da mínima, sem consultar o material.",
+            ] },
+            { t: "p", html: "Se o erro for de detalhe, anote e siga. Se o erro for no modelo mental (por exemplo, achar que o bot altera o preço base), corrija antes de avançar." },
+            { t: "h", text: "Delegar também é parte do jogo" },
+            { t: "p", html: "Em carteiras grandes, é comum delegar ao time da PriceBot a inclusão de anúncios novos e a correção de custos, para focar em estratégia e relacionamento. Isso é eficiência, não falta de domínio." },
+            { t: "quiz", q: "Qual é a melhor forma de verificar se um colega aprendeu?", options: [
+              "Perguntar \"entendeu?\" no fim.",
+              "Pedir que ele explique de volta o caminho do seller e resolva um caso novo, sem consultar.",
+              "Mandar ler de novo.",
+              "Cobrar os nomes dos menus de cabeça.",
+            ], answer: [1], why: "Entender é conseguir explicar e aplicar a uma situação nova." },
+            { t: "quiz", q: "Qual é a melhor ordem para explicar a PriceBot a alguém de fora?", options: [
+              "Menus do painel → regra → problema.",
+              "Problema → regra → exemplo com números → o que fazer → painel.",
+              "Preço da ferramenta → painel.",
+              "Grant → planilha → painel.",
+            ], answer: [1], why: "O porquê e a regra primeiro; o painel entra depois que a pessoa tem um modelo mental." },
+          ],
+        },
+      ],
+    },
+  ],
+};
