@@ -1,0 +1,76 @@
+/* Roteador por hash e inicialização. */
+(function () {
+  const { h } = M;
+  let seq = 0;
+
+  const routes = [
+    [/^#?\/?$/, "home", () => ({ key: "home", crumbs: [{ text: "Trilha PriceBot" }], view: () => M.views.home() })],
+    [/^#\/m\/([\w-]+)$/, "module", (m) => ({ key: "home", crumbs: [{ text: "Trilha", href: "#/" }, { text: "Módulo " + (M.modulo(m[1])?.n ?? "") }], view: () => M.views.module(m[1]) })],
+    [/^#\/l\/([\w-]+)$/, "lesson", (m) => ({ key: "home", crumbs: [{ text: "Trilha", href: "#/" }], view: () => M.views.lesson(m[1]) })],
+    [/^#\/exam\/([\w-]+)$/, "exam", (m) => ({ key: "home", crumbs: [{ text: "Trilha", href: "#/" }, { text: M.examName(m[1]) }], view: () => M.views.exam(m[1]) })],
+    [/^#\/cert$/, "cert", () => ({ key: "cert", crumbs: [{ text: "Certificado" }], view: () => M.views.cert() })],
+    [/^#\/conta$/, "conta", () => ({ key: "conta", crumbs: [{ text: "Minha conta" }], view: () => M.views.account() })],
+    [/^#\/admin$/, "admin", () => ({ key: "admin", crumbs: [{ text: "Administração" }, { text: "Painel" }], view: () => M.views.adminHome(), wide: true })],
+    [/^#\/admin\/usuarios$/, "admin", () => ({ key: "admin-users", crumbs: [{ text: "Administração" }, { text: "Acessos" }], view: () => M.views.adminUsers(), wide: true })],
+    [/^#\/admin\/usuarios\/([\w-]+)$/, "admin", (m) => ({ key: "admin-users", crumbs: [{ text: "Administração" }, { text: "Acessos", href: "#/admin/usuarios" }, { text: "Pessoa" }], view: () => M.views.adminUser(m[1]), wide: true })],
+    [/^#\/admin\/logs$/, "admin", () => ({ key: "admin-logs", crumbs: [{ text: "Administração" }, { text: "Logs" }], view: () => M.views.adminLogs(), wide: true })],
+    [/^#\/admin\/perguntas$/, "admin", () => ({ key: "admin-q", crumbs: [{ text: "Administração" }, { text: "Banco de questões" }], view: () => M.views.adminQuestions(), wide: true })],
+  ];
+
+  M.render = async function render() {
+    const my = ++seq;
+    const hash = location.hash || "#/";
+
+    /* telas sem sessão */
+    if (/^#\/(entrar|cadastro)$/.test(hash)) {
+      if (M.session.token && !M.session.user) { try { await M.refreshMe(); } catch {} if (my !== seq) return; }
+      if (M.session.token && M.session.user) { location.hash = "#/"; return; }
+      M.resetShell();
+      M.mount(M.views.auth(hash === "#/cadastro" ? "cadastro" : "entrar"));
+      document.title = "Entrar · Estude House";
+      return;
+    }
+    if (!M.session.token) { location.hash = "#/entrar"; return; }
+
+    if (!M.session.user) {
+      M.mount(M.loading("Carregando sua trilha…"));
+      try { await M.refreshMe(); }
+      catch (e) {
+        if (e.status === 401) { location.hash = "#/entrar"; return; }
+        M.mount(h("div", { class: "empty", style: "margin:80px auto;max-width:520px" }, h("h3", { text: "Não foi possível conectar" }), h("p", { text: e.message }),
+          h("button", { class: "btn btn-gold", type: "button", onclick: () => M.render(), text: "Tentar de novo" })));
+        return;
+      }
+      if (my !== seq) return;
+    }
+
+    let def = null;
+    for (const [re, , build] of routes) {
+      const m = hash.match(re);
+      if (m) { def = build(m); break; }
+    }
+    if (!def) { M.setPage("home", [{ text: "Página não encontrada" }], M.notFound()); return; }
+    if (def.key.startsWith("admin") && !M.isAdmin()) { location.hash = "#/"; return; }
+
+    M.setPage(def.key, def.crumbs, M.loading());
+    try {
+      const node = await def.view();
+      if (my !== seq) return;
+      M.setPage(def.key, node._crumbs || def.crumbs, node, { wide: def.wide });
+      document.title = (node._crumbs ? node._crumbs[node._crumbs.length - 1].text : def.crumbs[def.crumbs.length - 1].text) + " · Estude House";
+    } catch (e) {
+      if (my !== seq || e.status === 401) return;
+      M.setPage(def.key, def.crumbs, h("div", { class: "empty" }, h("h3", { text: "Não foi possível abrir esta página" }), h("p", { text: e.message }),
+        h("button", { class: "btn btn-gold", type: "button", onclick: () => M.render(), text: "Tentar de novo" })));
+    }
+  };
+
+  M.onSessionLost = (msg) => {
+    M.resetShell();
+    location.hash = "#/entrar";
+    M.toast(msg || "Sessão expirada. Entre novamente.", "err");
+  };
+
+  window.addEventListener("hashchange", () => M.render());
+  M.render();
+})();
