@@ -7,6 +7,13 @@
   const fmt = (n, d = 0) => Number(n).toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
   const rs = (n) => "R$ " + fmt(n, 2);
   const pct = (n) => fmt(n, n % 1 ? 1 : 0) + "%";
+  /* embaralha as alternativas de um cenário de escolha e devolve o novo índice da certa */
+  const shuf = (opts, correct) => {
+    const idx = opts.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    return { options: idx.map((i) => opts[i]), answer: idx.indexOf(correct) };
+  };
+  const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
   /* Cada gerador devolve { q, type: "num" | "choice", ... }.
      num: answer, tol, unit ("%", "R$", ""), explain.  choice: options, answer (índice), explain. */
@@ -184,6 +191,159 @@
       return {
         q: `Um anúncio não entra em uma campanha. O que o painel mostra: ${facts[k]}<br>Qual é o motivo mais provável?`,
         type: "choice", options: causes, answer: k, explain: why[k],
+      };
+    },
+
+    /* Reforma Tributária: base de cálculo de IBS e CBS */
+    base() {
+      const t = ri(0, 2);
+      const P = pick([400, 500, 800, 1000, 1200]);
+      const F = pick([40, 60, 80, 90]);
+      if (t === 0) {
+        const S = pick([20, 30, 50]), J = pick([20, 40, 60]);
+        return {
+          q: `Uma venda tem produto de <b>${rs(P)}</b>, frete cobrado do comprador de <b>${rs(F)}</b>, seguro de <b>${rs(S)}</b> e juros por atraso de <b>${rs(J)}</b>. Qual é a <b>base de cálculo</b> do IBS e da CBS?`,
+          type: "num", answer: P + F + S + J, tol: 0.02, unit: "R$",
+          explain: `Tudo que é cobrado do comprador na operação entra na base: ${rs(P)} + ${rs(F)} + ${rs(S)} + ${rs(J)} = <b>${rs(P + F + S + J)}</b>.`,
+        };
+      }
+      if (t === 1) {
+        const D = pick([20, 30, 50, 60]), C = pick([40, 50, 100]);
+        return {
+          q: `Produto de <b>${rs(P)}</b> e frete cobrado de <b>${rs(F)}</b>. Na nota há um <b>desconto incondicional</b> de <b>${rs(D)}</b>, e o boleto dá mais <b>${rs(C)}</b> de desconto se for pago até o vencimento. Qual é a base de cálculo?`,
+          type: "num", answer: P + F - D, tol: 0.02, unit: "R$",
+          explain: `O desconto incondicional reduz a base; o do boleto é condicional e não reduz. ${rs(P)} + ${rs(F)} − ${rs(D)} = <b>${rs(P + F - D)}</b>.`,
+        };
+      }
+      const o = shuf([
+        "Um desconto incondicional destacado na própria nota fiscal",
+        "Um desconto que só vale se o comprador pagar o boleto até o vencimento",
+        "O frete que o vendedor cobra do comprador como parte da venda",
+        "Os juros cobrados do comprador por atraso no pagamento",
+      ], 0);
+      return {
+        q: "Qual destes itens <b>reduz</b> a base de cálculo do IBS e da CBS?",
+        type: "choice", options: o.options, answer: o.answer,
+        explain: "Só o desconto incondicional (dado na nota, sem depender de nada depois) reduz a base. O desconto do boleto é condicional; frete e juros cobrados entram na base.",
+      };
+    },
+
+    /* Reforma Tributária: débito, crédito e imposto por fora */
+    iva() {
+      const t = ri(0, 2);
+      const a = pick([10, 20, 25, 27]);
+      if (t === 0) {
+        const V = pick([200, 300, 400, 500]), C = pick([80, 100, 120, 150]);
+        return {
+          q: `Com alíquota de exemplo de <b>${a}%</b>, um vendedor do regime regular vende com base de <b>${rs(V)}</b> e comprou, para essa venda, com base de <b>${rs(C)}</b>. Quanto de imposto ele paga (débito menos crédito)?`,
+          type: "num", answer: +((V - C) * a / 100).toFixed(2), tol: 0.02, unit: "R$",
+          explain: `Débito ${rs(V)} × ${a}% = ${rs(V * a / 100)}. Crédito ${rs(C)} × ${a}% = ${rs(C * a / 100)}. A pagar: <b>${rs((V - C) * a / 100)}</b>.`,
+        };
+      }
+      if (t === 1) {
+        const B = pick([100, 150, 200, 250, 400]);
+        return {
+          q: `O produto tem base de <b>${rs(B)}</b>. Com imposto de exemplo de <b>${a}%</b> calculado <b>por fora</b>, quanto o comprador paga no total?`,
+          type: "num", answer: +(B * (1 + a / 100)).toFixed(2), tol: 0.02, unit: "R$",
+          explain: `O imposto é somado por fora da base: ${rs(B)} × ${a}% = ${rs(B * a / 100)}. Total: ${rs(B)} + ${rs(B * a / 100)} = <b>${rs(B * (1 + a / 100))}</b>.`,
+        };
+      }
+      const C = pick([60, 80, 120, 200]);
+      return {
+        q: `Uma compra para revenda tem base de <b>${rs(C)}</b> com imposto de exemplo de <b>${a}%</b> destacado na nota. Qual é o <b>crédito</b> do comprador no regime regular?`,
+        type: "num", answer: +(C * a / 100).toFixed(2), tol: 0.02, unit: "R$",
+        explain: `O crédito é o imposto da compra: ${rs(C)} × ${a}% = <b>${rs(C * a / 100)}</b>.`,
+      };
+    },
+
+    /* Reforma Tributária: quando a plataforma responde (art. 22) */
+    plataforma() {
+      const A = "A plataforma responde solidariamente com o vendedor brasileiro";
+      const B = "A plataforma responde com o comprador e no lugar do vendedor estrangeiro";
+      const C = "Nenhuma hipótese de responsabilidade da plataforma se aplica";
+      const D = "Só o vendedor responde, porque a plataforma nunca é responsável";
+      const cases = [
+        { s: "O vendedor é brasileiro, é contribuinte e <b>não emitiu nota fiscal eletrônica</b> da venda. A plataforma cobra e entrega.", c: A, why: "Fornecedor brasileiro contribuinte que não registra a operação em documento fiscal eletrônico: a plataforma responde de forma solidária." },
+        { s: "O vendedor mora e está estabelecido no <b>exterior</b>. A plataforma controla o pagamento e a entrega da venda ao comprador no Brasil.", c: B, why: "Para fornecedor no exterior a plataforma responde solidariamente com o comprador e, ao mesmo tempo, em substituição ao fornecedor." },
+        { s: "O site apenas <b>exibe anúncios</b>. Não cobra, não recebe pagamento, não define os termos da venda e não entrega.", c: C, why: "Sem controle de cobrança, pagamento, termos e condições ou entrega, o site não é tratado como plataforma responsável." },
+        { s: "O vendedor brasileiro <b>emitiu a nota fiscal eletrônica</b> corretamente e a plataforma prestou todas as informações exigidas à Receita e ao Comitê Gestor.", c: C, why: "Com nota emitida e informações prestadas, não se configura nenhuma das hipóteses de responsabilidade da plataforma." },
+        { s: "O vendedor é brasileiro e contribuinte, mas a plataforma <b>deixou de prestar as informações exigidas</b> sobre as vendas ao Comitê Gestor e à Receita.", c: A, why: "Deixar de prestar as informações exigidas é uma das hipóteses em que a plataforma responde de forma solidária com o vendedor brasileiro." },
+      ];
+      const k = pick(cases);
+      const o = shuf([A, B, C, D], [A, B, C, D].indexOf(k.c));
+      return { q: `Cenário: ${k.s}<br>O que a regra do art. 22 diz sobre a responsabilidade da plataforma?`, type: "choice", options: o.options, answer: o.answer, explain: k.why };
+    },
+
+    /* Reforma Tributária: mês do fato gerador (pagamento ou fornecimento, o que vier primeiro) */
+    fato() {
+      const m1 = ri(0, 8), m2 = m1 + ri(1, 2);
+      const d1 = ri(3, 27), d2 = ri(3, 27);
+      const payFirst = Math.random() < 0.5;
+      const pay = payFirst ? [d1, m1] : [d2, m2];
+      const ent = payFirst ? [d2, m2] : [d1, m1];
+      const dt = (x) => `${String(x[0]).padStart(2, "0")}/${String(x[1] + 1).padStart(2, "0")}`;
+      const first = payFirst ? m1 : m1; // o mês mais cedo é sempre m1
+      const opts = [MESES[m1], MESES[m2], MESES[m2 + 1], "Só no mês em que a nota for emitida"];
+      const o = shuf(opts, 0);
+      return {
+        q: `Um comprador paga a venda em <b>${dt(pay)}</b> e a mercadoria é entregue em <b>${dt(ent)}</b>. Em que mês nasce o fato gerador do IBS e da CBS?`,
+        type: "choice", options: o.options, answer: o.answer,
+        explain: `O fato gerador ocorre no fornecimento ou no pagamento, <b>o que vier primeiro</b>. Aqui ${payFirst ? "o pagamento" : "a entrega"} veio primeiro, em <b>${MESES[first]}</b>.`,
+      };
+    },
+
+    /* Reforma Tributária: split payment */
+    split() {
+      const t = ri(0, 2);
+      const a = pick([20, 25, 28]);
+      const B = pick([100, 150, 200, 250, 400]);
+      const P = +(B * (1 + a / 100)).toFixed(2);
+      if (t === 0) {
+        return {
+          q: `O comprador pagou <b>${rs(P)}</b>, preço que já inclui o imposto de exemplo de <b>${a}%</b> calculado por fora. Quanto é separado para o governo no split payment?`,
+          type: "num", answer: +(B * a / 100).toFixed(2), tol: 0.02, unit: "R$",
+          explain: `A base é ${rs(B)} (${rs(P)} ÷ ${fmt(1 + a / 100, 2)}). Imposto: ${rs(B)} × ${a}% = <b>${rs(B * a / 100)}</b>.`,
+        };
+      }
+      if (t === 1) {
+        return {
+          q: `O comprador pagou <b>${rs(P)}</b>, incluindo imposto de exemplo de <b>${a}%</b> por fora. Antes de comissão e frete, quanto sobra para o vendedor depois do split payment?`,
+          type: "num", answer: B, tol: 0.02, unit: "R$",
+          explain: `${rs(P)} ÷ ${fmt(1 + a / 100, 2)} = <b>${rs(B)}</b>. O restante, ${rs(P - B)}, é o imposto separado na liquidação.`,
+        };
+      }
+      return {
+        q: `Com imposto de exemplo de <b>${a}%</b> por fora da base, que <b>percentual do preço final</b> pago pelo comprador é separado no split payment?`,
+        type: "num", answer: +(a / (100 + a) * 100).toFixed(1), tol: 0.3, unit: "%",
+        explain: `O imposto é ${a} para cada 100 de base, e o preço final é ${100 + a}. Então ${a} ÷ ${100 + a} = <b>${fmt(a / (100 + a) * 100, 1)}%</b> do preço final.`,
+      };
+    },
+
+    /* Reforma Tributária: crédito de comissão, frete e embalagem no regime regular */
+    credito() {
+      const t = ri(0, 2);
+      const a = pick([20, 25, 27]);
+      const V = pick([200, 300, 400]);
+      const M = pick([60, 80, 100]), F = pick([10, 15, 20]), C = pick([20, 30, 40]), E = pick([5, 8, 10]);
+      const cred = (M + F + C + E) * a / 100;
+      if (t === 0) {
+        return {
+          q: `No regime regular, com imposto de exemplo de <b>${a}%</b>, um vendedor teve para uma venda estas compras com nota (base): mercadoria <b>${rs(M)}</b>, frete <b>${rs(F)}</b>, comissão do marketplace <b>${rs(C)}</b> e embalagem <b>${rs(E)}</b>. Qual é o <b>crédito total</b>?`,
+          type: "num", answer: +cred.toFixed(2), tol: 0.02, unit: "R$",
+          explain: `Base das compras: ${rs(M + F + C + E)}. Crédito: ${rs(M + F + C + E)} × ${a}% = <b>${rs(cred)}</b>.`,
+        };
+      }
+      if (t === 1) {
+        return {
+          q: `A venda tem base de <b>${rs(V)}</b>, imposto de exemplo de <b>${a}%</b>. As compras ligadas a ela (mercadoria, frete, comissão e embalagem) somam <b>${rs(M + F + C + E)}</b> de base. Qual é o <b>imposto líquido</b> a pagar?`,
+          type: "num", answer: +(V * a / 100 - cred).toFixed(2), tol: 0.02, unit: "R$",
+          explain: `Débito: ${rs(V)} × ${a}% = ${rs(V * a / 100)}. Crédito: ${rs(cred)}. Líquido: <b>${rs(V * a / 100 - cred)}</b>.`,
+        };
+      }
+      return {
+        q: `Só a <b>comissão</b> do marketplace foi de <b>${rs(C)}</b> de base, com imposto de exemplo de <b>${a}%</b> destacado. Que crédito essa comissão gera para um vendedor do regime regular?`,
+        type: "num", answer: +(C * a / 100).toFixed(2), tol: 0.02, unit: "R$",
+        explain: `${rs(C)} × ${a}% = <b>${rs(C * a / 100)}</b>. Serviço contratado para a atividade, com nota e imposto recolhido, gera crédito.`,
       };
     },
   };

@@ -21,6 +21,17 @@ export const TRAILS = [
       { id: "m6", lessons: ["l6-1", "l6-2", "l6-3", "l6-4"] },
     ],
   },
+  {
+    id: "rt",
+    title: "Reforma Tributária nos Marketplaces",
+    finalScope: "final-rt",
+    modules: [
+      { id: "rt-m1", lessons: ["rt-l1-1", "rt-l1-2", "rt-l1-3", "rt-l1-4", "rt-l1-5"] },
+      { id: "rt-m2", lessons: ["rt-l2-1", "rt-l2-2", "rt-l2-3", "rt-l2-4"] },
+      { id: "rt-m3", lessons: ["rt-l3-1", "rt-l3-2", "rt-l3-3", "rt-l3-4"] },
+      { id: "rt-m4", lessons: ["rt-l4-1", "rt-l4-2", "rt-l4-3"] },
+    ],
+  },
 ];
 
 export const trailById = (id) => TRAILS.find((t) => t.id === id) || null;
