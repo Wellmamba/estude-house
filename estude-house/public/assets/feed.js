@@ -353,6 +353,17 @@
       isAdm ? h("div", { class: "composer-meta" }, h("label", { class: "small muted", for: "tag-new" }, M.icon("tag", 14), "Tag"), (tagSel.id = "tag-new", tagSel), h("label", { class: "check-inline small", for: "pin-new" }, pinChk, M.icon("pin", 14), "Fixar no topo")) : null,
       h("div", { class: "composer-bar" }, tools, h("span", { class: "spacer", style: "flex:1" }), count, btn),
       isAdm ? null : h("p", { class: "muted small", style: "margin:10px 0 0", text: "Seu post passa pela aprovação do gestor antes de aparecer no feed. Post aprovado vale XP." }));
+    // fechado por padrão: só a caixa de texto, para o feed aparecer logo abaixo
+    box.classList.add("is-compact");
+    const isEmpty = () => !ta.value.trim() && !items.length && !(pollB && pollB.isOpen()) && linkRow.hidden;
+    const openBox = () => box.classList.remove("is-compact");
+    box.addEventListener("focusin", openBox);
+    box.addEventListener("click", openBox);
+    const away = (e) => {
+      if (!box.isConnected) { document.removeEventListener("pointerdown", away); return; }
+      if (!box.contains(e.target) && !e.target.closest(".emoji-pop, .mention-list, .modal, .pop-menu, .dlg") && isEmpty()) box.classList.add("is-compact");
+    };
+    document.addEventListener("pointerdown", away);
     box.addEventListener("dragover", (e) => { if (uploads && e.dataTransfer?.types?.includes("Files")) { e.preventDefault(); box.classList.add("drop"); } });
     box.addEventListener("dragleave", () => box.classList.remove("drop"));
     box.addEventListener("drop", (e) => { box.classList.remove("drop"); if (uploads && e.dataTransfer?.files?.length) { e.preventDefault(); addFiles([...e.dataTransfer.files]); } });
@@ -366,6 +377,7 @@
         if (isAdm) { pollB.reset(); pollTool.classList.remove("on"); pinChk.checked = false; }
         draw();
         M.toast(r.status === "pending" ? "Enviado! O gestor vai analisar o seu post." : "Post publicado.", "ok");
+        box.classList.add("is-compact"); document.activeElement?.blur?.();
         onPosted(r);
       } catch (e) { M.toast(e.message, "err"); draw(); }
     });
@@ -390,8 +402,7 @@
       const parts = [];
       if (!me.nickname) {
         parts.push(h("section", { class: "panel nick-banner" },
-          h("div", { class: "nick-intro" }, h("strong", { text: "Monte o seu perfil" }), h("p", { class: "muted small", style: "margin:2px 0 0", text: "Escolha um @ para o time te encontrar na busca e te marcar nos posts. A foto é opcional." })),
-          M.avatarForm({ compact: true }),
+          h("div", { class: "nick-intro" }, h("strong", { text: "Escolha o seu @" }), h("p", { class: "muted small", style: "margin:2px 0 0" }, "É assim que o time te acha na busca e te marca nos posts. A foto é opcional e fica em ", h("a", { href: "#/conta", text: "Minha conta" }), ".")),
           M.nickForm({ compact: true, onSaved: () => { drawTop(); } })));
       }
       const nPosts = M.session.pending || 0, nSign = M.session.pendingSignups || 0;
@@ -426,8 +437,33 @@
       return card;
     }
 
+    /* ───── atualização automática: avisa de post novo sem mexer na tela ───── */
+    const live = h("button", { class: "live-bar", type: "button", hidden: true, onclick: () => { live.hidden = true; load(true); const t = tagBarTop(); if (t) t.scrollIntoView({ block: "start" }); } });
+    const liveWrap = h("div", { class: "live-wrap", role: "status", "aria-live": "polite" }, live);
+    const tagBarTop = () => node.querySelector(".tag-bar, .composer");
+    let base = null, pinsSig = "", timer = null;
+    const pulseUrl = (since) => { const q = new URLSearchParams(); if (tagId) q.set("tag", tagId); if (since) q.set("since", since); return "feed/pulse" + (q.toString() ? "?" + q : ""); };
+    async function rebase() {
+      try { const d = await M.get(pulseUrl()); base = d.top || "~"; pinsSig = d.pins || ""; } catch {}
+    }
+    async function pulse() {
+      if (tab !== "feed" || document.hidden) return;
+      if (!node.isConnected) { stopLive(); return; }
+      if (base === null) { await rebase(); return; }
+      try {
+        const d = await M.get(pulseUrl(base));
+        const pinsChanged = !tagId && (d.pins || "") !== pinsSig;
+        if (d.fresh) live.textContent = `Mostrar ${d.fresh}${d.more ? "+" : ""} ${d.fresh === 1 && !d.more ? "post novo" : "posts novos"}`;
+        else if (pinsChanged) live.textContent = "Mostrar mudanças no feed";
+        else return;
+        live.hidden = false;
+      } catch {}
+    }
+    const onVisible = () => { if (!document.hidden) pulse(); };
+    function stopLive() { clearInterval(timer); document.removeEventListener("visibilitychange", onVisible); window.removeEventListener("focus", onVisible); }
+
     async function load(reset) {
-      if (reset) { list.replaceChildren(M.loading()); next = null; more.replaceChildren(); }
+      if (reset) { list.replaceChildren(M.loading()); next = null; more.replaceChildren(); live.hidden = true; if (tab === "feed") rebase(); }
       try {
         if (tab === "mine") {
           const d = await M.get("feed/mine");
@@ -462,12 +498,14 @@
       h("a", { class: "tag-pill search-pill", href: "#/busca" + (tagId ? "?tag=" + tagId : "") }, M.icon("search", 13), curTag ? "Buscar nesta tag" : "Buscar por tag")) : null;
     const node = h("div", { class: "feed" },
       top,
-      composer({ uploads: status.uploads, defaultTag: tagId, limits: status, onPosted: (r) => {
+      composer({ uploads: status.uploads, defaultTag: tagId, limits: status, onPosted: (r) => { rebase();
         if (r.status === "published") { if (tab === "feed") { if (r.post.pinned || (tagId && r.post.tag?.id !== tagId)) load(true); else { list.querySelector(".empty")?.remove(); { const card = M.postCard(r.post, { onChange: () => load(true) }); const pins = list.querySelectorAll(":scope > .post.is-pinned"); if (pins.length) pins[pins.length - 1].after(card); else list.prepend(card); } } } }
         else { tab = "mine"; tabs.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-selected", String(i === 1))); load(true); }
       } }),
-      tagBar, isAdm ? null : tabs, list, more);
+      tagBar, isAdm ? null : tabs, liveWrap, list, more);
     load(true);
+    timer = setInterval(pulse, window.__LIVE_MS || 20000);
+    document.addEventListener("visibilitychange", onVisible); window.addEventListener("focus", onVisible);
     return node;
   };
 

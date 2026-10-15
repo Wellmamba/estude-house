@@ -127,10 +127,11 @@
     const side = h("aside", { class: "side", id: "side" },
       M.brand("#/"), nav,
       h("div", { class: "side-foot" },
-        h("div", { class: "me-card" }, h("a", { href: "#/conta", class: "me-av", "aria-label": "Minha foto e conta" }, M.avatar(u, 40)), h("strong", { text: u.name }), h("span", { text: u.email }),
-          u.role === "admin" ? h("div", { style: "margin-top:8px" }, h("span", { class: "chip chip-gold", text: "Administrador" })) : null),
-        M.modeSwitch({ label: false }),
-        h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: M.logout }, M.icon("out", 18), "Sair")));
+        h("div", { class: "me-card" },
+          h("a", { href: "#/conta", class: "me-av", "aria-label": "Minha foto e conta" }, M.avatar(u, 38)),
+          h("div", { class: "me-txt", title: u.name + " · " + u.email }, h("strong", { text: u.name }), h("span", { text: u.role === "admin" ? "Gestor · " + u.email : u.email })),
+          h("button", { class: "me-out", type: "button", title: "Sair", "aria-label": "Sair da conta", onclick: M.logout }, M.icon("out", 18))),
+        M.modeSwitch({ label: false })));
     const menuBtn = h("button", { class: "btn btn-ghost btn-sm menu-btn", type: "button", "aria-label": "Abrir menu", "aria-controls": "side", "aria-expanded": "false" }, M.icon("menu", 18));
     menuBtn.addEventListener("click", () => {
       const open = side.classList.toggle("open");

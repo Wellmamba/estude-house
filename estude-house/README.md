@@ -74,6 +74,8 @@ Upload de foto, vídeo e arquivo usa o Cloudinary (variáveis `CLOUDINARY_CLOUD_
 - **Emoji**: botão de carinha no publicador e nos comentários.
 - **Sino**: avisa quando alguém te marca, quando o gestor usa @todos, quando comentam no seu post e quando um post seu é aprovado ou recusado.
 - **Filtro de ofensas**: comentários e posts de alunos com xingamento são barrados com aviso (entende "m3rda", "puuuta", "p u t a"; não bloqueia palavras comuns como "computador"). Gestores não passam pelo filtro. Em **Tags e moderação** o gestor liga/desliga o filtro, soma palavras próprias e testa frases.
+- **Feed ao vivo**: quem está na Início vê o botão "Mostrar N posts novos" em até 20 segundos depois que alguém publica (ou quando o gestor aprova um post), sem precisar recarregar e sem a tela pular. A checagem só roda com a aba aberta e usa uma chamada leve (`feed/pulse`). Comentários e hypes novos aparecem ao recarregar a lista.
+- **Publicador**: fica fechado (só a caixa de texto) até a pessoa clicar nele, para o feed aparecer logo abaixo.
 - **Versão**: em **Minha conta → Versão do sistema** aparece a versão do site e a do servidor. Se forem diferentes, o envio ao GitHub ficou incompleto.
 
 ## Cadastro com aprovação, foto de perfil e tela Celular/PC

@@ -880,6 +880,45 @@ a.tag-chip:hover { background: rgba(var(--tc), .26); }
 .code-input::placeholder { letter-spacing: .4em; }
 @media (max-width: 680px) { .big-code { font-size: 1.8rem; letter-spacing: .2em; } }
 
+/* ───── aviso de post novo (feed ao vivo) ───── */
+.live-wrap { position: sticky; top: 76px; z-index: 5; display: flex; justify-content: center; pointer-events: none; }
+.live-wrap[hidden], .live-bar[hidden] { display: none; }
+.live-bar { pointer-events: auto; display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 999px; border: 0; background: var(--gold); color: var(--gold-ink); font: inherit; font-weight: 800; font-size: .92rem; cursor: pointer; box-shadow: 0 8px 24px rgba(0, 0, 0, .45); animation: live-in .28s ease-out; }
+.live-bar:hover { background: #ffd04f; }
+@keyframes live-in { from { transform: translateY(-8px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .live-bar { animation: none; } }
+
+/* ───── revisão de UI/UX ───── */
+/* menu lateral: o rodapé nunca é cortado; só a lista de links rola */
+.side { overflow: hidden; }
+@supports (height: 100dvh) { .side { height: 100dvh; } }
+.side .nav { flex: 1 1 auto; min-height: 0; overflow-y: auto; align-content: start; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, .18) transparent; }
+.side-foot { flex: none; gap: 8px; }
+.me-card { display: flex; align-items: center; gap: 10px; padding: 9px 9px 9px 11px; }
+.me-av { margin: 0; flex: none; }
+.me-txt { min-width: 0; flex: 1; display: grid; }
+.me-txt strong, .me-txt span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; overflow-wrap: normal; }
+.me-out { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--line-strong); background: transparent; color: var(--muted); cursor: pointer; }
+.me-out:hover { color: var(--text); border-color: var(--gold); }
+
+/* feed: o publicador fecha quando não está em uso e os avisos do topo ficam finos */
+.composer.is-compact { gap: 0; padding-block: 14px; cursor: text; }
+.composer.is-compact > :not(.composer-top) { display: none; }
+.composer.is-compact .composer-text { min-height: 48px; height: 48px; resize: none; overflow: hidden; }
+.feed-top { display: grid; gap: 12px; }
+.nick-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; padding: 14px 18px; }
+.nick-banner .nick-intro { flex: 1 1 260px; min-width: 0; }
+.nick-banner .nick-form { flex: 1 1 280px; }
+.checkin { padding: 12px 18px; }
+
+.nav a { padding: 8px 14px; line-height: 1.4; }
+.nav-sep { margin-top: 8px; }
+@media (min-width: 981px) { .funnel-row { grid-template-columns: 230px minmax(0, 1fr) 84px; } }
+.nick-banner .nick-form { flex: 1 1 100%; flex-wrap: nowrap; align-items: flex-start; }
+.nick-banner .nick-form .field { flex: 1 1 auto; min-width: 0; }
+.nick-banner .nick-form .btn { flex: none; }
+@media (max-width: 560px) { .nick-banner .nick-form { flex-wrap: wrap; } .nick-banner .nick-form .btn { width: 100%; } }
+
 /* ===MODO-CELULAR-BEGIN=== */
 /* gerado por scripts/sync-mobile-css.mjs: não edite aqui */
 html[data-mode="mobile"] .auth { grid-template-columns: minmax(0, 1fr); }

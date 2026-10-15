@@ -308,4 +308,23 @@ console.log("Notificações e @");
   assert.equal((await list(beto)).items.length, b0 + 1); ok("nome repetido ou inexistente não gera aviso duplicado nem erro");
 }
 
+console.log("Atualização ao vivo (feed/pulse)");
+{
+  let r = await call("GET", "feed/pulse", { token: ana.token });
+  assert.equal(r.status, 200); assert.ok(r.data.top.startsWith("pub:")); const base = r.data.top;
+  r = await call("GET", "feed/pulse?since=" + encodeURIComponent(base), { token: ana.token });
+  assert.equal(r.data.fresh, 0); ok("sem post novo, a sondagem diz 0");
+  await publish({ text: "Novo 1" }); await publish({ text: "Novo 2" });
+  r = await call("GET", "feed/pulse?since=" + encodeURIComponent(base), { token: ana.token });
+  assert.equal(r.data.fresh, 2); ok("conta quantos posts são mais novos que o último que a pessoa viu");
+  const pend = await call("POST", "feed/post", { token: beto.token, body: { text: "Aguardando aprovação" } });
+  assert.equal(pend.data.post.status, "pending");
+  const r2 = await call("GET", "feed/pulse?since=" + encodeURIComponent(base), { token: ana.token });
+  assert.equal(r2.data.fresh, 2); ok("post na fila de aprovação não aparece como novo");
+  await call("POST", `admin/feed/${pend.data.post.id}/approve`, { token: adm.token });
+  r = await call("GET", "feed/pulse?since=" + encodeURIComponent(base), { token: ana.token });
+  assert.equal(r.data.fresh, 3); ok("quando o gestor aprova, o post passa a contar como novo");
+  r = await call("GET", "feed/pulse"); assert.equal(r.status, 401); ok("a sondagem exige login");
+}
+
 console.log(`\n${passed} verificações de tags, fixar, enquete, filtro e notificações passaram.`);

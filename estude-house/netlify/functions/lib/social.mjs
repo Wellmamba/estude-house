@@ -245,6 +245,19 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     }
     return json({ posts: await views(ctx, docs, user), next: keys.length > PAGE ? page[page.length - 1] : null });
   }
+  // Sondagem leve: o navegador pergunta de tempos em tempos se há post novo, sem baixar o feed inteiro.
+  // Sem "since" devolve o marcador do topo atual; com "since" conta quantos posts são mais novos que ele.
+  if (path === "feed/pulse" && method === "GET") {
+    const f = await feed();
+    const tag = url.searchParams.get("tag") || "";
+    const since = url.searchParams.get("since") || "";
+    const prefix = tag ? `tg:${tag}:` : "pub:";
+    const keys = await f.keys({ prefix, limit: 21 });
+    const pins = (await f.keys({ prefix: "pin:" })).join("|");
+    const top = keys[0] || "";
+    const fresh = since ? keys.filter((k) => k < since).length : 0;
+    return json({ top, fresh, more: fresh >= 21, pins });
+  }
   if (path === "feed/tags" && method === "GET") return json({ tags: (await loadTags()).map(tagView), colors: TAG_COLORS });
   if (path === "feed/status" && method === "GET") return json({ uploads: uploadsOn(), maxMedia: MAX_MEDIA, maxText: MAX_TEXT, maxQuestions: MAX_QUESTIONS, maxOptions: MAX_OPTIONS, maxPinned: MAX_PINNED });
   if (path === "feed/upload-sign" && method === "POST") {
