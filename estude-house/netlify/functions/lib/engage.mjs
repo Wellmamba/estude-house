@@ -190,7 +190,7 @@ export async function ranking(period, students, meId) {
     else for (const [k, v] of Object.entries(e.days)) {
       if (period === "week" ? k >= wk && k <= addDays(wk, 6) : k.startsWith(mo)) score += v.xp || 0;
     }
-    return { id: u.id, name: u.name, nickname: u.nickname || null, xp: score, streak: effectiveStreak(e, day) };
+    return { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, xp: score, streak: effectiveStreak(e, day) };
   });
   rows.sort((a, b) => b.xp - a.xp || a.name.localeCompare(b.name, "pt-BR"));
   const ranked = rows.filter((r) => r.xp > 0).map((r, i) => ({ ...r, pos: i + 1 }));

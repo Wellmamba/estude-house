@@ -175,6 +175,51 @@
     return form;
   };
 
+  /* ───── foto de perfil ───── */
+  M.avatarForm = function ({ compact = false, onSaved } = {}) {
+    const box = h("div", { class: "avatar-form" + (compact ? " compact" : "") });
+    const input = h("input", { type: "file", accept: "image/*", hidden: true, "aria-label": "Escolher foto de perfil" });
+    let uploads = null, busy = false;
+    function paint() {
+      const me = M.session.user;
+      const off = uploads === false;
+      const pick = h("button", { class: "btn btn-gold btn-sm", type: "button", disabled: busy || uploads === null || off, title: off ? "O envio de fotos ainda não foi ativado pela administração." : "" },
+        M.icon("camera", 18), busy ? "Enviando…" : me.avatar ? "Trocar foto" : "Escolher foto");
+      pick.addEventListener("click", () => input.click());
+      const rm = me.avatar ? h("button", { class: "btn btn-ghost btn-sm", type: "button", disabled: busy, onclick: () => save("") }, "Remover foto") : null;
+      box.replaceChildren(
+        h("div", { class: "avatar-preview" }, M.avatar(me, compact ? 56 : 84)),
+        h("div", { class: "avatar-actions" }, h("div", { class: "row", style: "gap:8px" }, pick, rm),
+          compact ? null : h("span", { class: "hint", text: off ? "O envio de fotos ainda não foi ativado pela administração." : "JPG ou PNG. O sistema recorta um quadrado no centro da foto." }), input));
+    }
+    async function save(url) {
+      busy = true; paint();
+      try {
+        const r = await M.post("auth/profile", { avatar: url });
+        M.session.user = { ...M.session.user, ...r.user };
+        document.querySelectorAll(".me-av").forEach((a) => a.replaceChildren(M.avatar(M.session.user, 40)));
+        M.toast(url ? "Foto de perfil salva." : "Foto removida.", "ok");
+        if (onSaved) onSaved(r.user);
+      } catch (e) { M.toast(e.message, "err"); }
+      busy = false; paint();
+    }
+    input.addEventListener("change", async () => {
+      const file = input.files[0]; input.value = "";
+      if (!file) return;
+      if (!file.type.startsWith("image/") || file.type === "image/svg+xml") { M.toast("Escolha uma foto em JPG ou PNG.", "err"); return; }
+      busy = true; paint();
+      try {
+        const blob = await M.shrinkImage(file, { square: 512, limit: 2 * 1048576 });
+        const j = await M.cloudUpload(new File([blob], "perfil.jpg", { type: "image/jpeg" }), { kind: "image" });
+        busy = false;
+        await save(j.secure_url);
+      } catch (e) { busy = false; M.toast(e.message, "err"); paint(); }
+    });
+    paint();
+    M.get("feed/status").then((d) => { uploads = !!d.uploads; paint(); }).catch(() => { uploads = false; paint(); });
+    return box;
+  };
+
   /* ───── publicar ───── */
   function composer({ uploads, onPosted }) {
     const isAdm = M.isAdmin();
@@ -201,7 +246,7 @@
         it.preview ? h("img", { src: it.preview, alt: "" }) : h("span", { class: "att-ico" }, M.icon(it.type === "video" ? "video" : it.type === "link" ? "link" : "file", 20)),
         h("div", { class: "att-info" },
           h("strong", { text: it.name }),
-          it.status === "uploading" ? h("div", { class: "bar" }, h("i", { style: `width:${it.pct}%` })) : h("span", { class: "small " + (it.status === "error" ? "bad" : "muted"), text: it.status === "error" ? it.error : [it.type === "link" ? "Link" : it.type === "video" ? "Vídeo" : it.type === "image" ? "Imagem" : "Arquivo", M.prettySize(it.bytes)].filter(Boolean).join(" · ") })),
+          it.status === "uploading" ? h("div", { class: "bar" }, h("i", { style: `width:${it.pct}%` })) : h("span", { class: "small " + (it.status === "error" ? "bad" : "muted"), text: it.status === "error" ? it.error : [it.type === "link" ? "Link" : it.gif ? "GIF" : it.type === "video" ? "Vídeo" : it.type === "image" ? "Imagem" : "Arquivo", M.prettySize(it.bytes)].filter(Boolean).join(" · ") })),
         h("button", { class: "icon-btn", type: "button", "aria-label": "Remover anexo", onclick: () => { items = items.filter((x) => x !== it); if (it.preview) URL.revokeObjectURL(it.preview); draw(); } }, M.icon("x", 16)))));
       const busy = items.some((i) => i.status === "uploading");
       const empty = !ta.value.trim() && !items.some((i) => i.status === "done");
@@ -210,28 +255,23 @@
     }
     ta.addEventListener("input", () => { ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 360) + "px"; draw(); });
 
-    function upload(file, it) {
-      return M.post("feed/upload-sign").then((sign) => new Promise((res, rej) => {
-        const fd = new FormData();
-        fd.append("file", file); fd.append("api_key", sign.apiKey); fd.append("timestamp", sign.timestamp); fd.append("signature", sign.signature); fd.append("folder", sign.folder);
-        const x = new XMLHttpRequest();
-        x.open("POST", sign.url);
-        x.upload.onprogress = (e) => { if (e.lengthComputable) { it.pct = Math.round((e.loaded / e.total) * 100); draw(); } };
-        x.onload = () => { try { const j = JSON.parse(x.responseText); if (x.status < 300 && j.secure_url) res(j); else rej(new Error(j.error?.message || "O envio falhou.")); } catch { rej(new Error("O envio falhou.")); } };
-        x.onerror = () => rej(new Error("Sem conexão durante o envio."));
-        x.send(fd);
-      }));
-    }
     function addFiles(files) {
       for (const file of files) {
         if (items.length >= 4) { M.toast("No máximo 4 anexos por post.", "err"); break; }
-        const type = IMG_OK.test(file.type) ? "image" : file.type.startsWith("video/") ? "video" : file.type === "image/svg+xml" ? "bad" : "file";
-        const it = { id: ++seq, type: type === "bad" ? "file" : type, name: file.name, bytes: file.size, status: "uploading", pct: 0, preview: type === "image" ? URL.createObjectURL(file) : null };
+        const isGif = file.type === "image/gif";
+        const type = isGif ? "video" : IMG_OK.test(file.type) ? "image" : file.type.startsWith("video/") ? "video" : file.type === "image/svg+xml" ? "bad" : "file";
+        const it = { id: ++seq, type: type === "bad" ? "file" : type, gif: isGif, name: file.name, bytes: file.size, status: "uploading", pct: 0, preview: type === "image" || isGif ? URL.createObjectURL(file) : null };
         items.push(it);
         const max = LIMITS[it.type] * 1048576;
         if (type === "bad") { it.status = "error"; it.error = "SVG não é aceito. Use PNG ou JPG."; continue; }
-        if (file.size > max) { it.status = "error"; it.error = `Arquivo grande demais. Limite: ${LIMITS[it.type]} MB.`; continue; }
-        upload(file, it).then((j) => { it.url = j.secure_url; it.status = "done"; it.bytes = j.bytes || it.bytes; draw(); })
+        // foto grande demais: reduz sozinha no navegador. Os outros tipos respeitam o limite.
+        const shrink = type === "image" && file.size > 8 * 1048576;
+        if (!shrink && file.size > max) { it.status = "error"; it.error = `Arquivo grande demais. Limite: ${LIMITS[it.type]} MB.`; continue; }
+        (async () => {
+          let f = file;
+          if (shrink) { it.pct = 0; f = await M.shrinkImage(file); it.bytes = f.size; }
+          return M.cloudUpload(f, { kind: isGif ? "video" : "auto", onProgress: (p) => { it.pct = p; draw(); } });
+        })().then((j) => { it.url = j.secure_url; it.status = "done"; it.bytes = j.bytes || it.bytes; draw(); })
           .catch((e) => { it.status = "error"; it.error = e.message; draw(); });
       }
       draw();
@@ -286,12 +326,15 @@
       const parts = [];
       if (!me.nickname) {
         parts.push(h("section", { class: "panel nick-banner" },
-          h("div", null, h("strong", { text: "Escolha o seu @" }), h("p", { class: "muted small", style: "margin:2px 0 0", text: "É como o time vai te encontrar na busca e te marcar nos posts." })),
+          h("div", { class: "nick-intro" }, h("strong", { text: "Monte o seu perfil" }), h("p", { class: "muted small", style: "margin:2px 0 0", text: "Escolha um @ para o time te encontrar na busca e te marcar nos posts. A foto é opcional." })),
+          M.avatarForm({ compact: true }),
           M.nickForm({ compact: true, onSaved: () => { drawTop(); } })));
       }
-      if (isAdm && M.session.pending > 0) {
+      const nPosts = M.session.pending || 0, nSign = M.session.pendingSignups || 0;
+      if (isAdm && (nPosts || nSign)) {
+        const what = [nSign ? `${nSign} ${nSign === 1 ? "cadastro" : "cadastros"}` : "", nPosts ? `${nPosts} ${nPosts === 1 ? "post" : "posts"}` : ""].filter(Boolean).join(" e ");
         parts.push(h("a", { class: "panel pending-banner", href: "#/admin/aprovacoes" }, M.icon("flag", 20),
-          h("span", null, h("strong", { text: `${M.session.pending} ${M.session.pending === 1 ? "post aguarda" : "posts aguardam"} aprovação` }), h("span", { class: "muted", text: " · Analisar agora" })), M.icon("arrow", 18)));
+          h("span", null, h("strong", { text: `${what} ${nPosts + nSign === 1 ? "aguarda" : "aguardam"} aprovação` }), h("span", { class: "muted", text: " · Analisar agora" })), M.icon("arrow", 18)));
       }
       if (me.role === "aluno") parts.push(checkinCard());
       top.replaceChildren(...parts);

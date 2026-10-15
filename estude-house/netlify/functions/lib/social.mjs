@@ -4,7 +4,7 @@
 // hypes/<post>:<pessoa>, comments/<post>:<tempo>-<sufixo>, nicks/n:<apelido>.
 import crypto from "node:crypto";
 import { store, pmap } from "./db.mjs";
-import { newId } from "./auth.mjs";
+import { newId, isLive } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as eng from "./engage.mjs";
 import { match, snippet } from "./textsearch.mjs";
@@ -101,7 +101,7 @@ async function authorsFor(ctx, ids) {
   const map = new Map();
   uniq.forEach((id, i) => {
     const u = users[i];
-    map.set(id, u ? { id: u.id, name: u.name, nickname: u.nickname || null, role: u.role } : { id, name: "Pessoa removida", nickname: null, role: "aluno" });
+    map.set(id, u ? { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role } : { id, name: "Pessoa removida", nickname: null, avatar: null, role: "aluno" });
   });
   return map;
 }
@@ -289,25 +289,41 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   if (path === "engage/checkin" && method === "POST") return json(await eng.checkin(user, fail));
   if (path === "engage/ranking" && method === "GET") {
     const period = ["week", "month", "all"].includes(url.searchParams.get("period")) ? url.searchParams.get("period") : "week";
-    const students = (await ctx.allUsers()).filter((u) => u.role === "aluno" && u.active !== false);
+    const students = (await ctx.allUsers()).filter((u) => u.role === "aluno" && isLive(u));
     return json(await eng.ranking(period, students, user.id));
   }
 
   /* --- apelido e perfil --- */
   if (path === "auth/profile" && method === "POST") {
-    const nick = String(body.nickname ?? "").trim().replace(/^@/, "").toLowerCase();
-    const bad = nickProblem(nick);
-    if (bad) fail(400, bad);
-    if (nick === user.nickname) return json({ user: ctx.publicUser(user) });
-    if (user.nickname && user.nickAt && now() - user.nickAt < 7 * 864e5) fail(429, "Você pode trocar o @ de novo depois de 7 dias.");
-    const ns = await store("nicks");
-    const owner = await ns.get("n:" + nick);
-    if (owner && owner !== user.id) fail(409, "Esse @ já está em uso. Escolha outro.");
-    await ns.set("n:" + nick, user.id);
-    if (user.nickname) await ns.delete("n:" + user.nickname);
-    user.nickname = nick; user.nickAt = now();
-    await ctx.saveUser(user);
-    bust("people");
+    if (body.nickname === undefined && body.avatar === undefined) fail(400, "Nada para salvar.");
+    let changed = false;
+    if (body.nickname !== undefined) {
+      const nick = String(body.nickname ?? "").trim().replace(/^@/, "").toLowerCase();
+      const bad = nickProblem(nick);
+      if (bad) fail(400, bad);
+      if (nick !== user.nickname) {
+        if (user.nickname && user.nickAt && now() - user.nickAt < 7 * 864e5) fail(429, "Você pode trocar o @ de novo depois de 7 dias.");
+        const ns = await store("nicks");
+        const owner = await ns.get("n:" + nick);
+        if (owner && owner !== user.id) fail(409, "Esse @ já está em uso. Escolha outro.");
+        await ns.set("n:" + nick, user.id);
+        if (user.nickname) await ns.delete("n:" + user.nickname);
+        user.nickname = nick; user.nickAt = now();
+        changed = true;
+      }
+    }
+    if (body.avatar !== undefined) {
+      const raw = String(body.avatar || "").trim();
+      if (!raw) { if (user.avatar) { delete user.avatar; changed = true; } }
+      else {
+        if (!uploadsOn()) fail(400, "O envio de fotos ainda não está configurado.");
+        let u;
+        try { u = new URL(raw); } catch { fail(400, "Foto inválida."); }
+        if (raw.length > 500 || u.protocol !== "https:" || u.hostname !== "res.cloudinary.com" || !u.pathname.startsWith(`/${cloud().name}/image/upload/`)) fail(400, "Foto não reconhecida. Envie pelo botão de foto.");
+        if (u.href !== user.avatar) { user.avatar = u.href; changed = true; }
+      }
+    }
+    if (changed) { await ctx.saveUser(user); bust("people"); bust("posts"); }
     return json({ user: ctx.publicUser(user) });
   }
   if (path === "people/check" && method === "GET") {
@@ -321,9 +337,9 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const key = decodeURIComponent(parts[1]).replace(/^@/, "").toLowerCase();
     const id = (await (await store("nicks")).get("n:" + key)) || parts[1];
     const u = await ctx.loadUser(id);
-    if (!u || u.active === false) fail(404, "Pessoa não encontrada.");
+    if (!u || !isLive(u)) fail(404, "Pessoa não encontrada.");
     const e = u.role === "aluno" ? eng.summary(await eng.loadEng(u.id)) : null;
-    return json({ person: { id: u.id, name: u.name, nickname: u.nickname || null, role: u.role, joinedAt: u.createdAt, engage: e } });
+    return json({ person: { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role, joinedAt: u.createdAt, engage: e } });
   }
 
   /* --- busca --- */
@@ -346,9 +362,9 @@ async function search(ctx, user, q) {
   const qPerson = q.replace(/^@/, "");
   const pRows = [];
   for (const u of people) {
-    if (u.active === false) continue;
+    if (!isLive(u)) continue;
     const m = match(qPerson, [{ text: u.name, weight: 3 }, { text: u.nickname || "", weight: 3 }, ...(user.role === "admin" ? [{ text: u.email, weight: 2 }] : [])]);
-    if (m) pRows.push({ s: m.score, p: { id: u.id, name: u.name, nickname: u.nickname || null, role: u.role } });
+    if (m) pRows.push({ s: m.score, p: { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role } });
   }
   pRows.sort((a, b) => b.s - a.s);
 

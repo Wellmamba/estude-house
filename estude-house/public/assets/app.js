@@ -32,6 +32,14 @@
     const my = ++seq;
     const hash = location.hash || "#/";
 
+    /* ativar acesso por link ou código (não precisa de sessão) */
+    if (/^#\/ativar/.test(hash)) {
+      M.resetShell();
+      M.mount(M.views.activate(hash.split("?")[1] || ""));
+      document.title = "Ativar acesso · Estude House";
+      return;
+    }
+
     /* telas sem sessão */
     if (/^#\/(entrar|cadastro)$/.test(hash)) {
       if (M.session.token && !M.session.user) { try { await M.refreshMe(); } catch {} if (my !== seq) return; }

@@ -7,7 +7,7 @@
   M.refreshMe = async function () {
     const d = await M.get("me");
     M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules;
-    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0;
+    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0;
     return d;
   };
 
@@ -125,8 +125,9 @@
     const side = h("aside", { class: "side", id: "side" },
       M.brand("#/"), nav,
       h("div", { class: "side-foot" },
-        h("div", { class: "me-card" }, h("strong", { text: u.name }), h("span", { text: u.email }),
+        h("div", { class: "me-card" }, h("a", { href: "#/conta", class: "me-av", "aria-label": "Minha foto e conta" }, M.avatar(u, 40)), h("strong", { text: u.name }), h("span", { text: u.email }),
           u.role === "admin" ? h("div", { style: "margin-top:8px" }, h("span", { class: "chip chip-gold", text: "Administrador" })) : null),
+        M.modeSwitch({ label: false }),
         h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: M.logout }, M.icon("out", 18), "Sair")));
     const menuBtn = h("button", { class: "btn btn-ghost btn-sm menu-btn", type: "button", "aria-label": "Abrir menu", "aria-controls": "side", "aria-expanded": "false" }, M.icon("menu", 18));
     menuBtn.addEventListener("click", () => {
@@ -162,7 +163,8 @@
     }));
     M.updateXpChip();
     const badge = shell.nav.querySelector('[data-key="admin-approve"] .nav-badge');
-    if (badge) { badge.hidden = !(M.session.pending > 0); badge.textContent = String(M.session.pending || ""); }
+    const nPend = (M.session.pending || 0) + (M.session.pendingSignups || 0);
+    if (badge) { badge.hidden = !(nPend > 0); badge.textContent = String(nPend || ""); }
     shell.page.className = "page" + (wide ? " page-wide" : "");
     shell.page.replaceChildren(node);
     window.scrollTo(0, 0);
@@ -201,7 +203,9 @@
         field("password", "Senha", "password", isReg ? "new-password" : "current-password", isReg ? "Mínimo de 8 caracteres, com letras e números." : null),
         isReg ? field("password2", "Repita a senha", "password", "new-password") : null,
         btn,
-        h("p", { class: "muted small", style: "margin:14px 0 0", text: isReg ? "Já tem conta? Use a aba Entrar." : "Ainda não tem conta? Crie na aba ao lado. Se um administrador criou seu acesso, entre com o e-mail e a senha que ele enviou." }));
+        h("p", { class: "muted small", style: "margin:14px 0 0", text: isReg ? "Seu cadastro passa pela aprovação de um gestor. Quando for aprovado, você recebe um e-mail com o link de acesso e um código." : "Ainda não tem conta? Crie na aba ao lado. Se um administrador criou seu acesso, entre com o e-mail e a senha que ele enviou." }),
+        isReg ? null : h("p", { class: "small", style: "margin:10px 0 0" }, h("a", { href: "#/ativar", text: "Recebi um código de ativação" })));
+      if (!isReg && M.session.prefillEmail) { const em = form.querySelector("#email"); if (em) em.value = M.session.prefillEmail; M.session.prefillEmail = ""; const pw = form.querySelector("#password"); if (pw) pw.focus(); }
       form.onsubmit = async (e) => {
         e.preventDefault();
         err.replaceChildren();
@@ -213,18 +217,33 @@
         btn.disabled = true; btn.textContent = "Aguarde…";
         try {
           const d = await M.post(isReg ? "auth/register" : "auth/login", v);
+          if (d.pending) {
+            card.replaceChildren(h("div", { class: "auth-done", role: "status" },
+              h("span", { class: "ck-ico" }, M.icon("check", 22)),
+              h("h3", { text: "Cadastro enviado" }),
+              h("p", { text: "Um gestor vai analisar o seu cadastro. Quando for aprovado, você recebe um e-mail em " + d.email + " com o link de acesso e um código de 6 dígitos." }),
+              h("p", { class: "muted small", text: "Confira também a caixa de spam. Se tiver urgência, avise o gestor da sua equipe." }),
+              h("div", { class: "row" }, h("a", { class: "btn btn-ghost", href: "#/ativar?e=" + encodeURIComponent(d.email), text: "Já recebi o código" }), h("a", { class: "btn btn-ghost", href: "#/entrar", onclick: () => { tab = "entrar"; }, text: "Voltar ao início" }))));
+            return;
+          }
           M.setToken(d.token);
           await M.refreshMe();
           M.resetShell();
           M.toast(isReg ? "Conta criada. Bem-vindo, " + M.firstName(d.user.name) + "." : "Bem-vindo de volta, " + M.firstName(d.user.name) + ".", "ok");
           M.go("#/");
         } catch (ex) {
-          err.replaceChildren(h("div", { class: "form-error", role: "alert", text: ex.message }));
+          const st = ex.data?.state;
+          err.replaceChildren(h("div", { class: st ? "form-note" : "form-error", role: "alert" }, ex.message,
+            st === "invited" ? h("div", { style: "margin-top:10px" }, h("a", { class: "btn btn-gold btn-sm", href: "#/ativar?e=" + encodeURIComponent(ex.data.email || v.email || "") }, "Digitar meu código")) : null));
           btn.disabled = false; btn.textContent = isReg ? "Criar minha conta" : "Entrar";
         }
       };
     }
     draw();
+    return authShell(card);
+  };
+
+  function authShell(card) {
     return h("div", { class: "auth" },
       h("section", { class: "auth-hero" },
         M.brand("#/entrar"),
@@ -232,7 +251,54 @@
         h("p", { class: "lead", text: "Trilhas com aulas em vídeo, textos, quizzes e provas. Você estuda no seu ritmo, prova o que aprendeu e sai com certificado." }),
         M.heroPlay(),
         h("p", { class: "muted small", text: "Novas formações e testes da Mamba Digital entram aqui o tempo todo, com o mesmo login." })),
-      h("div", { class: "auth-card-wrap" }, card));
+      h("div", { class: "auth-card-wrap" }, h("div", { class: "auth-stack" }, card, M.modeSwitch())));
+  }
+
+  /* ───── ativar o acesso (link ou código recebido por e-mail) ───── */
+  M.views.activate = function (qs) {
+    const q = new URLSearchParams(qs || "");
+    const card = h("div", { class: "auth-card" });
+    const done = (email) => {
+      card.replaceChildren(h("div", { class: "auth-done", role: "status" },
+        h("span", { class: "ck-ico" }, M.icon("check", 22)),
+        h("h3", { text: "Acesso ativado" }),
+        h("p", { text: "Pronto! Agora entre com o seu e-mail e a senha que você escolheu no cadastro." }),
+        h("button", { class: "btn btn-gold", type: "button", onclick: () => { M.session.prefillEmail = email || ""; location.hash = "#/entrar"; }, text: "Entrar agora" })));
+    };
+    const problem = (msg) => {
+      card.replaceChildren(h("div", { class: "auth-done", role: "alert" },
+        h("h3", { text: "Não deu para ativar" }),
+        h("p", { text: msg }),
+        h("div", { class: "row" }, h("a", { class: "btn btn-gold", href: "#/ativar" }, "Digitar um código"), h("a", { class: "btn btn-ghost", href: "#/entrar" }, "Voltar"))));
+    };
+    function codeForm() {
+      const err = h("div");
+      const email = h("input", { class: "input", id: "a-email", type: "email", autocomplete: "email", required: true, value: q.get("e") || "" });
+      const code = h("input", { class: "input code-input", id: "a-code", type: "text", inputmode: "numeric", autocomplete: "one-time-code", maxlength: "6", placeholder: "000000", required: true });
+      code.addEventListener("input", () => { code.value = code.value.replace(/\D/g, "").slice(0, 6); });
+      const btn = h("button", { class: "btn btn-gold", type: "submit", style: "width:100%", text: "Ativar meu acesso" });
+      const form = h("form", { novalidate: true },
+        h("h3", { style: "margin-bottom:6px", text: "Ativar o acesso" }),
+        h("p", { class: "muted small", style: "margin:0 0 16px", text: "Digite o e-mail do cadastro e o código de 6 dígitos que chegou na sua caixa de entrada. Você também pode abrir o link do e-mail." }),
+        err,
+        h("div", { class: "field" }, h("label", { for: "a-email", text: "E-mail" }), email),
+        h("div", { class: "field" }, h("label", { for: "a-code", text: "Código de 6 dígitos" }), code),
+        btn,
+        h("p", { class: "small", style: "margin:14px 0 0" }, h("a", { href: "#/entrar", text: "Voltar para Entrar" })));
+      form.onsubmit = async (e) => {
+        e.preventDefault(); err.replaceChildren();
+        btn.disabled = true; btn.textContent = "Aguarde…";
+        try { const d = await M.post("auth/activate", { email: email.value, code: code.value }); done(d.email); }
+        catch (ex) { err.replaceChildren(h("div", { class: "form-error", role: "alert", text: ex.message })); btn.disabled = false; btn.textContent = "Ativar meu acesso"; }
+      };
+      card.replaceChildren(form);
+      (q.get("e") ? code : email).focus();
+    }
+    if (q.get("u") && q.get("t")) {
+      card.replaceChildren(M.loading("Ativando seu acesso…"));
+      M.post("auth/activate", { u: q.get("u"), t: q.get("t") }).then((d) => done(d.email), (ex) => problem(ex.message));
+    } else codeForm();
+    return authShell(card);
   };
 
   /* ───── trilhas: andamento ───── */
@@ -538,9 +604,15 @@
       h("section", { class: "panel" }, h("h3", { text: "Seus dados" }),
         h("p", { style: "margin:0" }, h("strong", { text: u.name }), h("br"), h("span", { class: "muted", text: u.email })),
         h("p", { style: "margin:12px 0 0" }, h("span", { class: "chip " + (u.role === "admin" ? "chip-gold" : ""), text: u.role === "admin" ? "Administrador" : "Aluno" }))),
+      h("section", { class: "panel" }, h("h3", { text: "Foto de perfil" }),
+        h("p", { class: "muted small", style: "margin:0 0 12px", text: "Sua foto aparece nos posts, comentários, ranking e busca." }),
+        M.avatarForm()),
       h("section", { class: "panel" }, h("h3", { text: "Seu @ no feed" }),
         h("p", { class: "muted small", style: "margin:0 0 12px", text: "O @ é o seu nome de usuário: o time te encontra na busca e te marca nos posts. Dá para trocar uma vez a cada 7 dias." }),
         M.nickForm()),
+      h("section", { class: "panel" }, h("h3", { text: "Tipo de tela" }),
+        h("p", { class: "muted small", style: "margin:0 0 12px", text: "Se o sistema ficou ruim no seu aparelho, escolha aqui como quer ver. A escolha fica salva neste aparelho." }),
+        M.modeSwitch({ label: false })),
       h("section", { class: "panel" }, h("h3", { text: "Trocar senha" }), err, form));
   };
 

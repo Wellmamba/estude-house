@@ -134,6 +134,46 @@
         h("a", { class: "btn btn-ghost btn-sm", href: m.url, target: "_blank", rel: "noopener noreferrer", download: "" }, "Baixar")));
   }
 
+  /* ───── envio ao Cloudinary ───── */
+  // kind: "auto" (padrão), "image" ou "video". GIF pesado vai como "video": vira mp4 leve em loop.
+  M.cloudUpload = function (file, { kind = "auto", onProgress } = {}) {
+    return M.post("feed/upload-sign").then((sign) => new Promise((res, rej) => {
+      const fd = new FormData();
+      fd.append("file", file); fd.append("api_key", sign.apiKey); fd.append("timestamp", sign.timestamp); fd.append("signature", sign.signature); fd.append("folder", sign.folder);
+      const x = new XMLHttpRequest();
+      x.open("POST", sign.url.replace("/auto/upload", `/${kind}/upload`));
+      x.upload.onprogress = (e) => { if (onProgress && e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100)); };
+      x.onload = () => { try { const j = JSON.parse(x.responseText); if (x.status < 300 && j.secure_url) res(j); else rej(new Error(j.error?.message || "O envio falhou.")); } catch { rej(new Error("O envio falhou.")); } };
+      x.onerror = () => rej(new Error("Sem conexão durante o envio."));
+      x.send(fd);
+    }));
+  };
+  // Reduz a foto no próprio navegador (JPG). Com "square", corta um quadrado do centro (foto de perfil).
+  M.shrinkImage = function (file, { max = 2560, quality = 0.86, limit = 9.5 * 1048576, square = 0 } = {}) {
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0, w, hh;
+        if (!sw || !sh) { rej(new Error("Não consegui abrir essa imagem. Use JPG ou PNG.")); return; }
+        if (square) { const s = Math.min(sw, sh); sx = (sw - s) / 2; sy = (sh - s) / 2; sw = sh = s; w = hh = Math.min(square, s); }
+        else { const k = Math.min(1, max / Math.max(sw, sh)); w = Math.round(sw * k); hh = Math.round(sh * k); }
+        const c = document.createElement("canvas"); c.width = w; c.height = hh;
+        const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, w, hh); g.drawImage(img, sx, sy, sw, sh, 0, 0, w, hh);
+        let q = quality;
+        const once = () => c.toBlob((b) => {
+          if (!b) { rej(new Error("Não consegui processar essa imagem.")); return; }
+          if (b.size > limit && q > 0.5) { q -= 0.12; once(); return; }
+          res(b);
+        }, "image/jpeg", q);
+        once();
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); rej(new Error("Não consegui abrir essa imagem. Use JPG ou PNG.")); };
+      img.src = url;
+    });
+  };
+
   M.renderMedia = function (list) {
     if (!list?.length) return null;
     const imgs = list.filter((m) => m.type === "image");
@@ -141,7 +181,12 @@
     const out = h("div", { class: "media" });
     if (imgs.length) out.append(h("div", { class: "m-grid n" + Math.min(imgs.length, 4) }, imgs.map(imageMedia)));
     for (const m of rest) {
-      if (m.type === "video") out.append(h("video", { class: "m-video", src: vidUrl(m.url), poster: posterUrl(m.url), controls: true, preload: "metadata", playsinline: true }));
+      if (m.type === "video" && /\.gif$/i.test(m.name || "")) {
+        const v = h("video", { class: "m-video m-gif", src: vidUrl(m.url), poster: posterUrl(m.url), autoplay: true, loop: true, muted: true, playsinline: true, preload: "auto", title: "Clique para pausar ou continuar" });
+        v.muted = true;
+        v.addEventListener("click", () => { if (v.paused) v.play(); else v.pause(); });
+        out.append(v);
+      } else if (m.type === "video") out.append(h("video", { class: "m-video", src: vidUrl(m.url), poster: posterUrl(m.url), controls: true, preload: "metadata", playsinline: true }));
       else if (m.type === "file") out.append(fileMedia(m));
       else out.append(linkMedia(m));
     }

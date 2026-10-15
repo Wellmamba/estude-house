@@ -113,3 +113,8 @@ export function domainAllowed(email) {
   if (!domains.length) return true;
   return domains.some((d) => normalizeEmail(email).endsWith("@" + d));
 }
+
+// Conta que já pode entrar: não está desativada e não está esperando aprovação ou ativação.
+export function isLive(u) {
+  return !!u && u.active !== false && (!u.access || u.access === "active");
+}

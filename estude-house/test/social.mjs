@@ -1,5 +1,6 @@
 // Teste de feed, hype, aprovação, check-in, metas, ranking, apelido (@) e busca: node test/social.mjs
 process.env.LOCAL_DB = "1";
+process.env.SIGNUP_APPROVAL = "off"; // estes testes cadastram muita gente: a aprovação é testada em test/approval.mjs
 process.env.ADMIN_EMAILS = "wellington.moreira@mambadigital.com.br";
 
 import assert from "node:assert/strict";
@@ -333,6 +334,40 @@ console.log("Configuração de XP e metas");
   const v = (await call("GET", "engage/me", { token: ana.token })).data;
   assert.ok(v.goals.some((g) => g.title.startsWith("Meta nova")));
   offset -= 20 * DAY;
+}
+
+console.log("Foto de perfil");
+{
+  const good = "https://res.cloudinary.com/mamba/image/upload/v1/estude-house/ana.jpg";
+  let r = await call("POST", "auth/profile", { token: ana.token, body: { avatar: good } });
+  assert.equal(r.status, 400); ok("sem Cloudinary configurado a foto é recusada");
+  process.env.CLOUDINARY_CLOUD_NAME = "mamba"; process.env.CLOUDINARY_API_KEY = "key123"; process.env.CLOUDINARY_API_SECRET = "segredo";
+  for (const bad of ["http://res.cloudinary.com/mamba/image/upload/a.jpg", "https://evil.com/mamba/image/upload/a.jpg", "https://res.cloudinary.com/outra/image/upload/a.jpg", "https://res.cloudinary.com/mamba/video/upload/a.mp4", "javascript:alert(1)"]) {
+    r = await call("POST", "auth/profile", { token: ana.token, body: { avatar: bad } });
+    assert.equal(r.status, 400, bad);
+  }
+  ok("só aceita foto do Cloudinary da conta (imagem, https)");
+  r = await call("POST", "auth/profile", { token: ana.token, body: { avatar: good } });
+  assert.equal(r.status, 200); assert.equal(r.data.user.avatar, good); assert.equal(r.data.user.nickname, "ana.souza");
+  r = await call("GET", "me", { token: ana.token });
+  assert.equal(r.data.user.avatar, good); ok("a foto é salva sem mexer no @");
+  let p = (await call("POST", "feed/post", { token: ana.token, body: { text: "Post com foto de perfil" } })).data;
+  const fp = await call("GET", "feed/post/" + p.post.id, { token: adm.token });
+  assert.equal(fp.data.post.author.avatar, good);
+  r = await call("GET", "people/ana.souza", { token: beto.token });
+  assert.equal(r.data.person.avatar, good);
+  r = await call("GET", "search?q=ana", { token: beto.token });
+  assert.equal(r.data.people.find((x) => x.id === ana.id).avatar, good);
+  r = await call("GET", "engage/ranking?period=all", { token: beto.token });
+  assert.ok(r.data.rows.every((x) => "avatar" in x));
+  ok("a foto aparece nos posts, no perfil, na busca e no ranking");
+  r = await call("POST", "auth/profile", { token: ana.token, body: { avatar: "" } });
+  assert.equal(r.status, 200); assert.equal(r.data.user.avatar, null);
+  r = await call("GET", "people/ana.souza", { token: beto.token });
+  assert.equal(r.data.person.avatar, null); ok("a pessoa pode remover a foto");
+  r = await call("POST", "auth/profile", { token: ana.token, body: {} });
+  assert.equal(r.status, 400);
+  delete process.env.CLOUDINARY_CLOUD_NAME; delete process.env.CLOUDINARY_API_KEY; delete process.env.CLOUDINARY_API_SECRET;
 }
 
 console.log("Painel do gestor e remoção de pessoa");

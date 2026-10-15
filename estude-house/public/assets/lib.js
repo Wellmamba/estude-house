@@ -134,6 +134,23 @@
   M.fmtPct = (n) => String(Math.round(n * 10) / 10).replace(".", ",");
   M.pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
 
+  /* ───── tipo de tela: celular ou computador (escolha salva neste aparelho) ───── */
+  const MODE_KEY = "eh-mode";
+  M.getMode = () => { try { const m = localStorage.getItem(MODE_KEY); return m === "mobile" || m === "pc" ? m : null; } catch { return null; } };
+  M.effectiveMode = () => M.getMode() || (matchMedia("(max-width: 860px)").matches ? "mobile" : "pc");
+  M.setMode = (m) => {
+    try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
+    location.reload(); // recarrega para o navegador reler o tamanho da tela
+  };
+  M.modeSwitch = function ({ label = true } = {}) {
+    const cur = M.effectiveMode(), saved = M.getMode();
+    const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
+    return M.h("div", { class: "mode-switch" },
+      label ? M.h("span", { class: "mode-label", id: "mode-label", text: "Ver o sistema no" }) : null,
+      M.h("div", { class: "mode-btns", role: "group", "aria-labelledby": label ? "mode-label" : null, "aria-label": label ? null : "Tipo de tela" }, opt("mobile", "phone", "Celular"), opt("pc", "monitor", "Computador")),
+      saved ? M.h("button", { type: "button", class: "linkish mode-auto", onclick: () => M.setMode(null), text: "Voltar ao automático" }) : null);
+  };
+
   /* endereços das telas principais */
   M.homeHref = "#/";
   M.trailsHref = "#/trilhas";
@@ -146,8 +163,16 @@
     const name = p?.name || "?";
     const init = name.trim().split(/\s+/).slice(0, 2).map((x) => x[0]).join("").toUpperCase();
     let hsh = 0; for (const ch of String(p?.id || name)) hsh = (hsh * 31 + ch.charCodeAt(0)) >>> 0;
-    return M.h("span", { class: "avatar" + (p?.role === "admin" ? " is-admin" : ""), "aria-hidden": "true", style: `width:${size}px;height:${size}px;font-size:${Math.round(size * 0.38)}px;background:${AV[hsh % AV.length]}`, text: init });
+    const el = M.h("span", { class: "avatar" + (p?.role === "admin" ? " is-admin" : "") + (p?.avatar ? " has-img" : ""), "aria-hidden": "true", style: `width:${size}px;height:${size}px;font-size:${Math.round(size * 0.38)}px;background:${AV[hsh % AV.length]}`, text: p?.avatar ? "" : init });
+    if (p?.avatar) {
+      const img = M.h("img", { src: M.avatarUrl(p.avatar, size * 2), alt: "", loading: "lazy", decoding: "async" });
+      img.addEventListener("error", () => { img.remove(); el.classList.remove("has-img"); el.textContent = init; });
+      el.append(img);
+    }
+    return el;
   };
+  /* foto de perfil: recorte quadrado leve, servido pelo Cloudinary */
+  M.avatarUrl = (url, px) => (String(url).includes("/image/upload/") ? String(url).replace("/image/upload/", `/image/upload/c_fill,g_auto,w_${px},h_${px},f_auto,q_auto/`) : url);
   M.profileHref = (p) => "#/u/" + encodeURIComponent(p.nickname || p.id);
   M.timeAgo = function (ts) {
     const s = Math.max(0, (Date.now() - ts) / 1000);
@@ -213,6 +238,9 @@
     search: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14M21 21l-5-5",
     chat: "M4 5h16v11H9l-5 4zM8 9h8M8 12h5",
     image: "M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M9 9.5h.01",
+    phone: "M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM11 18h2",
+    monitor: "M3 4h18v12H3zM8 20h8M12 16v4",
+    camera: "M4 8h3l2-3h6l2 3h3v11H4zM12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z",
     video: "M4 6h11v12H4zM15 10l5-3v10l-5-3",
     link: "M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1",
     file: "M6 3h8l5 5v13H6zM14 3v5h5M9 13h7M9 17h7",

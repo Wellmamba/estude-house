@@ -7,7 +7,7 @@
     prova_iniciada: "Prova iniciada", prova_enviada: "Prova enviada", senha_alterada: "Senha alterada",
     admin_criou_acesso: "Admin criou acesso", admin_subiu_acessos: "Admin subiu lista", admin_alterou_usuario: "Admin alterou usuário",
     admin_zerou_progresso: "Admin zerou progresso", admin_removeu_usuario: "Admin removeu usuário",
-    post_criado: "Post criado", post_aprovado: "Post aprovado", post_recusado: "Post recusado", post_removido: "Post removido",
+    cadastro_pendente: "Cadastro aguardando aprovação", cadastro_aprovado: "Cadastro aprovado", cadastro_reenviado: "Convite reenviado", cadastro_ativado: "Acesso ativado", cadastro_recusado: "Cadastro recusado", cadastro_removido: "Cadastro removido", post_criado: "Post criado", post_aprovado: "Post aprovado", post_recusado: "Post recusado", post_removido: "Post removido",
     admin_config_engajamento: "Admin mudou XP e metas",
   };
   const logTone = (t) => (t === "login_falhou" || t === "admin_removeu_usuario" ? "chip-bad" : t.startsWith("admin_") ? "chip-gold" : t === "prova_enviada" ? "chip-warn" : "");
@@ -316,16 +316,109 @@
       h("div", { class: "toolbar" }, sel), holder);
   };
 
-  /* ───── aprovação de posts ───── */
+  /* ───── aprovação de cadastros e de posts ───── */
+  function refreshBadge() {
+    const n = (M.session.pending || 0) + (M.session.pendingSignups || 0);
+    const badge = document.querySelector('[data-key="admin-approve"] .nav-badge');
+    if (badge) { badge.hidden = !n; badge.textContent = String(n); }
+  }
+  const copyBtn = (text, label) => h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: async (e) => {
+    try { await navigator.clipboard.writeText(text); e.currentTarget.textContent = "Copiado"; } catch { M.toast("Não consegui copiar. Selecione e copie à mão.", "err"); }
+  }, text: label || "Copiar" });
+  const when = (ts) => { const t = M.timeAgo(ts); return t === "agora" ? "agora" : /^\d+ (min|h|d)$/.test(t) ? "há " + t : "em " + t; };
+
+  // O e-mail não saiu (ou não está configurado): mostra o link e o código para entregar à pessoa.
+  function handoff(person, r) {
+    return M.modal((close) => h("div", { class: "handoff" },
+      h("h3", { text: "Entregue o acesso à pessoa" }),
+      h("p", { class: "muted", text: `O e-mail para ${person.email} não foi enviado. Motivo: ${String(r.reason || "desconhecido").replace(/\.$/, "")}. O cadastro já está aprovado. Mande o link ou o código abaixo por WhatsApp, Slack ou outro canal. Valem por 48 horas.` }),
+      h("label", { class: "small muted", text: "Link de ativação" }),
+      h("div", { class: "copy-row" }, h("input", { class: "input", readonly: true, value: r.link, "aria-label": "Link de ativação", onfocus: (e) => e.target.select() }), copyBtn(r.link)),
+      h("label", { class: "small muted", text: "Ou o código (a pessoa digita em Entrar → Recebi um código)" }),
+      h("div", { class: "copy-row" }, h("span", { class: "big-code", text: r.code }), copyBtn(r.code)),
+      h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-gold", type: "button", onclick: () => close(), text: "Pronto" }))));
+  }
+
+  async function signupsSection() {
+    const box = h("section", { class: "panel" });
+    async function load() {
+      const d = await M.get("admin/signups");
+      M.session.pendingSignups = d.signups.filter((x) => x.access === "pending").length;
+      refreshBadge();
+      const row = (x) => {
+        const actions = [];
+        if (x.access === "pending" || x.access === "rejected") {
+          const ok = h("button", { class: "btn btn-gold btn-sm", type: "button" }, M.icon("check", 16), x.access === "rejected" ? "Aprovar mesmo assim" : "Aprovar");
+          ok.addEventListener("click", async () => {
+            ok.disabled = true;
+            try {
+              const r = await M.post(`admin/signups/${x.id}/approve`);
+              if (r.emailSent) M.toast(`Aprovado. E-mail com link e código enviado para ${x.email}.`, "ok");
+              else { M.toast("Aprovado, mas o e-mail não saiu.", "err"); await handoff(x, r); }
+              await load();
+            } catch (e) { M.toast(e.message, "err"); ok.disabled = false; }
+          });
+          actions.push(ok);
+        }
+        if (x.access === "pending") {
+          actions.push(h("button", { class: "btn btn-danger btn-sm", type: "button", text: "Recusar", onclick: async () => {
+            const reason = await M.modal((close) => {
+              const ta = h("textarea", { class: "textarea", id: "srej", rows: "2", maxlength: "200", placeholder: "Ex.: não conheço essa pessoa" });
+              return [h("h3", { text: "Recusar cadastro" }), h("p", { class: "muted small", text: `${x.name} (${x.email}) não conseguirá entrar.` }),
+                h("div", { class: "field" }, h("label", { for: "srej", text: "Motivo (só você vê)" }), ta),
+                h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => close(), text: "Cancelar" }), h("button", { class: "btn btn-danger", type: "button", onclick: () => close(ta.value || ""), text: "Recusar" }))];
+            });
+            if (reason === undefined) return;
+            try { await M.post(`admin/signups/${x.id}/reject`, { reason }); M.toast("Cadastro recusado.", "ok"); await load(); } catch (e) { M.toast(e.message, "err"); }
+          } }));
+        }
+        if (x.access === "invited") {
+          const re = h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Reenviar e-mail" });
+          re.addEventListener("click", async () => {
+            re.disabled = true;
+            try {
+              const r = await M.post(`admin/signups/${x.id}/resend`);
+              if (r.emailSent) M.toast("Novo e-mail enviado. O link e o código anteriores deixaram de valer.", "ok");
+              else { M.toast("O e-mail não saiu.", "err"); await handoff(x, r); }
+              await load();
+            } catch (e) { M.toast(e.message, "err"); re.disabled = false; }
+          });
+          actions.push(re);
+        }
+        if (x.access !== "pending") {
+          actions.push(h("button", { class: "icon-btn", type: "button", "aria-label": "Remover cadastro", onclick: async () => {
+            const okk = await M.confirm({ title: "Remover este cadastro?", text: `${x.email} poderá se cadastrar de novo.`, ok: "Remover", danger: true });
+            if (!okk) return;
+            try { await M.api("DELETE", `admin/signups/${x.id}`); await load(); } catch (e) { M.toast(e.message, "err"); }
+          } }, M.icon("trash", 16)));
+        }
+        const chip = x.access === "pending" ? h("span", { class: "chip chip-warn chip-xs", text: "Aguardando aprovação" })
+          : x.access === "invited" ? h("span", { class: "chip chip-xs " + (x.expired ? "chip-bad" : "chip-gold"), text: x.expired ? "Convite expirado" : "Aprovado · falta ativar" })
+          : h("span", { class: "chip chip-bad chip-xs", text: "Recusado" });
+        return h("div", { class: "signup-row" },
+          h("div", { class: "who" }, h("strong", { text: x.name }), h("span", { class: "muted small", text: `${x.email} · cadastro ${when(x.createdAt)}` }), x.reason ? h("span", { class: "muted small", text: "Motivo: " + x.reason }) : null),
+          chip, h("div", { class: "row", style: "gap:8px" }, actions));
+      };
+      const order = { pending: 0, invited: 1, rejected: 2 };
+      const rows = [...d.signups].sort((a, b) => order[a.access] - order[b.access] || b.createdAt - a.createdAt);
+      box.replaceChildren(
+        h("h3", { text: "Cadastros novos" }),
+        h("p", { class: "muted small", style: "margin:0 0 12px", text: d.emailOn ? "Ao aprovar, a pessoa recebe um e-mail com um link e um código de 6 dígitos. Só entra depois de ativar." : "O envio de e-mail ainda não está configurado: ao aprovar, você recebe o link e o código para entregar à pessoa. Veja COMO-CONFIGURAR-EMAIL-E-APROVACAO.md." }),
+        rows.length ? h("div", { class: "signup-list" }, rows.map(row)) : h("p", { class: "muted", style: "margin:0", text: "Nenhum cadastro novo por enquanto." }));
+    }
+    await load();
+    return box;
+  }
+
   M.views.adminApprovals = async function () {
     const g = guard(); if (g) return g;
     const holder = h("div", { class: "feed-list" });
+    const signups = await signupsSection();
     async function load() {
       holder.replaceChildren(M.loading());
       const d = await M.get("admin/feed/pending");
       M.session.pending = d.posts.length;
-      const badge = document.querySelector('[data-key="admin-approve"] .nav-badge');
-      if (badge) { badge.hidden = !d.posts.length; badge.textContent = String(d.posts.length); }
+      refreshBadge();
       if (!d.posts.length) { holder.replaceChildren(h("div", { class: "empty" }, h("h3", { text: "Nada aguardando aprovação" }), h("p", { text: "Quando um aluno enviar um post, ele aparece aqui." }))); return; }
       holder.replaceChildren(...d.posts.map((p) => {
         const card = M.postCard({ ...p, canDelete: false });
@@ -352,7 +445,7 @@
       }));
     }
     await load();
-    return h("div", { class: "feed" }, h("div", { class: "page-head" }, h("h2", { text: "Aprovações" }), h("p", { text: "Posts enviados por alunos. Só vão para o feed depois da sua aprovação." })), holder);
+    return h("div", { class: "feed" }, h("div", { class: "page-head" }, h("h2", { text: "Aprovações" }), h("p", { text: "Cadastros novos e posts enviados por alunos. Nada entra sem a sua aprovação." })), signups, h("h3", { style: "margin-top:8px", text: "Posts dos alunos" }), holder);
   };
 
   /* ───── XP e metas ───── */

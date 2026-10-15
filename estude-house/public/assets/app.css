@@ -372,7 +372,7 @@ dialog::backdrop { background: rgba(8, 3, 20, .72); backdrop-filter: blur(3px); 
 
 /* ───── responsivo ───── */
 @media (max-width: 980px) {
-  .auth { grid-template-columns: 1fr; }
+  .auth { grid-template-columns: minmax(0, 1fr); }
   .auth-hero { padding-bottom: 0; }
   .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -385,6 +385,7 @@ dialog::backdrop { background: rgba(8, 3, 20, .72); backdrop-filter: blur(3px); 
 }
 @media (max-width: 680px) {
   body { font-size: 16.5px; }
+  .auth-hero .playbook { display: none; }
   .grid-2, .grid-3, .compare { grid-template-columns: minmax(0, 1fr); }
   .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat b { font-size: 2.1rem; } .stat b.txt { font-size: 1.5rem; padding-top: .35rem; }
@@ -730,3 +731,78 @@ dialog:has(.viewer) { max-width: min(1100px, 96vw); }
 .feed-top { display: grid; gap: 16px; }
 .feed-top:empty { display: none; }
 .composer-bar .btn { white-space: nowrap; }
+
+/* foto de perfil */
+.avatar { position: relative; overflow: hidden; }
+.avatar.has-img { background: #1c0f3a !important; }
+.avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.avatar-form { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.avatar-actions { display: grid; gap: 8px; min-width: 0; }
+.avatar-form.compact { gap: 12px; }
+.nick-banner { display: grid; gap: 14px; }
+.nick-banner .nick-form { flex: none; }
+.me-card { display: grid; gap: 2px; }
+.me-av { justify-self: start; margin-bottom: 6px; text-decoration: none; }
+.m-gif { cursor: pointer; }
+
+/* tipo de tela: celular ou computador */
+.auth-stack { width: 100%; max-width: 440px; display: grid; gap: 16px; }
+.mode-switch { display: grid; gap: 8px; justify-items: start; }
+.auth-stack .mode-switch { justify-items: center; }
+.mode-label { font-size: .85rem; font-weight: 700; color: var(--muted); }
+.mode-btns { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(10, 4, 28, .55); border: 1px solid var(--line); }
+.mode-opt { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 14px; border-radius: 999px; border: 0; background: transparent; color: var(--muted); cursor: pointer; font-weight: 700; font-size: .9rem; }
+.mode-opt:hover { color: var(--text); }
+.mode-opt[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); }
+.mode-auto { font-size: .82rem; }
+.side-foot .mode-btns { width: 100%; }
+.side-foot .mode-opt { flex: 1; justify-content: center; padding: 0 8px; }
+
+/* campos com 16 px: o iPhone não dá zoom sozinho ao digitar */
+@media (max-width: 680px) { input, select, textarea, .top-search input { font-size: 16px; } }
+
+/* ===MODO-CELULAR-BEGIN=== */
+/* gerado por scripts/sync-mobile-css.mjs: não edite aqui */
+html[data-mode="mobile"] .auth { grid-template-columns: minmax(0, 1fr); }
+html[data-mode="mobile"] .auth-hero { padding-bottom: 0; }
+html[data-mode="mobile"] .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html[data-mode="mobile"] .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html[data-mode="mobile"] .shell { grid-template-columns: minmax(0, 1fr); }
+html[data-mode="mobile"] .side { position: fixed; z-index: 60; left: 0; top: 0; width: min(290px, 86vw); transform: translateX(-102%); transition: transform .22s ease; }
+html[data-mode="mobile"] .side.open { transform: none; box-shadow: 0 0 0 100vmax rgba(8, 3, 20, .7); }
+html[data-mode="mobile"] .top .menu-btn { display: inline-flex; }
+html[data-mode="mobile"] body { font-size: 16.5px; }
+html[data-mode="mobile"] .auth-hero .playbook { display: none; }
+html[data-mode="mobile"] .grid-2, html[data-mode="mobile"] .grid-3, html[data-mode="mobile"] .compare { grid-template-columns: minmax(0, 1fr); }
+html[data-mode="mobile"] .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html[data-mode="mobile"] .stat b { font-size: 2.1rem; }
+html[data-mode="mobile"] .stat b.txt { font-size: 1.5rem; padding-top: .35rem; }
+html[data-mode="mobile"] .next-card { grid-template-columns: minmax(0, 1fr); }
+html[data-mode="mobile"] .mod-card { grid-template-columns: 52px minmax(0, 1fr); }
+html[data-mode="mobile"] .mod-card .chips { grid-column: 1 / -1; }
+html[data-mode="mobile"] .mod-n { font-size: 2.6rem; }
+html[data-mode="mobile"] .trail-card h3 { font-size: 1.8rem; }
+html[data-mode="mobile"] .bands li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+html[data-mode="mobile"] .funnel-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+html[data-mode="mobile"] .top .crumbs { display: none; }
+html[data-mode="mobile"] .goal-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html[data-mode="mobile"] .goal-row > :first-child { grid-column: 1 / -1; }
+html[data-mode="mobile"] .top-search { width: auto; flex: 1; min-width: 0; padding: 0 10px; }
+html[data-mode="mobile"] .top-search svg { display: none; }
+html[data-mode="mobile"] .top .spacer { display: none; }
+html[data-mode="mobile"] .post { padding: 14px 14px 6px; }
+html[data-mode="mobile"] .composer-bar .btn { flex: 1 1 100%; }
+html[data-mode="mobile"] .composer-bar .spacer { display: none; }
+html[data-mode="mobile"] .checkin > div { flex: 1 1 150px; }
+html[data-mode="mobile"] .checkin .btn { flex: 1 1 100%; }
+html[data-mode="mobile"] .tool-btn span { display: none; }
+html[data-mode="mobile"] .tool-btn { padding: 0 12px; }
+html[data-mode="mobile"] .podium { gap: 8px; }
+html[data-mode="mobile"] .search-form { flex-direction: column; }
+html[data-mode="mobile"] .rocket-fly { animation-name: rocket-up-sm; }
+html[data-mode="mobile"] .m-grid.n3 .m-img:first-child { grid-row: auto; }
+html[data-mode="mobile"] .checkin { flex-wrap: wrap; }
+html[data-mode="mobile"] input, html[data-mode="mobile"] select, html[data-mode="mobile"] textarea, html[data-mode="mobile"] .top-search input { font-size: 16px; }
+html[data-mode="mobile"] .shell, html[data-mode="mobile"] .auth { max-width: 480px; margin-left: auto; margin-right: auto; }
+html[data-mode="mobile"] input, html[data-mode="mobile"] select, html[data-mode="mobile"] textarea { font-size: 16px; }
+/* ===MODO-CELULAR-END=== */

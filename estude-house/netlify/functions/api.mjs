@@ -1,12 +1,13 @@
 import { store, pmap, blobsMode } from "./lib/db.mjs";
 import {
   normalizeEmail, isValidEmail, emailKey, hashPassword, verifyPassword, signToken, verifyToken,
-  passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed,
+  passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed, isLive,
 } from "./lib/auth.mjs";
 import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope } from "./lib/manifest.mjs";
 import { QUESTIONS } from "./lib/questions/index.mjs";
 import * as social from "./lib/social.mjs";
 import * as eng from "./lib/engage.mjs";
+import * as signup from "./lib/signup.mjs";
 import { outcomeFor, drawQuestionIds, buildItems, publicQuestions, grade, reviewItem } from "./lib/exam.mjs";
 
 export const config = { path: "/api/*" };
@@ -15,7 +16,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-15-b";
+const BUILD = "2026-10-15-c";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -77,7 +78,7 @@ async function findByEmail(email) {
   return id ? loadUser(id) : null;
 }
 
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, nickname: u.nickname || null });
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, nickname: u.nickname || null, avatar: u.avatar || null });
 
 function computeXp(p) {
   const lessons = Object.keys(p.lessons).length * XP.lesson;
@@ -129,7 +130,7 @@ async function requireUser(req) {
   const data = verifyToken(token);
   if (!data) fail(401, "Sessão expirada. Entre novamente.");
   const user = await loadUser(data.sub);
-  if (!user || user.active === false) fail(401, "Acesso desativado. Fale com a administração.");
+  if (!user || !isLive(user)) fail(401, "Acesso desativado. Fale com a administração.");
   return user;
 }
 async function requireAdmin(req) {
@@ -138,7 +139,7 @@ async function requireAdmin(req) {
   return user;
 }
 
-async function createUser({ name, email, password, role = "aluno", createdBy = null }) {
+async function createUser({ name, email, password, role = "aluno", createdBy = null, access = undefined }) {
   const users = await store("users");
   const emails = await store("emails");
   const id = newId("u_");
@@ -146,6 +147,7 @@ async function createUser({ name, email, password, role = "aluno", createdBy = n
     id, name, email, role: isMaster(email) ? "admin" : role,
     passHash: hashPassword(password), active: true, createdAt: Date.now(), lastLoginAt: null, createdBy,
   };
+  if (access) user.access = access;
   await users.set("u:" + id, user);
   await emails.set(emailKey(email), id);
   return user;
@@ -161,7 +163,23 @@ async function register(req, body) {
   const problem = passwordProblem(body.password, email);
   if (problem) fail(400, problem);
   if (await findByEmail(email)) fail(409, "Este e-mail já tem cadastro. Use Entrar.");
-  const user = await createUser({ name, email, password: body.password });
+  const needsApproval = signup.approvalOn() && !isMaster(email);
+  const ip = clientIp(req);
+  if (needsApproval && ip) {
+    // Freio contra cadastros em massa: 8 por hora por endereço.
+    const rl = await store("rl");
+    const k = "reg:" + emailKey(ip);
+    const st = (await rl.get(k)) || { n: 0, at: 0 };
+    if (Date.now() - st.at > 3600e3) { st.n = 0; st.at = Date.now(); }
+    if (++st.n > 8) fail(429, "Muitos cadastros deste aparelho. Tente de novo mais tarde.");
+    await rl.set(k, st);
+  }
+  const user = await createUser({ name, email, password: body.password, access: needsApproval ? "pending" : undefined });
+  if (needsApproval) {
+    await signup.track(user.id, "p");
+    await logEvent(req, "cadastro_pendente", user);
+    return json({ pending: true, email, message: "Cadastro recebido! Um gestor vai analisar. Quando for aprovado, você recebe um e-mail com o link de acesso e um código." }, 202);
+  }
   await logEvent(req, "cadastro", user);
   return json({ token: signToken(user.id), user: publicUser(user) }, 201);
 }
@@ -185,6 +203,9 @@ async function login(req, body) {
     fail(401, "E-mail ou senha incorretos.");
   }
   if (user.active === false) fail(403, "Acesso desativado. Fale com a administração.");
+  if (user.access === "pending") fail(403, "Seu cadastro foi recebido e está aguardando a aprovação de um gestor. Quando for aprovado, você recebe um e-mail com o link de acesso e um código.", { state: "pending" });
+  if (user.access === "invited") fail(403, "Seu cadastro foi aprovado. Falta ativar o acesso pelo link ou pelo código que enviamos ao seu e-mail.", { state: "invited", email: user.email });
+  if (user.access === "rejected") fail(403, "Seu cadastro não foi aprovado. Fale com a administração.", { state: "rejected" });
   if (isMaster(user.email) && user.role !== "admin") user.role = "admin";
   user.lastLoginAt = Date.now();
   // Gravações independentes rodam juntas (menos espera no login).
@@ -372,6 +393,7 @@ function userSummary(u, p, e) {
     xp: computeXp(p) + (e?.xp || 0),
     xpEngage: e?.xp || 0,
     nickname: u.nickname || null,
+    avatar: u.avatar || null,
     master: isMaster(u.email),
   };
 }
@@ -390,7 +412,7 @@ async function allWithProgress() {
 }
 
 async function adminOverview() {
-  const all = await allWithProgress();
+  const all = (await allWithProgress()).filter(({ u }) => !u.access || u.access === "active");
   const rows = all.map(({ u, p, e }) => userSummary(u, p, e));
   const alunos = rows.filter((r) => r.role === "aluno");
   const alunoProgress = all.filter(({ u }) => u.role === "aluno").map(({ p }) => p);
@@ -424,7 +446,7 @@ async function adminOverview() {
 }
 
 async function adminUsers() {
-  const rows = (await allWithProgress()).map(({ u, p, e }) => userSummary(u, p, e));
+  const rows = (await allWithProgress()).filter(({ u }) => !u.access || u.access === "active").map(({ u, p, e }) => userSummary(u, p, e));
   rows.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   return json({ users: rows });
 }
@@ -554,13 +576,18 @@ async function adminDeleteUser(req, admin, id) {
   if (!u) fail(404, "Usuário não encontrado.");
   if (isMaster(u.email)) fail(403, "O acesso master não pode ser removido.");
   if (id === admin.id) fail(400, "Você não pode remover o próprio acesso.");
-  await (await store("users")).delete("u:" + id);
-  await (await store("emails")).delete(emailKey(u.email));
-  await (await store("progress")).delete("p:" + id);
-  await (await store("eng")).delete("e:" + id);
-  if (u.nickname) await (await store("nicks")).delete("n:" + u.nickname);
+  await removeUser(u);
   await logEvent(req, "admin_removeu_usuario", admin, { target: u.email });
   return json({ ok: true });
+}
+
+async function removeUser(u) {
+  await (await store("users")).delete("u:" + u.id);
+  await (await store("emails")).delete(emailKey(u.email));
+  await (await store("progress")).delete("p:" + u.id);
+  await (await store("eng")).delete("e:" + u.id);
+  if (u.nickname) await (await store("nicks")).delete("n:" + u.nickname);
+  await signup.untrack(u.id);
 }
 
 async function adminLogs(url) {
@@ -613,16 +640,18 @@ export default async (req, context) => {
     if (path === "health") return json({ ok: true, build: BUILD, blobs: blobsMode(), uploads: social.uploadsOn() ? "cloudinary" : "desligado", rules: RULES });
     if (path === "auth/register" && method === "POST") return await register(req, body);
     if (path === "auth/login" && method === "POST") return await login(req, body);
+    if (path === "auth/activate" && method === "POST") return await signup.activate({ json, fail, logEvent, loadUser, saveUser, findByEmail }, req, body);
 
     const user = await requireUser(req);
 
     if (path === "me" && method === "GET") {
-      const [p, e, pending] = await Promise.all([
+      const [p, e, pending, pendingSignups] = await Promise.all([
         loadProgress(user.id),
         user.role === "aluno" ? eng.loadEng(user.id) : null,
         user.role === "admin" ? social.pendingCount() : 0,
+        user.role === "admin" ? signup.pendingCount() : 0,
       ]);
-      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     if (path === "auth/password" && method === "POST") {
       if (!verifyPassword(String(body.current || ""), user.passHash)) fail(400, "A senha atual não confere.");
@@ -649,6 +678,10 @@ export default async (req, context) => {
       const admin = await requireAdmin(req);
       const parts = path.split("/");
       if (path === "admin/overview" && method === "GET") return await adminOverview();
+      if (parts[1] === "signups") {
+        const r = await signup.handleAdmin({ json, fail, logEvent, loadUser, saveUser, findByEmail, removeUser }, { req, method, path, body, admin });
+        if (r) return r;
+      }
       if (path === "admin/users" && method === "GET") return await adminUsers();
       if (path === "admin/users" && method === "POST") return await adminCreateUser(req, admin, body);
       if (path === "admin/users/bulk" && method === "POST") return await adminBulk(req, admin, body);

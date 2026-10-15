@@ -1,5 +1,6 @@
 // Teste de ponta a ponta da API, sem rede: node test/run.mjs
 process.env.LOCAL_DB = "1";
+process.env.SIGNUP_APPROVAL = "off"; // estes testes cadastram muita gente: a aprovação é testada em test/approval.mjs
 process.env.ADMIN_EMAILS = "wellington.moreira@mambadigital.com.br";
 
 import assert from "node:assert/strict";

@@ -48,7 +48,19 @@ Links funcionam sem configurar nada. Para **enviar arquivos** (foto, vídeo, PDF
 4. Faça um novo deploy (**Deploys → Trigger deploy → Deploy site**).
 5. Confira abrindo `https://SEU-SITE.netlify.app/api/health`: deve aparecer `"uploads":"cloudinary"`.
 
-Como funciona: o navegador pede ao servidor uma assinatura (só quem está logado recebe) e envia o arquivo direto ao Cloudinary, com barra de progresso. O servidor só aceita endereços `res.cloudinary.com/<seu cloud name>/…` nos posts. Limites do plano gratuito usados pela tela: imagem e arquivo até 10 MB, vídeo até 100 MB. Num plano pago, ajuste `LIMITS` no início de `public/assets/feed.js`. Arquivos SVG não são aceitos (segurança).
+Como funciona: o navegador pede ao servidor uma assinatura (só quem está logado recebe) e envia o arquivo direto ao Cloudinary, com barra de progresso. O servidor só aceita endereços `res.cloudinary.com/<seu cloud name>/…` nos posts. Limites usados pela tela: arquivo até 10 MB e vídeo até 100 MB. **Foto grande é reduzida sozinha** no navegador antes de enviar (não trava mais por passar de 10 MB). **GIF acima de 10 MB** é enviado como vídeo curto que repete sozinho, sem som, e se comporta como GIF no feed (limite de 100 MB). Num plano pago, ajuste `LIMITS` no início de `public/assets/feed.js`. Arquivos SVG não são aceitos (segurança).
+
+## Foto de perfil
+
+Em **Minha conta → Foto de perfil** (ou no aviso "Monte o seu perfil" na Início) a pessoa escolhe uma foto JPG ou PNG. O sistema recorta um quadrado no centro e usa a foto nos posts, comentários, ranking e busca. Dá para trocar ou remover. Precisa do Cloudinary configurado; sem ele, continuam as iniciais do nome.
+
+## Tela de Celular ou Computador
+
+Na tela de login (embaixo do cartão), no menu lateral e em **Minha conta → Tipo de tela** existe o seletor **Celular / Computador**. Serve quando o sistema fica ruim no aparelho: no celular, "Computador" mostra o layout largo (dá para dar zoom); no computador, "Celular" mostra o layout estreito. A escolha fica salva no aparelho e há o link **Voltar ao automático**.
+
+## Cadastro com aprovação
+
+Quem se cadastra só entra depois que um gestor aprova e a pessoa ativa pelo link ou código enviado por e-mail. Veja **COMO-CONFIGURAR-EMAIL-E-APROVACAO.md**.
 
 ## Busca: o que "parecido" significa
 

@@ -12,6 +12,8 @@ Plataforma de treinamento da Mamba Digital. A primeira trilha ensina a PriceBot 
 |---|---|---|
 | `JWT_SECRET` | sim | Texto longo e aleatório (32+ caracteres). Assina as sessões. Se trocar, todo mundo precisa entrar de novo. |
 | `ADMIN_EMAILS` | não | E-mails separados por vírgula que são administradores master. Padrão: `wellington.moreira@mambadigital.com.br`. |
+| `EMAIL_WEBHOOK_URL`, `EMAIL_WEBHOOK_SECRET`, `EMAIL_FROM_NAME`, `SITE_URL` | não | E-mail com link e código de ativação quando você aprova um cadastro (Google Apps Script, sem custo). Sem isso, o link e o código aparecem na tela para você entregar. Guia: `COMO-CONFIGURAR-EMAIL-E-APROVACAO.md`. |
+| `SIGNUP_APPROVAL` | não | `off` desliga a aprovação de cadastros (cadastro entra direto). |
 | `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | não | Liga o envio de fotos, vídeos e arquivos no feed (ver `COMO-CONFIGURAR-FEED-E-UPLOAD.md`). Sem elas, só links. |
 | `ALLOWED_DOMAINS` | não | Ex.: `mambadigital.com.br`. Se preenchida, só e-mails desses domínios podem se cadastrar sozinhos. Administradores criam acessos de qualquer domínio. |
 
@@ -63,6 +65,10 @@ Todas as trilhas vivem em `window.TRILHAS` (site) e em `TRAILS` (servidor, `mani
 A Início (`#/`) é um feed no estilo rede social, com Hype (foguete), comentários, posts de alunos com aprovação do gestor, check-in diário, metas de engajamento no menu de XP (botão no topo, à direita), ranking por engajamento (`#/ranking`), @ de cada pessoa e busca em todo o sistema. As trilhas ficam em `#/trilhas`.
 
 Upload de foto, vídeo e arquivo usa o Cloudinary (variáveis `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`); links funcionam sem nada. **Guia completo: `COMO-CONFIGURAR-FEED-E-UPLOAD.md`.**
+
+## Cadastro com aprovação, foto de perfil e tela Celular/PC
+
+Novos cadastros ficam pendentes até um gestor aprovar em **Aprovações**; a pessoa ativa pelo link ou código de 6 dígitos que recebe por e-mail (**COMO-CONFIGURAR-EMAIL-E-APROVACAO.md**). Há foto de perfil, GIF grande como vídeo em loop, redução automática de foto e o seletor Celular/Computador (login, menu e Minha conta). Detalhes em `COMO-CONFIGURAR-FEED-E-UPLOAD.md`.
 
 ## Desempenho e erros do Netlify Blobs
 
