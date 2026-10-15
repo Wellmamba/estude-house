@@ -4,20 +4,23 @@
   const letters = "ABCDEFGH";
 
   M.views.exam = async function (scope) {
-    if (scope !== "final" && !M.modulo(scope)) return M.notFound();
+    const trail = M.trailOfScope(scope);
+    if (!trail) return M.notFound();
+    const isFinal = M.isFinal(scope);
     await M.refreshMe();
-    const p = M.session.progress;
-    const mod = scope === "final" ? null : M.modulo(scope);
-    const back = mod ? "#/m/" + mod.id : "#/";
+    const p = M.session.progress, tp = M.tp(trail);
+    const mod = isFinal ? null : M.modulo(scope);
+    const trailUrl = M.trailHref(trail);
+    const back = mod ? "#/m/" + mod.id : trailUrl;
     const ex = p.exams[scope];
     const box = h("div", { class: "exam" });
 
     /* bloqueios visíveis (o servidor também confere) */
     if (!M.isAdmin()) {
-      if (scope === "final" && !p.finalUnlocked) return gate("A prova final libera depois da aprovação em todos os módulos.", "#/");
+      if (isFinal && !tp.finalUnlocked) return gate("A prova final libera depois da aprovação em todos os módulos.", trailUrl);
       if (mod) {
-        const st = p.modules[mod.n - 1];
-        if (!st.unlocked) return gate("Este módulo ainda está bloqueado.", "#/");
+        const st = tp.modules[mod.n - 1];
+        if (!st.unlocked) return gate("Este módulo ainda está bloqueado.", trailUrl);
         if (st.done < st.total) return gate("Conclua todas as aulas do módulo antes da prova.", back);
       }
     }
@@ -31,7 +34,7 @@
     /* ───── abertura ───── */
     function intro() {
       const retry = ex?.status === "retry";
-      const total = retry ? ex.retry?.qids?.length || 0 : scope === "final" ? M.session.rules.examSize.final : M.session.rules.examSize.module;
+      const total = retry ? ex.retry?.qids?.length || 0 : M.examSize(scope);
       const start = h("button", { class: "btn btn-gold", type: "button", text: retry ? "Começar a refazer os erros" : "Começar a prova" });
       start.addEventListener("click", async () => {
         start.disabled = true;
@@ -40,12 +43,12 @@
       });
       box.replaceChildren(
         h("div", { class: "page-head" },
-          h("span", { class: "chip chip-gold", style: "justify-self:start", text: retry ? "Segunda chance: só os erros" : scope === "final" ? "Avaliação final" : `Módulo ${mod.n}` }),
+          h("span", { class: "chip chip-gold", style: "justify-self:start", text: retry ? "Segunda chance: só os erros" : isFinal ? "Avaliação final" : `Módulo ${mod.n}` }),
           h("h2", { text: M.examName(scope) }),
           h("p", { text: retry
             ? `Você acertou entre ${M.session.rules.failMax}% e ${M.session.rules.passAbove}% na última tentativa. Responda de novo as ${total} questões que errou. Pode repetir até acertar todas.`
-            : scope === "final"
-              ? `${total} questões de toda a trilha. É a prova mais difícil: tem cenário, cálculo e perguntas de múltipla escolha.`
+            : isFinal
+              ? `${total} questões de toda a trilha "${trail.title}". É a prova mais difícil: tem cenário, cálculo e perguntas de múltipla escolha.`
               : `${total} questões sobre o módulo "${mod.title}". Tem cenário, cálculo e perguntas em que mais de uma alternativa está certa.` })),
         h("section", { class: "panel" }, h("h3", { text: "Antes de começar" }),
           h("ul", { style: "margin:0;padding-left:1.2em;display:grid;gap:8px" },
@@ -158,11 +161,12 @@
         text = r.passedViaRetry
           ? "Você corrigiu todas as questões que errou. Módulo concluído."
           : r.review?.length ? "Passou de " + rules.passAbove + "%. Abaixo estão os erros e a resposta certa de cada um. Você não precisa refazer nada." : "Gabarito perfeito. Nenhuma questão errada.";
-        actions = scope === "final"
-          ? [h("a", { class: "btn btn-gold", href: "#/cert" }, "Ver meu certificado")]
-          : [h("a", { class: "btn btn-gold", href: M.session.progress.modules[mod.n]?.unlocked ? "#/m/" + M.curso().modules[mod.n].id : "#/" }, mod.n < M.curso().modules.length ? "Ir para o próximo módulo" : "Voltar à trilha"),
-            h("a", { class: "btn btn-ghost", href: "#/" }, "Ver trilha")];
-        if (scope !== "final" && mod.n === M.curso().modules.length && M.session.progress.finalUnlocked) actions.unshift(h("a", { class: "btn btn-gold", href: "#/exam/final" }, "Fazer a prova final"));
+        const tpNow = M.tp(trail);
+        actions = isFinal
+          ? [h("a", { class: "btn btn-gold", href: "#/cert/" + trail.id }, "Ver meu certificado"), h("a", { class: "btn btn-ghost", href: "#/" }, "Todas as trilhas")]
+          : [h("a", { class: "btn btn-gold", href: tpNow.modules[mod.n]?.unlocked ? "#/m/" + trail.modules[mod.n].id : trailUrl }, mod.n < trail.modules.length ? "Ir para o próximo módulo" : "Voltar à trilha"),
+            h("a", { class: "btn btn-ghost", href: trailUrl }, "Ver trilha")];
+        if (!isFinal && mod.n === trail.modules.length && tpNow.finalUnlocked) actions.unshift(h("a", { class: "btn btn-gold", href: "#/exam/" + M.finalScope(trail) }, "Fazer a prova final"));
       } else if (r.outcome === "refazer-erros") {
         tone = "warn";
         title = r.mode === "retry" ? `Ainda ${r.remaining === 1 ? "falta 1 questão" : "faltam " + r.remaining + " questões"}` : `${pctTxt}: refaça só o que errou`;
@@ -177,7 +181,7 @@
         text = r.resetAll
           ? `Na prova final, nota até ${rules.failMax}% volta a trilha inteira ao início. Suas aulas e provas dos módulos foram zeradas. Estude de novo, com calma.`
           : `Nota até ${rules.failMax}% significa refazer tudo deste módulo. As aulas do módulo foram zeradas e a prova terá novas questões.`;
-        actions = [h("a", { class: "btn btn-gold", href: r.resetAll ? "#/" : back }, r.resetAll ? "Recomeçar a trilha" : "Rever as aulas do módulo")];
+        actions = [h("a", { class: "btn btn-gold", href: r.resetAll ? trailUrl : back }, r.resetAll ? "Recomeçar a trilha" : "Rever as aulas do módulo")];
       }
       box.replaceChildren(
         h("section", { class: "result-hero " + tone, role: "status" },

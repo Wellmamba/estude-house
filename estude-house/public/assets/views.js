@@ -21,8 +21,9 @@
     return lines.slice(0, 2);
   }
 
-  M.playbook = function (progress, { interactive = true } = {}) {
-    const mods = M.curso().modules;
+  M.playbook = function (progress, { interactive = true, trail } = {}) {
+    const t = trail || M.curso();
+    const mods = t.modules;
     const n = mods.length + 1;
     const W = 1000, stepX = (W - 120) / (n - 1);
     const pts = Array.from({ length: n }, (_, i) => ({ x: 60 + i * stepX, y: i % 2 ? 78 : 168 }));
@@ -34,7 +35,7 @@
         if (st.exam === "approved") return "done";
         return st.unlocked || M.isAdmin() ? "avail" : "locked";
       }
-      if (p.exams.final?.status === "approved") return "done";
+      if (p.finalStatus === "approved") return "done";
       return p.finalUnlocked || M.isAdmin() ? "avail" : "locked";
     };
     const states = pts.map((_, i) => stateOf(i));
@@ -51,7 +52,7 @@
       const m = mods[i];
       const st = states[i];
       const title = isFinal ? "Prova final" : m.title;
-      const href = isFinal ? "#/exam/final" : "#/m/" + m.id;
+      const href = isFinal ? "#/exam/" + M.finalScope(t) : "#/m/" + m.id;
       const frac = !p || isFinal ? (st === "done" ? 100 : 0) : Math.round((p.modules[i].done / p.modules[i].total) * 100);
       const sub = isFinal ? (st === "done" ? "aprovado" : st === "locked" ? "bloqueada" : "liberada")
         : !p ? `${m.lessons.length} aulas` : st === "done" ? "aprovado" : `${p.modules[i].done}/${p.modules[i].total} aulas`;
@@ -71,7 +72,7 @@
         ? `<g class="pb-node ${st}"><a href="${href}" aria-label="${M.esc(title)}: ${M.esc(sub)}">${body}</a></g>`
         : `<g class="pb-node ${st}" ${interactive ? `role="img" aria-label="${M.esc(title)}: bloqueado"` : ""}>${body}</g>`;
     });
-    const el = svg(`<svg viewBox="0 28 ${W} 262" role="group" aria-label="Mapa da trilha PriceBot">${paths}${nodes}</svg>`);
+    const el = svg(`<svg viewBox="0 28 ${W} 262" role="group" aria-label="Mapa da trilha ${M.esc(t.title)}">${paths}${nodes}</svg>`);
     return h("div", { class: "playbook pb-scroll" }, el);
   };
 
@@ -104,9 +105,9 @@
     const u = M.session.user;
     const link = (key, href, icon, text) => h("a", { href, "data-key": key }, M.icon(icon), h("span", { text }));
     const nav = h("nav", { class: "nav", "aria-label": "Principal" },
-      h("div", { class: "nav-sep", text: "Formação PriceBot" }),
-      link("home", "#/", "home", "Minha trilha"),
-      link("cert", "#/cert", "cert", "Certificado"),
+      h("div", { class: "nav-sep", text: "Estudos" }),
+      link("home", "#/", "home", "Trilhas"),
+      link("cert", "#/cert", "cert", "Certificados"),
       h("div", { class: "nav-sep", text: "Sua conta" }),
       link("conta", "#/conta", "user", "Minha conta"),
       M.isAdmin() ? [
@@ -221,68 +222,148 @@
       h("div", { class: "auth-card-wrap" }, card));
   };
 
-  /* ───── trilha (início) ───── */
-  function nextStep() {
-    const p = M.session.progress, mods = M.curso().modules;
+  /* ───── trilhas: andamento ───── */
+  function nextStep(t) {
+    const p = M.session.progress, v = M.tp(t), mods = t.modules;
     for (let i = 0; i < mods.length; i++) {
-      const st = p.modules[i];
+      const st = v.modules[i];
       if (st.exam === "approved") continue;
       if (!st.unlocked && !M.isAdmin()) break;
       const l = mods[i].lessons.find((x) => !p.lessons[x.id]);
       if (l) return { kind: "lesson", href: "#/l/" + l.id, title: l.title, mod: mods[i], retry: false };
       return { kind: "exam", href: "#/exam/" + mods[i].id, title: M.examName(mods[i].id), mod: mods[i], retry: st.exam === "retry" };
     }
-    if (p.finalUnlocked) {
-      if (p.exams.final?.status === "approved") return { kind: "cert", href: "#/cert", title: "Seu certificado" };
-      return { kind: "exam", href: "#/exam/final", title: "Prova final", retry: p.exams.final?.status === "retry" };
+    const fs = M.finalScope(t);
+    if (v.finalUnlocked) {
+      if (v.finalStatus === "approved") return { kind: "cert", href: "#/cert/" + t.id, title: "Seu certificado" };
+      return { kind: "exam", href: "#/exam/" + fs, title: "Prova final", retry: v.finalStatus === "retry" };
     }
     return null;
   }
+  const minutesOf = (t) => t.modules.reduce((a, m) => a + m.lessons.reduce((b, l) => b + (l.minutes || 0), 0), 0);
+  const hoursText = (min) => (min < 90 ? `${min} min` : `≈ ${Math.round(min / 60)} h`);
+  function lastActivity(t, p) {
+    let ts = 0;
+    for (const m of t.modules) for (const l of m.lessons) ts = Math.max(ts, Number(p.lessons[l.id]) || 0);
+    const scopes = new Set([...t.modules.map((m) => m.id), M.finalScope(t)]);
+    for (const x of p.history || []) if (scopes.has(x.scope)) ts = Math.max(ts, x.at || 0);
+    return ts;
+  }
+  function stateOfTrail(t) {
+    const v = M.tp(t);
+    if (v.finalStatus === "approved") return "done";
+    if (v.lessonsDone > 0 || v.modulesApproved > 0) return "going";
+    return "new";
+  }
+  const STATE_CHIP = { done: ["chip chip-good", "Concluída"], going: ["chip chip-gold", "Em andamento"], new: ["chip", "Não iniciada"] };
 
+  /* ───── início: menu de trilhas ───── */
   M.views.home = async function () {
     await M.refreshMe();
-    const p = M.session.progress, c = M.curso();
-    const done = Object.keys(p.lessons).length, total = M.totalLessons();
-    const approved = p.modules.filter((m) => m.exam === "approved").length;
-    const next = nextStep();
+    const p = M.session.progress, trails = M.trails();
+    const views = trails.map((t) => M.tp(t));
+    const doneTrails = trails.filter((t) => stateOfTrail(t) === "done").length;
+    const lessons = Object.keys(p.lessons).length;
+    const mods = views.reduce((a, v) => a + v.modulesApproved, 0);
+
+    /* "continue de onde parou": a trilha começada e não concluída com atividade mais recente */
+    const going = trails.filter((t) => stateOfTrail(t) === "going" && nextStep(t)).sort((a, b) => lastActivity(b, p) - lastActivity(a, p))[0];
+    let resume = null;
+    if (going) {
+      const ns = nextStep(going);
+      resume = h("section", { class: "panel next-card", "aria-label": "Continuar estudando" },
+        h("div", null,
+          h("span", { class: "chip chip-gold", text: "Continue de onde parou" }),
+          h("h3", { style: "margin-top:12px", text: ns.kind === "lesson" ? ns.title : ns.retry ? ns.title + ": refazer os erros" : ns.title }),
+          h("p", { class: "muted", style: "margin:6px 0 0", text: `${going.title}${ns.mod ? " · Módulo " + ns.mod.n : ""}` })),
+        h("a", { class: "btn btn-gold", href: ns.href }, ns.kind === "lesson" ? "Continuar aula" : "Fazer a prova", M.icon("arrow", 18)));
+    }
+
+    const cards = trails.map((t) => {
+      const v = M.tp(t), st = stateOfTrail(t), chip = STATE_CHIP[st];
+      const pct = M.pct(v.lessonsDone, v.lessonsTotal);
+      const cta = st === "done" ? "Rever a trilha" : st === "going" ? "Continuar" : "Começar trilha";
+      return h("a", { class: "trail-card" + (st === "done" ? " is-done" : ""), href: M.trailHref(t) },
+        h("div", { class: "row row-between" },
+          h("span", { class: "chip chip-tag", text: t.tag || "Trilha" }),
+          h("span", { class: chip[0], text: chip[1] })),
+        h("h3", { text: t.title }),
+        h("p", { class: "trail-tag", text: t.tagline }),
+        h("div", { class: "trail-meta" },
+          h("span", { text: `${t.modules.length} ${t.modules.length === 1 ? "módulo" : "módulos"}` }), h("span", { text: `${v.lessonsTotal} ${v.lessonsTotal === 1 ? "aula" : "aulas"}` }), h("span", { text: hoursText(minutesOf(t)) })),
+        h("div", { class: "trail-prog" },
+          h("div", { class: "bar", role: "progressbar", "aria-valuenow": String(pct), "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": `Progresso em ${t.title}` }, h("i", { style: `width:${pct}%` })),
+          h("span", { class: "small muted", text: `${v.lessonsDone}/${v.lessonsTotal} aulas · ${v.modulesApproved}/${t.modules.length} módulos aprovados` })),
+        h("span", { class: "trail-cta" }, cta, M.icon("arrow", 18)));
+    });
+    const soon = (window.PROXIMAS || []).map((x) =>
+      h("div", { class: "trail-card is-soon", "aria-label": x.title + " (em breve)" },
+        h("div", { class: "row row-between" }, h("span", { class: "chip chip-tag", text: x.tag || "Trilha" }), h("span", { class: "chip", text: "Em breve" })),
+        h("h3", { text: x.title }),
+        h("p", { class: "trail-tag", text: x.tagline || "" }),
+        h("span", { class: "trail-cta muted", text: "Disponível em breve" })));
+
+    return h("div", null,
+      h("div", { class: "page-head" },
+        h("h2", { text: "Olá, " + M.firstName(M.session.user.name) }),
+        h("p", { text: "Escolha uma trilha para estudar. Cada uma tem aulas, quizzes, provas por módulo e uma prova final que libera o certificado." })),
+      resume, resume ? h("div", { style: "height:18px" }) : null,
+      h("div", { class: "grid grid-4" },
+        stat(`${doneTrails}/${trails.length}`, trails.length === 1 ? "trilha concluída" : "trilhas concluídas"),
+        stat(lessons, "aulas concluídas"),
+        stat(mods, "módulos aprovados"),
+        stat(p.xp, "pontos de experiência")),
+      h("h2", { style: "margin:40px 0 16px", text: "Trilhas" }),
+      h("div", { class: "trail-grid" }, cards, soon),
+      soon.length ? null : h("p", { class: "muted small", style: "margin-top:20px", text: "Novas trilhas da Mamba Digital aparecem aqui, com o mesmo login." }));
+  };
+
+  /* ───── uma trilha ───── */
+  M.views.trail = async function (id) {
+    await M.refreshMe();
+    const t = M.trailById(id);
+    if (!t) return notFound();
+    const p = M.session.progress, v = M.tp(t);
+    const done = v.lessonsDone, total = v.lessonsTotal, approved = v.modulesApproved;
+    const next = nextStep(t);
     const first = !done && !approved;
 
     const nextCard = next && h("section", { class: "panel next-card", "aria-label": "Próximo passo" },
       h("div", null,
         h("span", { class: "chip chip-gold", text: first ? "Comece por aqui" : next.kind === "cert" ? "Concluído" : "Seu próximo passo" }),
-        h("h3", { style: "margin-top:12px", text: next.kind === "lesson" ? next.title : next.kind === "cert" ? "Você terminou a formação" : next.retry ? next.title + ": refazer os erros" : next.title }),
-        h("p", { class: "muted", style: "margin:6px 0 0", text: next.kind === "lesson" ? `Módulo ${next.mod.n}: ${next.mod.title}` : next.kind === "cert" ? "Baixe ou imprima o certificado." : next.retry ? "Você só refaz as questões que errou." : "Você já viu todo o conteúdo. Agora é a prova." })),
+        h("h3", { style: "margin-top:12px", text: next.kind === "lesson" ? next.title : next.kind === "cert" ? "Você terminou a trilha" : next.retry ? next.title + ": refazer os erros" : next.title }),
+        h("p", { class: "muted", style: "margin:6px 0 0", text: next.kind === "lesson" ? `Módulo ${next.mod.n}: ${next.mod.title}` : next.kind === "cert" ? "Baixe ou imprima o certificado." : next.retry ? "Você só refaz as questões que errou." : "Você já concluiu as aulas. Reserve de 20 a 30 minutos para a prova." })),
       h("a", { class: "btn btn-gold", href: next.href }, next.kind === "lesson" ? (first ? "Começar a trilha" : "Continuar aula") : next.kind === "cert" ? "Ver certificado" : "Fazer a prova", M.icon("arrow", 18)));
 
     const stats = h("div", { class: "grid grid-4" },
       stat(`${done}/${total}`, "aulas concluídas"),
-      stat(`${approved}/${c.modules.length}`, "módulos aprovados"),
+      stat(`${approved}/${t.modules.length}`, "módulos aprovados"),
       stat(p.xp, "pontos de experiência"),
-      stat(p.exams.final?.status === "approved" ? "Aprovado" : p.finalUnlocked ? "Liberada" : "Bloqueada", "prova final", true));
+      stat(v.finalStatus === "approved" ? "Aprovado" : v.finalUnlocked ? "Liberada" : "Bloqueada", "prova final", true));
 
-    const modList = h("div", { class: "mod-list" }, c.modules.map((m, i) => {
-      const st = p.modules[i];
+    const modList = h("div", { class: "mod-list" }, t.modules.map((m, i) => {
+      const st = v.modules[i];
       const locked = !st.unlocked && !M.isAdmin();
-      const el = h(locked ? "div" : "a", { class: "mod-card" + (locked ? " locked" : ""), href: locked ? null : "#/m/" + m.id },
+      return h(locked ? "div" : "a", { class: "mod-card" + (locked ? " locked" : ""), href: locked ? null : "#/m/" + m.id },
         h("div", { class: "mod-n", text: m.n }),
         h("div", null, h("h3", { text: m.title }), h("p", { text: m.tagline }),
           h("div", { class: "bar", role: "progressbar", "aria-valuenow": String(M.pct(st.done, st.total)), "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": `Progresso do módulo ${m.n}` },
             h("i", { style: `width:${M.pct(st.done, st.total)}%` }))),
         h("div", { class: "chips row", style: "justify-content:flex-end" },
           h("span", { class: "chip", text: `${st.done}/${st.total} aulas` }), examChip(st.exam, locked)));
-      return el;
     }));
 
-    return h("div", null,
-      h("div", { class: "page-head" },
-        h("h2", { text: "Olá, " + M.firstName(M.session.user.name) }),
-        h("p", { text: c.subtitle })),
+    const node = h("div", null,
+      h("a", { class: "small", href: "#/" }, "← Todas as trilhas"),
+      h("div", { class: "page-head", style: "margin-top:12px" },
+        h("span", { class: "chip chip-gold", style: "justify-self:start", text: t.tag || "Trilha" }),
+        h("h2", { text: t.title }),
+        h("p", { text: t.subtitle || t.tagline })),
       nextCard, h("div", { style: "height:18px" }), stats,
-      h("section", { class: "panel", style: "margin-top:18px" }, h("h3", { text: "Mapa da trilha" }), M.playbook(p)),
-      h("h2", { style: "margin:40px 0 16px", text: "Módulos" }), modList,
-      h("section", { class: "empty", style: "margin-top:28px" },
-        h("strong", { text: "Novas formações a caminho" }),
-        h("p", { style: "margin:6px 0 0", text: "Outros treinamentos e testes da Mamba Digital serão publicados aqui. Você receberá o acesso por este mesmo login." })));
+      h("section", { class: "panel", style: "margin-top:18px" }, h("h3", { text: "Mapa da trilha" }), M.playbook(v, { trail: t })),
+      h("h2", { style: "margin:40px 0 16px", text: "Módulos" }), modList);
+    node._crumbs = [{ text: "Trilhas", href: "#/" }, { text: t.title }];
+    return node;
   };
   function stat(v, l, txt) { return h("div", { class: "stat" }, h("b", { class: txt ? "txt" : "", text: v }), h("span", { text: l })); }
   function examChip(st, locked) {
@@ -307,12 +388,13 @@
     await M.refreshMe();
     const m = M.modulo(id);
     if (!m) return notFound();
-    const p = M.session.progress, i = m.n - 1, st = p.modules[i];
+    const t = M.trailOfModule(id);
+    const p = M.session.progress, i = m.n - 1, st = M.tp(t).modules[i];
     const locked = !st.unlocked && !M.isAdmin();
     if (locked) {
       return h("div", { class: "empty" }, h("h3", { text: "Módulo bloqueado" }),
         h("p", { text: `Seja aprovado na prova do módulo ${m.n - 1} para liberar este.` }),
-        h("a", { class: "btn btn-gold", href: "#/" }, "Voltar à trilha"));
+        h("a", { class: "btn btn-gold", href: M.trailHref(t) }, "Voltar à trilha"));
     }
     const ex = p.exams[m.id];
     const allDone = st.done === st.total;
@@ -325,12 +407,12 @@
     } else if (ex?.status === "reset" && !allDone) {
       examCard = ["bad", h("span", { class: "chip chip-bad", text: "Reprovado" }), `Sua última nota foi ${ex.lastPct ?? "—"}%. As aulas deste módulo foram zeradas. Estude de novo e refaça a prova.`, null];
     } else if (allDone) {
-      examCard = ["ready", h("span", { class: "chip chip-gold", text: "Liberada" }), `${M.session.rules.examSize.module} questões sobre o módulo. Reserve de 20 a 30 minutos.`,
+      examCard = ["ready", h("span", { class: "chip chip-gold", text: "Liberada" }), `${M.examSize(m.id)} questões sobre o módulo. Reserve de 20 a 30 minutos.`,
         h("a", { class: "btn btn-gold", href: "#/exam/" + m.id }, "Fazer a prova do módulo")];
     } else {
       examCard = ["", h("span", { class: "chip", text: "Bloqueada" }), `Conclua as ${st.total - st.done} aulas restantes para liberar a prova.`, null];
     }
-    return h("div", null,
+    const modNode = h("div", null,
       h("div", { class: "page-head" },
         h("span", { class: "chip chip-gold", style: "justify-self:start", text: `Módulo ${m.n}` }),
         h("h2", { text: m.title }),
@@ -348,6 +430,8 @@
         h("p", { class: "muted", style: "margin:10px 0 14px", text: examCard[2] }),
         examCard[3],
         h("details", { style: "margin-top:16px" }, h("summary", { style: "cursor:pointer;font-weight:700", text: "Como a nota funciona" }), M.rulesList())));
+    modNode._crumbs = [{ text: "Trilhas", href: "#/" }, { text: t.title, href: M.trailHref(t) }, { text: "Módulo " + m.n }];
+    return modNode;
   };
   function notFound() {
     return h("div", { class: "empty" }, h("h3", { text: "Página não encontrada" }), h("a", { class: "btn btn-gold", href: "#/" }, "Voltar ao início"));
@@ -359,11 +443,11 @@
     await M.refreshMe();
     const found = M.aula(id);
     if (!found) return notFound();
-    const { mod, lesson, index } = found;
-    const p = M.session.progress, st = p.modules[mod.n - 1];
+    const { trail, mod, lesson, index } = found;
+    const p = M.session.progress, st = M.tp(trail).modules[mod.n - 1];
     if (!st.unlocked && !M.isAdmin()) {
       return h("div", { class: "empty" }, h("h3", { text: "Aula bloqueada" }),
-        h("p", { text: "Termine o módulo anterior para chegar aqui." }), h("a", { class: "btn btn-gold", href: "#/" }, "Voltar à trilha"));
+        h("p", { text: "Termine o módulo anterior para chegar aqui." }), h("a", { class: "btn btn-gold", href: M.trailHref(trail) }, "Voltar à trilha"));
     }
     const already = !!p.lessons[lesson.id];
     const quizzes = new Set(), answered = new Set();
@@ -415,7 +499,7 @@
         h("h2", { text: lesson.title }),
         h("div", { class: "goal" }, h("b", { text: "Ao final desta aula" }), lesson.goal)),
       body, foot);
-    node._crumbs = [{ text: "Trilha", href: "#/" }, { text: `Módulo ${mod.n}`, href: "#/m/" + mod.id }, { text: lesson.title }];
+    node._crumbs = [{ text: "Trilhas", href: "#/" }, { text: trail.title, href: M.trailHref(trail) }, { text: `Módulo ${mod.n}`, href: "#/m/" + mod.id }, { text: lesson.title }];
     return node;
   };
 
@@ -444,19 +528,33 @@
       h("section", { class: "panel" }, h("h3", { text: "Trocar senha" }), err, form));
   };
 
-  /* ───── certificado ───── */
-  M.views.cert = async function () {
+  /* ───── certificados ───── */
+  M.views.cert = async function (trailId) {
     await M.refreshMe();
-    let d;
-    try { d = await M.get("certificate"); }
-    catch (ex) {
-      const p = M.session.progress;
-      const missing = p.modules.filter((m) => m.exam !== "approved").length;
-      return h("div", { class: "empty" }, h("h3", { text: "Certificado ainda não liberado" }),
-        h("p", { text: missing ? `Faltam ${missing} módulos aprovados e a prova final.` : "Falta ser aprovado na prova final." }),
-        h("a", { class: "btn btn-gold", href: "#/" }, "Voltar à trilha"));
+    if (!trailId) {
+      const items = M.trails().map((t) => {
+        const v = M.tp(t), ok = v.finalStatus === "approved";
+        return h(ok ? "a" : "div", { class: "mod-card" + (ok ? "" : " locked"), href: ok ? "#/cert/" + t.id : null },
+          h("div", { class: "mod-n", text: ok ? "★" : "·" }),
+          h("div", null, h("h3", { text: t.title }), h("p", { text: ok ? "Aprovado na prova final. Clique para ver, imprimir ou salvar em PDF." : "Disponível depois da aprovação na prova final desta trilha." })),
+          h("div", { class: "chips row", style: "justify-content:flex-end" }, ok ? h("span", { class: "chip chip-good", text: "Liberado" }) : h("a", { class: "chip", href: M.trailHref(t), text: "Ir para a trilha" })));
+      });
+      return h("div", null,
+        h("div", { class: "page-head" }, h("h2", { text: "Certificados" }), h("p", { text: "Você ganha um certificado ao ser aprovado na prova final de cada trilha." })),
+        h("div", { class: "mod-list" }, items));
     }
-    return h("div", null,
+    const t = M.trailById(trailId);
+    if (!t) return notFound();
+    let d;
+    try { d = await M.get("certificate?trail=" + encodeURIComponent(t.id)); }
+    catch (ex) {
+      const v = M.tp(t);
+      const missing = t.modules.length - v.modulesApproved;
+      return h("div", { class: "empty" }, h("h3", { text: "Certificado ainda não liberado" }),
+        h("p", { text: missing ? `Em ${t.title}, faltam ${missing} ${missing === 1 ? "módulo aprovado" : "módulos aprovados"} e a prova final.` : `Em ${t.title}, falta ser aprovado na prova final.` }),
+        h("a", { class: "btn btn-gold", href: M.trailHref(t) }, "Voltar à trilha"));
+    }
+    const node = h("div", null,
       h("div", { class: "cert" },
         M.brand("#/cert"),
         h("p", { class: "muted", style: "margin-top:28px", text: "Certificamos que" }),
@@ -467,6 +565,8 @@
         h("p", { class: "code", text: "Código de verificação: " + d.code })),
       h("div", { class: "row no-print", style: "justify-content:center;margin-top:24px" },
         h("button", { class: "btn btn-gold", type: "button", onclick: () => window.print() }, "Imprimir ou salvar em PDF"),
-        h("a", { class: "btn btn-ghost", href: "#/" }, "Voltar à trilha")));
+        h("a", { class: "btn btn-ghost", href: "#/cert" }, "Todos os certificados")));
+    node._crumbs = [{ text: "Certificados", href: "#/cert" }, { text: t.title }];
+    return node;
   };
 })();

@@ -22,34 +22,40 @@ Importante: arrastar a pasta no Netlify Drop **não** serve, porque Functions e 
 ## Como funciona
 
 - **Cadastro e login:** nome, e-mail e senha digitada duas vezes. Senha com 8+ caracteres, letras e números. 5 erros seguidos bloqueiam o login por 10 minutos.
-- **Trilha:** módulos em sequência. A prova do módulo libera quando todas as aulas estão concluídas (cada aula exige responder os quizzes). O módulo seguinte libera com a aprovação. A prova final libera após os 7 módulos. O certificado, com código de verificação, sai após a final.
+- **Trilha:** módulos em sequência. A prova do módulo libera quando todas as aulas estão concluídas (cada aula exige responder os quizzes). O módulo seguinte libera com a aprovação. A prova final libera após todos os módulos da trilha. O certificado, com código de verificação, sai após a final.
 - **Regra das provas (corrigidas no servidor):**
   - até 70%: reprovado. Refaz as aulas do módulo e a prova (na final, a trilha inteira).
   - acima de 70% até 90%: refaz só as questões erradas, quantas vezes precisar.
   - acima de 90%: aprovado. Vê o que errou e a resposta certa, sem refazer.
-- **Administração (perfil adm, igual ao master):** painel com funil, lista de acessos, criar acesso individual ou subir lista (colar nome, e-mail, senha e perfil), definir aluno ou adm, desativar, redefinir senha, zerar progresso (tudo ou um módulo), remover, logs com filtro e o banco de questões com gabarito. O acesso master não pode ser rebaixado, desativado ou removido.
+- **Administração (perfil adm, igual ao master):** painel com funil, lista de acessos, criar acesso individual ou subir lista (colar nome, e-mail, senha e perfil), definir aluno ou adm, desativar, redefinir senha, zerar progresso (tudo, uma trilha ou um módulo), remover, logs com filtro e o banco de questões com gabarito. O acesso master não pode ser rebaixado, desativado ou removido.
 - **Logs:** cadastro, login (inclusive falhas), aulas, provas e toda ação de administrador, com data, e-mail e IP.
 
 ## Como adicionar conteúdo
 
-- Aulas: `public/assets/content.js` (blocos `p`, `h`, `list`, `callout`, `video`, `steps`, `compare`, `say`, `term`, `ruler`, `quiz`, `shot` e `find` para telas do portal, e `sim` para simulações com números sorteados, em `calc.js`).
-- Telas do portal e áreas clicáveis: `public/assets/screens.js` (imagens em `public/assets/img/sistema/`).
-- Versões dos quizzes das aulas: `public/assets/practice/m1.js` a `m6.js`. A cada "tentar de novo" o aluno recebe outra pergunta, com as alternativas embaralhadas.
-- Questões: `netlify/functions/lib/questions/` (`m0` a `m6` e `final`).
-- Estrutura e tamanho das provas: `netlify/functions/lib/manifest.mjs`.
-- Depois de mudar, rode `npm test`: ele confere o banco de questões, o currículo, as telas, as simulações e as regras de aprovação. Para checar o equilíbrio de um arquivo de questões (alternativas de tamanho parecido): `node scripts/check-bank.mjs <arquivo>`.
+O site abre num menu de trilhas. Cada trilha é uma pasta em `public/trilhas/<nome>/`:
+
+- `content.js`: módulos e aulas (blocos `p`, `h`, `list`, `callout`, `video`, `steps`, `compare`, `say`, `term`, `ruler`, `quiz`, `shot`, `find` e `sim`; as simulações com números sorteados ficam em `public/assets/calc.js`). Registra a trilha em `window.TRILHAS`.
+- `practice.js`: versões dos quizzes das aulas (a cada "tentar de novo" o aluno recebe outra pergunta, com as alternativas embaralhadas).
+- `screens.js` e `img/`: telas anotadas do sistema, quando a trilha ensina uma ferramenta.
+- Questões das provas: `netlify/functions/lib/questions/<nome>.mjs`.
+- Estrutura das trilhas e tamanho das provas: `netlify/functions/lib/manifest.mjs`.
+- "Em breve" no menu: `public/trilhas/proximas.js`.
+
+**Passo a passo completo, com modelo para copiar:** `COMO-ADICIONAR-TRILHA.md` e a pasta `modelo-de-trilha/`.
+
+Depois de mudar, rode `npm test`: ele confere o banco de questões, o currículo de todas as trilhas, as telas, as simulações e as regras de aprovação. Para checar o equilíbrio de um arquivo de questões (alternativas de tamanho parecido): `node scripts/check-bank.mjs <arquivo>`.
 
 ## Rodar e testar localmente
 
 ```
 npm install
-npm test          # 44 verificações de regras, provas, admin e logs + 5 de conteúdo
+npm test          # 56 verificações de regras, provas, admin e logs + 5 de conteúdo
 npm run local     # http://localhost:8888, banco em memória (zera ao reiniciar)
 ```
 
-## Próximas formações
+## Várias trilhas
 
-O currículo vive em `window.CURSO`. Para uma segunda formação, o caminho é registrar outro curso (conteúdo, manifesto e banco de questões) e listar os cursos na tela inicial. A estrutura de usuários, logs e administração já é compartilhada.
+Todas as trilhas vivem em `window.TRILHAS` (site) e em `TRAILS` (servidor, `manifest.mjs`). O andamento é por trilha (`progress.trails[id]`): módulos em sequência, prova final e certificado próprios. Reprovar na final zera só a trilha em questão. Usuários, logs e administração são compartilhados; o painel tem seletor de trilha. O certificado de cada trilha é emitido em `#/cert/<trilha>`, e a lista de certificados fica em `#/cert`.
 
 ## Desempenho e erros do Netlify Blobs
 
@@ -57,3 +63,5 @@ O currículo vive em `window.CURSO`. Para uma segunda formação, o caminho é r
 - Cada aluno só grava nas próprias chaves (progresso e tentativas), então centenas de alunos ao mesmo tempo não disputam o mesmo dado.
 - O painel de administração lê usuários, progressos e logs em paralelo. Simulado com 150 alunos e 40 ms por operação no banco: Visão geral em cerca de 1 s.
 - O navegador tenta de novo, até 2 vezes e com espera aleatória, leituras, login e conclusão de aula quando o servidor falha por instantes.
+- **Conferir a versão no ar:** abra `https://SEU-SITE.netlify.app/api/health`. A resposta mostra `"build"` (versão do código publicada) e `"blobs"` (como o banco é acessado). Se `build` não aparecer, o site ainda está com o código antigo.
+- **Reserva contra "Token expired" (opcional):** em Netlify > Site configuration > Environment variables, crie `BLOBS_SITE_ID` (o *Site ID*, em Site configuration > General > Site details) e `BLOBS_TOKEN` (um Personal Access Token criado em User settings > Applications). Com as duas, o banco usa essa credencial fixa, que não expira. Faça um novo deploy depois de criar.

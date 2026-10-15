@@ -62,15 +62,15 @@ export default [
   },
   {
     id: "m6-06", module: M, topic: "Valor semanal",
-    q: "Um seller diz que a assessoria \"não se paga\". Um relatório mostra R$ 9 mil de rebate no período, e a mensalidade, num exemplo ilustrativo, é R$ 4.500. O que essa conta mostra?",
+    q: "Na Visão Geral de Pedidos, nos últimos 30 dias, a conta faturou R$ 80.000 e recebeu R$ 2.400 de rebate. Qual mensagem semanal ao seller está correta?",
     options: [
-      "Nada de útil, porque rebate e mensalidade são valores de naturezas diferentes na conta.",
-      "Que o rebate já cobriu duas mensalidades, antes mesmo de contar Ads e demais entregas.",
-      "Que a mensalidade da assessoria deve subir, já que o rebate gerado foi tão alto assim.",
-      "Que o seller deve parar de usar campanhas, porque o rebate não compensa o investimento.",
+      "O rebate dos últimos 30 dias foi de R$ 2.400, ou 3% do faturamento, um resultado já registrado na conta.",
+      "O rebate dos últimos 30 dias foi de R$ 2.400, ou 30% do faturamento, um resultado já registrado na conta.",
+      "O rebate dos últimos 30 dias foi de R$ 2.400, ou 0,3% do faturamento, um resultado já registrado na conta.",
+      "O rebate dos últimos 30 dias foi de R$ 2.400, e vai se manter nesse patamar nos próximos meses da conta.",
     ],
-    answer: [1],
-    why: "9.000 ÷ 4.500 = 2. A conta de padaria é um argumento de percepção de valor. Atenção: o número do exemplo é ilustrativo, nunca prometa um rebate específico.",
+    answer: [0],
+    why: "2.400 ÷ 80.000 = 0,03, ou 3%. A mensagem mostra o resultado que já aconteceu, em reais e em percentual, sem prometer o mesmo valor para o futuro.",
   },
   {
     id: "m6-07", module: M, topic: "Retenção",

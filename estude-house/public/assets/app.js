@@ -3,12 +3,16 @@
   const { h } = M;
   let seq = 0;
 
+  const T = (text) => ({ text });
+  const trailCrumb = (t) => ({ text: t.title, href: M.trailHref(t) });
   const routes = [
-    [/^#?\/?$/, "home", () => ({ key: "home", crumbs: [{ text: "Trilha PriceBot" }], view: () => M.views.home() })],
-    [/^#\/m\/([\w-]+)$/, "module", (m) => ({ key: "home", crumbs: [{ text: "Trilha", href: "#/" }, { text: "Módulo " + (M.modulo(m[1])?.n ?? "") }], view: () => M.views.module(m[1]) })],
-    [/^#\/l\/([\w-]+)$/, "lesson", (m) => ({ key: "home", crumbs: [{ text: "Trilha", href: "#/" }], view: () => M.views.lesson(m[1]) })],
-    [/^#\/exam\/([\w-]+)$/, "exam", (m) => ({ key: "home", crumbs: [{ text: "Trilha", href: "#/" }, { text: M.examName(m[1]) }], view: () => M.views.exam(m[1]) })],
-    [/^#\/cert$/, "cert", () => ({ key: "cert", crumbs: [{ text: "Certificado" }], view: () => M.views.cert() })],
+    [/^#?\/?$/, "home", () => ({ key: "home", crumbs: [T("Trilhas")], view: () => M.views.home() })],
+    [/^#\/t\/([\w-]+)$/, "trail", (m) => ({ key: "home", crumbs: [{ text: "Trilhas", href: "#/" }, T(M.trailById(m[1])?.title || "Trilha")], view: () => M.views.trail(m[1]) })],
+    [/^#\/m\/([\w-]+)$/, "module", (m) => { const t = M.trailOfModule(m[1]); return { key: "home", crumbs: [{ text: "Trilhas", href: "#/" }, t ? trailCrumb(t) : T("Trilha"), T("Módulo " + (M.modulo(m[1])?.n ?? ""))], view: () => M.views.module(m[1]) }; }],
+    [/^#\/l\/([\w-]+)$/, "lesson", (m) => { const t = M.aula(m[1])?.trail; return { key: "home", crumbs: [{ text: "Trilhas", href: "#/" }, t ? trailCrumb(t) : T("Trilha")], view: () => M.views.lesson(m[1]) }; }],
+    [/^#\/exam\/([\w-]+)$/, "exam", (m) => { const t = M.trailOfScope(m[1]); return { key: "home", crumbs: [{ text: "Trilhas", href: "#/" }, t ? trailCrumb(t) : T("Trilha"), T(M.examName(m[1]))], view: () => M.views.exam(m[1]) }; }],
+    [/^#\/cert$/, "cert", () => ({ key: "cert", crumbs: [T("Certificados")], view: () => M.views.cert() })],
+    [/^#\/cert\/([\w-]+)$/, "cert", (m) => ({ key: "cert", crumbs: [{ text: "Certificados", href: "#/cert" }, T(M.trailById(m[1])?.title || "Certificado")], view: () => M.views.cert(m[1]) })],
     [/^#\/conta$/, "conta", () => ({ key: "conta", crumbs: [{ text: "Minha conta" }], view: () => M.views.account() })],
     [/^#\/admin$/, "admin", () => ({ key: "admin", crumbs: [{ text: "Administração" }, { text: "Painel" }], view: () => M.views.adminHome(), wide: true })],
     [/^#\/admin\/usuarios$/, "admin", () => ({ key: "admin-users", crumbs: [{ text: "Administração" }, { text: "Acessos" }], view: () => M.views.adminUsers(), wide: true })],
@@ -33,7 +37,7 @@
     if (!M.session.token) { location.hash = "#/entrar"; return; }
 
     if (!M.session.user) {
-      M.mount(M.loading("Carregando sua trilha…"));
+      M.mount(M.loading("Carregando…"));
       try { await M.refreshMe(); }
       catch (e) {
         if (e.status === 401) { location.hash = "#/entrar"; return; }

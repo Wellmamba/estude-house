@@ -54,18 +54,20 @@
   M.session = { token: M.store.get("ma.token") || "", user: null, progress: null, rules: null };
   M.setToken = (t) => { M.session.token = t || ""; t ? M.store.set("ma.token", t) : M.store.del("ma.token"); };
 
-  /* Pede de novo, uma vez, quando o servidor falha por instantes (erro 5xx ou queda de rede).
-     Só repete leituras e a conclusão de aula, que podem ser enviadas duas vezes sem efeito colateral. */
-  const SAFE_RETRY = (method, path) => method === "GET" || path === "progress/lesson";
+  /* Pede de novo (até 2 vezes, com espera crescente e aleatória) quando o servidor falha por instantes
+     (erro 5xx ou queda de rede). Só repete leituras, login e conclusão de aula, que podem ser enviados
+     duas vezes sem efeito colateral. A espera aleatória evita que muitos alunos repitam ao mesmo tempo. */
+  const SAFE_RETRY = (method, path) => method === "GET" || path === "progress/lesson" || path === "auth/login";
+  const WAITS = [700, 1800];
   M.api = async function api(method, path, body) {
-    try {
-      return await apiOnce(method, path, body);
-    } catch (e) {
-      if (SAFE_RETRY(method, path) && (e.status >= 500 || e.status === 0)) {
-        await new Promise((r) => setTimeout(r, 900));
-        return apiOnce(method, path, body);
+    for (let i = 0; ; i++) {
+      try {
+        return await apiOnce(method, path, body);
+      } catch (e) {
+        const again = SAFE_RETRY(method, path) && (e.status >= 500 || e.status === 0) && i < WAITS.length;
+        if (!again) throw e;
+        await new Promise((r) => setTimeout(r, WAITS[i] + Math.random() * 500));
       }
-      throw e;
     }
   };
   async function apiOnce(method, path, body) {
@@ -132,17 +134,39 @@
   M.fmtPct = (n) => String(Math.round(n * 10) / 10).replace(".", ",");
   M.pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
 
-  /* ───── currículo: consultas ───── */
-  M.curso = () => window.CURSO;
-  M.modulo = (id) => window.CURSO.modules.find((m) => m.id === id);
+  /* ───── currículo: consultas (várias trilhas) ───── */
+  /* Cada trilha se registra em window.TRILHAS (ver public/trilhas/<nome>/content.js).
+     Ids de módulos, aulas e provas finais são únicos entre todas as trilhas. */
+  M.trails = () => window.TRILHAS || [];
+  M.trailById = (id) => M.trails().find((t) => t.id === id) || null;
+  M.trailOfModule = (id) => M.trails().find((t) => t.modules.some((m) => m.id === id)) || null;
+  M.trailOfLesson = (id) => M.trails().find((t) => t.modules.some((m) => m.lessons.some((l) => l.id === id))) || null;
+  M.finalScope = (t) => t.finalScope || "final";
+  M.trailOfFinal = (scope) => M.trails().find((t) => M.finalScope(t) === scope) || null;
+  M.isFinal = (scope) => !!M.trailOfFinal(scope);
+  M.trailOfScope = (scope) => M.trailOfFinal(scope) || M.trailOfModule(scope);
+  M.trailHref = (t) => "#/t/" + t.id;
+  M.curso = () => M.trails()[0];
+  M.modulo = (id) => { for (const t of M.trails()) { const m = t.modules.find((x) => x.id === id); if (m) return m; } return undefined; };
   M.aula = (id) => {
-    for (const m of window.CURSO.modules) {
-      const i = m.lessons.findIndex((l) => l.id === id);
-      if (i >= 0) return { mod: m, lesson: m.lessons[i], index: i };
+    for (const t of M.trails()) {
+      for (const m of t.modules) {
+        const i = m.lessons.findIndex((l) => l.id === id);
+        if (i >= 0) return { trail: t, mod: m, lesson: m.lessons[i], index: i };
+      }
     }
     return null;
   };
-  M.totalLessons = () => window.CURSO.modules.reduce((a, m) => a + m.lessons.length, 0);
+  M.totalLessons = (t) => (t || M.curso()).modules.reduce((a, m) => a + m.lessons.length, 0);
+  /* andamento do aluno em uma trilha: { modules[], finalUnlocked, finalStatus, lessonsDone, lessonsTotal, modulesApproved } */
+  M.tp = (t, progress) => (progress || M.session.progress)?.trails?.[t.id];
+  /* quantas questões a prova sorteia */
+  M.examSize = (scope) => {
+    const ex = M.session.rules?.examSize || {};
+    const fin = M.trailOfFinal(scope);
+    if (fin) return fin.finalSize || ex.final || 30;
+    return ex[scope] || ex.module || 12;
+  };
   M.isAdmin = () => M.session.user?.role === "admin";
 
   /* ───── ícones (traço simples, um único estilo) ───── */
@@ -173,6 +197,11 @@
       M.h("span", { class: "brand-name" }, "Estude House", M.h("small", { text: "Ambiente de estudos da Mamba" })));
   };
 
-  /* rótulos de exame */
-  M.examName = (scope) => (scope === "final" ? "Prova final" : "Prova do módulo " + (window.CURSO.modules.find((m) => m.id === scope)?.n ?? scope));
+  /* rótulos de exame; com `withTrail`, acrescenta o nome da trilha (útil quando há mais de uma) */
+  M.examName = (scope, withTrail) => {
+    const fin = M.trailOfFinal(scope);
+    const t = fin || M.trailOfModule(scope);
+    const base = fin ? "Prova final" : "Prova do módulo " + (M.modulo(scope)?.n ?? scope);
+    return withTrail && t && M.trails().length > 1 ? `${base} · ${t.title}` : base;
+  };
 })();

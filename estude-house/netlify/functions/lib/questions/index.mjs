@@ -14,4 +14,4 @@ import final from "./final.mjs";
 export const QUESTIONS = [...m0, ...m1, ...m2, ...m3, ...m4, ...m5, ...m6, ...final];
 
 const map = new Map(QUESTIONS.map((q) => [q.id, q]));
-export const byId = (id) => map.get(id);
+export const byId = (id) => map.get(id) || QUESTIONS.find((q) => q.id === id);

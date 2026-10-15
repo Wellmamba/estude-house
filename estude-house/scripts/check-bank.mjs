@@ -1,4 +1,4 @@
-// Verifica um arquivo de questões (netlify/functions/lib/questions/*.mjs) ou de prática (public/assets/practice/*.js).
+// Verifica um arquivo de questões (netlify/functions/lib/questions/*.mjs) ou de prática (public/trilhas/<trilha>/practice.js).
 // Uso: node scripts/check-bank.mjs <arquivo>
 // Regras: estrutura válida, alternativas de tamanho parecido (a certa não pode se destacar pelo tamanho).
 import fs from "node:fs";

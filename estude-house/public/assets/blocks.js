@@ -134,7 +134,7 @@
       [["left", b.left], ["right", b.right]].map(([, side]) =>
         h("div", { class: side.tone === "bad" ? "bad" : "good" }, h("h4", { text: side.title }), h("ul", null, side.items.map((t) => h("li", { html: t })))))),
     say: (b) => h("div", { class: "say" }, h("span", { class: "c-title", text: b.title || "Como explicar" }), h("p", { html: b.html })),
-    term: (b) => h("div", null, h("div", { class: "terms-title", text: "Termos desta etapa" }),
+    term: (b) => h("div", null, h("div", { class: "terms-title", text: b.title || "Termos desta etapa" }),
       h("div", { class: "terms" }, b.items.map((t) =>
         h("div", { class: "term" }, h("b", { text: t.term }), t.label ? h("i", { text: t.label }) : null, h("p", { html: t.def }))))),
     video, ruler, quiz,

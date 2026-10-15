@@ -14,32 +14,52 @@
   const guard = () => (M.isAdmin() ? null : h("div", { class: "empty" }, h("h3", { text: "Área restrita" }), h("p", { text: "Somente administradores veem esta página." })));
   const copy = async (text, ok) => { try { await navigator.clipboard.writeText(text); M.toast(ok || "Copiado.", "ok"); } catch { M.toast("Não foi possível copiar. Selecione e copie manualmente.", "err"); } };
 
+  /* trilha escolhida nos painéis (lembrada enquanto a página está aberta) */
+  let adminTrail = null;
+  const curTrail = () => M.trailById(adminTrail) || M.trails()[0];
+  function trailPicker(onChange) {
+    if (M.trails().length < 2) return null;
+    const sel = h("select", { class: "select", "aria-label": "Trilha", style: "width:auto" }, M.trails().map((t) => h("option", { value: t.id, text: t.title })));
+    sel.value = curTrail().id;
+    sel.addEventListener("change", () => { adminTrail = sel.value; onChange(); });
+    return sel;
+  }
+
   M.views.adminHome = async function () {
     const g = guard(); if (g) return g;
     const d = await M.get("admin/overview");
-    const mods = M.curso().modules;
-    const maxV = Math.max(1, d.alunos);
+    const holder = h("div");
+    function draw() {
+      const t = curTrail(), tr = d.trails[t.id] || { started: 0, approved: 0, avgProgress: 0, funnel: [] };
+      const maxV = Math.max(1, d.alunos);
+      const fs = d.rules.examSize;
+      holder.replaceChildren(
+        h("div", { class: "grid grid-4" },
+          stat(d.users, `acessos (${d.alunos} alunos, ${d.admins} adm)`), stat(tr.started, "alunos que começaram esta trilha"),
+          stat(tr.approved, "aprovados na prova final"), stat(tr.avgProgress + "%", "média de aulas concluídas")),
+        h("section", { class: "panel", style: "margin-top:18px" }, h("h3", { text: "Funil por módulo" }),
+          h("div", { class: "row small muted", style: "margin-bottom:10px" },
+            h("span", null, "Barra dourada: começaram"), h("span", null, "Barra lilás: aprovados")),
+          h("div", { class: "funnel" }, tr.funnel.map((f) => {
+            const m = t.modules.find((x) => x.id === f.id);
+            return h("div", { class: "funnel-row" }, h("span", { text: `${m.n}. ${m.title}` }),
+              h("div", { class: "funnel-bars" },
+                h("div", { class: "bar" }, h("i", { style: `width:${M.pct(f.started, maxV)}%` })),
+                h("div", { class: "bar b2" }, h("i", { style: `width:${M.pct(f.approved, maxV)}%` }))),
+              h("span", { class: "small muted", text: `${f.started} / ${f.approved}` }));
+          }))),
+        h("section", { class: "panel" }, h("div", { class: "row row-between" }, h("h3", { style: "margin:0", text: "Atividade recente" }), h("a", { class: "btn btn-ghost btn-sm", href: "#/admin/logs" }, "Ver todos os logs")),
+          d.recent.length ? h("div", { class: "table-wrap", style: "margin-top:12px" }, logTable(d.recent)) : h("p", { class: "muted", text: "Nenhuma atividade ainda." })),
+        h("section", { class: "panel" }, h("h3", { text: "Regras de aprovação em vigor" }),
+          h("p", { class: "muted small", style: "margin:0", text: `Provas de módulo: ${fs.module} questões (a de ambientação, ${fs.m0}). Prova final: ${t.finalSize || fs.final}. Reprovação na final ${d.rules.finalFailResetsAll ? "zera a trilha inteira" : "zera só a prova final"}.` }),
+          M.rulesList.call(null)));
+    }
+    draw();
+    const pick = trailPicker(draw);
     return h("div", null,
-      h("div", { class: "page-head" }, h("h2", { text: "Painel" }), h("p", { text: "Visão master de todos os acessos e do andamento da formação." })),
-      h("div", { class: "grid grid-4" },
-        stat(d.users, `acessos (${d.alunos} alunos, ${d.admins} adm)`), stat(d.started, "alunos que começaram"),
-        stat(d.approved, "aprovados na prova final"), stat(d.avgProgress + "%", "média de aulas concluídas")),
-      h("section", { class: "panel", style: "margin-top:18px" }, h("h3", { text: "Funil por módulo" }),
-        h("div", { class: "row small muted", style: "margin-bottom:10px" },
-          h("span", null, "Barra dourada: começaram"), h("span", null, "Barra lilás: aprovados")),
-        h("div", { class: "funnel" }, d.funnel.map((f) => {
-          const m = mods.find((x) => x.id === f.id);
-          return h("div", { class: "funnel-row" }, h("span", { text: `${m.n}. ${m.title}` }),
-            h("div", { class: "funnel-bars" },
-              h("div", { class: "bar" }, h("i", { style: `width:${M.pct(f.started, maxV)}%` })),
-              h("div", { class: "bar b2" }, h("i", { style: `width:${M.pct(f.approved, maxV)}%` }))),
-            h("span", { class: "small muted", text: `${f.started} / ${f.approved}` }));
-        }))),
-      h("section", { class: "panel" }, h("div", { class: "row row-between" }, h("h3", { style: "margin:0", text: "Atividade recente" }), h("a", { class: "btn btn-ghost btn-sm", href: "#/admin/logs" }, "Ver todos os logs")),
-        d.recent.length ? h("div", { class: "table-wrap", style: "margin-top:12px" }, logTable(d.recent)) : h("p", { class: "muted", text: "Nenhuma atividade ainda." })),
-      h("section", { class: "panel" }, h("h3", { text: "Regras de aprovação em vigor" }),
-        h("p", { class: "muted small", style: "margin:0", text: `Provas de módulo: ${d.rules.examSize.module} questões. Prova final: ${d.rules.examSize.final}. Reprovação na final ${d.rules.finalFailResetsAll ? "zera a trilha inteira" : "zera só a prova final"}.` }),
-        M.rulesList.call(null)));
+      h("div", { class: "page-head" }, h("h2", { text: "Painel" }), h("p", { text: "Visão master de todos os acessos e do andamento das trilhas." })),
+      pick ? h("div", { class: "toolbar" }, h("label", { class: "small muted", text: "Trilha:" }), pick) : null,
+      holder);
     function stat(v, l) { return h("div", { class: "stat" }, h("b", { text: v }), h("span", { text: l })); }
   };
 
@@ -65,17 +85,19 @@
       h("option", { value: "", text: "Todos os perfis" }), h("option", { value: "aluno", text: "Alunos" }), h("option", { value: "admin", text: "Administradores" }));
     search.addEventListener("input", () => { q = search.value.toLowerCase(); draw(); });
     sel.addEventListener("change", () => { role = sel.value; draw(); });
+    const pick = trailPicker(() => draw());
 
     async function reload() { users = (await M.get("admin/users")).users; draw(); }
     function draw() {
+      const t = curTrail();
       const rows = users.filter((u) => (!role || u.role === role) && (!q || (u.name + " " + u.email).toLowerCase().includes(q)));
       holder.replaceChildren(rows.length ? h("div", { class: "table-wrap" }, h("table", { class: "tbl" },
         h("thead", null, h("tr", null, ["Pessoa", "Perfil", "Aulas", "Módulos", "Final", "XP", "Último acesso", ""].map((t) => h("th", { text: t })))),
         h("tbody", null, rows.map((u) => h("tr", null,
           h("td", { class: "who" }, h("b", { text: u.name }), h("span", { text: u.email })),
           h("td", null, h("span", { class: "chip " + (u.role === "admin" ? "chip-gold" : ""), text: u.role === "admin" ? (u.master ? "Master" : "Adm") : "Aluno" }), u.active ? null : h("span", { class: "chip chip-bad", style: "margin-left:6px", text: "Desativado" })),
-          h("td", { text: `${u.lessonsDone}/${M.totalLessons()}` }), h("td", { text: `${u.modulesApproved}/${M.curso().modules.length}` }),
-          h("td", null, finalChip(u.finalStatus)), h("td", { text: u.xp }), h("td", { class: "small", text: M.fmtDateTime(u.lastLoginAt) }),
+          h("td", { text: `${u.trails[t.id]?.lessonsDone ?? 0}/${M.totalLessons(t)}` }), h("td", { text: `${u.trails[t.id]?.modulesApproved ?? 0}/${t.modules.length}` }),
+          h("td", null, finalChip(u.trails[t.id]?.finalStatus)), h("td", { text: u.xp }), h("td", { class: "small", text: M.fmtDateTime(u.lastLoginAt) }),
           h("td", null, h("a", { class: "btn btn-ghost btn-sm", href: "#/admin/usuarios/" + u.id }, "Abrir"))))))) : h("div", { class: "empty", text: "Nenhum acesso encontrado com esse filtro." }));
     }
 
@@ -122,7 +144,7 @@
       });
     }
 
-    const top = h("div", { class: "toolbar" }, search, sel, h("span", { class: "spacer", style: "flex:1" }),
+    const top = h("div", { class: "toolbar" }, search, sel, pick, h("span", { class: "spacer", style: "flex:1" }),
       h("button", { class: "btn btn-ghost", type: "button", onclick: bulk, text: "Subir lista" }),
       h("button", { class: "btn btn-gold", type: "button", onclick: newAccess, text: "Novo acesso" }));
     draw();
@@ -152,7 +174,6 @@
       let d;
       try { d = await M.get("admin/users/" + id); } catch (ex) { box.replaceChildren(h("div", { class: "empty" }, h("h3", { text: ex.message }), h("a", { class: "btn btn-gold", href: "#/admin/usuarios" }, "Voltar"))); return; }
       const u = d.user, p = d.progress, self = u.id === M.session.user.id, locked = u.master || self;
-      const mods = M.curso().modules;
       const roleSel = h("select", { class: "select", id: "u-role", disabled: locked, style: "width:auto" },
         h("option", { value: "aluno", text: "Aluno" }), h("option", { value: "admin", text: "Administrador" }));
       roleSel.value = u.role;
@@ -167,14 +188,14 @@
           h("div", { class: "row" }, h("span", { class: "chip " + (u.role === "admin" ? "chip-gold" : ""), text: u.master ? "Master" : u.role === "admin" ? "Administrador" : "Aluno" }),
             u.active ? h("span", { class: "chip chip-good", text: "Ativo" }) : h("span", { class: "chip chip-bad", text: "Desativado" }),
             h("span", { class: "chip", text: `${u.xp} XP` }), h("span", { class: "chip", text: "Criado em " + M.fmtDate(u.createdAt) }), h("span", { class: "chip", text: "Último acesso " + M.fmtDateTime(u.lastLoginAt) }))),
-        h("section", { class: "panel" }, h("h3", { text: "Andamento" }),
+        M.trails().map((t) => h("section", { class: "panel" }, h("h3", { text: M.trails().length > 1 ? "Andamento · " + t.title : "Andamento" }),
           h("div", { class: "table-wrap" }, h("table", { class: "tbl", style: "min-width:520px" },
-            h("thead", null, h("tr", null, ["Módulo", "Aulas", "Prova", "Melhor nota", "Tentativas"].map((t) => h("th", { text: t })))),
-            h("tbody", null, [...mods.map((m, i) => ({ id: m.id, name: `${m.n}. ${m.title}`, st: p.modules[i] })), { id: "final", name: "Prova final", st: null }].map((r) => {
+            h("thead", null, h("tr", null, ["Módulo", "Aulas", "Prova", "Melhor nota", "Tentativas"].map((x) => h("th", { text: x })))),
+            h("tbody", null, [...t.modules.map((m, i) => ({ id: m.id, name: `${m.n}. ${m.title}`, st: p.trails[t.id].modules[i] })), { id: M.finalScope(t), name: "Prova final", st: null }].map((r) => {
               const e = p.exams[r.id];
               return h("tr", null, h("td", { text: r.name }), h("td", { text: r.st ? `${r.st.done}/${r.st.total}` : "—" }),
                 h("td", null, finalChip(e?.status)), h("td", { text: e?.bestPct ? e.bestPct + "%" : "—" }), h("td", { text: e?.attempts || 0 }));
-            }))))),
+            })))))),
         h("section", { class: "panel" }, h("h3", { text: "Gestão do acesso" }),
           locked ? h("p", { class: "muted small", text: u.master ? "O acesso master não pode ter perfil alterado, ser desativado ou removido." : "Você não pode alterar o próprio perfil nem desativar o próprio acesso aqui." }) : null,
           h("div", { class: "grid grid-2" },
@@ -203,22 +224,36 @@
                 try { await M.api("DELETE", "admin/users/" + id); M.toast("Acesso removido.", "ok"); location.hash = "#/admin/usuarios"; } catch (ex) { M.toast(ex.message, "err"); }
               }
             } })),
-          h("div", { class: "field", style: "margin-top:16px" }, h("label", { for: "u-reset", text: "Zerar só um módulo" }),
-            (() => {
-              const s = h("select", { class: "select", id: "u-reset", style: "width:auto" }, h("option", { value: "", text: "Escolha o módulo" }), mods.map((m) => h("option", { value: m.id, text: `${m.n}. ${m.title}` })));
-              s.addEventListener("change", async () => {
-                if (!s.value) return;
-                const m = M.modulo(s.value);
-                if (await M.confirm({ title: "Zerar módulo " + m.n + "?", text: "As aulas e a prova desse módulo voltam ao zero, e a prova final também.", ok: "Zerar módulo", danger: true }))
-                  act(() => M.post("admin/users/" + id + "/reset", { scope: s.value }), "Módulo zerado.");
-                s.value = "";
-              });
-              return s;
-            })())),
+          h("div", { class: "grid grid-2", style: "margin-top:16px" },
+            M.trails().length > 1 ? h("div", { class: "field" }, h("label", { for: "u-reset-trail", text: "Zerar uma trilha inteira" }),
+              (() => {
+                const s2 = h("select", { class: "select", id: "u-reset-trail", style: "width:auto" }, h("option", { value: "", text: "Escolha a trilha" }), M.trails().map((t) => h("option", { value: t.id, text: t.title })));
+                s2.addEventListener("change", async () => {
+                  if (!s2.value) return;
+                  const t = M.trailById(s2.value);
+                  if (await M.confirm({ title: "Zerar a trilha?", text: `Todas as aulas e provas de <strong>${M.esc(t.title)}</strong> voltam ao zero para <strong>${M.esc(u.name)}</strong>. As outras trilhas não mudam.`, ok: "Zerar trilha", danger: true }))
+                    act(() => M.post("admin/users/" + id + "/reset", { scope: "trail:" + t.id }), "Trilha zerada.");
+                  s2.value = "";
+                });
+                return s2;
+              })()) : null,
+            h("div", { class: "field" }, h("label", { for: "u-reset", text: "Zerar só um módulo" }),
+              (() => {
+                const s = h("select", { class: "select", id: "u-reset", style: "width:auto" }, h("option", { value: "", text: "Escolha o módulo" }),
+                  M.trails().map((t) => h("optgroup", { label: t.title }, t.modules.map((m) => h("option", { value: m.id, text: `${m.n}. ${m.title}` })))));
+                s.addEventListener("change", async () => {
+                  if (!s.value) return;
+                  const m = M.modulo(s.value);
+                  if (await M.confirm({ title: "Zerar módulo " + m.n + "?", text: "As aulas e a prova desse módulo voltam ao zero, e a prova final da trilha também.", ok: "Zerar módulo", danger: true }))
+                    act(() => M.post("admin/users/" + id + "/reset", { scope: s.value }), "Módulo zerado.");
+                  s.value = "";
+                });
+                return s;
+              })()))),
         h("section", { class: "panel" }, h("h3", { text: "Histórico de provas" }),
           d.history.length ? h("div", { class: "table-wrap" }, h("table", { class: "tbl", style: "min-width:520px" },
             h("thead", null, h("tr", null, ["Quando", "Prova", "Tipo", "Resultado", "Nota"].map((t) => h("th", { text: t })))),
-            h("tbody", null, d.history.map((x) => h("tr", null, h("td", { text: M.fmtDateTime(x.at) }), h("td", { text: M.examName(x.scope) }),
+            h("tbody", null, d.history.map((x) => h("tr", null, h("td", { text: M.fmtDateTime(x.at) }), h("td", { text: M.examName(x.scope, true) }),
               h("td", { text: x.mode === "retry" ? "Só erros" : "Completa" }),
               h("td", null, h("span", { class: "chip " + (x.outcome === "aprovado" ? "chip-good" : x.outcome === "refazer-erros" ? "chip-warn" : "chip-bad"), text: x.outcome === "aprovado" ? "Aprovado" : x.outcome === "refazer-erros" ? "Refazer erros" : "Reprovado" })),
               h("td", { text: x.pct != null ? M.fmtPct(x.pct) + "% (" + x.correct + "/" + x.total + ")" : `${x.correct}/${x.total}` })))))) : h("p", { class: "muted", text: "Nenhuma prova feita ainda." })));
@@ -261,7 +296,9 @@
     let mod = "";
     const holder = h("div", { class: "review" });
     const sel = h("select", { class: "select", "aria-label": "Filtrar por módulo" }, h("option", { value: "", text: `Todas (${d.questions.length})` }),
-      M.curso().modules.map((m) => h("option", { value: m.id, text: `Módulo ${m.n}: ${m.title}` })), h("option", { value: "final", text: "Somente prova final" }));
+      M.trails().map((t) => h("optgroup", { label: t.title }, [
+        ...t.modules.map((m) => h("option", { value: m.id, text: `Módulo ${m.n}: ${m.title}` })),
+        h("option", { value: M.finalScope(t), text: "Somente prova final" })])));
     sel.addEventListener("change", () => { mod = sel.value; draw(); });
     function draw() {
       const list = d.questions.filter((x) => !mod || x.module === mod);
@@ -273,7 +310,7 @@
     }
     draw();
     return h("div", null, h("div", { class: "page-head" }, h("h2", { text: "Banco de questões" }),
-      h("p", { text: `${d.questions.length} questões com gabarito. Cada prova sorteia ${d.rules.examSize.module} (módulo) ou ${d.rules.examSize.final} (final) e embaralha as alternativas. Só administradores veem esta página.` })),
+      h("p", { text: `${d.questions.length} questões com gabarito. Cada prova sorteia ${d.rules.examSize.module} (módulo) ou ${d.rules.examSize.final} (final, padrão) e embaralha as alternativas. Só administradores veem esta página.` })),
       h("div", { class: "toolbar" }, sel), holder);
   };
 })();

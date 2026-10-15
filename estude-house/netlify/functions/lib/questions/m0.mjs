@@ -1,7 +1,7 @@
 const M = "m0";
 export default [
   {
-    id: "m0-01", module: M, topic: "Menu do portal",
+    id: "m0-01", module: M, area: "menu", topic: "Menu do portal",
     q: "Em qual item do menu ficam os custos que a PriceBot usa para calcular a margem de cada SKU?",
     options: [
       "Em Impostos, que guarda a regra e a alíquota usadas pelo SKU em cada venda realizada",
@@ -13,7 +13,7 @@ export default [
     why: "O custo mora no cadastro de Produtos, ligado ao SKU. Impostos guarda as regras de imposto e Fornecedores guarda as marcas, mas nenhum dos dois guarda o custo do SKU.",
   },
   {
-    id: "m0-02", module: M, topic: "Home: comparativo",
+    id: "m0-02", module: M, area: "home", topic: "Home: comparativo",
     q: "No dia 20, a Home mostra mês atual R$ 30.000, mês anterior inteiro R$ 42.000 e mesmo período do mês anterior R$ 24.000. Qual leitura está certa?",
     options: [
       "O mês está 25% acima, porque R$ 30.000 contra R$ 24.000 compara os mesmos 20 dias",
@@ -25,7 +25,7 @@ export default [
     why: "Com o mês pela metade, a comparação justa é com o mesmo período do mês anterior: 30.000 ÷ 24.000 = 1,25, ou seja, 25% acima.",
   },
   {
-    id: "m0-03", module: M, topic: "Home: dias sem vender",
+    id: "m0-03", module: M, area: "home", topic: "Home: dias sem vender",
     q: "O seller quer saber quais produtos estão parados. Qual recurso da Home entrega isso, pronto para enviar a ele?",
     options: [
       "O gráfico Status dos anúncios, que lista cada SKU parado e permite baixar a planilha dele",
@@ -37,7 +37,7 @@ export default [
     why: "O quadro Dias Sem Vender lista os SKUs e há quantos dias cada um não vende, e o ícone de download baixa a lista em planilha.",
   },
   {
-    id: "m0-04", module: M, topic: "Pedidos: período",
+    id: "m0-04", module: M, area: "pedidos", topic: "Pedidos: período",
     q: "Você abre a Visão Geral de Pedidos e o botão Mês Atual está selecionado. O seller pediu os números de 60 dias. Qual é o passo correto?",
     options: [
       "Ler os indicadores do mês atual e dobrar os valores, já que são dois meses de histórico",
@@ -49,7 +49,7 @@ export default [
     why: "O período escolhido vale para todos os indicadores e gráficos. Os botões do gráfico e do quadro de grupo só mudam o que é desenhado ali.",
   },
   {
-    id: "m0-05", module: M, topic: "Pedidos: pedidos negativos",
+    id: "m0-05", module: M, area: "pedidos", topic: "Pedidos: pedidos negativos",
     q: "A Visão Geral mostra 9 pedidos negativos no mês. Qual leitura e qual próximo passo estão corretos?",
     options: [
       "São 9 anúncios pausados no Mercado Livre; o passo é abrir Anúncios > Pausados para reativá-los",
@@ -61,7 +61,7 @@ export default [
     why: "Pedidos negativos são pedidos que fecharam com margem negativa. A lista Pedidos mostra qual anúncio gerou cada resultado, e a ordenação traz as piores margens para o topo.",
   },
   {
-    id: "m0-06", module: M, topic: "Pedidos: rebate",
+    id: "m0-06", module: M, area: "pedidos", topic: "Pedidos: rebate",
     q: "Em 30 dias, a conta faturou R$ 60.000 e recebeu R$ 3.000 de rebate. Quanto vale o indicador Rebate/Faturamento?",
     options: [
       "5%, porque R$ 3.000 divididos por R$ 60.000 resultam em 0,05 no indicador",
@@ -73,7 +73,7 @@ export default [
     why: "Rebate/Faturamento é o rebate dividido pelo faturamento: 3.000 ÷ 60.000 = 0,05, ou 5%.",
   },
   {
-    id: "m0-07", module: M, topic: "Catálogo e Tradicional",
+    id: "m0-07", module: M, area: "listas", topic: "Catálogo e Tradicional",
     q: "Qual destas diferenças entre as listas Catálogo e Tradicional está correta?",
     options: [
       "A lista Tradicional tem o filtro Status do Catálogo, e a lista Catálogo não tem",
@@ -85,7 +85,7 @@ export default [
     why: "O filtro Status do Catálogo (ganhando, perdendo, empatando) só existe na lista Catálogo. Os demais filtros são os mesmos nas duas listas.",
   },
   {
-    id: "m0-08", module: M, topic: "Lista vazia",
+    id: "m0-08", module: M, area: "listas", topic: "Lista vazia",
     q: "Uma lista do portal abre com “Nenhum dado para exibir”. Marque todas as conferências que vêm antes de suspeitar de problema na integração.",
     options: [
       "Clicar em Limpar filtros, para descartar um filtro que esteja escondendo as linhas",
@@ -98,7 +98,7 @@ export default [
     why: "Lista vazia costuma ser filtro, conta ou período. Refazer o grant ou apagar anúncios só entra depois de descartar essas três conferências.",
   },
   {
-    id: "m0-09", module: M, topic: "Anúncios: ler uma linha",
+    id: "m0-09", module: M, area: "anuncios", topic: "Anúncios: ler uma linha",
     q: "Uma linha de Anúncios mostra PMA R$ 120,00, margens 6%, 10% e 15% e Precificação Automática “Sim”. O que o bot faz nesse anúncio?",
     options: [
       "Aceita qualquer campanha, porque o PMA de R$ 120,00 substitui a margem mínima de 6% do anúncio",
@@ -110,7 +110,7 @@ export default [
     why: "Mínima é o piso (6%), objetiva é o alvo (10%) e máxima é o teto (15%). O PMA é um preço mínimo, e só vale com a chave ativada nas configurações.",
   },
   {
-    id: "m0-10", module: M, topic: "Anúncios: edição em massa",
+    id: "m0-10", module: M, area: "anuncios", topic: "Anúncios: edição em massa",
     q: "O botão Editar em massa aparece em cinza na lista de Anúncios. O que você faz para habilitá-lo?",
     options: [
       "Marca um ou mais anúncios nas caixas de seleção da esquerda, e o botão passa a funcionar",
@@ -122,7 +122,7 @@ export default [
     why: "O botão fica cinza até haver anúncios marcados. A edição vale para os selecionados, por página.",
   },
   {
-    id: "m0-11", module: M, topic: "Anúncios pendentes",
+    id: "m0-11", module: M, area: "problemas", topic: "Anúncios pendentes",
     q: "Um anúncio está em Pendentes com SKU NAO_LOCALIZADO e Precificação Automática “Não”. Qual é a leitura correta?",
     options: [
       "O seller desligou o bot de propósito, e o anúncio só volta quando ele pedir pelo portal",
@@ -134,7 +134,7 @@ export default [
     why: "Pendente é o anúncio que o bot ainda não pode precificar. Com SKU NAO_LOCALIZADO, a PriceBot não consegue ligar o anúncio a um produto e a seu custo.",
   },
   {
-    id: "m0-12", module: M, topic: "Anúncios pausados",
+    id: "m0-12", module: M, area: "problemas", topic: "Anúncios pausados",
     q: "Um anúncio aparece em Pausados com “Item com status paused no Mercado Livre”. Quem resolve e como?",
     options: [
       "O assessor, ligando a precificação automática do anúncio na lista Tradicional do portal",
@@ -146,7 +146,7 @@ export default [
     why: "O status pausado vem do Mercado Livre. O anúncio só volta quando é reativado lá, e nem o bot nem a margem mudam isso.",
   },
   {
-    id: "m0-13", module: M, topic: "Verificação: ajuste manual",
+    id: "m0-13", module: M, area: "problemas", topic: "Verificação: ajuste manual",
     q: "A Verificação lista 40 anúncios com “Margem abaixo da mínima — ajuste manual”. Qual conduta está alinhada com a Mamba?",
     options: [
       "Baixar a mínima de cada anúncio até igualar a margem atual e ligar o bot em seguida",
@@ -158,7 +158,7 @@ export default [
     why: "A Mamba não altera o preço base nem baixa a mínima para encaixar a margem atual. O seller reprecifica e o bot só é ligado com a margem de volta à faixa.",
   },
   {
-    id: "m0-14", module: M, topic: "Verificação: leituras",
+    id: "m0-14", module: M, area: "problemas", topic: "Verificação: leituras",
     q: "Marque todas as leituras corretas da tela Verificação.",
     options: [
       "Pontos vermelhos indicam que o bot está desligado em todos esses anúncios do seller",
@@ -171,7 +171,7 @@ export default [
     why: "Os pontos coloridos acompanham o tipo de problema, não o estado do bot. Em revisão é um status do Mercado Livre, não um recálculo da PriceBot.",
   },
   {
-    id: "m0-15", module: M, topic: "Importador: formato",
+    id: "m0-15", module: M, area: "importador", topic: "Importador: formato",
     q: "Você tem a planilha de custos pronta, salva como .csv. O que acontece ao enviá-la pelo importador?",
     options: [
       "O portal recusa o arquivo, porque o importador só aceita os formatos .xls e .xlsx",
@@ -183,7 +183,7 @@ export default [
     why: "O aviso ao lado dos botões diz: formato aceito .xls e .xlsx. Outros formatos são recusados.",
   },
   {
-    id: "m0-16", module: M, topic: "Importador: custos em massa",
+    id: "m0-16", module: M, area: "importador", topic: "Importador: custos em massa",
     q: "O seller enviou os custos corretos de 600 produtos. Qual é o fluxo mais eficiente para atualizar o portal?",
     options: [
       "Abrir cada produto na tela Produtos e editar o custo, página por página, até acabar",
@@ -195,7 +195,7 @@ export default [
     why: "Para muitos itens, o caminho é a planilha: baixar, corrigir no arquivo e importar de volta. A edição em massa de anúncios altera margens, não custos.",
   },
   {
-    id: "m0-17", module: M, topic: "Produtos pendentes",
+    id: "m0-17", module: M, area: "cadastro", topic: "Produtos pendentes",
     q: "Um produto aparece em Produtos > Pendentes. Marque todas as informações que ainda não foram preenchidas nele.",
     options: [
       "A regra de imposto, que aparece como DESCONHECIDO na coluna Regra de Imposto",
@@ -208,7 +208,7 @@ export default [
     why: "Em Produtos pendentes faltam regra de imposto, fornecedor e custo. A tela de Produtos não tem coluna de margem, e o PMA fica no anúncio, não no produto.",
   },
   {
-    id: "m0-18", module: M, topic: "Configurações: PMA",
+    id: "m0-18", module: M, area: "config", topic: "Configurações: PMA",
     q: "O seller exige preço mínimo de R$ 60. A coluna de PMA foi enviada na planilha, mas campanhas abaixo disso continuam entrando. O que falta?",
     options: [
       "Reenviar a planilha toda semana, porque o PMA expira quando passa uma semana",
@@ -220,7 +220,7 @@ export default [
     why: "Preencher a coluna não basta. A trava só vale depois que a chave Ativar PMA é ligada e salva em Configurações.",
   },
   {
-    id: "m0-19", module: M, topic: "Configurações: importação",
+    id: "m0-19", module: M, area: "config", topic: "Configurações: importação",
     q: "Em Configurações > Importação, a Precificação Automática está desligada. O que isso significa para um anúncio recém-importado?",
     options: [
       "Ele chega ligado, e o bot começa a precificar assim que o custo for cadastrado",
@@ -232,7 +232,7 @@ export default [
     why: "A chave define como o anúncio entra. Desligada, ele chega sem o bot, e a pessoa liga depois de conferir custo e margem.",
   },
   {
-    id: "m0-20", module: M, topic: "Configurações: precificação",
+    id: "m0-20", module: M, area: "config", topic: "Configurações: precificação",
     q: "Por que, na Mamba, o comportamento de margem abaixo do mínimo fica em “Não mudar o preço base (DE) e gerar um alerta”?",
     options: [
       "A Mamba não altera o preço base do seller por contrato, e o alerta leva o caso à Verificação",
@@ -244,7 +244,7 @@ export default [
     why: "Por contrato, a Mamba não mexe no preço base. O alerta gerado é o que faz o anúncio aparecer na Verificação para decisão manual.",
   },
   {
-    id: "m0-21", module: M, topic: "Impostos",
+    id: "m0-21", module: M, area: "cadastro", topic: "Impostos",
     q: "Nos prints, as regras SIMPLES 10/2026 e Geral mostram 8% em Simples Nacional e 0% nos outros tributos. Qual é a explicação?",
     options: [
       "O sistema ainda não calculou os outros tributos, e eles aparecem zerados até o fechamento do mês",
@@ -256,7 +256,7 @@ export default [
     why: "No Simples Nacional o imposto é uma alíquota única. Por isso a regra traz 8% nessa coluna e deixa ICMS, PIS, COFINS e IPI em 0%.",
   },
   {
-    id: "m0-22", module: M, topic: "Investigação entre telas",
+    id: "m0-22", module: M, area: "menu", topic: "Investigação entre telas",
     q: "O seller reclama que um anúncio entrou numa campanha com o preço baixo demais. Qual sequência de telas ajuda a investigar?",
     options: [
       "Home para ver o rebate do mês, Fornecedores para conferir o CNPJ e Impostos para trocar a alíquota",
@@ -266,5 +266,113 @@ export default [
     ],
     answer: [2],
     why: "Preço baixo demais se investiga pelo piso do anúncio (margens e PMA), pela chave que ativa o PMA e pelo comportamento de precificação.",
+  },
+  {
+    id: "m0-23", module: M, area: "home", topic: "Home: status do catálogo",
+    q: "Na Home, qual gráfico mostra quantos anúncios estão ganhando, perdendo ou empatando o catálogo?",
+    options: [
+      "Distribuição por tipo, que separa os anúncios da conta entre catálogo e tradicionais",
+      "Status do catálogo, que conta os anúncios ganhando, perdendo ou empatando a disputa",
+      "Status dos anúncios, que mostra a situação de cada um dentro da PriceBot, não no catálogo",
+      "Dias sem vender, que ordena os SKUs de catálogo pelos dias em que ficaram sem nenhum pedido",
+    ],
+    answer: [1],
+    why: "O gráfico Status do catálogo conta ganhando, perdendo e empatando. Distribuição por tipo só separa catálogo de tradicional, e Status dos anúncios mostra a situação dentro da PriceBot.",
+  },
+  {
+    id: "m0-24", module: M, area: "pedidos", topic: "Pedidos: faturamento por grupo",
+    q: "Você quer ver qual fornecedor concentra mais faturamento na Visão Geral de Pedidos. Qual recurso usar?",
+    options: [
+      "O quadro Faturamento por Grupo, trocando o agrupamento para fornecedor nos botões do título",
+      "O gráfico Faturamento por Dia, trocando para Margem no botão que fica no canto do gráfico",
+      "O indicador Margem de contribuição, que se divide sozinho entre os fornecedores da conta",
+      "A lista Pedidos, em que a coluna Pedidos Negativos agrupa os anúncios por cada fornecedor",
+    ],
+    answer: [0],
+    why: "Faturamento por Grupo é o ranking de faturamento e margem agrupado por fornecedor ou por SKU, e os botões do título trocam o agrupamento.",
+  },
+  {
+    id: "m0-25", module: M, area: "pedidos", topic: "Pedidos: margem de contribuição",
+    q: "O que mostra o indicador Margem de contribuição na Visão Geral de Pedidos?",
+    options: [
+      "Quanto sobra, em reais, de cada venda depois dos custos variáveis, para pagar o fixo e gerar lucro",
+      "A margem do período em percentual, calculada sobre o faturamento de todos os pedidos do mês",
+      "O valor que volta ao seller em campanhas incentivadas, descontado da comissão de cada venda",
+      "A soma dos pedidos que fecharam no prejuízo, calculada em reais para cada anúncio vendido",
+    ],
+    answer: [0],
+    why: "Margem de contribuição é o que sobra em reais depois dos custos variáveis. A margem em percentual é outro indicador, o rebate é o desconto que volta ao seller e os pedidos negativos têm indicador próprio.",
+  },
+  {
+    id: "m0-26", module: M, area: "listas", topic: "Filtro de precificação automática",
+    q: "Você quer listar só os anúncios em que o bot está desligado. Qual filtro das listas Catálogo e Tradicional usar?",
+    options: [
+      "Precificação Automática, escolhendo a opção que mostra só os anúncios com ela desligada",
+      "Status do Catálogo, escolhendo Perdendo, que mostra os anúncios que estão sem o bot",
+      "Acompanha Catálogo, escolhendo Não, que reúne todos os anúncios em que o bot está parado",
+      "Envio, escolhendo a modalidade em que o Mercado Livre costuma suspender o bot do anúncio",
+    ],
+    answer: [0],
+    why: "O filtro Precificação Automática mostra só os ligados ou só os desligados. Status do Catálogo e Acompanha Catálogo falam da disputa de catálogo, e Envio é a modalidade logística.",
+  },
+  {
+    id: "m0-27", module: M, area: "anuncios", topic: "Anúncios: ponto colorido",
+    q: "O que resume o ponto colorido no começo de cada linha da lista de Anúncios, e onde se vê o motivo da cor?",
+    options: [
+      "Resume a situação do anúncio, e o motivo de cada cor aparece na tela Verificação",
+      "Indica se o bot está ligado ou desligado, e o motivo aparece ao passar o mouse nele",
+      "Mostra a curva ABC do anúncio, e a legenda das cores fica na Home ao lado dos gráficos",
+      "Indica o tipo de envio do anúncio, e o motivo de cada cor fica em Configurações > Importação",
+    ],
+    answer: [0],
+    why: "O ponto resume a situação do anúncio, e o motivo de cada cor aparece na Verificação. Ele não indica se o bot está ligado.",
+  },
+  {
+    id: "m0-28", module: M, area: "anuncios", topic: "Anúncios: margens de um anúncio",
+    q: "Onde se altera a margem mínima, a objetiva e a máxima de um único anúncio?",
+    options: [
+      "No menu de três pontinhos da linha do anúncio, na opção de detalhes do próprio anúncio",
+      "Em Configurações > Importação, que vale para todos os anúncios que já estão cadastrados",
+      "Em Produtos, na linha do SKU, junto da regra de imposto e do custo do produto cadastrado",
+      "Em Impostos, dentro da regra usada pelo SKU, que carrega as três margens de cada anúncio",
+    ],
+    answer: [0],
+    why: "As margens do anúncio mudam nos detalhes, pelo menu de três pontinhos da linha. Configurações > Importação define só os valores padrão para anúncios que entram depois.",
+  },
+  {
+    id: "m0-29", module: M, area: "cadastro", topic: "Produtos: custo e custo real",
+    q: "Na tela Produtos, qual é a diferença entre Custo e Custo Real?",
+    options: [
+      "O Custo Real é o custo depois de somar os adicionais, e sem adicionais os dois coincidem",
+      "O Custo Real é o preço de venda do anúncio, e o Custo é o valor pago ao fornecedor do SKU",
+      "O Custo Real é o custo já descontado do imposto da regra do SKU, e o Custo é o valor bruto",
+      "O Custo Real só existe nos produtos pendentes, e o Custo aparece nos produtos já completos",
+    ],
+    answer: [0],
+    why: "O Custo Real é o custo somado ao percentual adicional e ao fixo adicional. Sem adicionais, os dois valores são iguais.",
+  },
+  {
+    id: "m0-30", module: M, area: "config", topic: "Configurações: integrações",
+    q: "Em Configurações > Integrações, o Mercado Livre aparece com o selo verde Integrado. O que isso diz?",
+    options: [
+      "A conta está conectada, e a PriceBot enxerga os anúncios dela para poder trabalhar neles",
+      "Todos os anúncios da conta já foram importados e estão com a precificação ligada no bot",
+      "O seller aceitou o link para terceiros, mas a conta ainda precisa ser conferida pelo time",
+      "A conta passou na Verificação e não tem nenhum anúncio pausado ou em revisão neste momento",
+    ],
+    answer: [0],
+    why: "O selo Integrado diz que a conta está conectada. Sem integração a PriceBot não enxerga os anúncios, mas isso não diz nada sobre importação, bot ligado ou pendências.",
+  },
+  {
+    id: "m0-31", module: M, area: "importador", topic: "Importador: planilha de pendentes",
+    q: "Você quer completar, fora do portal, os anúncios que estão pendentes. Qual botão do importador usar?",
+    options: [
+      "Anúncios Pendentes, que baixa a planilha para completar fora do portal e importar de volta",
+      "Anúncios Ativos, que baixa a planilha dos anúncios que já são gerenciados pela PriceBot",
+      "Carregar planilha, que baixa o modelo em branco dos anúncios pendentes para preenchimento",
+      "Retornar, que baixa uma cópia da lista de anúncios e volta para a tela de Anúncios do portal",
+    ],
+    answer: [0],
+    why: "O download Anúncios Pendentes entrega a planilha para completar fora do portal. Carregar planilha envia o arquivo, e Retornar apenas volta para a lista.",
   },
 ];

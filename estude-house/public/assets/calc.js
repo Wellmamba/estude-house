@@ -136,14 +136,22 @@
       };
     },
 
-    /* percepção de valor: rebate x mensalidade */
+    /* percepção de valor: rebate e faturamento na Visão Geral de Pedidos */
     valor() {
-      const F = pick([3000, 4500, 6000]);
-      const R = F * pick([1, 1.5, 2, 2.5, 3]);
+      const F = pick([40000, 60000, 80000, 120000, 150000]);
+      const p = pick([1.5, 2, 2.5, 3, 4, 5]);
+      const R = +(F * p / 100).toFixed(2);
+      if (Math.random() < 0.5) {
+        return {
+          q: `Na Visão Geral de Pedidos, nos últimos 30 dias, a conta faturou <b>${rs(F)}</b> e recebeu <b>${rs(R)}</b> de rebate. Qual percentual de <b>Rebate/Faturamento</b> você coloca na mensagem da semana ao seller?`,
+          type: "num", answer: p, tol: 0.06, unit: "%",
+          explain: `${rs(R)} ÷ ${rs(F)} = <b>${fmt(p, 1)}%</b>. Mostre o que já aconteceu na conta e explique o mecanismo, mas nunca prometa um rebate para o futuro.`,
+        };
+      }
       return {
-        q: `Num exemplo <b>ilustrativo</b>, o relatório mostra <b>${rs(R)}</b> de rebate no período e a mensalidade da assessoria é <b>${rs(F)}</b>. Quantas mensalidades o rebate cobre?`,
-        type: "num", answer: +(R / F).toFixed(1), tol: 0.06, unit: "mensalidades",
-        explain: `${rs(R)} ÷ ${rs(F)} = <b>${fmt(R / F, 1)}</b>. Serve como argumento de valor, mas o número é só do exemplo: nunca prometa um rebate específico.`,
+        q: `Na Visão Geral de Pedidos, nos últimos 30 dias, a conta faturou <b>${rs(F)}</b> e o indicador <b>Rebate/Faturamento</b> marca <b>${fmt(p, 1)}%</b>. Quantos reais de rebate a conta recebeu?`,
+        type: "num", answer: R, tol: 0.02, unit: "R$",
+        explain: `${rs(F)} × ${fmt(p, 1)}% = <b>${rs(R)}</b>. É um resultado já registrado, bom para mostrar valor, mas nunca uma promessa de rebate futuro.`,
       };
     },
 

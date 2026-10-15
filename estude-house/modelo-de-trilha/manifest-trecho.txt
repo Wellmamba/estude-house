@@ -1,0 +1,24 @@
+MODELO DE TRILHA — o que acrescentar em cada arquivo existente (3 lugares).
+
+1) netlify/functions/lib/manifest.mjs — dentro da lista TRAILS, depois da trilha PriceBot:
+
+  {
+    id: "modelo",
+    title: "Nome da trilha",
+    finalScope: "final-modelo",
+    // finalSize: 30,   // opcional
+    modules: [
+      { id: "mod-m1", lessons: ["mod-l1-1", "mod-l1-2"] },
+    ],
+  },
+
+2) netlify/functions/lib/questions/index.mjs — duas linhas:
+
+  import modelo from "./modelo.mjs";                      // junto dos outros "import"
+  export const QUESTIONS = [ ...(as que já existem)..., ...modelo ];
+
+3) public/index.html — três linhas, junto das da PriceBot:
+
+  <script src="/trilhas/modelo/content.js"></script>
+  <script src="/trilhas/modelo/practice.js"></script>
+  <script src="/trilhas/modelo/screens.js"></script>     <!-- só se a trilha tiver telas anotadas (shot/find) -->

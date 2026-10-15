@@ -11,13 +11,18 @@ const pub = (f) => path.join(root, "public", f);
 let passed = 0;
 const ok = (m) => { passed++; console.log("  ✓ " + m); };
 
+// Cada trilha vive em public/trilhas/<id>/ (content.js, practice.js, screens.js, img/). Carrega todas.
 const win = { };
 const ctx = vm.createContext({ window: win, console });
-for (const f of ["assets/content.js", "assets/screens.js", ...fs.readdirSync(pub("assets/practice")).sort().map((x) => "assets/practice/" + x)]) {
-  vm.runInContext(fs.readFileSync(pub(f), "utf8"), ctx, { filename: f });
+const trailDirs = fs.readdirSync(pub("trilhas"), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort();
+for (const d of trailDirs) {
+  for (const f of ["content.js", "screens.js", "practice.js"]) {
+    const rel = `trilhas/${d}/${f}`;
+    if (fs.existsSync(pub(rel))) vm.runInContext(fs.readFileSync(pub(rel), "utf8"), ctx, { filename: rel });
+  }
 }
-const CURSO = win.CURSO, TELAS = win.TELAS, PRATICA = win.PRATICA;
-const lessons = CURSO.modules.flatMap((m) => m.lessons.map((l) => ({ m, l })));
+const TELAS = win.TELAS || {}, PRATICA = win.PRATICA || {};
+const lessons = win.TRILHAS.flatMap((t) => t.modules.flatMap((m) => m.lessons.map((l) => ({ t, m, l }))));
 
 console.log("Conteúdo");
 {
@@ -50,8 +55,8 @@ console.log("Conteúdo");
 }
 {
   const files = [];
-  for (const f of fs.readdirSync(path.join(root, "netlify/functions/lib/questions"))) if (/^(m\d|final)\.mjs$/.test(f)) files.push("netlify/functions/lib/questions/" + f);
-  for (const f of fs.readdirSync(pub("assets/practice"))) files.push("public/assets/practice/" + f);
+  for (const f of fs.readdirSync(path.join(root, "netlify/functions/lib/questions"))) if (/^(?!index)[\w-]+\.mjs$/.test(f)) files.push("netlify/functions/lib/questions/" + f);
+  for (const d of trailDirs) if (fs.existsSync(pub(`trilhas/${d}/practice.js`))) files.push(`public/trilhas/${d}/practice.js`);
   for (const f of files) {
     try { execFileSync("node", [path.join(root, "scripts/check-bank.mjs"), path.join(root, f)], { stdio: "pipe" }); }
     catch (e) { assert.fail(`${f} fora do padrão:\n${e.stdout}`); }

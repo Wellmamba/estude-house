@@ -1,9 +1,9 @@
-import { store } from "./lib/db.mjs";
+import { store, pmap, blobsMode } from "./lib/db.mjs";
 import {
   normalizeEmail, isValidEmail, emailKey, hashPassword, verifyPassword, signToken, verifyToken,
   passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed,
 } from "./lib/auth.mjs";
-import { COURSE, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, moduleIndex } from "./lib/manifest.mjs";
+import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope } from "./lib/manifest.mjs";
 import { QUESTIONS } from "./lib/questions/index.mjs";
 import { outcomeFor, drawQuestionIds, buildItems, publicQuestions, grade, reviewItem } from "./lib/exam.mjs";
 
@@ -12,6 +12,8 @@ export const config = { path: "/api/*" };
 /* ---------- utilidades ---------- */
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
+// Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
+const BUILD = "2026-10-15-a";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -79,19 +81,32 @@ function computeXp(p) {
   const lessons = Object.keys(p.lessons).length * XP.lesson;
   let exams = 0;
   for (const [scope, e] of Object.entries(p.exams)) {
-    if (e?.status === "approved") exams += scope === "final" ? XP.final : XP.module;
+    if (e?.status === "approved") exams += isFinalScope(scope) ? XP.final : XP.module;
   }
   return lessons + exams;
 }
 
-function moduleState(p, idx) {
-  const m = COURSE.modules[idx];
+function moduleState(p, t, idx) {
+  const m = t.modules[idx];
   const done = m.lessons.filter((id) => p.lessons[id]).length;
-  const prevOk = idx === 0 || p.exams[COURSE.modules[idx - 1].id]?.status === "approved";
+  const prevOk = idx === 0 || p.exams[t.modules[idx - 1].id]?.status === "approved";
   return { id: m.id, done, total: m.lessons.length, unlocked: prevOk, exam: p.exams[m.id]?.status || null };
 }
 
-const allModulesApproved = (p) => COURSE.modules.every((m) => p.exams[m.id]?.status === "approved");
+const allModulesApproved = (p, t) => t.modules.every((m) => p.exams[m.id]?.status === "approved");
+
+// Resumo do andamento em uma trilha.
+function trailView(p, t) {
+  const lessonIds = t.modules.flatMap((m) => m.lessons);
+  return {
+    modules: t.modules.map((_, i) => moduleState(p, t, i)),
+    finalUnlocked: allModulesApproved(p, t),
+    finalStatus: p.exams[t.finalScope]?.status || null,
+    lessonsDone: lessonIds.filter((id) => p.lessons[id]).length,
+    lessonsTotal: lessonIds.length,
+    modulesApproved: t.modules.filter((m) => p.exams[m.id]?.status === "approved").length,
+  };
+}
 
 function progressView(p) {
   return {
@@ -99,8 +114,7 @@ function progressView(p) {
     exams: p.exams,
     active: p.active,
     xp: computeXp(p),
-    modules: COURSE.modules.map((_, i) => moduleState(p, i)),
-    finalUnlocked: allModulesApproved(p),
+    trails: Object.fromEntries(TRAILS.map((t) => [t.id, trailView(p, t)])),
     history: (p.history || []).slice(-20).reverse(),
   };
 }
@@ -169,47 +183,50 @@ async function login(req, body) {
     fail(401, "E-mail ou senha incorretos.");
   }
   if (user.active === false) fail(403, "Acesso desativado. Fale com a administração.");
-  await rl.set(key, { count: 0, until: 0 });
   if (isMaster(user.email) && user.role !== "admin") user.role = "admin";
   user.lastLoginAt = Date.now();
-  await saveUser(user);
-  await logEvent(req, "login", user);
+  // Gravações independentes rodam juntas (menos espera no login).
+  await Promise.all([
+    state.count || state.until ? rl.set(key, { count: 0, until: 0 }) : null,
+    saveUser(user),
+    logEvent(req, "login", user),
+  ]);
   return json({ token: signToken(user.id), user: publicUser(user) });
 }
 
 /* ---------- progresso e provas ---------- */
 
-function moduleOrFinal(scope) {
-  if (scope === "final") return "final";
-  if (moduleIndex(scope) >= 0) return scope;
-  fail(400, "Prova inexistente.");
+function examScope(scope) {
+  const info = trailOfScope(String(scope || ""));
+  if (!info) fail(400, "Prova inexistente.");
+  return info;
 }
 
 async function completeLesson(req, user, body) {
   const lessonId = String(body.lessonId || "");
-  const mod = COURSE.modules.find((m) => m.lessons.includes(lessonId));
-  if (!mod) fail(400, "Aula inexistente.");
+  const trail = trailOfLesson(lessonId);
+  if (!trail) fail(400, "Aula inexistente.");
+  const mod = trail.modules.find((m) => m.lessons.includes(lessonId));
   const p = await loadProgress(user.id);
-  const idx = moduleIndex(mod.id);
-  if (user.role !== "admin" && !moduleState(p, idx).unlocked) fail(403, "Este módulo ainda está bloqueado.");
+  const idx = trail.modules.indexOf(mod);
+  if (user.role !== "admin" && !moduleState(p, trail, idx).unlocked) fail(403, "Este módulo ainda está bloqueado.");
   if (p.exams[mod.id]?.status === "approved") return json({ progress: progressView(p) });
   if (!p.lessons[lessonId]) {
     p.lessons[lessonId] = Date.now();
-    await saveProgress(user.id, p);
-    await logEvent(req, "aula_concluida", user, { lessonId });
+    await Promise.all([saveProgress(user.id, p), logEvent(req, "aula_concluida", user, { lessonId })]);
   }
   return json({ progress: progressView(p) });
 }
 
 async function startExam(req, user, body) {
-  const scope = moduleOrFinal(body.scope);
+  const { trail, isFinal, index } = examScope(body.scope);
+  const scope = isFinal ? trail.finalScope : trail.modules[index].id;
   const p = await loadProgress(user.id);
   const isAdmin = user.role === "admin";
-  if (scope === "final") {
-    if (!isAdmin && !allModulesApproved(p)) fail(403, "Seja aprovado em todos os módulos para liberar a prova final.");
+  if (isFinal) {
+    if (!isAdmin && !allModulesApproved(p, trail)) fail(403, "Seja aprovado em todos os módulos para liberar a prova final.");
   } else {
-    const idx = moduleIndex(scope);
-    const st = moduleState(p, idx);
+    const st = moduleState(p, trail, index);
     if (!isAdmin && !st.unlocked) fail(403, "Este módulo ainda está bloqueado.");
     if (!isAdmin && st.done < st.total) fail(403, "Conclua todas as aulas do módulo antes da prova.");
   }
@@ -237,16 +254,18 @@ async function startExam(req, user, body) {
     id: newId("a_"), userId: user.id, scope, mode, createdAt: Date.now(),
     items: buildItems(qids), submittedAt: null,
   };
-  await attempts.set("a:" + attempt.id, attempt);
   p.active[scope] = attempt.id;
-  await saveProgress(user.id, p);
-  await logEvent(req, "prova_iniciada", user, { scope, mode, total: attempt.items.length });
+  await Promise.all([
+    attempts.set("a:" + attempt.id, attempt),
+    saveProgress(user.id, p),
+    logEvent(req, "prova_iniciada", user, { scope, mode, total: attempt.items.length }),
+  ]);
   return json({ attemptId: attempt.id, scope, mode, total: attempt.items.length, questions: publicQuestions(attempt.items) });
 }
 
 function resetModuleLessons(p, moduleId) {
-  const m = COURSE.modules.find((x) => x.id === moduleId);
-  for (const id of m.lessons) delete p.lessons[id];
+  const m = trailOfScope(moduleId)?.module;
+  if (m) for (const id of m.lessons) delete p.lessons[id];
 }
 
 async function submitExam(req, user, body) {
@@ -294,16 +313,17 @@ async function submitExam(req, user, body) {
       };
     } else {
       // reprovado: refaz tudo
-      if (scope === "final" && FINAL_FAIL_RESETS_ALL) {
-        for (const m of COURSE.modules) {
+      const info = trailOfScope(scope);
+      if (info.isFinal && FINAL_FAIL_RESETS_ALL) {
+        for (const m of info.trail.modules) {
           resetModuleLessons(p, m.id);
           const pe = p.exams[m.id] || {};
           p.exams[m.id] = { attempts: pe.attempts || 0, bestPct: pe.bestPct || 0, lastPct: pe.lastPct ?? null, status: "reset" };
         }
-        p.exams.final = { ...base, status: "reset" };
+        p.exams[scope] = { ...base, status: "reset" };
         result = { mode: "full", outcome, pct: g.pct, correct: g.correct, total: g.total, resetAll: true };
       } else {
-        if (scope !== "final") resetModuleLessons(p, scope);
+        if (!info.isFinal) resetModuleLessons(p, scope);
         p.exams[scope] = { ...base, status: "reset" };
         result = { mode: "full", outcome, pct: g.pct, correct: g.correct, total: g.total, resetModule: scope };
       }
@@ -312,24 +332,30 @@ async function submitExam(req, user, body) {
 
   attempt.submittedAt = Date.now();
   attempt.result = { ...result, review: undefined };
-  await attempts.set("a:" + attempt.id, attempt);
   delete p.active[scope];
   p.history = [...(p.history || []), {
     scope, mode: attempt.mode, outcome: result.outcome, pct: result.pct ?? g.pct,
     correct: g.correct, total: g.total, at: Date.now(),
   }].slice(-60);
-  await saveProgress(user.id, p);
-  await logEvent(req, "prova_enviada", user, { scope, mode: attempt.mode, outcome: result.outcome, pct: g.pct, correct: g.correct, total: g.total });
+  await Promise.all([
+    attempts.set("a:" + attempt.id, attempt),
+    saveProgress(user.id, p),
+    logEvent(req, "prova_enviada", user, { scope, mode: attempt.mode, outcome: result.outcome, pct: g.pct, correct: g.correct, total: g.total }),
+  ]);
   return json({ result, progress: progressView(p) });
 }
 
-async function certificate(req, user) {
+async function certificate(req, user, url) {
+  const trail = trailById(url.searchParams.get("trail") || TRAILS[0].id);
+  if (!trail) fail(404, "Trilha inexistente.");
   const p = await loadProgress(user.id);
-  const f = p.exams.final;
+  const f = p.exams[trail.finalScope];
   if (f?.status !== "approved") fail(403, "O certificado é liberado após a aprovação na prova final.");
+  // A trilha original (PriceBot) mantém o código de verificação que já foi emitido.
+  const code = certCode(trail.id === TRAILS[0].id ? user.id : `${user.id}|${trail.id}`, f.passedAt);
   return json({
-    name: user.name, course: COURSE.title, finishedAt: f.passedAt,
-    pct: f.bestPct || f.lastPct || null, code: certCode(user.id, f.passedAt),
+    name: user.name, course: trail.title, trail: trail.id, finishedAt: f.passedAt,
+    pct: f.bestPct || f.lastPct || null, code,
   });
 }
 
@@ -340,8 +366,7 @@ function userSummary(u, p) {
     id: u.id, name: u.name, email: u.email, role: u.role, active: u.active !== false,
     createdAt: u.createdAt, lastLoginAt: u.lastLoginAt,
     lessonsDone: Object.keys(p.lessons).length,
-    modulesApproved: COURSE.modules.filter((m) => p.exams[m.id]?.status === "approved").length,
-    finalStatus: p.exams.final?.status || null,
+    trails: Object.fromEntries(TRAILS.map((t) => { const v = trailView(p, t); return [t.id, { lessonsDone: v.lessonsDone, modulesApproved: v.modulesApproved, finalStatus: v.finalStatus }]; })),
     xp: computeXp(p),
     master: isMaster(u.email),
   };
@@ -350,48 +375,52 @@ function userSummary(u, p) {
 async function allUsers() {
   const users = await store("users");
   const keys = await users.keys({ prefix: "u:" });
-  const out = [];
-  for (const k of keys) {
-    const u = await users.get(k);
-    if (u) out.push(u);
-  }
-  return out;
+  return (await pmap(keys, (k) => users.get(k))).filter(Boolean);
+}
+
+// Usuários + progresso de cada um, lidos em paralelo (uma leitura por pessoa).
+async function allWithProgress() {
+  const list = await allUsers();
+  const progs = await pmap(list, (u) => loadProgress(u.id));
+  return list.map((u, i) => ({ u, p: progs[i] }));
 }
 
 async function adminOverview() {
-  const list = await allUsers();
-  const rows = [];
-  for (const u of list) rows.push(userSummary(u, await loadProgress(u.id)));
+  const all = await allWithProgress();
+  const rows = all.map(({ u, p }) => userSummary(u, p));
   const alunos = rows.filter((r) => r.role === "aluno");
-  const totalLessons = COURSE.modules.reduce((a, m) => a + m.lessons.length, 0);
-  const funnel = [];
-  for (const m of COURSE.modules) {
-    let started = 0, approved = 0;
-    for (const u of alunos) {
-      const p = await loadProgress(u.id);
-      if (m.lessons.some((l) => p.lessons[l]) || p.exams[m.id]) started++;
-      if (p.exams[m.id]?.status === "approved") approved++;
-    }
-    funnel.push({ id: m.id, started, approved });
+  const alunoProgress = all.filter(({ u }) => u.role === "aluno").map(({ p }) => p);
+  const trails = {};
+  for (const t of TRAILS) {
+    const totalLessons = t.modules.reduce((a, m) => a + m.lessons.length, 0);
+    const funnel = t.modules.map((m) => {
+      let started = 0, approved = 0;
+      for (const p of alunoProgress) {
+        if (m.lessons.some((l) => p.lessons[l]) || p.exams[m.id]) started++;
+        if (p.exams[m.id]?.status === "approved") approved++;
+      }
+      return { id: m.id, started, approved };
+    });
+    const lessonsOf = (r) => r.trails[t.id].lessonsDone;
+    trails[t.id] = {
+      started: alunos.filter((r) => lessonsOf(r) > 0).length,
+      approved: alunos.filter((r) => r.trails[t.id].finalStatus === "approved").length,
+      avgProgress: alunos.length ? Math.round((alunos.reduce((a, r) => a + lessonsOf(r), 0) / (alunos.length * totalLessons)) * 100) : 0,
+      funnel,
+    };
   }
   const logs = await store("logs");
   const keys = await logs.keys({ limit: 8 });
-  const recent = [];
-  for (const k of keys) recent.push(await logs.get(k));
+  const recent = await pmap(keys, (k) => logs.get(k));
   return json({
     users: rows.length, alunos: alunos.length, admins: rows.length - alunos.length,
-    started: alunos.filter((r) => r.lessonsDone > 0).length,
-    approved: alunos.filter((r) => r.finalStatus === "approved").length,
-    avgProgress: alunos.length ? Math.round((alunos.reduce((a, r) => a + r.lessonsDone, 0) / (alunos.length * totalLessons)) * 100) : 0,
-    funnel, recent: recent.filter(Boolean),
+    trails, recent: recent.filter(Boolean),
     rules: { ...RULES, examSize: EXAM_SIZE, finalFailResetsAll: FINAL_FAIL_RESETS_ALL },
   });
 }
 
 async function adminUsers() {
-  const list = await allUsers();
-  const rows = [];
-  for (const u of list) rows.push(userSummary(u, await loadProgress(u.id)));
+  const rows = (await allWithProgress()).map(({ u, p }) => userSummary(u, p));
   rows.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   return json({ users: rows });
 }
@@ -493,13 +522,23 @@ async function adminResetProgress(req, admin, id, body) {
   const scope = String(body.scope || "all");
   if (scope === "all") {
     p.lessons = {}; p.exams = {}; p.active = {};
+  } else if (scope.startsWith("trail:")) {
+    // zera uma trilha inteira (aulas e provas)
+    const t = trailById(scope.slice(6));
+    if (!t) fail(400, "Trilha inexistente.");
+    for (const m of t.modules) { resetModuleLessons(p, m.id); delete p.exams[m.id]; delete p.active[m.id]; }
+    delete p.exams[t.finalScope]; delete p.active[t.finalScope];
   } else {
-    if (moduleIndex(scope) < 0) fail(400, "Módulo inexistente.");
-    resetModuleLessons(p, scope);
-    delete p.exams[scope];
-    delete p.active[scope];
-    delete p.exams.final;
-    delete p.active.final;
+    const info = trailOfScope(scope);
+    if (!info) fail(400, "Módulo inexistente.");
+    if (!info.isFinal) {
+      // zerar um módulo também zera a prova final da trilha dele
+      resetModuleLessons(p, scope);
+      delete p.exams[scope];
+      delete p.active[scope];
+    }
+    delete p.exams[info.trail.finalScope];
+    delete p.active[info.trail.finalScope];
   }
   await saveProgress(id, p);
   await logEvent(req, "admin_zerou_progresso", admin, { target: u.email, scope });
@@ -526,14 +565,17 @@ async function adminLogs(url) {
   const logs = await store("logs");
   const out = [];
   let cursor = after;
-  let scanned = 0;
   let exhausted = false;
-  while (out.length < limit && scanned < 1500) {
-    const keys = await logs.keys({ after: cursor, limit: 100 });
-    if (!keys.length) { exhausted = true; break; }
-    for (const k of keys) {
-      cursor = k; scanned++;
-      const entry = await logs.get(k);
+  // Uma listagem por requisição (cara) e leituras em paralelo, em blocos de 40.
+  const keys = await logs.keys({ after, limit: 1200 });
+  if (keys.length < 1200) exhausted = true;
+  let i = 0;
+  while (out.length < limit && i < keys.length) {
+    const chunk = keys.slice(i, i + 40);
+    const entries = await pmap(chunk, (k) => logs.get(k), 20);
+    for (let j = 0; j < chunk.length; j++) {
+      const k = chunk[j], entry = entries[j];
+      cursor = k; i++;
       if (!entry) continue;
       if (type && entry.type !== type) continue;
       if (q && !(`${entry.email || ""} ${entry.name || ""} ${entry.ip || ""} ${JSON.stringify(entry.meta || {})}`.toLowerCase().includes(q))) continue;
@@ -541,7 +583,8 @@ async function adminLogs(url) {
       if (out.length >= limit) break;
     }
   }
-  return json({ logs: out, next: exhausted ? null : cursor });
+  if (i >= keys.length && keys.length < 1200) exhausted = true;
+  return json({ logs: out, next: exhausted && i >= keys.length ? null : cursor });
 }
 
 function adminQuestions() {
@@ -561,7 +604,7 @@ export default async (req, context) => {
     if (method === "OPTIONS") return new Response(null, { status: 204 });
     const body = await readBody(req);
 
-    if (path === "health") return json({ ok: true, rules: RULES });
+    if (path === "health") return json({ ok: true, build: BUILD, blobs: blobsMode(), rules: RULES });
     if (path === "auth/register" && method === "POST") return await register(req, body);
     if (path === "auth/login" && method === "POST") return await login(req, body);
 
@@ -584,7 +627,7 @@ export default async (req, context) => {
     if (path === "progress/lesson" && method === "POST") return await completeLesson(req, user, body);
     if (path === "exam/start" && method === "POST") return await startExam(req, user, body);
     if (path === "exam/submit" && method === "POST") return await submitExam(req, user, body);
-    if (path === "certificate" && method === "GET") return await certificate(req, user);
+    if (path === "certificate" && method === "GET") return await certificate(req, user, url);
 
     if (path.startsWith("admin/")) {
       const admin = await requireAdmin(req);

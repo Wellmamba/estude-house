@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { QUESTIONS, byId } from "./questions/index.mjs";
-import { COURSE, EXAM_SIZE, RULES } from "./manifest.mjs";
+import { RULES, examSizeFor, trailOfScope } from "./manifest.mjs";
 
 export function outcomeFor(pct) {
   if (pct <= RULES.failMax) return "reprovado";
@@ -23,24 +23,46 @@ function pick(pool, n) {
 
 // Sorteia os ids de questões de uma prova nova.
 export function drawQuestionIds(scope) {
-  if (scope === "final") {
+  const info = trailOfScope(scope);
+  if (info?.isFinal) {
+    // Prova final: algumas questões de cada módulo da trilha + questões exclusivas da prova final (módulo = id da final).
+    const size = examSizeFor(scope);
+    const t = info.trail;
+    const extrasN = Math.min(6, Math.floor(size / 5));
+    const perModule = Math.floor((size - extrasN) / t.modules.length);
     const ids = [];
-    const perModule = Math.floor((EXAM_SIZE.final - 6) / COURSE.modules.length); // 3 por módulo (7 módulos); o resto vem das questões da prova final
-    for (const m of COURSE.modules) {
+    for (const m of t.modules) {
       ids.push(...pick(QUESTIONS.filter((q) => q.module === m.id), perModule).map((q) => q.id));
     }
-    const extras = QUESTIONS.filter((q) => q.module === "final");
-    const need = EXAM_SIZE.final - ids.length;
-    ids.push(...pick(extras, need).map((q) => q.id));
-    // completa se faltou algo
-    if (ids.length < EXAM_SIZE.final) {
-      const rest = QUESTIONS.filter((q) => !ids.includes(q.id));
-      ids.push(...pick(rest, EXAM_SIZE.final - ids.length).map((q) => q.id));
+    const extras = QUESTIONS.filter((q) => q.module === scope);
+    ids.push(...pick(extras, size - ids.length).map((q) => q.id));
+    // completa se faltou algo (sempre dentro da mesma trilha)
+    if (ids.length < size) {
+      const own = new Set([...t.modules.map((m) => m.id), scope]);
+      const rest = QUESTIONS.filter((q) => own.has(q.module) && !ids.includes(q.id));
+      ids.push(...pick(rest, size - ids.length).map((q) => q.id));
     }
     return shuffle(ids);
   }
   const pool = QUESTIONS.filter((q) => q.module === scope);
-  return pick(pool, Math.min(EXAM_SIZE.module, pool.length)).map((q) => q.id);
+  const size = Math.min(examSizeFor(scope), pool.length);
+  // Questões com `area`: sorteio em rodadas, uma de cada área por vez, para a prova cobrir tudo.
+  if (pool.length && pool.every((q) => q.area)) {
+    const byArea = new Map();
+    for (const q of pool) byArea.set(q.area, [...(byArea.get(q.area) || []), q]);
+    const lists = shuffle([...byArea.values()]).map((l) => shuffle(l));
+    const ids = [];
+    for (let round = 0; ids.length < size; round++) {
+      let took = false;
+      for (const l of shuffle(lists)) {
+        if (ids.length >= size) break;
+        if (l[round]) { ids.push(l[round].id); took = true; }
+      }
+      if (!took) break;
+    }
+    return shuffle(ids);
+  }
+  return pick(pool, size).map((q) => q.id);
 }
 
 // Monta os itens da tentativa, com a ordem das alternativas embaralhada.
