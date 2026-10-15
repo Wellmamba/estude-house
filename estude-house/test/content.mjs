@@ -63,4 +63,10 @@ console.log("Conteúdo");
   }
   ok(`${files.length} bancos de questões equilibrados (alternativas de tamanho parecido, sem a certa se destacar)`);
 }
+{
+  const front = fs.readFileSync(pub("assets/lib.js"), "utf8").match(/M\.BUILD = "([^"]+)"/)?.[1];
+  const back = fs.readFileSync(path.join(root, "netlify/functions/api.mjs"), "utf8").match(/const BUILD = "([^"]+)"/)?.[1];
+  assert.ok(front && front === back, `versão do site (${front}) e do servidor (${back}) precisam ser iguais`);
+  ok(`a versão do site e a do servidor são iguais (${back})`);
+}
 console.log(`\n${passed} verificações de conteúdo passaram.`);

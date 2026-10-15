@@ -142,6 +142,7 @@
     try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
     location.reload(); // recarrega para o navegador reler o tamanho da tela
   };
+  M.BUILD = "2026-10-15-d"; // igual ao BUILD de netlify/functions/api.mjs
   M.modeSwitch = function ({ label = true } = {}) {
     const cur = M.effectiveMode(), saved = M.getMode();
     const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
@@ -254,6 +255,12 @@
     flag: "M5 21V4M5 5h12l-2 4 2 4H5",
     inbox: "M4 13l2-8h12l2 8M4 13v6h16v-6M4 13h5l1 2h4l1-2h5",
     bolt: "M13 3 5 13h6l-1 8 8-10h-6z",
+    smile: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18M8.5 14.2s1.2 2 3.5 2 3.5-2 3.5-2M9 9.5h.01M15 9.5h.01",
+    bell: "M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9M10.3 20.5a2 2 0 0 0 3.4 0",
+    tag: "M3 3h8.2l9.8 9.8a1.5 1.5 0 0 1 0 2.1l-5.2 5.2a1.5 1.5 0 0 1-2.1 0L3 10.3zM7.5 7.5h.01",
+    pin: "M12 17v5M8 3h8l-1 6 3 4H6l3-4zM6 13h12",
+    chart: "M5 20V11M12 20V4M19 20v-6",
+    more: "M5 12h.01M12 12h.01M19 12h.01",
   };
   M.icon = (name, size = 20) =>
     M.svg(`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[name] || ""}"/></svg>`);

@@ -12,7 +12,6 @@ Plataforma de treinamento da Mamba Digital. A primeira trilha ensina a PriceBot 
 |---|---|---|
 | `JWT_SECRET` | sim | Texto longo e aleatório (32+ caracteres). Assina as sessões. Se trocar, todo mundo precisa entrar de novo. |
 | `ADMIN_EMAILS` | não | E-mails separados por vírgula que são administradores master. Padrão: `wellington.moreira@mambadigital.com.br`. |
-| `EMAIL_WEBHOOK_URL`, `EMAIL_WEBHOOK_SECRET`, `EMAIL_FROM_NAME`, `SITE_URL` | não | E-mail com link e código de ativação quando você aprova um cadastro (Google Apps Script, sem custo). Sem isso, o link e o código aparecem na tela para você entregar. Guia: `COMO-CONFIGURAR-EMAIL-E-APROVACAO.md`. |
 | `SIGNUP_APPROVAL` | não | `off` desliga a aprovação de cadastros (cadastro entra direto). |
 | `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | não | Liga o envio de fotos, vídeos e arquivos no feed (ver `COMO-CONFIGURAR-FEED-E-UPLOAD.md`). Sem elas, só links. |
 | `ALLOWED_DOMAINS` | não | Ex.: `mambadigital.com.br`. Se preenchida, só e-mails desses domínios podem se cadastrar sozinhos. Administradores criam acessos de qualquer domínio. |
@@ -66,9 +65,20 @@ A Início (`#/`) é um feed no estilo rede social, com Hype (foguete), comentár
 
 Upload de foto, vídeo e arquivo usa o Cloudinary (variáveis `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`); links funcionam sem nada. **Guia completo: `COMO-CONFIGURAR-FEED-E-UPLOAD.md`.**
 
+## Tags, enquetes, fixados, @, emoji, filtro e sino
+
+- **Tags** (só gestor): **Administração → Tags e moderação** cria, renomeia, troca a cor e apaga tags (até 30). Ao publicar, o gestor escolhe a tag do post. Quem usa o feed filtra clicando na tag (`#/tag/<id>`); na busca há o seletor de tag para buscar só dentro dela. Apagar uma tag solta os posts, que continuam no feed sem tag. Aluno não cria tag.
+- **Fixar** (só gestor): marque "Fixar no topo" ao publicar ou use o menu "..." do post. Até 3 posts fixados, sempre no topo da Início.
+- **Enquete** (só gestor): botão "Enquete" no publicador. Pode ter várias perguntas (até 6, com 2 a 8 opções cada). Dois formatos: **Aberta** (quem votou vê o percentual) e **Vote aqui / secreta** (quem vota não vê o resultado; só o gestor vê). Cada pessoa vota uma vez por pergunta. O gestor encerra a enquete pelo menu "...".
+- **@ e @todos**: ao digitar `@` aparece a lista de pessoas para marcar. `@todos` só funciona para gestor e avisa a equipe inteira (quem entrou depois não recebe avisos antigos).
+- **Emoji**: botão de carinha no publicador e nos comentários.
+- **Sino**: avisa quando alguém te marca, quando o gestor usa @todos, quando comentam no seu post e quando um post seu é aprovado ou recusado.
+- **Filtro de ofensas**: comentários e posts de alunos com xingamento são barrados com aviso (entende "m3rda", "puuuta", "p u t a"; não bloqueia palavras comuns como "computador"). Gestores não passam pelo filtro. Em **Tags e moderação** o gestor liga/desliga o filtro, soma palavras próprias e testa frases.
+- **Versão**: em **Minha conta → Versão do sistema** aparece a versão do site e a do servidor. Se forem diferentes, o envio ao GitHub ficou incompleto.
+
 ## Cadastro com aprovação, foto de perfil e tela Celular/PC
 
-Novos cadastros ficam pendentes até um gestor aprovar em **Aprovações**; a pessoa ativa pelo link ou código de 6 dígitos que recebe por e-mail (**COMO-CONFIGURAR-EMAIL-E-APROVACAO.md**). Há foto de perfil, GIF grande como vídeo em loop, redução automática de foto e o seletor Celular/Computador (login, menu e Minha conta). Detalhes em `COMO-CONFIGURAR-FEED-E-UPLOAD.md`.
+Novos cadastros ficam pendentes até um gestor aprovar em **Aprovações**; o gestor recebe um código de 6 dígitos, entrega à pessoa e ela digita para liberar o acesso (**COMO-FUNCIONA-A-APROVACAO.md**, sem e-mail). Há foto de perfil, GIF grande como vídeo em loop, redução automática de foto e o seletor Celular/Computador (login, menu e Minha conta). Detalhes em `COMO-CONFIGURAR-FEED-E-UPLOAD.md`.
 
 ## Desempenho e erros do Netlify Blobs
 

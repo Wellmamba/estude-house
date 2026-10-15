@@ -8,6 +8,8 @@ import { QUESTIONS } from "./lib/questions/index.mjs";
 import * as social from "./lib/social.mjs";
 import * as eng from "./lib/engage.mjs";
 import * as signup from "./lib/signup.mjs";
+import * as notify from "./lib/notify.mjs";
+import { now } from "./lib/clock.mjs";
 import { outcomeFor, drawQuestionIds, buildItems, publicQuestions, grade, reviewItem } from "./lib/exam.mjs";
 
 export const config = { path: "/api/*" };
@@ -16,7 +18,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-15-c";
+const BUILD = "2026-10-15-d";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -145,7 +147,7 @@ async function createUser({ name, email, password, role = "aluno", createdBy = n
   const id = newId("u_");
   const user = {
     id, name, email, role: isMaster(email) ? "admin" : role,
-    passHash: hashPassword(password), active: true, createdAt: Date.now(), lastLoginAt: null, createdBy,
+    passHash: hashPassword(password), active: true, createdAt: now(), lastLoginAt: null, createdBy,
   };
   if (access) user.access = access;
   await users.set("u:" + id, user);
@@ -178,7 +180,7 @@ async function register(req, body) {
   if (needsApproval) {
     await signup.track(user.id, "p");
     await logEvent(req, "cadastro_pendente", user);
-    return json({ pending: true, email, message: "Cadastro recebido! Um gestor vai analisar. Quando for aprovado, você recebe um e-mail com o link de acesso e um código." }, 202);
+    return json({ pending: true, email, message: "Cadastro recebido! Um gestor vai analisar. Quando for aprovado, peça a ele o código de ativação." }, 202);
   }
   await logEvent(req, "cadastro", user);
   return json({ token: signToken(user.id), user: publicUser(user) }, 201);
@@ -203,8 +205,8 @@ async function login(req, body) {
     fail(401, "E-mail ou senha incorretos.");
   }
   if (user.active === false) fail(403, "Acesso desativado. Fale com a administração.");
-  if (user.access === "pending") fail(403, "Seu cadastro foi recebido e está aguardando a aprovação de um gestor. Quando for aprovado, você recebe um e-mail com o link de acesso e um código.", { state: "pending" });
-  if (user.access === "invited") fail(403, "Seu cadastro foi aprovado. Falta ativar o acesso pelo link ou pelo código que enviamos ao seu e-mail.", { state: "invited", email: user.email });
+  if (user.access === "pending") fail(403, "Seu cadastro foi recebido e está aguardando a aprovação de um gestor. Quando for aprovado, peça a ele o código de ativação.", { state: "pending" });
+  if (user.access === "invited") fail(403, "Seu cadastro foi aprovado. Falta ativar o acesso com o código de 6 dígitos que o gestor te entrega.", { state: "invited", email: user.email });
   if (user.access === "rejected") fail(403, "Seu cadastro não foi aprovado. Fale com a administração.", { state: "rejected" });
   if (isMaster(user.email) && user.role !== "admin") user.role = "admin";
   user.lastLoginAt = Date.now();
@@ -588,6 +590,7 @@ async function removeUser(u) {
   await (await store("eng")).delete("e:" + u.id);
   if (u.nickname) await (await store("nicks")).delete("n:" + u.nickname);
   await signup.untrack(u.id);
+  await notify.forget(u.id);
 }
 
 async function adminLogs(url) {
@@ -645,13 +648,14 @@ export default async (req, context) => {
     const user = await requireUser(req);
 
     if (path === "me" && method === "GET") {
-      const [p, e, pending, pendingSignups] = await Promise.all([
+      const [p, e, pending, pendingSignups, unread] = await Promise.all([
         loadProgress(user.id),
         user.role === "aluno" ? eng.loadEng(user.id) : null,
         user.role === "admin" ? social.pendingCount() : 0,
         user.role === "admin" ? signup.pendingCount() : 0,
+        notify.unreadCount(user).catch(() => 0),
       ]);
-      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, unread, rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     if (path === "auth/password" && method === "POST") {
       if (!verifyPassword(String(body.current || ""), user.passHash)) fail(400, "A senha atual não confere.");

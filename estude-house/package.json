@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Estude House — ambiente de estudos da Mamba Digital (primeira trilha: PriceBot)",
   "scripts": {
-    "test": "node test/run.mjs && node test/social.mjs && node test/approval.mjs && node test/content.mjs",
+    "test": "node test/run.mjs && node test/social.mjs && node test/approval.mjs && node test/community.mjs && node test/content.mjs",
     "dev": "netlify dev",
     "local": "node test/dev-server.mjs"
   },

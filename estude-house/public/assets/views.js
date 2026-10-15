@@ -7,7 +7,8 @@
   M.refreshMe = async function () {
     const d = await M.get("me");
     M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules;
-    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0;
+    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.unread = d.unread || 0;
+    if (M.updateBell) M.updateBell();
     return d;
   };
 
@@ -118,6 +119,7 @@
         link("admin", "#/admin", "shield", "Painel"),
         link("admin-approve", "#/admin/aprovacoes", "flag", "Aprovações", true),
         link("admin-engage", "#/admin/engajamento", "bolt", "Engajamento"),
+        link("admin-tags", "#/admin/tags", "tag", "Tags e moderação"),
         link("admin-users", "#/admin/usuarios", "users", "Acessos"),
         link("admin-logs", "#/admin/logs", "list", "Logs"),
         link("admin-q", "#/admin/perguntas", "help", "Banco de questões"),
@@ -140,7 +142,7 @@
     const sInput = h("input", { type: "search", placeholder: "Buscar pessoas, posts e aulas", "aria-label": "Buscar no sistema", enterkeyhint: "search" });
     const search = h("form", { class: "top-search", role: "search" }, M.icon("search", 18), sInput);
     search.addEventListener("submit", (e) => { e.preventDefault(); const v = sInput.value.trim(); if (v) location.hash = "#/busca?q=" + encodeURIComponent(v); });
-    const top = h("header", { class: "top" }, menuBtn, crumbs, h("span", { class: "spacer" }), search, xp);
+    const top = h("header", { class: "top" }, menuBtn, crumbs, h("span", { class: "spacer" }), search, M.bell(), xp);
     const page = h("div", { class: "page", id: "main", tabindex: "-1" });
     const main = h("main", { class: "main" }, top, page);
     const root = h("div", { class: "shell" }, side, main);
@@ -203,8 +205,8 @@
         field("password", "Senha", "password", isReg ? "new-password" : "current-password", isReg ? "Mínimo de 8 caracteres, com letras e números." : null),
         isReg ? field("password2", "Repita a senha", "password", "new-password") : null,
         btn,
-        h("p", { class: "muted small", style: "margin:14px 0 0", text: isReg ? "Seu cadastro passa pela aprovação de um gestor. Quando for aprovado, você recebe um e-mail com o link de acesso e um código." : "Ainda não tem conta? Crie na aba ao lado. Se um administrador criou seu acesso, entre com o e-mail e a senha que ele enviou." }),
-        isReg ? null : h("p", { class: "small", style: "margin:10px 0 0" }, h("a", { href: "#/ativar", text: "Recebi um código de ativação" })));
+        h("p", { class: "muted small", style: "margin:14px 0 0", text: isReg ? "Seu cadastro passa pela aprovação de um gestor. Quando for aprovado, o gestor te entrega um código de ativação." : "Ainda não tem conta? Crie na aba ao lado. Se um administrador criou seu acesso, entre com o e-mail e a senha que ele enviou." }),
+        isReg ? null : h("p", { class: "small", style: "margin:10px 0 0" }, h("a", { href: "#/ativar", text: "Tenho um código de ativação" })));
       if (!isReg && M.session.prefillEmail) { const em = form.querySelector("#email"); if (em) em.value = M.session.prefillEmail; M.session.prefillEmail = ""; const pw = form.querySelector("#password"); if (pw) pw.focus(); }
       form.onsubmit = async (e) => {
         e.preventDefault();
@@ -221,9 +223,9 @@
             card.replaceChildren(h("div", { class: "auth-done", role: "status" },
               h("span", { class: "ck-ico" }, M.icon("check", 22)),
               h("h3", { text: "Cadastro enviado" }),
-              h("p", { text: "Um gestor vai analisar o seu cadastro. Quando for aprovado, você recebe um e-mail em " + d.email + " com o link de acesso e um código de 6 dígitos." }),
-              h("p", { class: "muted small", text: "Confira também a caixa de spam. Se tiver urgência, avise o gestor da sua equipe." }),
-              h("div", { class: "row" }, h("a", { class: "btn btn-ghost", href: "#/ativar?e=" + encodeURIComponent(d.email), text: "Já recebi o código" }), h("a", { class: "btn btn-ghost", href: "#/entrar", onclick: () => { tab = "entrar"; }, text: "Voltar ao início" }))));
+              h("p", { text: "Um gestor vai analisar o seu cadastro. Quando for aprovado, peça a ele o código de ativação de 6 dígitos. Você vai usar o e-mail " + d.email + " junto com o código." }),
+              h("p", { class: "muted small", text: "Se tiver urgência, avise o gestor da sua equipe." }),
+              h("div", { class: "row" }, h("a", { class: "btn btn-ghost", href: "#/ativar?e=" + encodeURIComponent(d.email), text: "Já tenho o código" }), h("a", { class: "btn btn-ghost", href: "#/entrar", onclick: () => { tab = "entrar"; }, text: "Voltar ao início" }))));
             return;
           }
           M.setToken(d.token);
@@ -254,7 +256,7 @@
       h("div", { class: "auth-card-wrap" }, h("div", { class: "auth-stack" }, card, M.modeSwitch())));
   }
 
-  /* ───── ativar o acesso (link ou código recebido por e-mail) ───── */
+  /* ───── ativar o acesso (código entregue por um gestor) ───── */
   M.views.activate = function (qs) {
     const q = new URLSearchParams(qs || "");
     const card = h("div", { class: "auth-card" });
@@ -265,12 +267,6 @@
         h("p", { text: "Pronto! Agora entre com o seu e-mail e a senha que você escolheu no cadastro." }),
         h("button", { class: "btn btn-gold", type: "button", onclick: () => { M.session.prefillEmail = email || ""; location.hash = "#/entrar"; }, text: "Entrar agora" })));
     };
-    const problem = (msg) => {
-      card.replaceChildren(h("div", { class: "auth-done", role: "alert" },
-        h("h3", { text: "Não deu para ativar" }),
-        h("p", { text: msg }),
-        h("div", { class: "row" }, h("a", { class: "btn btn-gold", href: "#/ativar" }, "Digitar um código"), h("a", { class: "btn btn-ghost", href: "#/entrar" }, "Voltar"))));
-    };
     function codeForm() {
       const err = h("div");
       const email = h("input", { class: "input", id: "a-email", type: "email", autocomplete: "email", required: true, value: q.get("e") || "" });
@@ -279,7 +275,7 @@
       const btn = h("button", { class: "btn btn-gold", type: "submit", style: "width:100%", text: "Ativar meu acesso" });
       const form = h("form", { novalidate: true },
         h("h3", { style: "margin-bottom:6px", text: "Ativar o acesso" }),
-        h("p", { class: "muted small", style: "margin:0 0 16px", text: "Digite o e-mail do cadastro e o código de 6 dígitos que chegou na sua caixa de entrada. Você também pode abrir o link do e-mail." }),
+        h("p", { class: "muted small", style: "margin:0 0 16px", text: "Digite o e-mail do cadastro e o código de 6 dígitos que um gestor te entregou." }),
         err,
         h("div", { class: "field" }, h("label", { for: "a-email", text: "E-mail" }), email),
         h("div", { class: "field" }, h("label", { for: "a-code", text: "Código de 6 dígitos" }), code),
@@ -294,10 +290,7 @@
       card.replaceChildren(form);
       (q.get("e") ? code : email).focus();
     }
-    if (q.get("u") && q.get("t")) {
-      card.replaceChildren(M.loading("Ativando seu acesso…"));
-      M.post("auth/activate", { u: q.get("u"), t: q.get("t") }).then((d) => done(d.email), (ex) => problem(ex.message));
-    } else codeForm();
+    codeForm();
     return authShell(card);
   };
 
@@ -613,8 +606,21 @@
       h("section", { class: "panel" }, h("h3", { text: "Tipo de tela" }),
         h("p", { class: "muted small", style: "margin:0 0 12px", text: "Se o sistema ficou ruim no seu aparelho, escolha aqui como quer ver. A escolha fica salva neste aparelho." }),
         M.modeSwitch({ label: false })),
-      h("section", { class: "panel" }, h("h3", { text: "Trocar senha" }), err, form));
+      h("section", { class: "panel" }, h("h3", { text: "Trocar senha" }), err, form),
+      versionPanel());
   };
+
+  // Mostra qual versão está no ar (site e servidor). Se forem diferentes, o envio no GitHub ficou pela metade.
+  function versionPanel() {
+    const line = h("p", { class: "muted small", style: "margin:0", text: "Site: " + M.BUILD + " · Servidor: conferindo…" });
+    const note = h("p", { class: "small", style: "margin:8px 0 0" });
+    fetch("/api/health", { cache: "no-store" }).then((r) => r.json()).then((d) => {
+      line.textContent = "Site: " + M.BUILD + " · Servidor: " + (d.build || "?");
+      if (d.build !== M.BUILD) note.textContent = "As versões estão diferentes. Envie a pasta completa de novo ao GitHub e aguarde o Netlify publicar.";
+    }).catch(() => { line.textContent = "Site: " + M.BUILD + " · Servidor: sem resposta"; });
+    return h("section", { class: "panel" }, h("h3", { text: "Versão do sistema" }),
+      h("p", { class: "muted small", style: "margin:0 0 8px", text: "Se algo que já foi corrigido continua dando erro, confira aqui se a versão nova está no ar." }), line, note);
+  }
 
   /* ───── certificados ───── */
   M.views.cert = async function (trailId) {

@@ -53,7 +53,7 @@
     const ul = h("ul", { class: "c-list" });
     const input = h("input", { class: "input", type: "text", maxlength: "500", placeholder: "Escreva um comentário…", "aria-label": "Comentário" });
     const send = h("button", { class: "btn btn-gold btn-sm", type: "submit" }, M.icon("send", 16), "Enviar");
-    const form = h("form", { class: "c-form" }, input, send);
+    const form = h("form", { class: "c-form" }, M.mentionField(input), M.emojiButton(input, { up: true, label: false }), send);
     function item(c) {
       const li = h("li", { class: "c-item" },
         h("a", { href: M.profileHref(c.author) }, M.avatar(c.author, 30)),
@@ -84,9 +84,55 @@
   }
 
   /* ───── cartão do post ───── */
-  M.postCard = function (post, { onDelete, openComments = false, query, mine = false } = {}) {
+  // menu de ações do gestor: fixar, mudar tag, encerrar enquete e apagar
+  function manageMenu(post, root, opts, doDelete) {
+    const btn = h("button", { class: "icon-btn", type: "button", "aria-label": "Mais ações do post", "aria-haspopup": "menu", "aria-expanded": "false" }, M.icon("more", 18));
+    const wrap = h("div", { class: "pop-wrap" }, btn);
+    let menu = null;
+    const close = () => { if (!menu) return; menu.remove(); menu = null; btn.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", onDoc); document.removeEventListener("keydown", onKey); };
+    const onDoc = (e) => { if (!wrap.contains(e.target)) close(); };
+    const onKey = (e) => { if (e.key === "Escape") { close(); btn.focus(); } };
+    async function patch(body, ok) {
+      try {
+        const r = await M.api("PATCH", "feed/post/" + post.id, body);
+        if (ok) M.toast(ok, "ok");
+        if (opts.onChange) opts.onChange(r.post); else root.replaceWith(M.postCard(r.post, opts));
+      } catch (e) { M.toast(e.message, "err"); }
+    }
+    async function chooseTag() {
+      const tags = await M.loadTags(true);
+      const sel = h("select", { class: "select", "aria-label": "Tag" }, h("option", { value: "", text: "Sem tag" }), tags.map((t) => h("option", { value: t.id, text: t.name })));
+      sel.value = post.tag?.id || "";
+      const res = await M.modal((done) => [
+        h("h3", { text: "Tag do post" }),
+        tags.length ? sel : h("p", { class: "muted", html: 'Ainda não há tags. Crie em <a href="#/admin/tags">Tags e moderação</a>.' }),
+        h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => done(null), text: "Cancelar" }), h("button", { class: "btn btn-gold", type: "button", onclick: () => done(sel.value), text: "Salvar" })),
+      ]);
+      if (res === null || res === undefined) return;
+      patch({ tag: res || null }, "Tag atualizada.");
+    }
+    const entries = [];
+    if (post.status === "published") {
+      entries.push([post.pinned ? "Desafixar do topo" : "Fixar no topo", "pin", () => patch({ pinned: !post.pinned }, post.pinned ? "Post desafixado." : "Post fixado no topo.")]);
+      entries.push(["Mudar tag…", "tag", chooseTag]);
+      if (post.poll) entries.push([post.poll.closed ? "Reabrir enquete" : "Encerrar enquete", "chart", () => patch({ pollClosed: !post.poll.closed }, post.poll.closed ? "Enquete reaberta." : "Enquete encerrada.")]);
+    }
+    entries.push(["Apagar post", "trash", doDelete, true]);
+    btn.addEventListener("click", () => {
+      if (menu) { close(); return; }
+      menu = h("ul", { class: "pop-menu", role: "menu" }, entries.map(([label, icon, fn, danger]) => h("li", { role: "none" },
+        h("button", { type: "button", role: "menuitem", class: danger ? "danger" : "", onclick: () => { close(); fn(); } }, M.icon(icon, 16), label))));
+      wrap.append(menu); btn.setAttribute("aria-expanded", "true");
+      setTimeout(() => { document.addEventListener("pointerdown", onDoc); document.addEventListener("keydown", onKey); }, 0);
+      menu.querySelector("button")?.focus();
+    });
+    return wrap;
+  }
+
+  M.postCard = function (post, opts = {}) {
+    const { onDelete, openComments = false, query } = opts;
     const a = post.author;
-    const root = h("article", { class: "post" + (post.status !== "published" ? " is-" + post.status : ""), id: "post-" + post.id });
+    const root = h("article", { class: "post" + (post.status !== "published" ? " is-" + post.status : "") + (post.pinned ? " is-pinned" : ""), id: "post-" + post.id });
     const when = post.publishedAt || post.createdAt;
     const head = h("header", { class: "post-head" },
       h("a", { href: M.profileHref(a), "aria-label": "Perfil de " + a.name }, M.avatar(a, 44)),
@@ -94,14 +140,17 @@
         h("div", { class: "row", style: "gap:8px" },
           h("a", { class: "post-name", href: M.profileHref(a), text: a.name }),
           a.role === "admin" ? h("span", { class: "chip chip-gold chip-xs", text: "Gestor" }) : null,
+          post.pinned ? h("span", { class: "chip chip-gold chip-xs pin-chip" }, M.icon("pin", 12), "Fixado") : null,
+          M.tagChip(post.tag),
           post.status === "pending" ? h("span", { class: "chip chip-warn chip-xs", text: "Aguardando aprovação" }) : null,
           post.status === "rejected" ? h("span", { class: "chip chip-bad chip-xs", text: "Recusado" }) : null),
         h("div", { class: "muted small" }, a.nickname ? "@" + a.nickname + " · " : "", h("a", { class: "muted", href: "#/post/" + post.id, text: M.timeAgo(when) }))),
-      post.canDelete ? h("button", { class: "icon-btn", type: "button", "aria-label": "Apagar post", onclick: async () => {
-        const ok = await M.confirm({ title: "Apagar este post?", text: post.status === "published" ? "O post e os comentários dele somem do feed. Não tem volta." : "O post será descartado.", ok: "Apagar", danger: true });
-        if (!ok) return;
-        try { await M.api("DELETE", "feed/post/" + post.id); root.remove(); M.toast("Post apagado.", "ok"); if (onDelete) onDelete(post); } catch (e) { M.toast(e.message, "err"); }
-      } }, M.icon("trash", 18)) : null);
+      M.isAdmin() ? manageMenu(post, root, opts, doDelete) : post.canDelete ? h("button", { class: "icon-btn", type: "button", "aria-label": "Apagar post", onclick: doDelete }, M.icon("trash", 18)) : null);
+    async function doDelete() {
+      const ok = await M.confirm({ title: "Apagar este post?", text: post.status === "published" ? "O post e os comentários dele somem do feed. Não tem volta." : "O post será descartado.", ok: "Apagar", danger: true });
+      if (!ok) return;
+      try { await M.api("DELETE", "feed/post/" + post.id); root.remove(); M.toast("Post apagado.", "ok"); if (onDelete) onDelete(post); } catch (e) { M.toast(e.message, "err"); }
+    }
     root.append(head);
     if (post.text) {
       const long = post.text.length > 420;
@@ -115,6 +164,7 @@
     }
     const media = M.renderMedia(post.media);
     if (media) root.append(media);
+    if (post.poll) root.append(M.pollView(post));
     if (post.status === "rejected" && post.reason) root.append(h("p", { class: "post-reason" }, h("strong", { text: "Motivo: " }), post.reason));
     if (post.status === "pending") root.append(h("p", { class: "muted small", style: "margin:10px 0 0", text: "Seu post aparece no feed assim que o gestor aprovar. Depois de aprovado, você ganha XP." }));
     if (post.status === "published") {
@@ -221,12 +271,17 @@
   };
 
   /* ───── publicar ───── */
-  function composer({ uploads, onPosted }) {
+  function composer({ uploads, onPosted, defaultTag = "", limits = {} }) {
     const isAdm = M.isAdmin();
     const me = M.session.user;
     let items = [];
     let seq = 0;
     const ta = h("textarea", { class: "textarea composer-text", rows: "3", maxlength: "2000", placeholder: isAdm ? "Compartilhe um aviso, um aprendizado ou um vídeo com o time…" : "Compartilhe um aprendizado, uma conquista ou uma dúvida com o time…", "aria-label": "Texto do post" });
+    const taHost = M.mentionField(ta);
+    const pollB = isAdm ? M.pollBuilder({ maxQuestions: limits.maxQuestions, maxOptions: limits.maxOptions }) : null;
+    const tagSel = isAdm ? h("select", { class: "select", "aria-label": "Tag do post" }, h("option", { value: "", text: "Sem tag" })) : null;
+    const pinChk = isAdm ? h("input", { type: "checkbox", id: "pin-new" }) : null;
+    if (isAdm) M.loadTags(true).then((list) => { tagSel.append(...list.map((t) => h("option", { value: t.id, text: t.name }))); tagSel.value = list.some((t) => t.id === defaultTag) ? defaultTag : ""; });
     const fileInput = h("input", { type: "file", multiple: true, hidden: true, accept: "image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.txt,.zip" });
     const list = h("ul", { class: "att-list" });
     const linkRow = h("form", { class: "link-row", hidden: true },
@@ -236,10 +291,13 @@
     const btn = h("button", { class: "btn btn-gold", type: "button" }, M.icon("send", 18), isAdm ? "Publicar" : "Enviar para aprovação");
     const mk = (type, label, icon, fn, disabled, title) => h("button", { class: "tool-btn", type: "button", onclick: fn, disabled, title }, M.icon(icon, 18), h("span", { text: label }));
     const offTip = isAdm ? "Envio de arquivos desligado: veja o guia de configuração do Cloudinary." : "O envio de arquivos ainda não foi liberado pela administração.";
+    let pollTool = null;
     const tools = h("div", { class: "tools" },
       mk("media", "Foto ou vídeo", "image", () => { fileInput.accept = "image/*,video/*"; fileInput.click(); }, !uploads, !uploads ? offTip : ""),
       mk("file", "Arquivo", "clip", () => { fileInput.accept = ".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.txt,.zip"; fileInput.click(); }, !uploads, !uploads ? offTip : ""),
-      mk("link", "Link", "link", () => { linkRow.hidden = !linkRow.hidden; if (!linkRow.hidden) linkRow.querySelector("input").focus(); }));
+      mk("link", "Link", "link", () => { linkRow.hidden = !linkRow.hidden; if (!linkRow.hidden) linkRow.querySelector("input").focus(); }),
+      M.emojiButton(ta),
+      isAdm ? (pollTool = mk("poll", "Enquete", "chart", () => { pollB.toggle(); pollTool.classList.toggle("on", pollB.isOpen()); draw(); })) : null);
 
     function draw() {
       list.replaceChildren(...items.map((it) => h("li", { class: "att" + (it.status === "error" ? " bad" : "") },
@@ -249,11 +307,12 @@
           it.status === "uploading" ? h("div", { class: "bar" }, h("i", { style: `width:${it.pct}%` })) : h("span", { class: "small " + (it.status === "error" ? "bad" : "muted"), text: it.status === "error" ? it.error : [it.type === "link" ? "Link" : it.gif ? "GIF" : it.type === "video" ? "Vídeo" : it.type === "image" ? "Imagem" : "Arquivo", M.prettySize(it.bytes)].filter(Boolean).join(" · ") })),
         h("button", { class: "icon-btn", type: "button", "aria-label": "Remover anexo", onclick: () => { items = items.filter((x) => x !== it); if (it.preview) URL.revokeObjectURL(it.preview); draw(); } }, M.icon("x", 16)))));
       const busy = items.some((i) => i.status === "uploading");
-      const empty = !ta.value.trim() && !items.some((i) => i.status === "done");
+      const empty = !ta.value.trim() && !items.some((i) => i.status === "done") && !(pollB && pollB.filled());
       btn.disabled = busy || empty;
       count.textContent = ta.value.length > 1500 ? `${ta.value.length}/2000` : "";
     }
     ta.addEventListener("input", () => { ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 360) + "px"; draw(); });
+    if (pollB) pollB.node.addEventListener("input", draw);
 
     function addFiles(files) {
       for (const file of files) {
@@ -290,7 +349,8 @@
       inp.value = ""; linkRow.hidden = true; draw();
     });
     const box = h("section", { class: "composer panel", "aria-label": "Novo post" },
-      h("div", { class: "composer-top" }, M.avatar(me, 44), ta), list, linkRow, fileInput,
+      h("div", { class: "composer-top" }, M.avatar(me, 44), taHost), list, linkRow, fileInput, pollB ? pollB.node : null,
+      isAdm ? h("div", { class: "composer-meta" }, h("label", { class: "small muted", for: "tag-new" }, M.icon("tag", 14), "Tag"), (tagSel.id = "tag-new", tagSel), h("label", { class: "check-inline small", for: "pin-new" }, pinChk, M.icon("pin", 14), "Fixar no topo")) : null,
       h("div", { class: "composer-bar" }, tools, h("span", { class: "spacer", style: "flex:1" }), count, btn),
       isAdm ? null : h("p", { class: "muted small", style: "margin:10px 0 0", text: "Seu post passa pela aprovação do gestor antes de aparecer no feed. Post aprovado vale XP." }));
     box.addEventListener("dragover", (e) => { if (uploads && e.dataTransfer?.types?.includes("Files")) { e.preventDefault(); box.classList.add("drop"); } });
@@ -300,8 +360,11 @@
       btn.disabled = true;
       const media = items.filter((i) => i.status === "done").map((i) => ({ type: i.type, url: i.url, name: i.type === "link" ? undefined : i.name, bytes: i.bytes }));
       try {
-        const r = await M.post("feed/post", { text: ta.value, media });
-        ta.value = ""; ta.style.height = ""; items.forEach((i) => i.preview && URL.revokeObjectURL(i.preview)); items = []; draw();
+        const extra = isAdm ? { tag: tagSel.value || undefined, pinned: pinChk.checked || undefined, poll: pollB.get() || undefined } : {};
+        const r = await M.post("feed/post", { text: ta.value, media, ...extra });
+        ta.value = ""; ta.style.height = ""; items.forEach((i) => i.preview && URL.revokeObjectURL(i.preview)); items = [];
+        if (isAdm) { pollB.reset(); pollTool.classList.remove("on"); pinChk.checked = false; }
+        draw();
         M.toast(r.status === "pending" ? "Enviado! O gestor vai analisar o seu post." : "Post publicado.", "ok");
         onPosted(r);
       } catch (e) { M.toast(e.message, "err"); draw(); }
@@ -311,10 +374,11 @@
   }
 
   /* ───── início: o feed ───── */
-  M.views.home = async function () {
-    await M.refreshMe();
+  M.views.home = async function (opts = {}) {
+    const tagId = opts.tag || "";
+    const [, status, tags] = await Promise.all([M.refreshMe(), M.get("feed/status").catch(() => ({ uploads: false })), M.loadTags(true)]);
     const isAdm = M.isAdmin();
-    const status = await M.get("feed/status").catch(() => ({ uploads: false }));
+    const curTag = tagId ? tags.find((t) => t.id === tagId) : null;
     const top = h("div", { class: "feed-top" });
     const list = h("div", { class: "feed-list" });
     const more = h("div", { class: "row", style: "justify-content:center;margin:20px 0" });
@@ -373,10 +437,15 @@
             h("a", { class: "btn btn-ghost", style: "justify-self:start", href: M.profileHref(M.session.user) }, "Ver meus posts publicados"));
           return;
         }
-        const d = await M.get("feed" + (next ? "?after=" + encodeURIComponent(next) : ""));
+        const q = new URLSearchParams();
+        if (next) q.set("after", next);
+        if (tagId) q.set("tag", tagId);
+        const d = await M.get("feed" + (q.toString() ? "?" + q : ""));
         if (reset) list.replaceChildren();
-        if (!d.posts.length && reset) list.append(h("div", { class: "empty" }, h("h3", { text: "O feed ainda está vazio" }), h("p", { text: isAdm ? "Publique o primeiro post para começar." : "Quando o gestor ou o time publicar, aparece aqui." })));
-        d.posts.forEach((p) => list.append(M.postCard(p)));
+        if (!d.posts.length && reset) list.append(curTag
+          ? h("div", { class: "empty" }, h("h3", { text: `Nenhum post com a tag ${curTag.name}` }), h("p", { text: "Quando alguém publicar com essa tag, aparece aqui." }))
+          : h("div", { class: "empty" }, h("h3", { text: "O feed ainda está vazio" }), h("p", { text: isAdm ? "Publique o primeiro post para começar." : "Quando o gestor ou o time publicar, aparece aqui." })));
+        d.posts.forEach((p) => list.append(M.postCard(p, { onChange: () => load(true) })));
         next = d.next;
         more.replaceChildren(next ? h("button", { class: "btn btn-ghost", type: "button", onclick: () => load(false), text: "Carregar mais" }) : (list.children.length ? h("span", { class: "muted small", text: "Você chegou ao fim do feed." }) : null));
       } catch (e) { list.replaceChildren(h("div", { class: "form-error", text: e.message })); }
@@ -386,13 +455,18 @@
       ["feed", "mine"].map((k) => h("button", { type: "button", role: "tab", "aria-selected": String(tab === k), text: k === "feed" ? "Feed" : "Meus posts", onclick: (ev) => { tab = k; tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-selected", String(b === ev.currentTarget))); load(true); } })));
 
     drawTop();
+    const tagBar = tags.length || tagId ? h("nav", { class: "tag-bar", "aria-label": "Filtrar por tag" },
+      h("a", { class: "tag-pill" + (!tagId ? " on" : ""), href: "#/", "aria-current": !tagId ? "true" : null, text: "Todos" }),
+      tags.map((t) => h("a", { class: "tag-pill tag-" + t.color + (t.id === tagId ? " on" : ""), href: "#/tag/" + t.id, "aria-current": t.id === tagId ? "true" : null }, M.icon("tag", 13), t.name)),
+      tagId && !curTag ? h("span", { class: "muted small", text: "Essa tag não existe mais." }) : null,
+      h("a", { class: "tag-pill search-pill", href: "#/busca" + (tagId ? "?tag=" + tagId : "") }, M.icon("search", 13), curTag ? "Buscar nesta tag" : "Buscar por tag")) : null;
     const node = h("div", { class: "feed" },
       top,
-      composer({ uploads: status.uploads, onPosted: (r) => {
-        if (r.status === "published") { if (tab === "feed") { list.querySelector(".empty")?.remove(); list.prepend(M.postCard(r.post)); } }
+      composer({ uploads: status.uploads, defaultTag: tagId, limits: status, onPosted: (r) => {
+        if (r.status === "published") { if (tab === "feed") { if (r.post.pinned || (tagId && r.post.tag?.id !== tagId)) load(true); else { list.querySelector(".empty")?.remove(); { const card = M.postCard(r.post, { onChange: () => load(true) }); const pins = list.querySelectorAll(":scope > .post.is-pinned"); if (pins.length) pins[pins.length - 1].after(card); else list.prepend(card); } } } }
         else { tab = "mine"; tabs.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-selected", String(i === 1))); load(true); }
       } }),
-      isAdm ? null : tabs, list, more);
+      tagBar, isAdm ? null : tabs, list, more);
     load(true);
     return node;
   };

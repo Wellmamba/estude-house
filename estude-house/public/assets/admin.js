@@ -7,7 +7,7 @@
     prova_iniciada: "Prova iniciada", prova_enviada: "Prova enviada", senha_alterada: "Senha alterada",
     admin_criou_acesso: "Admin criou acesso", admin_subiu_acessos: "Admin subiu lista", admin_alterou_usuario: "Admin alterou usuário",
     admin_zerou_progresso: "Admin zerou progresso", admin_removeu_usuario: "Admin removeu usuário",
-    cadastro_pendente: "Cadastro aguardando aprovação", cadastro_aprovado: "Cadastro aprovado", cadastro_reenviado: "Convite reenviado", cadastro_ativado: "Acesso ativado", cadastro_recusado: "Cadastro recusado", cadastro_removido: "Cadastro removido", post_criado: "Post criado", post_aprovado: "Post aprovado", post_recusado: "Post recusado", post_removido: "Post removido",
+    cadastro_pendente: "Cadastro aguardando aprovação", cadastro_aprovado: "Cadastro aprovado", cadastro_novo_codigo: "Novo código gerado", cadastro_ativado: "Acesso ativado", cadastro_recusado: "Cadastro recusado", cadastro_removido: "Cadastro removido", post_criado: "Post criado", post_aprovado: "Post aprovado", post_recusado: "Post recusado", post_removido: "Post removido", post_editado: "Post editado (tag, fixar ou enquete)", post_bloqueado: "Post barrado pelo filtro", comentario_bloqueado: "Comentário barrado pelo filtro", tag_criada: "Tag criada", tag_editada: "Tag editada", tag_removida: "Tag removida", admin_moderacao: "Admin mudou a moderação",
     admin_config_engajamento: "Admin mudou XP e metas",
   };
   const logTone = (t) => (t === "login_falhou" || t === "admin_removeu_usuario" ? "chip-bad" : t.startsWith("admin_") ? "chip-gold" : t === "prova_enviada" ? "chip-warn" : "");
@@ -327,15 +327,13 @@
   }, text: label || "Copiar" });
   const when = (ts) => { const t = M.timeAgo(ts); return t === "agora" ? "agora" : /^\d+ (min|h|d)$/.test(t) ? "há " + t : "em " + t; };
 
-  // O e-mail não saiu (ou não está configurado): mostra o link e o código para entregar à pessoa.
+  // Mostra o código de ativação para o gestor entregar à pessoa (ele não fica salvo em lugar nenhum).
   function handoff(person, r) {
     return M.modal((close) => h("div", { class: "handoff" },
-      h("h3", { text: "Entregue o acesso à pessoa" }),
-      h("p", { class: "muted", text: `O e-mail para ${person.email} não foi enviado. Motivo: ${String(r.reason || "desconhecido").replace(/\.$/, "")}. O cadastro já está aprovado. Mande o link ou o código abaixo por WhatsApp, Slack ou outro canal. Valem por 48 horas.` }),
-      h("label", { class: "small muted", text: "Link de ativação" }),
-      h("div", { class: "copy-row" }, h("input", { class: "input", readonly: true, value: r.link, "aria-label": "Link de ativação", onfocus: (e) => e.target.select() }), copyBtn(r.link)),
-      h("label", { class: "small muted", text: "Ou o código (a pessoa digita em Entrar → Recebi um código)" }),
-      h("div", { class: "copy-row" }, h("span", { class: "big-code", text: r.code }), copyBtn(r.code)),
+      h("h3", { text: "Código de ativação" }),
+      h("p", { class: "muted", text: `Passe este código para ${person.name} (${person.email}). Ela abre a tela de entrada, toca em “Tenho um código de ativação”, digita o e-mail do cadastro e o código. Vale por ${r.hours || 48} horas e só funciona uma vez.` }),
+      h("div", { class: "copy-row" }, h("span", { class: "big-code", text: r.code }), copyBtn(r.code, "Copiar código")),
+      h("p", { class: "muted small", style: "margin:0", text: "Por segurança o código não fica guardado. Se a pessoa perder, use Gerar novo código." }),
       h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-gold", type: "button", onclick: () => close(), text: "Pronto" }))));
   }
 
@@ -353,8 +351,8 @@
             ok.disabled = true;
             try {
               const r = await M.post(`admin/signups/${x.id}/approve`);
-              if (r.emailSent) M.toast(`Aprovado. E-mail com link e código enviado para ${x.email}.`, "ok");
-              else { M.toast("Aprovado, mas o e-mail não saiu.", "err"); await handoff(x, r); }
+              M.toast(`Aprovado. Entregue o código para ${x.name}.`, "ok");
+              await handoff(x, r);
               await load();
             } catch (e) { M.toast(e.message, "err"); ok.disabled = false; }
           });
@@ -373,13 +371,13 @@
           } }));
         }
         if (x.access === "invited") {
-          const re = h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Reenviar e-mail" });
+          const re = h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Gerar novo código" });
           re.addEventListener("click", async () => {
             re.disabled = true;
             try {
               const r = await M.post(`admin/signups/${x.id}/resend`);
-              if (r.emailSent) M.toast("Novo e-mail enviado. O link e o código anteriores deixaram de valer.", "ok");
-              else { M.toast("O e-mail não saiu.", "err"); await handoff(x, r); }
+              M.toast("Novo código gerado. O anterior deixou de valer.", "ok");
+              await handoff(x, r);
               await load();
             } catch (e) { M.toast(e.message, "err"); re.disabled = false; }
           });
@@ -393,7 +391,7 @@
           } }, M.icon("trash", 16)));
         }
         const chip = x.access === "pending" ? h("span", { class: "chip chip-warn chip-xs", text: "Aguardando aprovação" })
-          : x.access === "invited" ? h("span", { class: "chip chip-xs " + (x.expired ? "chip-bad" : "chip-gold"), text: x.expired ? "Convite expirado" : "Aprovado · falta ativar" })
+          : x.access === "invited" ? h("span", { class: "chip chip-xs " + (x.expired ? "chip-bad" : "chip-gold"), text: x.expired ? "Código expirado" : "Aprovado · falta o código" })
           : h("span", { class: "chip chip-bad chip-xs", text: "Recusado" });
         return h("div", { class: "signup-row" },
           h("div", { class: "who" }, h("strong", { text: x.name }), h("span", { class: "muted small", text: `${x.email} · cadastro ${when(x.createdAt)}` }), x.reason ? h("span", { class: "muted small", text: "Motivo: " + x.reason }) : null),
@@ -403,7 +401,7 @@
       const rows = [...d.signups].sort((a, b) => order[a.access] - order[b.access] || b.createdAt - a.createdAt);
       box.replaceChildren(
         h("h3", { text: "Cadastros novos" }),
-        h("p", { class: "muted small", style: "margin:0 0 12px", text: d.emailOn ? "Ao aprovar, a pessoa recebe um e-mail com um link e um código de 6 dígitos. Só entra depois de ativar." : "O envio de e-mail ainda não está configurado: ao aprovar, você recebe o link e o código para entregar à pessoa. Veja COMO-CONFIGURAR-EMAIL-E-APROVACAO.md." }),
+        h("p", { class: "muted small", style: "margin:0 0 12px", text: "Ao aprovar, o sistema gera um código de 6 dígitos. Você entrega o código à pessoa (pessoalmente, WhatsApp ou Slack) e ela digita na tela de entrada para liberar o acesso." }),
         rows.length ? h("div", { class: "signup-list" }, rows.map(row)) : h("p", { class: "muted", style: "margin:0", text: "Nenhum cadastro novo por enquanto." }));
     }
     await load();

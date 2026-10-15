@@ -48,7 +48,18 @@ Links funcionam sem configurar nada. Para **enviar arquivos** (foto, vídeo, PDF
 4. Faça um novo deploy (**Deploys → Trigger deploy → Deploy site**).
 5. Confira abrindo `https://SEU-SITE.netlify.app/api/health`: deve aparecer `"uploads":"cloudinary"`.
 
-Como funciona: o navegador pede ao servidor uma assinatura (só quem está logado recebe) e envia o arquivo direto ao Cloudinary, com barra de progresso. O servidor só aceita endereços `res.cloudinary.com/<seu cloud name>/…` nos posts. Limites usados pela tela: arquivo até 10 MB e vídeo até 100 MB. **Foto grande é reduzida sozinha** no navegador antes de enviar (não trava mais por passar de 10 MB). **GIF acima de 10 MB** é enviado como vídeo curto que repete sozinho, sem som, e se comporta como GIF no feed (limite de 100 MB). Num plano pago, ajuste `LIMITS` no início de `public/assets/feed.js`. Arquivos SVG não são aceitos (segurança).
+Como funciona: o navegador pede ao servidor uma assinatura (só quem está logado recebe) e envia o arquivo direto ao Cloudinary, com barra de progresso. O servidor só aceita endereços `res.cloudinary.com/<seu cloud name>/…` nos posts. Limites usados pela tela: **foto sem limite prático** (reduzida sozinha), arquivo (PDF etc.) até 10 MB e vídeo ou GIF até 100 MB. **Foto grande é reduzida sozinha** no navegador antes de enviar (não trava mais por passar de 10 MB). **GIF acima de 10 MB** é enviado como vídeo curto que repete sozinho, sem som, e se comporta como GIF no feed (limite de 100 MB). Num plano pago, ajuste `LIMITS` no início de `public/assets/feed.js`. Arquivos SVG não são aceitos (segurança).
+
+## Tags, enquetes, fixados, @, emoji, filtro e sino
+
+- **Tags** (só gestor): **Administração → Tags e moderação** cria, renomeia, troca a cor e apaga tags (até 30). Ao publicar, o gestor escolhe a tag do post. Quem usa o feed filtra clicando na tag (`#/tag/<id>`); na busca há o seletor de tag para buscar só dentro dela. Apagar uma tag solta os posts, que continuam no feed sem tag. Aluno não cria tag.
+- **Fixar** (só gestor): marque "Fixar no topo" ao publicar ou use o menu "..." do post. Até 3 posts fixados, sempre no topo da Início.
+- **Enquete** (só gestor): botão "Enquete" no publicador. Pode ter várias perguntas (até 6, com 2 a 8 opções cada). Dois formatos: **Aberta** (quem votou vê o percentual) e **Vote aqui / secreta** (quem vota não vê o resultado; só o gestor vê). Cada pessoa vota uma vez por pergunta. O gestor encerra a enquete pelo menu "...".
+- **@ e @todos**: ao digitar `@` aparece a lista de pessoas para marcar. `@todos` só funciona para gestor e avisa a equipe inteira (quem entrou depois não recebe avisos antigos).
+- **Emoji**: botão de carinha no publicador e nos comentários.
+- **Sino**: avisa quando alguém te marca, quando o gestor usa @todos, quando comentam no seu post e quando um post seu é aprovado ou recusado.
+- **Filtro de ofensas**: comentários e posts de alunos com xingamento são barrados com aviso (entende "m3rda", "puuuta", "p u t a"; não bloqueia palavras comuns como "computador"). Gestores não passam pelo filtro. Em **Tags e moderação** o gestor liga/desliga o filtro, soma palavras próprias e testa frases.
+- **Versão**: em **Minha conta → Versão do sistema** aparece a versão do site e a do servidor. Se forem diferentes, o envio ao GitHub ficou incompleto.
 
 ## Foto de perfil
 
@@ -60,7 +71,7 @@ Na tela de login (embaixo do cartão), no menu lateral e em **Minha conta → Ti
 
 ## Cadastro com aprovação
 
-Quem se cadastra só entra depois que um gestor aprova e a pessoa ativa pelo link ou código enviado por e-mail. Veja **COMO-CONFIGURAR-EMAIL-E-APROVACAO.md**.
+Quem se cadastra só entra depois que um gestor aprova e entrega o código de ativação. Veja **COMO-FUNCIONA-A-APROVACAO.md**.
 
 ## Busca: o que "parecido" significa
 

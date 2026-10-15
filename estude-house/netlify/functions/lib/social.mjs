@@ -7,9 +7,14 @@ import { store, pmap } from "./db.mjs";
 import { newId, isLive } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as eng from "./engage.mjs";
+import * as mod from "./moderation.mjs";
+import * as notify from "./notify.mjs";
 import { match, snippet } from "./textsearch.mjs";
 
 const MAX_TEXT = 2000, MAX_COMMENT = 500, MAX_MEDIA = 4, PAGE = 12, MAX_PENDING = 3;
+const MAX_TAGS = 30, MAX_PINNED = 3, MAX_QUESTIONS = 6, MAX_OPTIONS = 8;
+const TAG_COLORS = ["gold", "purple", "green", "red", "blue", "orange", "pink", "gray"];
+const BLOCKED_MSG = "Não foi possível enviar: o texto tem linguagem ofensiva. Reescreva com respeito.";
 const RESERVED = new Set(["admin", "adm", "mamba", "suporte", "gestor", "gestora", "estude", "house", "root", "todos", "all", "everyone", "eu", "voce", "ninguem", "moderador"]);
 const MEDIA_TYPES = ["image", "video", "file", "link"];
 
@@ -75,15 +80,102 @@ const pendKey = (d) => `pend:${d.authorId}:${t13(d.createdAt)}:${d.id}`;
 const rejKey = (d) => `rej:${d.authorId}:${t13(d.createdAt)}:${d.id}`;
 const auKey = (d) => `au:${d.authorId}:${inv(d.publishedAt)}:${d.id}`;
 
+// Chaves extras de um post publicado: por autor (au), por tag (tg) e fixados (pin).
+const tgKey = (d) => `tg:${d.tag}:${inv(d.publishedAt)}:${d.id}`;
+const pinKey = (d) => `pin:${inv(d.pinnedAt)}:${d.id}`;
+const extraKeys = (d) => (d.status !== "published" ? [] : [auKey(d), d.tag ? tgKey(d) : null, d.pinnedAt ? pinKey(d) : null].filter(Boolean));
+
 async function putPost(d, kind) {
   const f = await feed();
   const k = kind === "pub" ? pubKey(d) : kind === "pend" ? pendKey(d) : rejKey(d);
   await Promise.all([
     f.set(k, d),
     f.set("ix:" + d.id, { k, st: d.status, a: d.authorId }),
-    kind === "pub" ? f.set(auKey(d), { k }) : null,
+    ...(kind === "pub" ? extraKeys(d).map((x) => f.set(x, { k })) : []),
   ]);
   bust("posts");
+}
+
+// Troca tag ou fixação de um post publicado, mantendo os índices em dia.
+async function updatePost(found, change) {
+  const f = await feed();
+  const before = found.doc;
+  const after = { ...before, ...change };
+  if (!after.tag) delete after.tag;
+  if (!after.pinnedAt) delete after.pinnedAt;
+  const oldKeys = new Set(extraKeys(before)), newKeys = new Set(extraKeys(after));
+  await f.set(found.key, after);
+  await Promise.all([
+    ...[...oldKeys].filter((x) => !newKeys.has(x)).map((x) => f.delete(x)),
+    ...[...newKeys].filter((x) => !oldKeys.has(x)).map((x) => f.set(x, { k: found.key })),
+  ]);
+  bust("posts");
+  return after;
+}
+
+/* ---------- tags ---------- */
+async function loadTags() {
+  const d = await (await feed()).get("tags");
+  return Array.isArray(d?.list) ? d.list : [];
+}
+const saveTags = async (list) => (await feed()).set("tags", { list });
+const tagView = (t) => ({ id: t.id, name: t.name, color: t.color });
+function tagName(raw, list, fail, selfId) {
+  const name = String(raw ?? "").replace(/\s+/g, " ").trim();
+  if (name.length < 2 || name.length > 24) fail(400, "O nome da tag precisa ter de 2 a 24 letras.");
+  if (list.some((t) => t.id !== selfId && t.name.toLowerCase() === name.toLowerCase())) fail(409, "Já existe uma tag com esse nome.");
+  return name;
+}
+
+/* ---------- enquetes ---------- */
+const oneLine = (s, n) => String(s ?? "").replace(/\s+/g, " ").trim().slice(0, n);
+function sanitizePoll(p, fail) {
+  if (p == null) return null;
+  const qs = Array.isArray(p.questions) ? p.questions : [];
+  if (!qs.length) fail(400, "A enquete precisa de pelo menos uma pergunta.");
+  if (qs.length > MAX_QUESTIONS) fail(400, `No máximo ${MAX_QUESTIONS} perguntas por enquete.`);
+  return {
+    mode: p.mode === "secret" ? "secret" : "open",
+    closed: false,
+    questions: qs.map((q, i) => {
+      const text = oneLine(q?.text, 140);
+      if (text.length < 3) fail(400, `Escreva a pergunta ${i + 1}.`);
+      const opts = (Array.isArray(q?.options) ? q.options : []).map((o) => oneLine(o, 80)).filter(Boolean);
+      if (opts.length < 2) fail(400, `A pergunta ${i + 1} precisa de pelo menos 2 opções.`);
+      if (opts.length > MAX_OPTIONS) fail(400, `No máximo ${MAX_OPTIONS} opções por pergunta.`);
+      if (new Set(opts.map((o) => o.toLowerCase())).size !== opts.length) fail(400, `A pergunta ${i + 1} tem opções repetidas.`);
+      return { text, options: opts };
+    }),
+  };
+}
+// Votos: polls/<post>:<pergunta>:<pessoa>:<opção>. Ler só as chaves já basta para contar.
+async function pollFor(d, user) {
+  const p = d.poll;
+  if (!p) return null;
+  const admin = user.role === "admin";
+  const live = d.status === "published";
+  const keys = live ? await memo("polls:" + d.id, TTL, async () => (await store("polls")).keys({ prefix: d.id + ":" })) : [];
+  const counts = p.questions.map((q) => q.options.map(() => 0));
+  const mine = {}, voters = new Set();
+  for (const k of keys) {
+    const [, qi, uid, oi] = k.split(":");
+    if (counts[qi]?.[oi] === undefined) continue;
+    counts[qi][oi]++; voters.add(uid);
+    if (uid === user.id) mine[qi] = Number(oi);
+  }
+  return {
+    mode: p.mode, closed: !!p.closed, live,
+    voters: admin || (p.mode === "open" && (voters.has(user.id) || p.closed)) ? voters.size : undefined,
+    questions: p.questions.map((q, qi) => {
+      const my = mine[qi] ?? null;
+      const show = live && (admin || (p.mode === "open" && (my !== null || p.closed)));
+      const total = counts[qi].reduce((a, b) => a + b, 0);
+      return {
+        text: q.text, mine: my, total: show ? total : undefined,
+        options: q.options.map((t, oi) => (show ? { t, n: counts[qi][oi], pct: total ? Math.round((counts[qi][oi] / total) * 100) : 0 } : { t })),
+      };
+    }),
+  };
 }
 
 async function findPost(id) {
@@ -114,10 +206,12 @@ async function countsFor(id, meId) {
 }
 
 async function views(ctx, docs, user, { withCounts = true } = {}) {
-  const authors = await authorsFor(ctx, docs.map((d) => d.authorId));
+  const [authors, tags, polls] = await Promise.all([authorsFor(ctx, docs.map((d) => d.authorId)), loadTags(), pmap(docs, (d) => pollFor(d, user))]);
+  const tagMap = new Map(tags.map((t) => [t.id, t]));
   const counts = withCounts ? await pmap(docs, (d) => (d.status === "published" ? countsFor(d.id, user.id) : { hypes: 0, comments: 0, hyped: false })) : [];
   return docs.map((d, i) => ({
     id: d.id, author: authors.get(d.authorId), text: d.text, media: d.media || [],
+    tag: d.tag && tagMap.has(d.tag) ? tagView(tagMap.get(d.tag)) : null, pinned: !!d.pinnedAt, poll: polls[i],
     status: d.status, createdAt: d.createdAt, publishedAt: d.publishedAt || null, reason: d.reason || null,
     ...(withCounts ? counts[i] : {}),
     canDelete: user.role === "admin" || d.authorId === user.id,
@@ -135,14 +229,24 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   if (path === "feed" && method === "GET") {
     const f = await feed();
     const author = url.searchParams.get("author") || "";
+    const tag = url.searchParams.get("tag") || "";
     const after = url.searchParams.get("after") || "";
-    const prefix = author ? `au:${author}:` : "pub:";
+    const indirect = !!(author || tag);
+    const prefix = author ? `au:${author}:` : tag ? `tg:${tag}:` : "pub:";
     const keys = await f.keys({ prefix, after, limit: PAGE + 1 });
     const page = keys.slice(0, PAGE);
-    const docs = (await pmap(page, async (k) => (author ? (await f.get((await f.get(k))?.k || "x")) : f.get(k)))).filter(Boolean);
+    let docs = (await pmap(page, async (k) => (indirect ? (await f.get((await f.get(k))?.k || "x")) : f.get(k)))).filter(Boolean);
+    if (!indirect) {
+      // fixados: ficam no topo do feed principal e não se repetem na lista comum
+      const pins = (await pmap(await f.keys({ prefix: "pin:" }), async (k) => f.get((await f.get(k))?.k || "x"))).filter((d) => d && d.status === "published");
+      const pinIds = new Set(pins.map((d) => d.id));
+      docs = docs.filter((d) => !pinIds.has(d.id));
+      if (!after) docs = [...pins, ...docs];
+    }
     return json({ posts: await views(ctx, docs, user), next: keys.length > PAGE ? page[page.length - 1] : null });
   }
-  if (path === "feed/status" && method === "GET") return json({ uploads: uploadsOn(), maxMedia: MAX_MEDIA, maxText: MAX_TEXT });
+  if (path === "feed/tags" && method === "GET") return json({ tags: (await loadTags()).map(tagView), colors: TAG_COLORS });
+  if (path === "feed/status" && method === "GET") return json({ uploads: uploadsOn(), maxMedia: MAX_MEDIA, maxText: MAX_TEXT, maxQuestions: MAX_QUESTIONS, maxOptions: MAX_OPTIONS, maxPinned: MAX_PINNED });
   if (path === "feed/upload-sign" && method === "POST") {
     if (!uploadsOn()) fail(503, "O envio de arquivos ainda não foi configurado pela administração.");
     const rl = await store("rl");
@@ -162,16 +266,31 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   if (path === "feed/post" && method === "POST") {
     const text = cleanMultiline(body.text, MAX_TEXT);
     const media = sanitizeMedia(body.media, fail);
-    if (!text && !media.length) fail(400, "Escreva algo ou anexe um arquivo ou link.");
+    if (body.poll != null && !isAdmin) fail(403, "Só gestores criam enquetes.");
+    const poll = sanitizePoll(body.poll, fail);
+    if (!text && !media.length && !poll) fail(400, "Escreva algo ou anexe um arquivo, link ou enquete.");
+    let tag = null;
+    if (body.tag) {
+      if (!isAdmin) fail(403, "Só gestores escolhem a tag do post.");
+      if (!(await loadTags()).some((t) => t.id === body.tag)) fail(400, "Essa tag não existe mais.");
+      tag = String(body.tag);
+    }
+    const bad = await mod.check(text, user);
+    if (bad) { await ctx.logEvent(req, "post_bloqueado", user, { palavra: bad }); fail(422, BLOCKED_MSG); }
     const f = await feed();
+    if (body.pinned && isAdmin && (await f.keys({ prefix: "pin:" })).length >= MAX_PINNED) fail(409, `No máximo ${MAX_PINNED} posts fixados. Desafixe um antes.`);
     if (!isAdmin) {
       const pending = await f.keys({ prefix: `pend:${user.id}:` });
       if (pending.length >= MAX_PENDING) fail(429, `Você já tem ${MAX_PENDING} posts aguardando aprovação. Espere a análise do gestor.`);
     }
     const t = now();
     const doc = { id: newId("po_"), authorId: user.id, text, media, createdAt: t, status: isAdmin ? "published" : "pending", publishedAt: isAdmin ? t : null };
+    if (poll) doc.poll = poll;
+    if (tag) doc.tag = tag;
+    if (isAdmin && body.pinned) doc.pinnedAt = t;
     await putPost(doc, isAdmin ? "pub" : "pend");
     await ctx.logEvent(req, "post_criado", user, { post: doc.id, status: doc.status });
+    if (isAdmin) await notify.notifyMentions({ text, author: user, postId: doc.id, where: "post" });
     const [view] = await views(ctx, [doc], user);
     return json({ post: view, status: doc.status }, 201);
   }
@@ -181,13 +300,38 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
       if (!found || (found.doc.status !== "published" && found.doc.authorId !== user.id && !isAdmin)) fail(404, "Post não encontrado.");
       return json({ post: (await views(ctx, [found.doc], user))[0] });
     }
+    if (method === "PATCH") {
+      needAdmin();
+      if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
+      const change = {};
+      if (body.tag !== undefined) {
+        if (body.tag && !(await loadTags()).some((t) => t.id === body.tag)) fail(400, "Essa tag não existe mais.");
+        change.tag = body.tag ? String(body.tag) : null;
+      }
+      if (body.pinned !== undefined) {
+        if (body.pinned && !found.doc.pinnedAt) {
+          const pins = await (await feed()).keys({ prefix: "pin:" });
+          if (pins.length >= MAX_PINNED) fail(409, `No máximo ${MAX_PINNED} posts fixados. Desafixe um antes.`);
+        }
+        change.pinnedAt = body.pinned ? found.doc.pinnedAt || now() : null;
+      }
+      if (body.pollClosed !== undefined) {
+        if (!found.doc.poll) fail(400, "Esse post não tem enquete.");
+        change.poll = { ...found.doc.poll, closed: !!body.pollClosed };
+      }
+      const after = await updatePost(found, change);
+      bust("polls:" + after.id);
+      await ctx.logEvent(req, "post_editado", user, { post: after.id, ...(body.tag !== undefined ? { tag: after.tag || "nenhuma" } : {}), ...(body.pinned !== undefined ? { fixado: !!after.pinnedAt } : {}), ...(body.pollClosed !== undefined ? { enquete_encerrada: !!after.poll?.closed } : {}) });
+      return json({ post: (await views(ctx, [after], user))[0] });
+    }
     if (method === "DELETE") {
       if (!found) fail(404, "Post não encontrado.");
       if (!isAdmin && found.doc.authorId !== user.id) fail(403, "Só quem publicou ou a administração pode remover.");
       const f = await feed();
-      await Promise.all([f.delete(found.key), f.delete("ix:" + found.doc.id), found.doc.status === "published" ? f.delete(auKey(found.doc)) : null]);
-      const [hs, cs] = [await store("hypes"), await store("comments")];
+      await Promise.all([f.delete(found.key), f.delete("ix:" + found.doc.id), ...extraKeys(found.doc).map((x) => f.delete(x))]);
+      const [hs, cs, ps] = [await store("hypes"), await store("comments"), await store("polls")];
       await Promise.all([
+        found.doc.poll ? ps.keys({ prefix: found.doc.id + ":" }).then((ks) => pmap(ks, (k) => ps.delete(k))) : null,
         hs.keys({ prefix: found.doc.id + ":" }).then((ks) => pmap(ks, (k) => hs.delete(k))),
         cs.keys({ prefix: found.doc.id + ":" }).then((ks) => pmap(ks, (k) => cs.delete(k))),
       ]);
@@ -195,6 +339,22 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
       await ctx.logEvent(req, "post_removido", user, { post: found.doc.id, autor: found.doc.authorId });
       return json({ ok: true });
     }
+  }
+
+  /* --- enquete: votar (uma resposta por pergunta, sem trocar depois) --- */
+  if (parts[0] === "feed" && parts[1] === "vote" && parts[2] && method === "POST") {
+    const found = await findPost(parts[2]);
+    if (!found || found.doc.status !== "published" || !found.doc.poll) fail(404, "Enquete não encontrada.");
+    const poll = found.doc.poll;
+    if (poll.closed) fail(409, "Essa enquete foi encerrada.");
+    const qi = Number(body.q), oi = Number(body.o);
+    if (!Number.isInteger(qi) || !poll.questions[qi] || !Number.isInteger(oi) || !poll.questions[qi].options[oi]) fail(400, "Opção inválida.");
+    const ps = await store("polls");
+    const had = await ps.keys({ prefix: `${found.doc.id}:${qi}:${user.id}:` });
+    if (had.length) fail(409, "Você já respondeu essa pergunta.");
+    await ps.set(`${found.doc.id}:${qi}:${user.id}:${oi}`, { at: now() });
+    bust("polls:" + found.doc.id);
+    return json({ poll: await pollFor(found.doc, user) });
   }
 
   /* --- hype --- */
@@ -228,10 +388,14 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
     const text = cleanMultiline(body.text, MAX_COMMENT).replace(/\n+/g, " ");
     if (text.length < 1) fail(400, "Escreva o comentário.");
+    const bad = await mod.check(text, user);
+    if (bad) { await ctx.logEvent(req, "comentario_bloqueado", user, { post: found.doc.id, palavra: bad }); fail(422, BLOCKED_MSG); }
     const t = now();
     const c = { id: `${t13(t)}-${newId().slice(0, 5)}`, postId: found.doc.id, authorId: user.id, text, at: t };
     await (await store("comments")).set(`${found.doc.id}:${c.id}`, c);
     bust("posts:c:" + found.doc.id);
+    const told = await notify.notifyMentions({ text, author: user, postId: found.doc.id, where: "comment" });
+    if (found.doc.authorId !== user.id && !told.sent.includes(found.doc.authorId)) await notify.notifyUser(found.doc.authorId, "comment", user, found.doc.id, text);
     let gained = 0, goals = [];
     if (text.length >= 8) ({ gained, goals } = await eng.record(user, "comment", "Comentário em um post"));
     const a = await authorsFor(ctx, [user.id]);
@@ -269,11 +433,14 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
       const author = await ctx.loadUser(d.authorId);
       const r = author ? await eng.record(author, "post", "Post aprovado no feed") : { gained: 0, goals: [] };
       await ctx.logEvent(req, "post_aprovado", user, { post: d.id, autor: author?.email || d.authorId, xp: r.gained });
+      if (author) await notify.notifyMentions({ text: d.text, author, postId: d.id, where: "post" });
+      await notify.notifyUser(d.authorId, "approved", user, d.id, d.text || "Seu post");
       return json({ ok: true, xp: r.gained });
     }
     d.status = "rejected"; d.reason = cleanMultiline(body.reason, 200).replace(/\n+/g, " ") || null; d.reviewedBy = user.id;
     await putPost(d, "rej");
     await ctx.logEvent(req, "post_recusado", user, { post: d.id, motivo: d.reason || "" });
+    await notify.notifyUser(d.authorId, "rejected", user, d.id, d.reason || d.text || "Seu post");
     return json({ ok: true });
   }
   if (path === "admin/engage/config" && method === "GET") { needAdmin(); return json({ config: await eng.loadCfg(), metrics: eng.METRICS, defaults: eng.DEFAULT_CFG }); }
@@ -282,6 +449,64 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const cfg = await eng.saveCfg(body, newId, fail);
     await ctx.logEvent(req, "admin_config_engajamento", user, { metas: cfg.goals.length });
     return json({ config: cfg });
+  }
+
+  /* --- tags (gestão) e moderação --- */
+  if (path === "admin/tags" && method === "POST") {
+    needAdmin();
+    const list = await loadTags();
+    if (list.length >= MAX_TAGS) fail(400, `No máximo ${MAX_TAGS} tags.`);
+    const t = { id: newId("tg_"), name: tagName(body.name, list, fail), color: TAG_COLORS.includes(body.color) ? body.color : "gold", createdAt: now() };
+    await saveTags([...list, t]);
+    await ctx.logEvent(req, "tag_criada", user, { tag: t.name });
+    return json({ tag: tagView(t), tags: [...list, t].map(tagView) }, 201);
+  }
+  if (parts[0] === "admin" && parts[1] === "tags" && parts[2] && ["PATCH", "DELETE"].includes(method)) {
+    needAdmin();
+    const list = await loadTags();
+    const t = list.find((x) => x.id === parts[2]);
+    if (!t) fail(404, "Tag não encontrada.");
+    if (method === "PATCH") {
+      if (body.name !== undefined) t.name = tagName(body.name, list, fail, t.id);
+      if (body.color !== undefined) { if (!TAG_COLORS.includes(body.color)) fail(400, "Cor inválida."); t.color = body.color; }
+      await saveTags(list);
+      bust("posts");
+      await ctx.logEvent(req, "tag_editada", user, { tag: t.name });
+      return json({ tags: list.map(tagView) });
+    }
+    const f = await feed();
+    await Promise.all([saveTags(list.filter((x) => x.id !== t.id)), f.keys({ prefix: `tg:${t.id}:` }).then((ks) => pmap(ks, (k) => f.delete(k)))]);
+    bust("posts");
+    await ctx.logEvent(req, "tag_removida", user, { tag: t.name });
+    return json({ tags: list.filter((x) => x.id !== t.id).map(tagView) });
+  }
+  if (path === "admin/moderation" && method === "GET") { needAdmin(); return json({ moderation: await mod.loadMod() }); }
+  if (path === "admin/moderation" && method === "PUT") {
+    needAdmin();
+    const m = await mod.saveMod(body, fail);
+    await ctx.logEvent(req, "admin_moderacao", user, { filtro: m.on ? "ligado" : "desligado", palavras: m.words.length });
+    return json({ moderation: m });
+  }
+  if (path === "admin/moderation/test" && method === "POST") {
+    needAdmin();
+    const m = await mod.loadMod();
+    return json({ hit: mod.offense(String(body.text || ""), m.words) });
+  }
+
+  /* --- notificações e lista para marcar pessoas --- */
+  if (path === "notifs" && method === "GET") {
+    const { items } = await notify.listFor(user);
+    const authors = await authorsFor(ctx, items.map((i) => i.by).filter(Boolean));
+    return json({ items: items.map((i) => ({ ...i, by: i.by ? authors.get(i.by) : null })), unread: items.filter((i) => i.unread).length });
+  }
+  if (path === "notifs/read" && method === "POST") { await notify.markRead(user); return json({ ok: true }); }
+  if (path === "people/mentions" && method === "GET") {
+    const people = await memo("people", 30000, () => ctx.allUsers());
+    return json({
+      people: people.filter((u) => isLive(u) && u.nickname).map((u) => ({ id: u.id, name: u.name, nickname: u.nickname, avatar: u.avatar || null, role: u.role }))
+        .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")).slice(0, 600),
+      todos: isAdmin,
+    });
   }
 
   /* --- XP, check-in e ranking --- */
@@ -343,7 +568,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   }
 
   /* --- busca --- */
-  if (path === "search" && method === "GET") return json(await search(ctx, user, String(url.searchParams.get("q") || "").slice(0, 80)));
+  if (path === "search" && method === "GET") return json(await search(ctx, user, String(url.searchParams.get("q") || "").slice(0, 80), String(url.searchParams.get("tag") || "")));
 
   return null;
 }
@@ -356,12 +581,23 @@ function nickProblem(nick) {
 }
 
 /* ---------- busca em pessoas e posts ---------- */
-async function search(ctx, user, q) {
-  if (norm1(q).length < 2) return { people: [], posts: [] };
+async function search(ctx, user, q, tagId = "") {
+  const tags = await loadTags();
+  const tag = tagId ? tags.find((t) => t.id === tagId) : null;
+  if (tagId && !tag) return { people: [], posts: [], tag: null };
+  if (norm1(q).length < 2) {
+    if (!tag) return { people: [], posts: [] };
+    // só a tag escolhida: lista os posts mais recentes dela
+    const f = await feed();
+    const keys = await f.keys({ prefix: `tg:${tag.id}:`, limit: 15 });
+    const docs = (await pmap(keys, async (k) => f.get((await f.get(k))?.k || "x"))).filter(Boolean);
+    const authors = await authorsFor(ctx, docs.map((p) => p.authorId));
+    return { people: [], tag: tagView(tag), posts: docs.map((p) => ({ id: p.id, author: authors.get(p.authorId), snippet: String(p.text || (p.poll ? "Enquete: " + p.poll.questions[0].text : "") || (p.media || []).map((m) => m.name || m.url).join(" ")).slice(0, 160), publishedAt: p.publishedAt, media: (p.media || []).map((m) => m.type), tag: tagView(tag) })) };
+  }
   const people = await memo("people", 30000, () => ctx.allUsers());
   const qPerson = q.replace(/^@/, "");
   const pRows = [];
-  for (const u of people) {
+  for (const u of tag ? [] : people) {
     if (!isLive(u)) continue;
     const m = match(qPerson, [{ text: u.name, weight: 3 }, { text: u.nickname || "", weight: 3 }, ...(user.role === "admin" ? [{ text: u.email, weight: 2 }] : [])]);
     if (m) pRows.push({ s: m.score, p: { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role } });
@@ -375,17 +611,21 @@ async function search(ctx, user, q) {
   });
   const authors = await authorsFor(ctx, posts.map((p) => p.authorId));
   const hRows = [];
+  const tagMap = new Map(tags.map((t) => [t.id, t]));
   for (const p of posts) {
+    if (tag && p.tag !== tag.id) continue;
     const a = authors.get(p.authorId);
     const links = (p.media || []).filter((m) => m.type === "link").map((m) => m.url).join(" ");
     const files = (p.media || []).map((m) => m.name || "").join(" ");
-    const m = match(q, [{ text: p.text, weight: 1 }, { text: `${a.name} ${a.nickname || ""}`, weight: 1.5 }, { text: files + " " + links, weight: 0.8 }]);
+    const pollText = p.poll ? p.poll.questions.map((x) => x.text + " " + x.options.join(" ")).join(" ") : "";
+    const m = match(q, [{ text: p.text, weight: 1 }, { text: `${a.name} ${a.nickname || ""}`, weight: 1.5 }, { text: files + " " + links, weight: 0.8 }, { text: pollText, weight: 1 }, { text: tagMap.get(p.tag)?.name || "", weight: 1.2 }]);
     if (m) hRows.push({ s: m.score + p.publishedAt / 1e15, p, a });
   }
   hRows.sort((a, b) => b.s - a.s);
   return {
     people: pRows.slice(0, 8).map((r) => r.p),
-    posts: hRows.slice(0, 15).map(({ p, a }) => ({ id: p.id, author: a, snippet: snippet(p.text || (p.media || []).map((m) => m.name || m.url).join(" "), q), publishedAt: p.publishedAt, media: (p.media || []).map((m) => m.type) })),
+    tag: tag ? tagView(tag) : undefined,
+    posts: hRows.slice(0, 15).map(({ p, a }) => ({ id: p.id, author: a, snippet: snippet(p.text || (p.poll ? "Enquete: " + p.poll.questions[0].text : "") || (p.media || []).map((m) => m.name || m.url).join(" "), q), publishedAt: p.publishedAt, media: (p.media || []).map((m) => m.type), tag: tagMap.get(p.tag) ? tagView(tagMap.get(p.tag)) : null })),
   };
 }
 const norm1 = (s) => String(s || "").replace(/[^\p{L}\p{N}]/gu, "");

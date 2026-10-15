@@ -1,11 +1,10 @@
-// Teste do cadastro com aprovação, link e código por e-mail: node test/approval.mjs
+// Teste do cadastro com aprovação do gestor e código de ativação (sem e-mail): node test/approval.mjs
 process.env.LOCAL_DB = "1";
 process.env.ADMIN_EMAILS = "wellington.moreira@mambadigital.com.br";
 delete process.env.SIGNUP_APPROVAL; // aprovação ligada (padrão)
 
 import assert from "node:assert/strict";
 import handler from "../netlify/functions/api.mjs";
-import { setMailer } from "../netlify/functions/lib/mailer.mjs";
 import { setClock } from "../netlify/functions/lib/clock.mjs";
 
 let passed = 0;
@@ -25,8 +24,6 @@ const reg = (name, email) => call("POST", "auth/register", { body: { name, email
 const login = (email, password = "Senha1234") => call("POST", "auth/login", { body: { email, password } });
 
 const MASTER = "wellington.moreira@mambadigital.com.br";
-const mails = [];
-const parse = (m) => ({ link: m.text.match(/https?:\/\/\S+/)[0], code: m.text.match(/digite: (\d{6})/)[1] });
 
 console.log("Cadastro com aprovação");
 const rm = await reg("Wellington Moreira", MASTER);
@@ -46,7 +43,7 @@ assert.equal(r.status, 401);
 ok("senha errada continua dando erro genérico (não revela o estado a quem não tem a senha)");
 
 r = await call("GET", "admin/signups", { token: adm });
-assert.equal(r.status, 200); assert.equal(r.data.signups.length, 1); assert.equal(r.data.signups[0].access, "pending"); assert.equal(r.data.emailOn, false);
+assert.equal(r.status, 200); assert.equal(r.data.signups.length, 1); assert.equal(r.data.signups[0].access, "pending");
 const bia = r.data.signups[0];
 ok("o gestor vê a pessoa na fila de cadastros");
 r = await call("GET", "me", { token: adm });
@@ -60,11 +57,11 @@ r = await call("POST", `admin/signups/${bia.id}/approve`, {});
 assert.equal(r.status, 401);
 ok("sem sessão de gestor ninguém aprova");
 
-// e-mail não configurado: o gestor recebe link e código para entregar
+// ao aprovar, o gestor recebe o código para entregar à pessoa
 r = await call("POST", `admin/signups/${bia.id}/approve`, { token: adm });
-assert.equal(r.status, 200); assert.equal(r.data.emailSent, false); assert.ok(r.data.link.includes("#/ativar?u=") && /^\d{6}$/.test(r.data.code));
+assert.equal(r.status, 200); assert.ok(/^\d{6}$/.test(r.data.code)); assert.ok(!r.data.link && r.data.emailSent === undefined);
 const manual = r.data;
-ok("sem e-mail configurado, a aprovação devolve link e código para o gestor entregar");
+ok("a aprovação devolve um código de 6 dígitos para o gestor entregar (sem e-mail)");
 
 r = await login("bia@exemplo.com");
 assert.equal(r.status, 403); assert.equal(r.data.state, "invited");
@@ -86,71 +83,58 @@ r = await call("POST", "auth/activate", { body: { email: "bia@exemplo.com", code
 assert.equal(r.status, 400);
 ok("o código só vale uma vez");
 
-console.log("Envio por e-mail e link");
-setMailer(async (m) => { mails.push(m); return { ok: true }; });
+console.log("Novo código, expiração e limites");
 await reg("Davi Reis", "davi@exemplo.com");
 r = await call("GET", "admin/signups", { token: adm });
 const davi = r.data.signups.find((s) => s.email === "davi@exemplo.com");
 r = await call("POST", `admin/signups/${davi.id}/approve`, { token: adm });
-assert.equal(r.data.emailSent, true); assert.ok(!r.data.link && !r.data.code);
-assert.equal(mails.length, 1); assert.equal(mails[0].to, "davi@exemplo.com");
-assert.ok(mails[0].html.includes("Ativar meu acesso"));
-ok("com e-mail configurado, a mensagem sai e o gestor não vê o código");
-const d1 = parse(mails[0]);
-assert.ok(d1.link.startsWith("http://site.test/#/ativar?u="));
-ok("o link aponta para o endereço do site");
-
-// reenviar invalida o anterior
+const c1 = r.data.code;
+r = await call("POST", `admin/signups/${davi.id}/approve`, { token: adm });
+assert.equal(r.status, 409);
+ok("aprovar de novo não gera outro código sem querer");
 r = await call("POST", `admin/signups/${davi.id}/resend`, { token: adm });
-assert.equal(r.data.emailSent, true); assert.equal(mails.length, 2);
-const d2 = parse(mails[1]);
-assert.notEqual(d1.code, d2.code);
-const q = (l) => Object.fromEntries(new URL(l.replace("/#/ativar", "/ativar")).searchParams);
-r = await call("POST", "auth/activate", { body: { u: q(d1.link).u, t: q(d1.link).t } });
+assert.equal(r.status, 200); const c2 = r.data.code;
+assert.notEqual(c1, c2);
+r = await call("POST", "auth/activate", { body: { email: "davi@exemplo.com", code: c1 } });
 assert.equal(r.status, 400);
-ok("reenviar invalida o link antigo");
-r = await call("POST", "auth/activate", { body: { u: q(d2.link).u, t: "adivinhando" } });
+ok("gerar novo código invalida o anterior");
+r = await call("POST", "auth/activate", { body: { u: davi.id, t: "qualquer" } });
 assert.equal(r.status, 400);
-ok("link com token errado não ativa");
-r = await call("POST", "auth/activate", { body: { u: q(d2.link).u, t: q(d2.link).t } });
+ok("não existe mais ativação por link");
+r = await call("POST", "auth/activate", { body: { email: "DAVI@exemplo.com ", code: c2 } });
 assert.equal(r.status, 200);
 r = await login("davi@exemplo.com");
 assert.equal(r.status, 200);
-ok("o link novo ativa e a pessoa entra com a senha");
+ok("o código novo ativa (e-mail em qualquer caixa) e a pessoa entra com a senha");
+r = await call("POST", "auth/activate", { body: { email: "bia@exemplo.com", code: "123456" } });
+assert.equal(r.status, 400);
+ok("quem já está ativo não ativa de novo");
 
-// falha de envio: devolve o link para o gestor
-setMailer(async () => ({ ok: false, error: "caiu" }));
 await reg("Eva Nunes", "eva@exemplo.com");
 r = await call("GET", "admin/signups", { token: adm });
 const eva = r.data.signups.find((s) => s.email === "eva@exemplo.com");
 r = await call("POST", `admin/signups/${eva.id}/approve`, { token: adm });
-assert.equal(r.data.emailSent, false); assert.equal(r.data.reason, "caiu"); assert.ok(r.data.link && r.data.code);
-ok("se o e-mail falhar, o gestor recebe o link e o código na tela");
-
-console.log("Limites e recusa");
-// expira em 48h
+const evaCode = r.data.code;
 offset += 49 * HOUR;
-r = await call("POST", "auth/activate", { body: { email: "eva@exemplo.com", code: r.data.code } });
+r = await call("POST", "auth/activate", { body: { email: "eva@exemplo.com", code: evaCode } });
 assert.equal(r.status, 400);
 ok("o código expira depois de 48 horas");
 r = await call("GET", "admin/signups", { token: adm });
-const eva2 = r.data.signups.find((s) => s.email === "eva@exemplo.com");
-assert.equal(eva2.expired, true);
-ok("a lista do gestor marca o convite como expirado");
-setMailer(async (m) => { mails.push(m); return { ok: true }; });
-r = await call("POST", `admin/signups/${eva2.id}/resend`, { token: adm });
-assert.equal(r.data.emailSent, true);
-const e2 = parse(mails[mails.length - 1]);
-// 5 erros bloqueiam o código
-for (let i = 0; i < 5; i++) r = await call("POST", "auth/activate", { body: { email: "eva@exemplo.com", code: "111111" } });
+assert.equal(r.data.signups.find((s) => s.email === "eva@exemplo.com").expired, true);
+ok("a lista do gestor marca o código como expirado");
+r = await call("POST", `admin/signups/${eva.id}/resend`, { token: adm });
+const e2 = r.data.code;
+for (let i = 0; i < 5; i++) r = await call("POST", "auth/activate", { body: { email: "eva@exemplo.com", code: e2 === "111111" ? "222222" : "111111" } });
 assert.equal(r.status, 429);
-r = await call("POST", "auth/activate", { body: { email: "eva@exemplo.com", code: e2.code } });
+r = await call("POST", "auth/activate", { body: { email: "eva@exemplo.com", code: e2 } });
 assert.equal(r.status, 429);
 ok("depois de 5 códigos errados o código é bloqueado");
-r = await call("POST", "auth/activate", { body: { u: q(e2.link).u, t: q(e2.link).t } });
+r = await call("POST", `admin/signups/${eva.id}/resend`, { token: adm });
+r = await call("POST", "auth/activate", { body: { email: "eva@exemplo.com", code: r.data.code } });
 assert.equal(r.status, 200);
-ok("mas o link do e-mail continua valendo");
+ok("o gestor gera outro código e a pessoa consegue ativar");
 
+console.log("Recusa e remoção");
 await reg("Fábio Melo", "fabio@exemplo.com");
 r = await call("GET", "admin/signups", { token: adm });
 const fabio = r.data.signups.find((s) => s.email === "fabio@exemplo.com");
