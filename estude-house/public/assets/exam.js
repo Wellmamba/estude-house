@@ -163,7 +163,7 @@
           : r.review?.length ? "Passou de " + rules.passAbove + "%. Abaixo estão os erros e a resposta certa de cada um. Você não precisa refazer nada." : "Gabarito perfeito. Nenhuma questão errada.";
         const tpNow = M.tp(trail);
         actions = isFinal
-          ? [h("a", { class: "btn btn-gold", href: "#/cert/" + trail.id }, "Ver meu certificado"), h("a", { class: "btn btn-ghost", href: "#/" }, "Todas as trilhas")]
+          ? [h("a", { class: "btn btn-gold", href: "#/cert/" + trail.id }, "Ver meu certificado"), h("a", { class: "btn btn-ghost", href: M.trailsHref }, "Todas as trilhas")]
           : [h("a", { class: "btn btn-gold", href: tpNow.modules[mod.n]?.unlocked ? "#/m/" + trail.modules[mod.n].id : trailUrl }, mod.n < trail.modules.length ? "Ir para o próximo módulo" : "Voltar à trilha"),
             h("a", { class: "btn btn-ghost", href: trailUrl }, "Ver trilha")];
         if (!isFinal && mod.n === trail.modules.length && tpNow.finalUnlocked) actions.unshift(h("a", { class: "btn btn-gold", href: "#/exam/" + M.finalScope(trail) }, "Fazer a prova final"));

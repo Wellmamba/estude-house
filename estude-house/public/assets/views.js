@@ -7,6 +7,7 @@
   M.refreshMe = async function () {
     const d = await M.get("me");
     M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules;
+    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0;
     return d;
   };
 
@@ -103,16 +104,20 @@
   M.resetShell = () => { shell = null; };
   function buildShell() {
     const u = M.session.user;
-    const link = (key, href, icon, text) => h("a", { href, "data-key": key }, M.icon(icon), h("span", { text }));
+    const link = (key, href, icon, text, badge) => h("a", { href, "data-key": key }, M.icon(icon), h("span", { text }), badge ? h("span", { class: "nav-badge", hidden: true }) : null);
     const nav = h("nav", { class: "nav", "aria-label": "Principal" },
       h("div", { class: "nav-sep", text: "Estudos" }),
-      link("home", "#/", "home", "Trilhas"),
+      link("home", "#/", "home", "Início"),
+      link("trails", "#/trilhas", "book", "Trilhas"),
+      link("rank", "#/ranking", "trophy", "Ranking"),
       link("cert", "#/cert", "cert", "Certificados"),
       h("div", { class: "nav-sep", text: "Sua conta" }),
       link("conta", "#/conta", "user", "Minha conta"),
       M.isAdmin() ? [
         h("div", { class: "nav-sep", text: "Administração" }),
         link("admin", "#/admin", "shield", "Painel"),
+        link("admin-approve", "#/admin/aprovacoes", "flag", "Aprovações", true),
+        link("admin-engage", "#/admin/engajamento", "bolt", "Engajamento"),
         link("admin-users", "#/admin/usuarios", "users", "Acessos"),
         link("admin-logs", "#/admin/logs", "list", "Logs"),
         link("admin-q", "#/admin/perguntas", "help", "Banco de questões"),
@@ -130,8 +135,11 @@
     });
     side.addEventListener("click", (e) => { if (e.target.closest("a")) { side.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); } });
     const crumbs = h("div", { class: "crumbs" });
-    const xp = h("span", { class: "chip chip-gold" });
-    const top = h("header", { class: "top" }, menuBtn, crumbs, h("span", { class: "spacer" }), xp);
+    const xp = h("button", { class: "chip chip-gold xp-btn", type: "button", "aria-label": "Abrir meu XP, check-in e metas", onclick: () => M.openXp() }, M.icon("bolt", 16), h("span", { class: "xp-val" }));
+    const sInput = h("input", { type: "search", placeholder: "Buscar pessoas, posts e aulas", "aria-label": "Buscar no sistema", enterkeyhint: "search" });
+    const search = h("form", { class: "top-search", role: "search" }, M.icon("search", 18), sInput);
+    search.addEventListener("submit", (e) => { e.preventDefault(); const v = sInput.value.trim(); if (v) location.hash = "#/busca?q=" + encodeURIComponent(v); });
+    const top = h("header", { class: "top" }, menuBtn, crumbs, h("span", { class: "spacer" }), search, xp);
     const page = h("div", { class: "page", id: "main", tabindex: "-1" });
     const main = h("main", { class: "main" }, top, page);
     const root = h("div", { class: "shell" }, side, main);
@@ -139,6 +147,10 @@
     return { root, side, nav, crumbs, xp, page };
   }
 
+  M.updateXpChip = function () {
+    const v = shell?.xp?.querySelector(".xp-val");
+    if (v) v.textContent = M.session.progress ? `${M.totalXp()} XP` : "";
+  };
   M.setPage = function (key, crumbParts, node, { wide = false } = {}) {
     if (!shell || !document.body.contains(shell.root)) shell = buildShell();
     shell.nav.querySelectorAll("a").forEach((a) => {
@@ -148,8 +160,9 @@
       const el = c.href ? h("a", { href: c.href, text: c.text }) : h("span", { text: c.text });
       return i ? [" / ", el] : [el];
     }));
-    const pr = M.session.progress;
-    shell.xp.textContent = pr ? `${pr.xp} XP` : "";
+    M.updateXpChip();
+    const badge = shell.nav.querySelector('[data-key="admin-approve"] .nav-badge');
+    if (badge) { badge.hidden = !(M.session.pending > 0); badge.textContent = String(M.session.pending || ""); }
     shell.page.className = "page" + (wide ? " page-wide" : "");
     shell.page.replaceChildren(node);
     window.scrollTo(0, 0);
@@ -258,7 +271,7 @@
   const STATE_CHIP = { done: ["chip chip-good", "Concluída"], going: ["chip chip-gold", "Em andamento"], new: ["chip", "Não iniciada"] };
 
   /* ───── início: menu de trilhas ───── */
-  M.views.home = async function () {
+  M.views.trails = async function () {
     await M.refreshMe();
     const p = M.session.progress, trails = M.trails();
     const views = trails.map((t) => M.tp(t));
@@ -312,7 +325,7 @@
         stat(`${doneTrails}/${trails.length}`, trails.length === 1 ? "trilha concluída" : "trilhas concluídas"),
         stat(lessons, "aulas concluídas"),
         stat(mods, "módulos aprovados"),
-        stat(p.xp, "pontos de experiência")),
+        stat(M.totalXp(), "pontos de experiência")),
       h("h2", { style: "margin:40px 0 16px", text: "Trilhas" }),
       h("div", { class: "trail-grid" }, cards, soon),
       soon.length ? null : h("p", { class: "muted small", style: "margin-top:20px", text: "Novas trilhas da Mamba Digital aparecem aqui, com o mesmo login." }));
@@ -338,7 +351,7 @@
     const stats = h("div", { class: "grid grid-4" },
       stat(`${done}/${total}`, "aulas concluídas"),
       stat(`${approved}/${t.modules.length}`, "módulos aprovados"),
-      stat(p.xp, "pontos de experiência"),
+      stat(M.totalXp(), "pontos de experiência"),
       stat(v.finalStatus === "approved" ? "Aprovado" : v.finalUnlocked ? "Liberada" : "Bloqueada", "prova final", true));
 
     const modList = h("div", { class: "mod-list" }, t.modules.map((m, i) => {
@@ -354,7 +367,7 @@
     }));
 
     const node = h("div", null,
-      h("a", { class: "small", href: "#/" }, "← Todas as trilhas"),
+      h("a", { class: "small", href: M.trailsHref }, "← Todas as trilhas"),
       h("div", { class: "page-head", style: "margin-top:12px" },
         h("span", { class: "chip chip-gold", style: "justify-self:start", text: t.tag || "Trilha" }),
         h("h2", { text: t.title }),
@@ -362,7 +375,7 @@
       nextCard, h("div", { style: "height:18px" }), stats,
       h("section", { class: "panel", style: "margin-top:18px" }, h("h3", { text: "Mapa da trilha" }), M.playbook(v, { trail: t })),
       h("h2", { style: "margin:40px 0 16px", text: "Módulos" }), modList);
-    node._crumbs = [{ text: "Trilhas", href: "#/" }, { text: t.title }];
+    node._crumbs = [{ text: "Trilhas", href: M.trailsHref }, { text: t.title }];
     return node;
   };
   function stat(v, l, txt) { return h("div", { class: "stat" }, h("b", { class: txt ? "txt" : "", text: v }), h("span", { text: l })); }
@@ -430,7 +443,7 @@
         h("p", { class: "muted", style: "margin:10px 0 14px", text: examCard[2] }),
         examCard[3],
         h("details", { style: "margin-top:16px" }, h("summary", { style: "cursor:pointer;font-weight:700", text: "Como a nota funciona" }), M.rulesList())));
-    modNode._crumbs = [{ text: "Trilhas", href: "#/" }, { text: t.title, href: M.trailHref(t) }, { text: "Módulo " + m.n }];
+    modNode._crumbs = [{ text: "Trilhas", href: M.trailsHref }, { text: t.title, href: M.trailHref(t) }, { text: "Módulo " + m.n }];
     return modNode;
   };
   function notFound() {
@@ -499,7 +512,7 @@
         h("h2", { text: lesson.title }),
         h("div", { class: "goal" }, h("b", { text: "Ao final desta aula" }), lesson.goal)),
       body, foot);
-    node._crumbs = [{ text: "Trilhas", href: "#/" }, { text: trail.title, href: M.trailHref(trail) }, { text: `Módulo ${mod.n}`, href: "#/m/" + mod.id }, { text: lesson.title }];
+    node._crumbs = [{ text: "Trilhas", href: M.trailsHref }, { text: trail.title, href: M.trailHref(trail) }, { text: `Módulo ${mod.n}`, href: "#/m/" + mod.id }, { text: lesson.title }];
     return node;
   };
 
@@ -525,6 +538,9 @@
       h("section", { class: "panel" }, h("h3", { text: "Seus dados" }),
         h("p", { style: "margin:0" }, h("strong", { text: u.name }), h("br"), h("span", { class: "muted", text: u.email })),
         h("p", { style: "margin:12px 0 0" }, h("span", { class: "chip " + (u.role === "admin" ? "chip-gold" : ""), text: u.role === "admin" ? "Administrador" : "Aluno" }))),
+      h("section", { class: "panel" }, h("h3", { text: "Seu @ no feed" }),
+        h("p", { class: "muted small", style: "margin:0 0 12px", text: "O @ é o seu nome de usuário: o time te encontra na busca e te marca nos posts. Dá para trocar uma vez a cada 7 dias." }),
+        M.nickForm()),
       h("section", { class: "panel" }, h("h3", { text: "Trocar senha" }), err, form));
   };
 

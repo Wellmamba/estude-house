@@ -12,6 +12,7 @@ Plataforma de treinamento da Mamba Digital. A primeira trilha ensina a PriceBot 
 |---|---|---|
 | `JWT_SECRET` | sim | Texto longo e aleatório (32+ caracteres). Assina as sessões. Se trocar, todo mundo precisa entrar de novo. |
 | `ADMIN_EMAILS` | não | E-mails separados por vírgula que são administradores master. Padrão: `wellington.moreira@mambadigital.com.br`. |
+| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | não | Liga o envio de fotos, vídeos e arquivos no feed (ver `COMO-CONFIGURAR-FEED-E-UPLOAD.md`). Sem elas, só links. |
 | `ALLOWED_DOMAINS` | não | Ex.: `mambadigital.com.br`. Se preenchida, só e-mails desses domínios podem se cadastrar sozinhos. Administradores criam acessos de qualquer domínio. |
 
 4. Faça o deploy. O banco (Netlify Blobs) é ativado sozinho, sem configuração.
@@ -49,13 +50,19 @@ Depois de mudar, rode `npm test`: ele confere o banco de questões, o currículo
 
 ```
 npm install
-npm test          # 56 verificações de regras, provas, admin e logs + 5 de conteúdo
+npm test          # 56 de regras, provas, admin e logs + 38 de feed e engajamento + 5 de conteúdo
 npm run local     # http://localhost:8888, banco em memória (zera ao reiniciar)
 ```
 
 ## Várias trilhas
 
 Todas as trilhas vivem em `window.TRILHAS` (site) e em `TRAILS` (servidor, `manifest.mjs`). O andamento é por trilha (`progress.trails[id]`): módulos em sequência, prova final e certificado próprios. Reprovar na final zera só a trilha em questão. Usuários, logs e administração são compartilhados; o painel tem seletor de trilha. O certificado de cada trilha é emitido em `#/cert/<trilha>`, e a lista de certificados fica em `#/cert`.
+
+## Feed, XP de engajamento, ranking e busca
+
+A Início (`#/`) é um feed no estilo rede social, com Hype (foguete), comentários, posts de alunos com aprovação do gestor, check-in diário, metas de engajamento no menu de XP (botão no topo, à direita), ranking por engajamento (`#/ranking`), @ de cada pessoa e busca em todo o sistema. As trilhas ficam em `#/trilhas`.
+
+Upload de foto, vídeo e arquivo usa o Cloudinary (variáveis `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`); links funcionam sem nada. **Guia completo: `COMO-CONFIGURAR-FEED-E-UPLOAD.md`.**
 
 ## Desempenho e erros do Netlify Blobs
 

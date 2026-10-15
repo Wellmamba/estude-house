@@ -6,11 +6,18 @@
   const T = (text) => ({ text });
   const trailCrumb = (t) => ({ text: t.title, href: M.trailHref(t) });
   const routes = [
-    [/^#?\/?$/, "home", () => ({ key: "home", crumbs: [T("Trilhas")], view: () => M.views.home() })],
-    [/^#\/t\/([\w-]+)$/, "trail", (m) => ({ key: "home", crumbs: [{ text: "Trilhas", href: "#/" }, T(M.trailById(m[1])?.title || "Trilha")], view: () => M.views.trail(m[1]) })],
-    [/^#\/m\/([\w-]+)$/, "module", (m) => { const t = M.trailOfModule(m[1]); return { key: "home", crumbs: [{ text: "Trilhas", href: "#/" }, t ? trailCrumb(t) : T("Trilha"), T("Módulo " + (M.modulo(m[1])?.n ?? ""))], view: () => M.views.module(m[1]) }; }],
-    [/^#\/l\/([\w-]+)$/, "lesson", (m) => { const t = M.aula(m[1])?.trail; return { key: "home", crumbs: [{ text: "Trilhas", href: "#/" }, t ? trailCrumb(t) : T("Trilha")], view: () => M.views.lesson(m[1]) }; }],
-    [/^#\/exam\/([\w-]+)$/, "exam", (m) => { const t = M.trailOfScope(m[1]); return { key: "home", crumbs: [{ text: "Trilhas", href: "#/" }, t ? trailCrumb(t) : T("Trilha"), T(M.examName(m[1]))], view: () => M.views.exam(m[1]) }; }],
+    [/^#?\/?$/, "home", () => ({ key: "home", crumbs: [T("Início")], view: () => M.views.home() })],
+    [/^#\/trilhas$/, "trails", () => ({ key: "trails", crumbs: [T("Trilhas")], view: () => M.views.trails() })],
+    [/^#\/post\/([\w-]+)$/, "post", (m) => ({ key: "home", crumbs: [{ text: "Início", href: "#/" }, T("Post")], view: () => M.views.post(m[1]) })],
+    [/^#\/u\/([^/?]+)$/, "profile", (m) => ({ key: "home", crumbs: [{ text: "Início", href: "#/" }, T("Perfil")], view: () => M.views.profile(decodeURIComponent(m[1])) })],
+    [/^#\/ranking$/, "rank", () => ({ key: "rank", crumbs: [T("Ranking")], view: () => M.views.ranking() })],
+    [/^#\/busca(?:\?q=(.*))?$/, "search", (m) => ({ key: "search", crumbs: [T("Busca")], view: () => M.views.search(decodeURIComponent((m[1] || "").replace(/\+/g, " "))) })],
+    [/^#\/admin\/aprovacoes$/, "admin", () => ({ key: "admin-approve", crumbs: [T("Administração"), T("Aprovações")], view: () => M.views.adminApprovals(), wide: true })],
+    [/^#\/admin\/engajamento$/, "admin", () => ({ key: "admin-engage", crumbs: [T("Administração"), T("Engajamento")], view: () => M.views.adminEngage(), wide: true })],
+    [/^#\/t\/([\w-]+)$/, "trail", (m) => ({ key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, T(M.trailById(m[1])?.title || "Trilha")], view: () => M.views.trail(m[1]) })],
+    [/^#\/m\/([\w-]+)$/, "module", (m) => { const t = M.trailOfModule(m[1]); return { key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, t ? trailCrumb(t) : T("Trilha"), T("Módulo " + (M.modulo(m[1])?.n ?? ""))], view: () => M.views.module(m[1]) }; }],
+    [/^#\/l\/([\w-]+)$/, "lesson", (m) => { const t = M.aula(m[1])?.trail; return { key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, t ? trailCrumb(t) : T("Trilha")], view: () => M.views.lesson(m[1]) }; }],
+    [/^#\/exam\/([\w-]+)$/, "exam", (m) => { const t = M.trailOfScope(m[1]); return { key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, t ? trailCrumb(t) : T("Trilha"), T(M.examName(m[1]))], view: () => M.views.exam(m[1]) }; }],
     [/^#\/cert$/, "cert", () => ({ key: "cert", crumbs: [T("Certificados")], view: () => M.views.cert() })],
     [/^#\/cert\/([\w-]+)$/, "cert", (m) => ({ key: "cert", crumbs: [{ text: "Certificados", href: "#/cert" }, T(M.trailById(m[1])?.title || "Certificado")], view: () => M.views.cert(m[1]) })],
     [/^#\/conta$/, "conta", () => ({ key: "conta", crumbs: [{ text: "Minha conta" }], view: () => M.views.account() })],

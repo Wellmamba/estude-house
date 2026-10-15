@@ -134,6 +134,30 @@
   M.fmtPct = (n) => String(Math.round(n * 10) / 10).replace(".", ",");
   M.pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
 
+  /* endereços das telas principais */
+  M.homeHref = "#/";
+  M.trailsHref = "#/trilhas";
+  /* XP total = XP das trilhas + XP de engajamento */
+  M.totalXp = () => (M.session.progress?.xp || 0) + (M.session.engage?.xp || 0);
+
+  /* ───── pessoas ───── */
+  const AV = ["#6b3fa0", "#8a52c8", "#4d2c86", "#b07d12", "#7a4bb3", "#a35fd1", "#5a3a9e", "#c28a14"];
+  M.avatar = function (p, size = 40) {
+    const name = p?.name || "?";
+    const init = name.trim().split(/\s+/).slice(0, 2).map((x) => x[0]).join("").toUpperCase();
+    let hsh = 0; for (const ch of String(p?.id || name)) hsh = (hsh * 31 + ch.charCodeAt(0)) >>> 0;
+    return M.h("span", { class: "avatar" + (p?.role === "admin" ? " is-admin" : ""), "aria-hidden": "true", style: `width:${size}px;height:${size}px;font-size:${Math.round(size * 0.38)}px;background:${AV[hsh % AV.length]}`, text: init });
+  };
+  M.profileHref = (p) => "#/u/" + encodeURIComponent(p.nickname || p.id);
+  M.timeAgo = function (ts) {
+    const s = Math.max(0, (Date.now() - ts) / 1000);
+    if (s < 60) return "agora";
+    if (s < 3600) return Math.floor(s / 60) + " min";
+    if (s < 86400) return Math.floor(s / 3600) + " h";
+    if (s < 7 * 86400) return Math.floor(s / 86400) + " d";
+    return new Date(ts).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
+  };
+
   /* ───── currículo: consultas (várias trilhas) ───── */
   /* Cada trilha se registra em window.TRILHAS (ver public/trilhas/<nome>/content.js).
      Ids de módulos, aulas e provas finais são únicos entre todas as trilhas. */
@@ -185,6 +209,23 @@
     lock: "M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3",
     arrow: "M5 12h14M13 6l6 6-6 6",
     back: "M19 12H5M11 6l-6 6 6 6",
+    rocket: "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2zM9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5",
+    search: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14M21 21l-5-5",
+    chat: "M4 5h16v11H9l-5 4zM8 9h8M8 12h5",
+    image: "M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M9 9.5h.01",
+    video: "M4 6h11v12H4zM15 10l5-3v10l-5-3",
+    link: "M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1",
+    file: "M6 3h8l5 5v13H6zM14 3v5h5M9 13h7M9 17h7",
+    clip: "M20 11l-8.5 8.5a5 5 0 0 1-7-7L13 4a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4L14 7",
+    trophy: "M8 4h8v5a4 4 0 0 1-8 0zM8 6H4v2a3 3 0 0 0 4 3M16 6h4v2a3 3 0 0 1-4 3M12 13v4M8 21h8M10 17h4",
+    star: "M12 3l2.8 5.8 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.3l1-6.2L3 9.7l6.2-.9z",
+    send: "M4 12l16-8-6 17-3-7zM11 14l4-4",
+    x: "M6 6l12 12M18 6 6 18",
+    plus: "M12 5v14M5 12h14",
+    trash: "M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13M10 11v6M14 11v6",
+    flag: "M5 21V4M5 5h12l-2 4 2 4H5",
+    inbox: "M4 13l2-8h12l2 8M4 13v6h16v-6M4 13h5l1 2h4l1-2h5",
+    bolt: "M13 3 5 13h6l-1 8 8-10h-6z",
   };
   M.icon = (name, size = 20) =>
     M.svg(`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[name] || ""}"/></svg>`);

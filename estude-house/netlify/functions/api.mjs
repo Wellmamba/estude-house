@@ -5,6 +5,8 @@ import {
 } from "./lib/auth.mjs";
 import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope } from "./lib/manifest.mjs";
 import { QUESTIONS } from "./lib/questions/index.mjs";
+import * as social from "./lib/social.mjs";
+import * as eng from "./lib/engage.mjs";
 import { outcomeFor, drawQuestionIds, buildItems, publicQuestions, grade, reviewItem } from "./lib/exam.mjs";
 
 export const config = { path: "/api/*" };
@@ -13,7 +15,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-15-a";
+const BUILD = "2026-10-15-b";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -75,7 +77,7 @@ async function findByEmail(email) {
   return id ? loadUser(id) : null;
 }
 
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role });
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, nickname: u.nickname || null });
 
 function computeXp(p) {
   const lessons = Object.keys(p.lessons).length * XP.lesson;
@@ -361,13 +363,15 @@ async function certificate(req, user, url) {
 
 /* ---------- administração ---------- */
 
-function userSummary(u, p) {
+function userSummary(u, p, e) {
   return {
     id: u.id, name: u.name, email: u.email, role: u.role, active: u.active !== false,
     createdAt: u.createdAt, lastLoginAt: u.lastLoginAt,
     lessonsDone: Object.keys(p.lessons).length,
     trails: Object.fromEntries(TRAILS.map((t) => { const v = trailView(p, t); return [t.id, { lessonsDone: v.lessonsDone, modulesApproved: v.modulesApproved, finalStatus: v.finalStatus }]; })),
-    xp: computeXp(p),
+    xp: computeXp(p) + (e?.xp || 0),
+    xpEngage: e?.xp || 0,
+    nickname: u.nickname || null,
     master: isMaster(u.email),
   };
 }
@@ -381,13 +385,13 @@ async function allUsers() {
 // Usuários + progresso de cada um, lidos em paralelo (uma leitura por pessoa).
 async function allWithProgress() {
   const list = await allUsers();
-  const progs = await pmap(list, (u) => loadProgress(u.id));
-  return list.map((u, i) => ({ u, p: progs[i] }));
+  const [progs, engs] = await Promise.all([pmap(list, (u) => loadProgress(u.id)), pmap(list, (u) => eng.loadEng(u.id))]);
+  return list.map((u, i) => ({ u, p: progs[i], e: engs[i] }));
 }
 
 async function adminOverview() {
   const all = await allWithProgress();
-  const rows = all.map(({ u, p }) => userSummary(u, p));
+  const rows = all.map(({ u, p, e }) => userSummary(u, p, e));
   const alunos = rows.filter((r) => r.role === "aluno");
   const alunoProgress = all.filter(({ u }) => u.role === "aluno").map(({ p }) => p);
   const trails = {};
@@ -420,7 +424,7 @@ async function adminOverview() {
 }
 
 async function adminUsers() {
-  const rows = (await allWithProgress()).map(({ u, p }) => userSummary(u, p));
+  const rows = (await allWithProgress()).map(({ u, p, e }) => userSummary(u, p, e));
   rows.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   return json({ users: rows });
 }
@@ -429,7 +433,7 @@ async function adminUserDetail(id) {
   const u = await loadUser(id);
   if (!u) fail(404, "Usuário não encontrado.");
   const p = await loadProgress(id);
-  return json({ user: userSummary(u, p), progress: progressView(p), history: [...(p.history || [])].reverse() });
+  return json({ user: userSummary(u, p, await eng.loadEng(id)), progress: progressView(p), history: [...(p.history || [])].reverse() });
 }
 
 async function adminCreateUser(req, admin, body) {
@@ -553,6 +557,8 @@ async function adminDeleteUser(req, admin, id) {
   await (await store("users")).delete("u:" + id);
   await (await store("emails")).delete(emailKey(u.email));
   await (await store("progress")).delete("p:" + id);
+  await (await store("eng")).delete("e:" + id);
+  if (u.nickname) await (await store("nicks")).delete("n:" + u.nickname);
   await logEvent(req, "admin_removeu_usuario", admin, { target: u.email });
   return json({ ok: true });
 }
@@ -604,15 +610,19 @@ export default async (req, context) => {
     if (method === "OPTIONS") return new Response(null, { status: 204 });
     const body = await readBody(req);
 
-    if (path === "health") return json({ ok: true, build: BUILD, blobs: blobsMode(), rules: RULES });
+    if (path === "health") return json({ ok: true, build: BUILD, blobs: blobsMode(), uploads: social.uploadsOn() ? "cloudinary" : "desligado", rules: RULES });
     if (path === "auth/register" && method === "POST") return await register(req, body);
     if (path === "auth/login" && method === "POST") return await login(req, body);
 
     const user = await requireUser(req);
 
     if (path === "me" && method === "GET") {
-      const p = await loadProgress(user.id);
-      return json({ user: publicUser(user), progress: progressView(p), rules: { ...RULES, examSize: EXAM_SIZE } });
+      const [p, e, pending] = await Promise.all([
+        loadProgress(user.id),
+        user.role === "aluno" ? eng.loadEng(user.id) : null,
+        user.role === "admin" ? social.pendingCount() : 0,
+      ]);
+      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     if (path === "auth/password" && method === "POST") {
       if (!verifyPassword(String(body.current || ""), user.passHash)) fail(400, "A senha atual não confere.");
@@ -628,6 +638,12 @@ export default async (req, context) => {
     if (path === "exam/start" && method === "POST") return await startExam(req, user, body);
     if (path === "exam/submit" && method === "POST") return await submitExam(req, user, body);
     if (path === "certificate" && method === "GET") return await certificate(req, user, url);
+
+    const social_ = await social.handle(
+      { json, fail, logEvent, loadUser, saveUser, allUsers, publicUser },
+      { req, method, path, url, body, user },
+    );
+    if (social_) return social_;
 
     if (path.startsWith("admin/")) {
       const admin = await requireAdmin(req);
