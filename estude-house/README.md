@@ -80,6 +80,9 @@ Upload de foto, vídeo e arquivo usa o Cloudinary (variáveis `CLOUDINARY_CLOUD_
 ## Destaques e Fórum
 Destaques (Stories permanentes, só gestor posta, aluno assiste e ganha XP) e Fórum de listas úteis (só aparece na busca para o aluno). Destaques no formato Instagram (anel com a foto de quem postou, vídeo automático, gestor adiciona cartões, edita e converte em post do Feed) e botão que importa 90 publicações do manual do suporte para o Fórum. Veja `GUIA-DESTAQUES-E-FORUM.md`. A tela inicial agora se chama **Feed** e, no celular, tem menu inferior no estilo Instagram.
 
+## Sub-administrador e Fórum do aluno
+O administrador transforma um perfil em **Sub-adm** e marca as permissões (aprovações, moderação, publicar, fórum, trilhas, engajamento, acessos). O aluno envia **dúvidas e sugestões**; o gestor aprova (vira publicação do fórum oficial) ou reprova com motivo (volta ao aluno, que pode reenviar). O balão do check-in sai do feed depois de marcado. Veja `GUIA-SUBADM-E-FORUM-DO-ALUNO.md`.
+
 ## Tags, enquetes, fixados, @, emoji, filtro e sino
 
 - **Tags** (só gestor): **Administração → Tags e moderação** cria, renomeia, troca a cor e apaga tags (até 30). Ao publicar, o gestor escolhe a tag do post. Quem usa o feed filtra clicando na tag (`#/tag/<id>`); na busca há o seletor de tag para buscar só dentro dela. Apagar uma tag solta os posts, que continuam no feed sem tag. Aluno não cria tag.

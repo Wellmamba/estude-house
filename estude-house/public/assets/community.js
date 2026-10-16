@@ -216,6 +216,8 @@
     comment: () => "comentou no seu post",
     approved: () => "aprovou o seu post",
     rejected: () => "recusou o seu post",
+    forum_ok: () => "aprovou a sua dúvida/sugestão: virou publicação do fórum",
+    forum_no: () => "reprovou a sua dúvida/sugestão. Veja o motivo",
   };
   M.bell = function () {
     const badge = h("span", { class: "bell-n", hidden: true });
@@ -236,7 +238,7 @@
         const d = await M.get("notifs");
         if (!panel) return;
         const body = d.items.length
-          ? h("ul", { class: "notif-list" }, d.items.map((n) => h("li", null, h("a", { class: "notif-item" + (n.unread ? " unread" : ""), href: n.postId ? "#/post/" + n.postId : "#/", onclick: () => close() },
+          ? h("ul", { class: "notif-list" }, d.items.map((n) => h("li", null, h("a", { class: "notif-item" + (n.unread ? " unread" : ""), href: n.link || (n.postId ? "#/post/" + n.postId : "#/"), onclick: () => close() },
             n.by ? M.avatar(n.by, 34) : h("span", { class: "notif-ico" }, M.icon("bell", 16)),
             h("span", { class: "notif-txt" },
               h("span", null, h("strong", { text: n.by?.name || "Equipe" }), " " + (NTEXT[n.type] ? NTEXT[n.type](n) : "enviou uma notificação")),
@@ -260,7 +262,7 @@
   /* ───── página: tags e moderação ───── */
   const COLOR_NAMES = { gold: "Dourado", purple: "Roxo", green: "Verde", red: "Vermelho", blue: "Azul", orange: "Laranja", pink: "Rosa", gray: "Cinza" };
   M.views.adminTags = async function () {
-    if (!M.isAdmin()) return h("div", { class: "empty" }, h("h3", { text: "Área restrita" }), h("p", { text: "Somente administradores veem esta página." }));
+    if (!M.can("moderar")) return h("div", { class: "empty" }, h("h3", { text: "Área restrita" }), h("p", { text: "Somente administradores veem esta página." }));
     const [tg, md] = await Promise.all([M.get("feed/tags"), M.get("admin/moderation")]);
     let tags = tg.tags; const colors = tg.colors;
     let mod = md.moderation;

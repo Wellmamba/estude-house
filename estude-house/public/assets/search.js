@@ -87,7 +87,7 @@
 
       if (srv.people.length) sections.push(h("section", null, h("h3", { class: "s-h", text: "Pessoas" }),
         h("ul", { class: "s-people" }, srv.people.map((p) => h("li", null, h("a", { class: "s-person", href: M.profileHref(p) }, M.avatar(p, 42),
-          h("span", null, h("strong", null, ...M.highlight(p.name, term)), h("span", { class: "muted small", style: "display:block" }, p.nickname ? "@" + p.nickname : "", p.role === "admin" ? " · Gestor" : "")))))) ));
+          h("span", null, h("strong", null, ...M.highlight(p.name, term)), h("span", { class: "muted small", style: "display:block" }, p.nickname ? "@" + p.nickname : "", p.role === "admin" || p.role === "subadmin" ? " · Gestor" : "")))))) ));
 
       if ((srv.forum || []).length) sections.push(h("section", null, h("h3", { class: "s-h", text: "Fórum" }),
         h("ul", { class: "s-list" }, srv.forum.map((f) => h("li", null, h("a", { class: "s-item", href: "#/forum/" + f.id },
@@ -112,7 +112,7 @@
 
       out.replaceChildren(
         warn ? h("div", { class: "form-error", text: "Não foi possível buscar pessoas e posts agora (" + warn + "). Mostrando só trilhas e aulas." }) : null,
-        sections.length ? sections : h("div", { class: "empty" }, h("h3", { text: tagNow ? (term ? `Nada encontrado para “${term}” na tag ${tagNow.name}` : `Nenhum post com a tag ${tagNow.name}`) : `Nada encontrado para “${term}”` }), h("p", { text: "Tente outra palavra, o início de um nome ou um termo parecido." })));
+        sections.length ? sections : h("div", { class: "empty" }, h("h3", { text: tagNow ? (term ? `Nada encontrado para “${term}” na tag ${tagNow.name}` : `Nenhum post com a tag ${tagNow.name}`) : `Nada encontrado para “${term}”` }), h("p", { text: "Tente outra palavra, o início de um nome ou um termo parecido." }), M.session.user.role === "aluno" ? h("a", { class: "btn btn-gold", href: "#/forum/envios" }, "Mandar como dúvida para o fórum") : null));
     }
     go(q);
     return h("div", { class: "feed" }, h("div", { class: "page-head" }, h("h2", { text: "Busca" }), h("p", { text: "Pessoas, posts do Feed, conteúdo das trilhas e materiais do time, tudo de uma vez. Traz palavras parecidas, não só iguais. Escolha uma tag para buscar só nos posts dela." })), form, out);

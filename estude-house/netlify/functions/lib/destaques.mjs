@@ -1,7 +1,7 @@
 // Destaques: stories fixos (não somem em 24 horas). Só gestores publicam; o aluno assiste e ganha XP.
 // Chaves: store "hl": d:<tempo invertido>:<id> (o destaque) e ix:<id>; store "hlseen": <pessoa>:<id> (quem já assistiu até o fim).
 import { store, pmap } from "./db.mjs";
-import { newId } from "./auth.mjs";
+import { newId, can } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as eng from "./engage.mjs";
 import { sanitizeMedia, cleanMultiline, publishFor } from "./social.mjs";
@@ -58,7 +58,7 @@ export async function handle(ctx, { req, method, path, body, user }) {
   const { json, fail } = ctx;
   const parts = path.split("/");
   if (parts[0] !== "destaques") return null;
-  const isAdmin = user.role === "admin";
+  const isAdmin = can(user, "publicar");
 
   /* barra de destaques: os não assistidos primeiro */
   if (path === "destaques" && method === "GET") {

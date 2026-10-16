@@ -6,9 +6,13 @@
   M.go = (hash) => { if (location.hash === hash) M.render(); else location.hash = hash; };
   M.refreshMe = async function () {
     const d = await M.get("me");
+    /* se o admin mudou o perfil ou as permissões desta pessoa, o menu lateral é refeito */
+    const sig = (x) => (x ? x.role + "|" + (x.perms || []).join(",") : "");
+    const changed = !!M.session.user && sig(M.session.user) !== sig(d.user);
     M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules; M.session.inactive = d.inactive || [];
+    if (changed) M.resetShell();
     try { await M.syncCustomTrails(d.ctv); } catch (e) { console.warn("trilhas criadas não carregaram", e); }
-    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.unread = d.unread || 0; M.session.destaques = d.destaques || 0;
+    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.pendingForum = d.pendingForum || 0; M.session.unread = d.unread || 0; M.session.destaques = d.destaques || 0;
     if (M.updateBell) M.updateBell();
     return d;
   };
@@ -112,27 +116,28 @@
       link("home", "#/", "home", "Feed", "dst"),
       link("trails", "#/trilhas", "book", "Trilhas"),
       link("rank", "#/ranking", "trophy", "Ranking"),
+      u.role === "aluno" ? link("forum-envios", "#/forum/envios", "chat", "Dúvidas e sugestões") : null,
       link("cert", "#/cert", "cert", "Certificados"),
       h("div", { class: "nav-sep", text: "Sua conta" }),
       link("conta", "#/conta", "user", "Minha conta"),
       M.isAdmin() ? [
-        h("div", { class: "nav-sep", text: "Administração" }),
-        link("admin", "#/admin", "shield", "Painel"),
-        link("admin-approve", "#/admin/aprovacoes", "flag", "Aprovações", true),
-        link("admin-trails", "#/admin/trilhas", "book", "Gestão de trilhas"),
-        link("admin-forum", "#/admin/forum", "chat", "Fórum"),
-        link("admin-engage", "#/admin/engajamento", "bolt", "Engajamento"),
-        link("admin-tags", "#/admin/tags", "tag", "Tags e moderação"),
-        link("admin-users", "#/admin/usuarios", "users", "Acessos"),
-        link("admin-logs", "#/admin/logs", "list", "Logs"),
-        link("admin-q", "#/admin/perguntas", "help", "Banco de questões"),
+        h("div", { class: "nav-sep", text: u.role === "subadmin" ? "Sub-administração" : "Administração" }),
+        M.can("usuarios") ? link("admin", "#/admin", "shield", "Painel") : null,
+        M.can("aprovar") ? link("admin-approve", "#/admin/aprovacoes", "flag", "Aprovações", true) : null,
+        M.can("trilhas") ? link("admin-trails", "#/admin/trilhas", "book", "Gestão de trilhas") : null,
+        M.can("forum") ? link("admin-forum", "#/admin/forum", "chat", "Fórum", true) : null,
+        M.can("engajamento") ? link("admin-engage", "#/admin/engajamento", "bolt", "Engajamento") : null,
+        M.can("moderar") ? link("admin-tags", "#/admin/tags", "tag", "Tags e moderação") : null,
+        M.can("usuarios") ? link("admin-users", "#/admin/usuarios", "users", "Acessos") : null,
+        M.can("usuarios") ? link("admin-logs", "#/admin/logs", "list", "Logs") : null,
+        M.can("trilhas") ? link("admin-q", "#/admin/perguntas", "help", "Banco de questões") : null,
       ] : null);
     const side = h("aside", { class: "side", id: "side" },
       M.brand("#/"), nav,
       h("div", { class: "side-foot" },
         h("div", { class: "me-card" },
           h("a", { href: "#/conta", class: "me-av", "aria-label": "Minha foto e conta" }, M.avatar(u, 38)),
-          h("div", { class: "me-txt", title: u.name + " · " + u.email }, h("strong", { text: u.name }), h("span", { text: u.role === "admin" ? "Gestor · " + u.email : u.email })),
+          h("div", { class: "me-txt", title: u.name + " · " + u.email }, h("strong", { text: u.name }), h("span", { text: u.role === "admin" || u.role === "subadmin" ? (u.role === "subadmin" ? "Sub-adm · " : "Gestor · ") + u.email : u.email })),
           h("button", { class: "me-out", type: "button", title: "Sair", "aria-label": "Sair da conta", onclick: M.logout }, M.icon("out", 18))),
         M.modeSwitch({ label: false })));
     const menuBtn = h("button", { class: "btn btn-ghost btn-sm menu-btn", type: "button", "aria-label": "Abrir menu", "aria-controls": "side", "aria-expanded": "false" }, M.icon("menu", 18));
@@ -188,6 +193,8 @@
     const badge = shell.nav.querySelector('[data-key="admin-approve"] .nav-badge');
     const nPend = (M.session.pending || 0) + (M.session.pendingSignups || 0);
     if (badge) { badge.hidden = !(nPend > 0); badge.textContent = String(nPend || ""); }
+    const fBadge = shell.nav.querySelector('[data-key="admin-forum"] .nav-badge');
+    if (fBadge) { const n = M.session.pendingForum || 0; fBadge.hidden = !(n > 0); fBadge.textContent = String(n || ""); }
     shell.page.className = "page" + (wide ? " page-wide" : "");
     shell.page.replaceChildren(node);
     window.scrollTo(0, 0);
@@ -400,12 +407,12 @@
       h("div", { class: "page-head" },
         h("h2", { text: "Olá, " + M.firstName(M.session.user.name) }),
         h("p", { text: "Escolha uma trilha para estudar. Cada uma tem aulas, quizzes, provas por módulo e uma prova final que libera o certificado." })),
-      M.isAdmin() ? h("div", { class: "panel tr-admin", "aria-label": "Ferramentas do gestor" },
+      M.can("trilhas") ? h("div", { class: "panel tr-admin", "aria-label": "Ferramentas do gestor" },
         h("div", null, h("b", { text: "Gestor" }), h("p", { class: "muted small", text: "Crie uma trilha do zero, edite as suas e ative ou inative qualquer uma." })),
         h("div", { class: "row" },
           h("button", { class: "btn btn-gold", type: "button", onclick: M.createTrailDialog }, M.icon("plus", 18), " Criar nova trilha"),
           h("a", { class: "btn btn-ghost", href: "#/admin/trilhas" }, "Gerenciar trilhas"))) : null,
-      M.isAdmin() ? h("div", { style: "height:18px" }) : null,
+      M.can("trilhas") ? h("div", { style: "height:18px" }) : null,
       resume, resume ? h("div", { style: "height:18px" }) : null,
       h("div", { class: "grid grid-4" },
         stat(`${doneTrails}/${trails.length}`, trails.length === 1 ? "trilha concluída" : "trilhas concluídas"),
@@ -570,7 +577,7 @@
       h("div", { class: "page-head" }, h("h2", { text: "Minha conta" })),
       h("section", { class: "panel" }, h("h3", { text: "Seus dados" }),
         h("p", { style: "margin:0" }, h("strong", { text: u.name }), h("br"), h("span", { class: "muted", text: u.email })),
-        h("p", { style: "margin:12px 0 0" }, h("span", { class: "chip " + (u.role === "admin" ? "chip-gold" : ""), text: u.role === "admin" ? "Administrador" : "Aluno" }))),
+        h("p", { style: "margin:12px 0 0" }, h("span", { class: "chip " + (u.role !== "aluno" ? "chip-gold" : ""), text: M.roleLabel(u) }))),
       h("section", { class: "panel" }, h("h3", { text: "Foto de perfil" }),
         h("p", { class: "muted small", style: "margin:0 0 12px", text: "Sua foto aparece nos posts, comentários, ranking e busca." }),
         M.avatarForm()),

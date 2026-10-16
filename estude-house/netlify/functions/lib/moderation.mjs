@@ -3,6 +3,7 @@
 // entende troca de letra por número ("m3rda"), letras repetidas ("puuuta"), letras separadas ("p u t a")
 // e plural. A administração pode somar palavras próprias (ver "Tags e moderação").
 import { store } from "./db.mjs";
+import { isStaff } from "./auth.mjs";
 
 const WORDS = `
 porra caralho carai cacete merda bosta puta puto putaria putinha putao buceta boceta xoxota xereca punheta piroca
@@ -89,7 +90,7 @@ export async function saveMod(input, fail) {
 
 // Confere um texto para quem não é gestor. Devolve a palavra barrada ou null.
 export async function check(text, user) {
-  if (user?.role === "admin") return null;
+  if (isStaff(user)) return null;
   const m = await loadMod();
   if (!m.on) return null;
   return offense(text, m.words);

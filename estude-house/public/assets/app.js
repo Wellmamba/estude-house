@@ -10,8 +10,9 @@
     [/^#\/trilhas$/, "trails", () => ({ key: "trails", crumbs: [T("Trilhas")], view: () => M.views.trails() })],
     [/^#\/post\/([\w-]+)$/, "post", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Post")], view: () => M.views.post(m[1]) })],
     [/^#\/u\/([^/?]+)$/, "profile", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Perfil")], view: () => M.views.profile(decodeURIComponent(m[1])) })],
+    [/^#\/forum\/envios$/, "forum-envios", () => ({ key: "forum-envios", crumbs: [T("Dúvidas e sugestões")], view: () => M.views.forumEnvios() })],
     [/^#\/forum\/([\w-]+)$/, "search", (m) => ({ key: "search", crumbs: [{ text: "Busca", href: "#/busca" }, T("Fórum")], view: () => M.views.forumPost(m[1]) })],
-    [/^#\/admin\/forum(?:\?e=([\w-]+))?$/, "admin", (m) => ({ key: "admin-forum", crumbs: [T("Administração"), T("Fórum")], view: () => M.views.forumAdmin(m[1] || ""), wide: false })],
+    [/^#\/admin\/forum(?:\?(.*))?$/, "admin", (m) => { const q = new URLSearchParams(m[1] || ""); return { key: "admin-forum", crumbs: [T("Administração"), T("Fórum")], view: () => M.views.forumAdmin(q.get("e") || "", q.get("tab") || ""), wide: false }; }],
     [/^#\/ranking$/, "rank", () => ({ key: "rank", crumbs: [T("Ranking")], view: () => M.views.ranking() })],
     [/^#\/busca(?:\?(.*))?$/, "search", (m) => { const q = new URLSearchParams(m[1] || ""); return { key: "search", crumbs: [T("Busca")], view: () => M.views.search(q.get("q") || "", q.get("tag") || "") }; }],
     [/^#\/tag\/([\w-]+)$/, "tag", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Tag")], view: () => M.views.home({ tag: m[1] }) })],
@@ -75,7 +76,16 @@
       if (m) { def = build(m); break; }
     }
     if (!def) { M.setPage("home", [{ text: "Página não encontrada" }], M.notFound()); return; }
-    if (def.key.startsWith("admin") && !M.isAdmin()) { location.hash = "#/"; return; }
+    if (def.key.startsWith("admin")) {
+      /* cada área do menu pede uma permissão; sem ela, a pessoa vai para a primeira área que pode usar */
+      const NEED = { admin: "usuarios", "admin-users": "usuarios", "admin-logs": "usuarios", "admin-q": "trilhas", "admin-trails": "trilhas", "admin-tags": "moderar", "admin-approve": "aprovar", "admin-engage": "engajamento", "admin-forum": "forum" };
+      if (!M.isAdmin()) { location.hash = "#/"; return; }
+      if (NEED[def.key] && !M.can(NEED[def.key])) {
+        const first = [["usuarios", "#/admin"], ["aprovar", "#/admin/aprovacoes"], ["forum", "#/admin/forum"], ["moderar", "#/admin/tags"], ["trilhas", "#/admin/trilhas"], ["engajamento", "#/admin/engajamento"]].find(([k]) => M.can(k));
+        location.hash = first ? first[1] : "#/"; return;
+      }
+    }
+    if (def.key === "forum-envios" && M.session.user.role !== "aluno") { location.hash = M.can("forum") ? "#/admin/forum?tab=envios" : "#/"; return; }
 
     M.setPage(def.key, def.crumbs, M.loading());
     try {

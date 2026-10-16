@@ -118,3 +118,21 @@ export function domainAllowed(email) {
 export function isLive(u) {
   return !!u && u.active !== false && (!u.access || u.access === "active");
 }
+
+/* ---------- perfis de gestão ----------
+   admin    = acesso total (o master é sempre admin)
+   subadmin = só as áreas que o admin marcar em `perms`
+   aluno    = aprende, posta (com aprovação), participa */
+export const PERMS = {
+  aprovar: "Aprovar cadastros e posts do feed",
+  moderar: "Remover posts e comentários, gerenciar tags e o filtro de palavras",
+  publicar: "Publicar direto no feed, criar enquetes, fixar posts, usar @todos e gerenciar os Destaques",
+  forum: "Escrever o Fórum oficial e aprovar as dúvidas e sugestões dos alunos",
+  trilhas: "Criar, editar, ativar e desativar trilhas e ver o banco de questões",
+  engajamento: "Configurar XP, metas e regras de engajamento",
+  usuarios: "Ver o painel, os alunos e os registros; criar acessos de aluno e zerar progresso",
+};
+export const PERM_KEYS = Object.keys(PERMS);
+export const isStaff = (u) => u?.role === "admin" || u?.role === "subadmin";
+export const can = (u, perm) => u?.role === "admin" || (u?.role === "subadmin" && Array.isArray(u.perms) && u.perms.includes(perm));
+export const cleanPerms = (list) => [...new Set((Array.isArray(list) ? list : []).filter((p) => PERM_KEYS.includes(p)))];

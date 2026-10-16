@@ -139,13 +139,13 @@
       h("div", { class: "post-who" },
         h("div", { class: "row", style: "gap:8px" },
           h("a", { class: "post-name", href: M.profileHref(a), text: a.name }),
-          a.role === "admin" ? h("span", { class: "chip chip-gold chip-xs", text: "Gestor" }) : null,
+          a.role === "admin" || a.role === "subadmin" ? h("span", { class: "chip chip-gold chip-xs", text: "Gestor" }) : null,
           post.pinned ? h("span", { class: "chip chip-gold chip-xs pin-chip" }, M.icon("pin", 12), "Fixado") : null,
           M.tagChip(post.tag),
           post.status === "pending" ? h("span", { class: "chip chip-warn chip-xs", text: "Aguardando aprovação" }) : null,
           post.status === "rejected" ? h("span", { class: "chip chip-bad chip-xs", text: "Recusado" }) : null),
         h("div", { class: "muted small" }, a.nickname ? "@" + a.nickname + " · " : "", h("a", { class: "muted", href: "#/post/" + post.id, text: M.timeAgo(when) }))),
-      M.isAdmin() ? manageMenu(post, root, opts, doDelete) : post.canDelete ? h("button", { class: "icon-btn", type: "button", "aria-label": "Apagar post", onclick: doDelete }, M.icon("trash", 18)) : null);
+      M.can("moderar") || M.can("publicar") ? manageMenu(post, root, opts, doDelete) : post.canDelete ? h("button", { class: "icon-btn", type: "button", "aria-label": "Apagar post", onclick: doDelete }, M.icon("trash", 18)) : null);
     async function doDelete() {
       const ok = await M.confirm({ title: "Apagar este post?", text: post.status === "published" ? "O post e os comentários dele somem do feed. Não tem volta." : "O post será descartado.", ok: "Apagar", danger: true });
       if (!ok) return;
@@ -272,7 +272,7 @@
 
   /* ───── publicar ───── */
   function composer({ uploads, onPosted, defaultTag = "", limits = {} }) {
-    const isAdm = M.isAdmin();
+    const isAdm = M.can("publicar");
     const me = M.session.user;
     let items = [];
     let seq = 0;
@@ -389,7 +389,7 @@
   M.views.home = async function (opts = {}) {
     const tagId = opts.tag || "";
     const [, status, tags] = await Promise.all([M.refreshMe(), M.get("feed/status").catch(() => ({ uploads: false })), M.loadTags(true)]);
-    const isAdm = M.isAdmin();
+    const isAdm = M.can("publicar");
     const curTag = tagId ? tags.find((t) => t.id === tagId) : null;
     const top = h("div", { class: "feed-top" });
     const dst = M.destaquesBar();
@@ -407,34 +407,34 @@
           M.nickForm({ compact: true, onSaved: () => { drawTop(); } })));
       }
       const nPosts = M.session.pending || 0, nSign = M.session.pendingSignups || 0;
-      if (isAdm && (nPosts || nSign)) {
+      if (M.can("aprovar") && (nPosts || nSign)) {
         const what = [nSign ? `${nSign} ${nSign === 1 ? "cadastro" : "cadastros"}` : "", nPosts ? `${nPosts} ${nPosts === 1 ? "post" : "posts"}` : ""].filter(Boolean).join(" e ");
         parts.push(h("a", { class: "panel pending-banner", href: "#/admin/aprovacoes" }, M.icon("flag", 20),
           h("span", null, h("strong", { text: `${what} ${nPosts + nSign === 1 ? "aguarda" : "aguardam"} aprovação` }), h("span", { class: "muted", text: " · Analisar agora" })), M.icon("arrow", 18)));
       }
-      if (me.role === "aluno") parts.push(checkinCard());
+      if (me.role === "aluno") { const ck = checkinCard(); if (ck) parts.push(ck); }
       top.replaceChildren(...parts);
     }
+    const onEngage = () => { if (!node.isConnected) { document.removeEventListener("estude:engage", onEngage); return; } drawTop(); };
+    document.addEventListener("estude:engage", onEngage);
+    /* o balão do check-in só aparece enquanto o check-in de hoje não foi feito: ao marcar, ele sai do feed */
     function checkinCard() {
       const e = M.session.engage;
-      const card = h("section", { class: "panel checkin" + (e.checkedToday ? " is-done" : "") });
-      if (e.checkedToday) {
-        card.append(h("span", { class: "ck-ico" }, M.icon("check", 20)),
-          h("div", null, h("strong", { text: "Check-in de hoje feito" }), h("span", { class: "muted small", style: "display:block", text: e.streak > 1 ? `Sequência de ${e.streak} dias. Volte amanhã para manter.` : "Volte amanhã para começar uma sequência." })),
-          h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: () => M.openXp(), text: "Ver metas" }));
-      } else {
-        const b = h("button", { class: "btn btn-gold", type: "button" }, M.icon("bolt", 18), "Fazer check-in");
-        b.addEventListener("click", async () => {
-          b.disabled = true;
-          try {
-            const r = await M.post("engage/checkin");
-            M.session.engage = { ...M.session.engage, checkedToday: true, streak: r.streak };
-            M.bumpXp(r); drawTop();
-          } catch (ex) { M.toast(ex.message, "err"); b.disabled = false; }
-        });
-        card.append(h("span", { class: "ck-ico" }, M.icon("bolt", 20)),
-          h("div", null, h("strong", { text: "Check-in diário" }), h("span", { class: "muted small", style: "display:block", text: e.streak > 0 ? `Sequência atual: ${e.streak} ${e.streak === 1 ? "dia" : "dias"}. Não deixe cair.` : "Entre todo dia e ganhe XP. Dias seguidos rendem bônus." })), b);
-      }
+      if (e.checkedToday) return null;
+      const card = h("section", { class: "panel checkin" });
+      const b = h("button", { class: "btn btn-gold", type: "button" }, M.icon("bolt", 18), "Fazer check-in");
+      b.addEventListener("click", async () => {
+        b.disabled = true;
+        try {
+          const r = await M.post("engage/checkin");
+          M.session.engage = { ...M.session.engage, checkedToday: true, streak: r.streak };
+          M.bumpXp(r);
+          card.classList.add("is-leaving");
+          setTimeout(drawTop, 380);
+        } catch (ex) { M.toast(ex.message, "err"); b.disabled = false; }
+      });
+      card.append(h("span", { class: "ck-ico" }, M.icon("bolt", 20)),
+        h("div", null, h("strong", { text: "Check-in diário" }), h("span", { class: "muted small", style: "display:block", text: e.streak > 0 ? `Sequência atual: ${e.streak} ${e.streak === 1 ? "dia" : "dias"}. Não deixe cair.` : "Entre todo dia e ganhe XP. Dias seguidos rendem bônus." })), b);
       return card;
     }
 
@@ -544,7 +544,7 @@
           h("h2", { text: p.name }),
           h("div", { class: "muted" }, p.nickname ? "@" + p.nickname : "Sem @ ainda", p.joinedAt ? " · No time desde " + new Date(p.joinedAt).toLocaleDateString("pt-BR", { month: "short", year: "numeric" }) : ""),
           h("div", { class: "row", style: "margin-top:10px" },
-            p.role === "admin" ? h("span", { class: "chip chip-gold", text: "Gestor" }) : h("span", { class: "chip", text: "Aluno" }),
+            p.role === "admin" || p.role === "subadmin" ? h("span", { class: "chip chip-gold", text: "Gestor" }) : h("span", { class: "chip", text: "Aluno" }),
             e ? h("span", { class: "chip chip-gold" }, M.icon("bolt", 14), `${e.xp} XP de engajamento`) : null,
             e && e.streak > 0 ? h("span", { class: "chip" }, `${e.streak} ${e.streak === 1 ? "dia" : "dias"} de sequência`) : null)),
         mine ? h("a", { class: "btn btn-ghost btn-sm", href: "#/conta" }, "Editar perfil") : null),

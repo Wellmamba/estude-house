@@ -2,7 +2,7 @@
 // Cada pessoa tem um documento (u:<id>) com as últimas notificações e o horário da última leitura.
 // "@todos" não duplica para cada pessoa: vai uma vez para o mural "all", e cada um lê esse mural junto com o seu.
 import { store } from "./db.mjs";
-import { newId } from "./auth.mjs";
+import { newId, can } from "./auth.mjs";
 import { now } from "./clock.mjs";
 
 const KEEP = 40;
@@ -19,7 +19,7 @@ export async function mentionsIn(text, author) {
   let all = false;
   for (const m of String(text || "").matchAll(MENTION)) {
     let n = m[1].toLowerCase().replace(/[._]+$/, "");
-    if (n === "todos" || n === "all") { if (author?.role === "admin") all = true; continue; }
+    if (n === "todos" || n === "all") { if (can(author, "publicar")) all = true; continue; }
     nicks.add(n);
     if (nicks.size >= MAX_MENTIONS) break;
   }
@@ -38,7 +38,7 @@ async function push(userId, item) {
   await s.set("u:" + userId, d);
 }
 
-const base = (type, by, postId, text) => ({ id: newId("n_"), type, at: now(), by: by?.id || null, postId: postId || null, text: clip(text) });
+const base = (type, by, postId, text, link) => ({ id: newId("n_"), type, at: now(), by: by?.id || null, postId: postId || null, text: clip(text), ...(link ? { link } : {}) });
 
 // Avisa quem foi marcado. `where`: "post" ou "comment". Devolve os ids avisados (para não avisar duas vezes).
 export async function notifyMentions({ text, author, postId, where, skip = [] }) {
@@ -58,7 +58,7 @@ export async function notifyMentions({ text, author, postId, where, skip = [] })
   return { sent, all };
 }
 
-export const notifyUser = (userId, type, by, postId, text) => push(userId, base(type, by, postId, text));
+export const notifyUser = (userId, type, by, postId, text, link) => push(userId, base(type, by, postId, text, link));
 
 // Lista da pessoa: as dela + @todos (a partir de quando ela entrou), mais novas primeiro.
 export async function listFor(user, limit = 30) {

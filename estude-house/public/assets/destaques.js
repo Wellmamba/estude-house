@@ -25,7 +25,7 @@
     let data = null, i = 0, token = 0, dir = 1;
     let muted = false, manual = false, held = false, menuOpen = false;
     let raf = 0, lastTs = 0, elapsed = 0, dur = SLIDE_MS, ready = false, vid = null;
-    const isAdm = M.isAdmin();
+    const isAdm = M.can("publicar");
 
     const bars = h("div", { class: "st-bars dst-bars", "aria-hidden": "true" });
     const ring = h("span", { class: "st-ring", "aria-hidden": "true" });

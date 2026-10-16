@@ -142,7 +142,7 @@
     try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
     location.reload(); // recarrega para o navegador reler o tamanho da tela
   };
-  M.BUILD = "2026-10-16-e"; // igual ao BUILD de netlify/functions/api.mjs
+  M.BUILD = "2026-10-16-f"; // igual ao BUILD de netlify/functions/api.mjs
   M.modeSwitch = function ({ label = true } = {}) {
     const cur = M.effectiveMode(), saved = M.getMode();
     const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
@@ -164,7 +164,7 @@
     const name = p?.name || "?";
     const init = name.trim().split(/\s+/).slice(0, 2).map((x) => x[0]).join("").toUpperCase();
     let hsh = 0; for (const ch of String(p?.id || name)) hsh = (hsh * 31 + ch.charCodeAt(0)) >>> 0;
-    const el = M.h("span", { class: "avatar" + (p?.role === "admin" ? " is-admin" : "") + (p?.avatar ? " has-img" : ""), "aria-hidden": "true", style: `width:${size}px;height:${size}px;font-size:${Math.round(size * 0.38)}px;background:${AV[hsh % AV.length]}`, text: p?.avatar ? "" : init });
+    const el = M.h("span", { class: "avatar" + (p?.role === "admin" || p?.role === "subadmin" ? " is-admin" : "") + (p?.avatar ? " has-img" : ""), "aria-hidden": "true", style: `width:${size}px;height:${size}px;font-size:${Math.round(size * 0.38)}px;background:${AV[hsh % AV.length]}`, text: p?.avatar ? "" : init });
     if (p?.avatar) {
       const img = M.h("img", { src: M.avatarUrl(p.avatar, size * 2), alt: "", loading: "lazy", decoding: "async" });
       img.addEventListener("error", () => { img.remove(); el.classList.remove("has-img"); el.textContent = init; });
@@ -229,7 +229,20 @@
     if (fin) return fin.finalSize || ex.final || 30;
     return M.modulo(scope)?.examSize || ex[scope] || ex.module || 12;
   };
-  M.isAdmin = () => M.session.user?.role === "admin";
+  /* gestor = administrador ou sub-administrador. O que cada um pode fazer vem das permissões. */
+  M.isAdmin = () => ["admin", "subadmin"].includes(M.session.user?.role);
+  M.isFull = () => M.session.user?.role === "admin";
+  M.can = (perm) => { const u = M.session.user; return !!u && (u.role === "admin" || (u.role === "subadmin" && (u.perms || []).includes(perm))); };
+  M.PERMS = [
+    { k: "aprovar", label: "Aprovações", desc: "Aprovar cadastros e posts do feed" },
+    { k: "moderar", label: "Moderação", desc: "Remover posts e comentários, gerenciar tags e o filtro de palavras" },
+    { k: "publicar", label: "Publicar", desc: "Publicar direto no feed, criar enquetes, fixar posts, usar @todos e gerenciar os Destaques" },
+    { k: "forum", label: "Fórum", desc: "Escrever o Fórum oficial e aprovar as dúvidas e sugestões dos alunos" },
+    { k: "trilhas", label: "Trilhas", desc: "Criar, editar, ativar e desativar trilhas e ver o banco de questões" },
+    { k: "engajamento", label: "Engajamento", desc: "Configurar XP, metas e regras de engajamento" },
+    { k: "usuarios", label: "Acessos e painel", desc: "Ver o painel, os alunos e os registros; criar acessos de aluno e zerar progresso" },
+  ];
+  M.roleLabel = (u) => (u?.master ? "Master" : u?.role === "admin" ? "Administrador" : u?.role === "subadmin" ? "Sub-administrador" : "Aluno");
 
   /* ───── ícones (traço simples, um único estilo) ───── */
   const P = {

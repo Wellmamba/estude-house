@@ -34,6 +34,7 @@
     const v = await M.get("engage/me");
     M.session.engage = { ...M.session.engage, xp: v.xp, streak: v.streak, checkedToday: v.checkedToday };
     if (M.updateXpChip) M.updateXpChip();
+    document.dispatchEvent(new Event("estude:engage")); /* o feed tira o balão do check-in se ele foi feito pelo painel de XP */
     const trailXp = M.session.progress?.xp || 0;
     const total = trailXp + v.xp;
 
@@ -46,7 +47,7 @@
     if (!v.earns) {
       body.replaceChildren(hero,
         h("p", { class: "muted", text: "Gestores acompanham o time, mas não ganham XP de engajamento nem aparecem no ranking." }),
-        h("div", { class: "xp-links" }, h("a", { class: "btn btn-ghost", href: "#/ranking", onclick: () => M.closeXp() }, "Ver ranking"), M.isAdmin() ? h("a", { class: "btn btn-ghost", href: "#/admin/engajamento", onclick: () => M.closeXp() }, "Configurar XP e metas") : null));
+        h("div", { class: "xp-links" }, h("a", { class: "btn btn-ghost", href: "#/ranking", onclick: () => M.closeXp() }, "Ver ranking"), M.can("engajamento") ? h("a", { class: "btn btn-ghost", href: "#/admin/engajamento", onclick: () => M.closeXp() }, "Configurar XP e metas") : null));
       return;
     }
 

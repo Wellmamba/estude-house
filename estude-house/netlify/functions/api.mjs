@@ -1,7 +1,7 @@
 import { store, pmap, blobsMode } from "./lib/db.mjs";
 import {
   normalizeEmail, isValidEmail, emailKey, hashPassword, verifyPassword, signToken, verifyToken,
-  passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed, isLive,
+  passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed, isLive, can, isStaff, cleanPerms,
 } from "./lib/auth.mjs";
 import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope, isTrailActive } from "./lib/manifest.mjs";
 import { QUESTIONS, byId } from "./lib/questions/index.mjs";
@@ -21,7 +21,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-16-e";
+const BUILD = "2026-10-16-f";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -83,7 +83,7 @@ async function findByEmail(email) {
   return id ? loadUser(id) : null;
 }
 
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, nickname: u.nickname || null, avatar: u.avatar || null });
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, nickname: u.nickname || null, avatar: u.avatar || null, ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}) });
 
 function computeXp(p) {
   const lessons = Object.keys(p.lessons).length * XP.lesson;
@@ -138,13 +138,8 @@ async function requireUser(req) {
   if (!user || !isLive(user)) fail(401, "Acesso desativado. Fale com a administração.");
   return user;
 }
-async function requireAdmin(req) {
-  const user = await requireUser(req);
-  if (user.role !== "admin") fail(403, "Área restrita a administradores.");
-  return user;
-}
 
-async function createUser({ name, email, password, role = "aluno", createdBy = null, access = undefined }) {
+async function createUser({ name, email, password, role = "aluno", perms = null, createdBy = null, access = undefined }) {
   const users = await store("users");
   const emails = await store("emails");
   const id = newId("u_");
@@ -152,6 +147,7 @@ async function createUser({ name, email, password, role = "aluno", createdBy = n
     id, name, email, role: isMaster(email) ? "admin" : role,
     passHash: hashPassword(password), active: true, createdAt: now(), lastLoginAt: null, createdBy,
   };
+  if (user.role === "subadmin") user.perms = cleanPerms(perms);
   if (access) user.access = access;
   await users.set("u:" + id, user);
   await emails.set(emailKey(email), id);
@@ -232,7 +228,7 @@ function examScope(scope) {
 
 // Trilha inativa: o aluno não estuda nem faz prova (o gestor continua livre para testar).
 function needActive(user, trail) {
-  if (user.role !== "admin" && !isTrailActive(trail.id)) fail(403, "Esta trilha está inativa no momento.");
+  if (!isStaff(user) && !isTrailActive(trail.id)) fail(403, "Esta trilha está inativa no momento.");
 }
 
 async function completeLesson(req, user, body) {
@@ -243,10 +239,10 @@ async function completeLesson(req, user, body) {
   const mod = trail.modules.find((m) => m.lessons.includes(lessonId));
   const p = await loadProgress(user.id);
   const idx = trail.modules.indexOf(mod);
-  if (user.role !== "admin" && !moduleState(p, trail, idx).unlocked) fail(403, "Este módulo ainda está bloqueado.");
+  if (!isStaff(user) && !moduleState(p, trail, idx).unlocked) fail(403, "Este módulo ainda está bloqueado.");
   const li = mod.lessons.indexOf(lessonId);
   // o aluno assiste na ordem: a aula só abre depois de concluir a anterior (gestor navega livre)
-  if (user.role !== "admin" && li > 0 && !p.lessons[lessonId] && !p.lessons[mod.lessons[li - 1]]) fail(403, "Assista a aula anterior primeiro.");
+  if (!isStaff(user) && li > 0 && !p.lessons[lessonId] && !p.lessons[mod.lessons[li - 1]]) fail(403, "Assista a aula anterior primeiro.");
   if (p.exams[mod.id]?.status === "approved") return json({ progress: progressView(p) });
   if (!p.lessons[lessonId]) {
     p.lessons[lessonId] = Date.now();
@@ -260,7 +256,7 @@ async function startExam(req, user, body) {
   needActive(user, trail);
   const scope = isFinal ? trail.finalScope : trail.modules[index].id;
   const p = await loadProgress(user.id);
-  const isAdmin = user.role === "admin";
+  const isAdmin = isStaff(user);
   if (isFinal) {
     if (!isAdmin && !allModulesApproved(p, trail)) fail(403, "Seja aprovado em todos os módulos para liberar a prova final.");
   } else {
@@ -413,6 +409,7 @@ function userSummary(u, p, e) {
     nickname: u.nickname || null,
     avatar: u.avatar || null,
     master: isMaster(u.email),
+    ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}),
   };
 }
 
@@ -476,10 +473,14 @@ async function adminUserDetail(id) {
   return json({ user: userSummary(u, p, await eng.loadEng(id)), progress: progressView(p), history: [...(p.history || [])].reverse() });
 }
 
+/* só o admin cria e muda gestores; sub-adm com a permissão "usuários" mexe apenas em alunos */
+const roleFrom = (v) => (v === "admin" ? "admin" : v === "subadmin" ? "subadmin" : "aluno");
+const onlyAdminTouchesStaff = (actor, target) => { if (actor.role !== "admin" && target.role !== "aluno") fail(403, "Só administradores mexem em gestores."); };
+
 async function adminCreateUser(req, admin, body) {
   const name = cleanText(body.name, 80);
   const email = normalizeEmail(body.email);
-  const role = body.role === "admin" ? "admin" : "aluno";
+  const role = admin.role === "admin" ? roleFrom(body.role) : "aluno";
   if (name.length < 2) fail(400, "Informe o nome.");
   if (!isValidEmail(email)) fail(400, "E-mail inválido.");
   if (await findByEmail(email)) fail(409, "Este e-mail já tem cadastro.");
@@ -490,7 +491,7 @@ async function adminCreateUser(req, admin, body) {
     const problem = passwordProblem(password, email);
     if (problem) fail(400, problem);
   }
-  const user = await createUser({ name, email, password, role, createdBy: admin.id });
+  const user = await createUser({ name, email, password, role, perms: body.perms, createdBy: admin.id });
   await logEvent(req, "admin_criou_acesso", admin, { target: email, role: user.role });
   return json({ user: userSummary(user, emptyProgress()), password: generated ? password : null }, 201);
 }
@@ -517,7 +518,7 @@ async function adminBulk(req, admin, body) {
       let generated = false;
       if (!password) { password = randomPassword(); generated = true; }
       else { const pr = passwordProblem(password, email); if (pr) throw new Error(pr); }
-      const role = /^adm/i.test(r.role || "") ? "admin" : "aluno";
+      const role = admin.role !== "admin" ? "aluno" : /^adm/i.test(r.role || "") ? "admin" : /^sub/i.test(r.role || "") ? "subadmin" : "aluno";
       const u = await createUser({ name: cleanText(r.name, 80), email, password, role, createdBy: admin.id });
       results.push({ email, ok: true, role: u.role, password: generated ? password : null });
     } catch (e) {
@@ -532,6 +533,7 @@ async function adminPatchUser(req, admin, id, body) {
   const u = await loadUser(id);
   if (!u) fail(404, "Usuário não encontrado.");
   const master = isMaster(u.email);
+  onlyAdminTouchesStaff(admin, u);
   const changes = {};
   if (body.name !== undefined) {
     const n = cleanText(body.name, 80);
@@ -541,7 +543,15 @@ async function adminPatchUser(req, admin, id, body) {
   if (body.role !== undefined) {
     if (master) fail(403, "O acesso master não pode ter o perfil alterado.");
     if (id === admin.id) fail(400, "Você não pode alterar o próprio perfil.");
-    u.role = body.role === "admin" ? "admin" : "aluno"; changes.role = u.role;
+    if (admin.role !== "admin") fail(403, "Só administradores mudam o perfil de acesso.");
+    u.role = roleFrom(body.role); changes.role = u.role;
+    if (u.role === "subadmin") { u.perms = cleanPerms(body.perms !== undefined ? body.perms : u.perms); changes.perms = u.perms; }
+    else delete u.perms;
+  }
+  if (body.perms !== undefined && body.role === undefined) {
+    if (admin.role !== "admin") fail(403, "Só administradores definem permissões.");
+    if (u.role !== "subadmin") fail(400, "Só sub-administradores têm permissões configuráveis.");
+    u.perms = cleanPerms(body.perms); changes.perms = u.perms;
   }
   if (body.active !== undefined) {
     if (master) fail(403, "O acesso master não pode ser desativado.");
@@ -562,6 +572,7 @@ async function adminPatchUser(req, admin, id, body) {
 async function adminResetProgress(req, admin, id, body) {
   const u = await loadUser(id);
   if (!u) fail(404, "Usuário não encontrado.");
+  onlyAdminTouchesStaff(admin, u);
   const p = await loadProgress(id);
   const scope = String(body.scope || "all");
   if (scope === "all") {
@@ -592,6 +603,7 @@ async function adminResetProgress(req, admin, id, body) {
 async function adminDeleteUser(req, admin, id) {
   const u = await loadUser(id);
   if (!u) fail(404, "Usuário não encontrado.");
+  if (admin.role !== "admin") fail(403, "Só administradores removem acessos.");
   if (isMaster(u.email)) fail(403, "O acesso master não pode ser removido.");
   if (id === admin.id) fail(400, "Você não pode remover o próprio acesso.");
   await removeUser(u);
@@ -666,15 +678,16 @@ export default async (req, context) => {
     await trailsLib.sync().catch((e) => console.error("trilhas não carregaram", e));
 
     if (path === "me" && method === "GET") {
-      const [p, e, pending, pendingSignups, unread, newDest] = await Promise.all([
+      const [p, e, pending, pendingSignups, unread, newDest, pendingForum] = await Promise.all([
         loadProgress(user.id),
         user.role === "aluno" ? eng.loadEng(user.id) : null,
-        user.role === "admin" ? social.pendingCount() : 0,
-        user.role === "admin" ? signup.pendingCount() : 0,
+        can(user, "aprovar") ? social.pendingCount() : 0,
+        can(user, "aprovar") ? signup.pendingCount() : 0,
         notify.unreadCount(user).catch(() => 0),
         destaques.unseenCount(user).catch(() => 0),
+        can(user, "forum") ? forum.pendingCount().catch(() => 0) : 0,
       ]);
-      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, pendingForum, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     if (path === "auth/password" && method === "POST") {
       if (!verifyPassword(String(body.current || ""), user.passHash)) fail(400, "A senha atual não confere.");
@@ -706,19 +719,22 @@ export default async (req, context) => {
     if (forum_) return forum_;
 
     if (path.startsWith("admin/")) {
-      const admin = await requireAdmin(req);
+      const admin = user; // já autenticado acima
+      const need = (perm) => { if (!can(admin, perm)) fail(403, "Você não tem permissão para esta área."); };
       const parts = path.split("/");
-      if (path === "admin/overview" && method === "GET") return await adminOverview();
+      if (path === "admin/overview" && method === "GET") { need("usuarios"); return await adminOverview(); }
       if (parts[1] === "signups") {
+        need("aprovar");
         const r = await signup.handleAdmin({ json, fail, logEvent, loadUser, saveUser, findByEmail, removeUser }, { req, method, path, body, admin });
         if (r) return r;
       }
-      if (path === "admin/users" && method === "GET") return await adminUsers();
-      if (path === "admin/users" && method === "POST") return await adminCreateUser(req, admin, body);
-      if (path === "admin/users/bulk" && method === "POST") return await adminBulk(req, admin, body);
-      if (path === "admin/logs" && method === "GET") return await adminLogs(url);
-      if (path === "admin/questions" && method === "GET") return adminQuestions();
+      if (path === "admin/users" && method === "GET") { need("usuarios"); return await adminUsers(); }
+      if (path === "admin/users" && method === "POST") { need("usuarios"); return await adminCreateUser(req, admin, body); }
+      if (path === "admin/users/bulk" && method === "POST") { need("usuarios"); return await adminBulk(req, admin, body); }
+      if (path === "admin/logs" && method === "GET") { need("usuarios"); return await adminLogs(url); }
+      if (path === "admin/questions" && method === "GET") { need("trilhas"); return adminQuestions(); }
       if (parts[1] === "users" && parts[2]) {
+        need("usuarios");
         const id = parts[2];
         if (parts.length === 3 && method === "GET") return await adminUserDetail(id);
         if (parts.length === 3 && method === "PATCH") return await adminPatchUser(req, admin, id, body);

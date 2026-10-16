@@ -13,7 +13,26 @@
   const logTone = (t) => (t === "login_falhou" || t === "admin_removeu_usuario" ? "chip-bad" : t.startsWith("admin_") ? "chip-gold" : t === "prova_enviada" ? "chip-warn" : "");
   const metaText = (m) => Object.entries(m || {}).map(([k, v]) => `${k}: ${v}`).join(" · ");
   const finalChip = (s) => s === "approved" ? h("span", { class: "chip chip-good", text: "Aprovado" }) : s === "retry" ? h("span", { class: "chip chip-warn", text: "Refazendo" }) : s === "reset" ? h("span", { class: "chip chip-bad", text: "Reprovado" }) : h("span", { class: "chip", text: "—" });
-  const guard = () => (M.isAdmin() ? null : h("div", { class: "empty" }, h("h3", { text: "Área restrita" }), h("p", { text: "Somente administradores veem esta página." })));
+  const guard = (perm) => (M.can(perm) ? null : h("div", { class: "empty" }, h("h3", { text: "Área restrita" }), h("p", { text: "Você não tem permissão para ver esta página." })));
+
+  /* escolha das permissões de um sub-administrador (caixas de marcar). get() devolve a lista marcada. */
+  function permsEditor(selected = []) {
+    const on = new Set(selected);
+    const boxes = M.PERMS.map((p) => {
+      const input = h("input", { type: "checkbox", id: "perm-" + p.k, checked: on.has(p.k) });
+      input.addEventListener("change", () => { if (input.checked) on.add(p.k); else on.delete(p.k); });
+      return { p, input, row: h("label", { class: "perm-item", for: "perm-" + p.k }, input, h("span", null, h("strong", { text: p.label }), h("span", { class: "muted small", text: p.desc }))) };
+    });
+    const setAll = (v) => boxes.forEach(({ p, input }) => { input.checked = v; if (v) on.add(p.k); else on.delete(p.k); });
+    const node = h("div", { class: "perm-box" },
+      h("div", { class: "row perm-head" }, h("strong", { text: "O que esta pessoa pode fazer" }), h("span", { class: "spacer", style: "flex:1" }),
+        h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: () => setAll(true), text: "Marcar tudo" }),
+        h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: () => setAll(false), text: "Limpar" })),
+      h("div", { class: "perm-list" }, boxes.map((b) => b.row)),
+      h("p", { class: "muted small", style: "margin:8px 0 0", text: "Sub-administradores não mudam perfis, não removem acessos e não mexem em outros gestores. Isso é só do administrador." }));
+    return { node, get: () => M.PERMS.map((p) => p.k).filter((k) => on.has(k)) };
+  }
+  const roleChip = (u) => h("span", { class: "chip " + (u.role === "aluno" ? "" : "chip-gold"), text: u.master ? "Master" : u.role === "admin" ? "Adm" : u.role === "subadmin" ? "Sub-adm" : "Aluno" });
   const copy = async (text, ok) => { try { await navigator.clipboard.writeText(text); M.toast(ok || "Copiado.", "ok"); } catch { M.toast("Não foi possível copiar. Selecione e copie manualmente.", "err"); } };
 
   /* trilha escolhida nos painéis (lembrada enquanto a página está aberta) */
@@ -28,7 +47,7 @@
   }
 
   M.views.adminHome = async function () {
-    const g = guard(); if (g) return g;
+    const g = guard("usuarios"); if (g) return g;
     const d = await M.get("admin/overview");
     const holder = h("div");
     function draw() {
@@ -78,13 +97,13 @@
 
   /* ───── acessos ───── */
   M.views.adminUsers = async function () {
-    const g = guard(); if (g) return g;
+    const g = guard("usuarios"); if (g) return g;
     let users = (await M.get("admin/users")).users;
     let q = "", role = "";
     const holder = h("div");
     const search = h("input", { class: "input", type: "search", placeholder: "Buscar por nome ou e-mail", "aria-label": "Buscar acesso" });
     const sel = h("select", { class: "select", "aria-label": "Filtrar por perfil" },
-      h("option", { value: "", text: "Todos os perfis" }), h("option", { value: "aluno", text: "Alunos" }), h("option", { value: "admin", text: "Administradores" }));
+      h("option", { value: "", text: "Todos os perfis" }), h("option", { value: "aluno", text: "Alunos" }), h("option", { value: "subadmin", text: "Sub-administradores" }), h("option", { value: "admin", text: "Administradores" }));
     search.addEventListener("input", () => { q = search.value.toLowerCase(); draw(); });
     sel.addEventListener("change", () => { role = sel.value; draw(); });
     const pick = trailPicker(() => draw());
@@ -97,7 +116,7 @@
         h("thead", null, h("tr", null, ["Pessoa", "Perfil", "Aulas", "Módulos", "Final", "XP", "Último acesso", ""].map((t) => h("th", { text: t })))),
         h("tbody", null, rows.map((u) => h("tr", null,
           h("td", { class: "who" }, h("b", { text: u.name }), h("span", { text: (u.nickname ? "@" + u.nickname + " · " : "") + u.email })),
-          h("td", null, h("span", { class: "chip " + (u.role === "admin" ? "chip-gold" : ""), text: u.role === "admin" ? (u.master ? "Master" : "Adm") : "Aluno" }), u.active ? null : h("span", { class: "chip chip-bad", style: "margin-left:6px", text: "Desativado" })),
+          h("td", null, roleChip(u), u.role === "subadmin" ? h("span", { class: "muted small", style: "margin-left:6px", text: `${(u.perms || []).length} permissões` }) : null, u.active ? null : h("span", { class: "chip chip-bad", style: "margin-left:6px", text: "Desativado" })),
           h("td", { text: `${u.trails[t.id]?.lessonsDone ?? 0}/${M.totalLessons(t)}` }), h("td", { text: `${u.trails[t.id]?.modulesApproved ?? 0}/${t.modules.length}` }),
           h("td", null, finalChip(u.trails[t.id]?.finalStatus)), h("td", { text: u.xp }), h("td", { class: "small", text: M.fmtDateTime(u.lastLoginAt) }),
           h("td", null, h("a", { class: "btn btn-ghost btn-sm", href: "#/admin/usuarios/" + u.id }, "Abrir"))))))) : h("div", { class: "empty", text: "Nenhum acesso encontrado com esse filtro." }));
@@ -107,16 +126,22 @@
       M.modal((close) => {
         const err = h("div");
         const f = (id, label, type, extra) => h("div", { class: "field" }, h("label", { for: "n-" + id, text: label }), h("input", { class: "input", id: "n-" + id, name: id, type, autocomplete: "off", ...extra }));
-        const roleSel = h("select", { class: "select", id: "n-role", name: "role" }, h("option", { value: "aluno", text: "Aluno" }), h("option", { value: "admin", text: "Administrador (igual ao master)" }));
+        const roleSel = h("select", { class: "select", id: "n-role", name: "role" }, h("option", { value: "aluno", text: "Aluno" }),
+          M.isFull() ? h("option", { value: "subadmin", text: "Sub-administrador (você escolhe as permissões)" }) : null,
+          M.isFull() ? h("option", { value: "admin", text: "Administrador (igual ao master)" }) : null);
+        const pe = permsEditor([]);
+        pe.node.hidden = true;
+        roleSel.addEventListener("change", () => { pe.node.hidden = roleSel.value !== "subadmin"; });
         const form = h("form", { novalidate: true }, f("name", "Nome completo", "text", { required: true }), f("email", "E-mail", "email", { required: true }),
           h("div", { class: "field" }, h("label", { for: "n-role", text: "Perfil" }), roleSel),
+          pe.node,
           h("div", { class: "field" }, h("label", { for: "n-password", text: "Senha inicial (opcional)" }), h("input", { class: "input", id: "n-password", name: "password", type: "text", autocomplete: "off" }), h("span", { class: "hint", text: "Deixe em branco para gerar uma senha automática." })),
           err,
           h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => close(), text: "Cancelar" }), h("button", { class: "btn btn-gold", type: "submit", text: "Criar acesso" })));
         form.onsubmit = async (e) => {
           e.preventDefault(); err.replaceChildren();
           try {
-            const d = await M.post("admin/users", Object.fromEntries(new FormData(form).entries()));
+            const d = await M.post("admin/users", { ...Object.fromEntries(new FormData(form).entries()), perms: pe.get() });
             close();
             await reload();
             if (d.password) showPasswords([{ email: d.user.email, ok: true, password: d.password, role: d.user.role }], "Acesso criado");
@@ -140,7 +165,7 @@
           } catch (ex) { err.replaceChildren(h("div", { class: "form-error", role: "alert", text: ex.message })); go.disabled = false; }
         });
         return [h("h3", { text: "Subir lista de acessos" }),
-          h("p", { class: "muted small", id: "bulk-h", html: "Uma pessoa por linha: <strong>nome, e-mail, senha, perfil</strong>. Senha e perfil são opcionais (perfil: <em>adm</em> ou <em>aluno</em>). Aceita vírgula, ponto e vírgula ou tabulação, então dá para colar direto de uma planilha. Até 300 linhas." }),
+          h("p", { class: "muted small", id: "bulk-h", html: "Uma pessoa por linha: <strong>nome, e-mail, senha, perfil</strong>. Senha e perfil são opcionais (perfil: <em>aluno</em>" + (M.isFull() ? ", <em>adm</em> ou <em>sub</em> (sub-administrador sem permissões, que você ajusta depois)" : "") + "). Aceita vírgula, ponto e vírgula ou tabulação, então dá para colar direto de uma planilha. Até 300 linhas." }),
           h("div", { class: "field" }, h("label", { for: "bulk", text: "Lista" }), ta), err,
           h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => close(), text: "Cancelar" }), go)];
       });
@@ -162,7 +187,7 @@
       h("div", { class: "table-wrap" }, h("table", { class: "tbl", style: "min-width:0" },
         h("thead", null, h("tr", null, ["E-mail", "Resultado", "Senha"].map((t) => h("th", { text: t })))),
         h("tbody", null, results.map((r) => h("tr", null, h("td", { text: r.email, style: "overflow-wrap:anywhere" }),
-          h("td", null, r.ok ? h("span", { class: "chip chip-good", text: r.role === "admin" ? "Adm criado" : "Criado" }) : h("span", { class: "chip chip-bad", text: r.error })),
+          h("td", null, r.ok ? h("span", { class: "chip chip-good", text: r.role === "admin" ? "Adm criado" : r.role === "subadmin" ? "Sub-adm criado" : "Criado" }) : h("span", { class: "chip chip-bad", text: r.error })),
           h("td", null, r.password ? h("span", { class: "pw-box", text: r.password }) : "—")))))),
       h("div", { class: "dlg-actions" }, gen.length ? h("button", { class: "btn btn-ghost", type: "button", onclick: () => copy(csv, "Lista de e-mail e senha copiada."), text: "Copiar e-mails e senhas" }) : null,
         h("button", { class: "btn btn-gold", type: "button", onclick: () => close(), text: "Fechar" }))]);
@@ -170,16 +195,19 @@
 
   /* ───── detalhe do usuário ───── */
   M.views.adminUser = async function (id) {
-    const g = guard(); if (g) return g;
+    const g = guard("usuarios"); if (g) return g;
     const box = h("div");
     async function load() {
       let d;
       try { d = await M.get("admin/users/" + id); } catch (ex) { box.replaceChildren(h("div", { class: "empty" }, h("h3", { text: ex.message }), h("a", { class: "btn btn-gold", href: "#/admin/usuarios" }, "Voltar"))); return; }
       const u = d.user, p = d.progress, self = u.id === M.session.user.id, locked = u.master || self;
-      const roleSel = h("select", { class: "select", id: "u-role", disabled: locked, style: "width:auto" },
-        h("option", { value: "aluno", text: "Aluno" }), h("option", { value: "admin", text: "Administrador" }));
+      /* só o administrador muda perfil, define permissões e remove acesso; sub-adm com "Acessos" cuida só de alunos */
+      const noTouch = !M.isFull() && u.role !== "aluno";
+      const roleSel = h("select", { class: "select", id: "u-role", disabled: locked || !M.isFull(), style: "width:auto" },
+        h("option", { value: "aluno", text: "Aluno" }), h("option", { value: "subadmin", text: "Sub-administrador" }), h("option", { value: "admin", text: "Administrador" }));
       roleSel.value = u.role;
-      roleSel.addEventListener("change", () => act(() => M.api("PATCH", "admin/users/" + id, { role: roleSel.value }), "Perfil atualizado."));
+      roleSel.addEventListener("change", () => act(() => M.api("PATCH", "admin/users/" + id, { role: roleSel.value }), roleSel.value === "subadmin" ? "Agora é sub-administrador. Marque as permissões abaixo." : "Perfil atualizado."));
+      const pe = u.role === "subadmin" && M.isFull() ? permsEditor(u.perms || []) : null;
       async function act(fn, okMsg) {
         try { await fn(); M.toast(okMsg, "ok"); await load(); } catch (ex) { M.toast(ex.message, "err"); await load(); }
       }
@@ -187,9 +215,15 @@
         h("a", { class: "small", href: "#/admin/usuarios" }, "← Todos os acessos"),
         h("div", { class: "page-head", style: "margin-top:12px" },
           h("h2", { text: u.name }), h("p", { text: u.email }),
-          h("div", { class: "row" }, h("span", { class: "chip " + (u.role === "admin" ? "chip-gold" : ""), text: u.master ? "Master" : u.role === "admin" ? "Administrador" : "Aluno" }),
+          h("div", { class: "row" }, h("span", { class: "chip " + (u.role !== "aluno" ? "chip-gold" : ""), text: M.roleLabel(u) }),
             u.active ? h("span", { class: "chip chip-good", text: "Ativo" }) : h("span", { class: "chip chip-bad", text: "Desativado" }),
             h("span", { class: "chip", text: `${u.xp} XP` }), h("span", { class: "chip", text: "Criado em " + M.fmtDate(u.createdAt) }), h("span", { class: "chip", text: "Último acesso " + M.fmtDateTime(u.lastLoginAt) }))),
+        pe ? h("section", { class: "panel" }, h("h3", { text: "Permissões do sub-administrador" }),
+          h("p", { class: "muted small", style: "margin:0 0 10px", text: "Marque só o que esta pessoa precisa. A mudança vale na próxima vez que ela abrir uma página." }),
+          pe.node,
+          h("div", { class: "row", style: "margin-top:12px" }, h("button", { class: "btn btn-gold btn-sm", type: "button", text: "Salvar permissões", onclick: () => act(() => M.api("PATCH", "admin/users/" + id, { perms: pe.get() }), "Permissões salvas.") }))) : null,
+        u.role === "subadmin" && !pe ? h("section", { class: "panel" }, h("h3", { text: "Permissões" }),
+          h("p", { class: "muted small", style: "margin:0", text: (u.perms || []).length ? (u.perms || []).map((k) => M.PERMS.find((x) => x.k === k)?.label || k).join(" · ") : "Nenhuma permissão marcada." })) : null,
         M.trails().map((t) => h("section", { class: "panel" }, h("h3", { text: M.trails().length > 1 ? "Andamento · " + t.title : "Andamento" }),
           h("div", { class: "table-wrap" }, h("table", { class: "tbl", style: "min-width:520px" },
             h("thead", null, h("tr", null, ["Módulo", "Aulas", "Prova", "Melhor nota", "Tentativas"].map((x) => h("th", { text: x })))),
@@ -199,14 +233,15 @@
                 h("td", null, finalChip(e?.status)), h("td", { text: e?.bestPct ? e.bestPct + "%" : "—" }), h("td", { text: e?.attempts || 0 }));
             })))))),
         h("section", { class: "panel" }, h("h3", { text: "Gestão do acesso" }),
+          noTouch ? h("p", { class: "muted small", text: "Só administradores mexem em gestores." }) : null,
           locked ? h("p", { class: "muted small", text: u.master ? "O acesso master não pode ter perfil alterado, ser desativado ou removido." : "Você não pode alterar o próprio perfil nem desativar o próprio acesso aqui." }) : null,
           h("div", { class: "grid grid-2" },
             h("div", { class: "field" }, h("label", { for: "u-role", text: "Perfil" }), roleSel),
             h("div", { class: "field" }, h("span", { style: "font-weight:600;font-size:.95rem", text: "Situação" }),
-              h("button", { class: "btn btn-ghost btn-sm", style: "justify-self:start", type: "button", disabled: locked,
+              h("button", { class: "btn btn-ghost btn-sm", style: "justify-self:start", type: "button", disabled: locked || noTouch,
                 onclick: () => act(() => M.api("PATCH", "admin/users/" + id, { active: !u.active }), u.active ? "Acesso desativado." : "Acesso reativado."), text: u.active ? "Desativar acesso" : "Reativar acesso" }))),
           h("div", { class: "row" },
-            h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Redefinir senha", onclick: async () => {
+            h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Redefinir senha", disabled: noTouch, onclick: async () => {
               const pw = await M.modal((close) => {
                 const input = h("input", { class: "input", id: "np", type: "text", autocomplete: "off" });
                 const err = h("div");
@@ -217,11 +252,11 @@
               });
               if (pw) act(() => M.api("PATCH", "admin/users/" + id, { password: pw }), "Senha redefinida.");
             } }),
-            h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Zerar todo o progresso", onclick: async () => {
+            h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Zerar todo o progresso", disabled: noTouch, onclick: async () => {
               if (await M.confirm({ title: "Zerar progresso?", text: `Todas as aulas e provas de <strong>${M.esc(u.name)}</strong> serão apagadas. Isso não tem volta.`, ok: "Zerar tudo", danger: true }))
                 act(() => M.post("admin/users/" + id + "/reset", { scope: "all" }), "Progresso zerado.");
             } }),
-            h("button", { class: "btn btn-danger btn-sm", type: "button", disabled: locked, text: "Remover acesso", onclick: async () => {
+            h("button", { class: "btn btn-danger btn-sm", type: "button", disabled: locked || !M.isFull(), text: "Remover acesso", onclick: async () => {
               if (await M.confirm({ title: "Remover acesso?", text: `<strong>${M.esc(u.name)}</strong> perde o login e todo o progresso. Não tem volta.`, ok: "Remover", danger: true })) {
                 try { await M.api("DELETE", "admin/users/" + id); M.toast("Acesso removido.", "ok"); location.hash = "#/admin/usuarios"; } catch (ex) { M.toast(ex.message, "err"); }
               }
@@ -267,7 +302,7 @@
 
   /* ───── logs ───── */
   M.views.adminLogs = async function () {
-    const g = guard(); if (g) return g;
+    const g = guard("usuarios"); if (g) return g;
     let type = "", q = "", next = null, rows = [];
     const holder = h("div"), more = h("div", { class: "row", style: "margin-top:14px" });
     const sel = h("select", { class: "select", "aria-label": "Tipo de evento" }, h("option", { value: "", text: "Todos os eventos" }), Object.entries(LOG_LABELS).map(([k, v]) => h("option", { value: k, text: v })));
@@ -293,7 +328,7 @@
 
   /* ───── banco de questões ───── */
   M.views.adminQuestions = async function () {
-    const g = guard(); if (g) return g;
+    const g = guard("trilhas"); if (g) return g;
     const d = await M.get("admin/questions");
     let mod = "";
     const holder = h("div", { class: "review" });
@@ -409,7 +444,7 @@
   }
 
   M.views.adminApprovals = async function () {
-    const g = guard(); if (g) return g;
+    const g = guard("aprovar"); if (g) return g;
     const holder = h("div", { class: "feed-list" });
     const signups = await signupsSection();
     async function load() {
@@ -448,7 +483,7 @@
 
   /* ───── XP e metas ───── */
   M.views.adminEngage = async function () {
-    const g = guard(); if (g) return g;
+    const g = guard("engajamento"); if (g) return g;
     const d = await M.get("admin/engage/config");
     const cfg = structuredClone(d.config);
     const M_ = d.metrics;
