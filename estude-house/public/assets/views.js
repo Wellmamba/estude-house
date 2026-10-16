@@ -491,12 +491,15 @@
         h("h2", { text: m.title }),
         h("p", { text: m.tagline }),
         h("p", null, h("strong", { text: "Ao final você consegue: " }), m.outcome)),
-      h("ul", { class: "lesson-list" }, m.lessons.map((l, k) => {
+      h("a", { class: "btn btn-gold reel-cta", href: "#/l/" + m.lessons[Math.max(0, m.lessons.findIndex((l) => !p.lessons[l.id]))].id },
+        M.icon("arrow", 18), st.done === 0 ? "Assistir o módulo" : allDone ? "Rever o módulo" : "Continuar de onde parou"),
+      h("ul", { class: "reel" }, m.lessons.map((l, k) => {
         const done = !!p.lessons[l.id];
-        return h("li", null, h("a", { class: "lesson-row" + (done ? " done" : ""), href: "#/l/" + l.id },
-          h("span", { class: "dot", text: done ? "✓" : k + 1, "aria-hidden": "true" }),
-          h("span", null, h("strong", { text: l.title }), h("div", { class: "meta", text: l.goal })),
-          h("span", { class: "chip", text: `${l.minutes} min` })));
+        const cur = !done && k === m.lessons.findIndex((x) => !p.lessons[x.id]);
+        return h("li", null, h("a", { class: "reel-item" + (done ? " done" : "") + (cur ? " cur" : ""), href: "#/l/" + l.id },
+          h("span", { class: "ring", "aria-hidden": "true" }, h("b", { text: done ? "✓" : String(k + 1) })),
+          h("strong", { text: l.title }),
+          h("span", { class: "meta", text: `${l.minutes} min` })));
       })),
       h("section", { class: "panel exam-card " + examCard[0], style: "margin-top:28px" },
         h("div", { class: "row row-between" }, h("h3", { style: "margin:0", text: M.examName(m.id) }), examCard[1]),
@@ -511,70 +514,7 @@
   }
   M.notFound = notFound;
 
-  /* ───── aula ───── */
-  M.views.lesson = async function (id) {
-    await M.refreshMe();
-    const found = M.aula(id);
-    if (!found) return notFound();
-    const { trail, mod, lesson, index } = found;
-    const p = M.session.progress, st = M.tp(trail).modules[mod.n - 1];
-    if (!st.unlocked && !M.isAdmin()) {
-      return h("div", { class: "empty" }, h("h3", { text: "Aula bloqueada" }),
-        h("p", { text: "Termine o módulo anterior para chegar aqui." }), h("a", { class: "btn btn-gold", href: M.trailHref(trail) }, "Voltar à trilha"));
-    }
-    const already = !!p.lessons[lesson.id];
-    const quizzes = new Set(), answered = new Set();
-    const foot = h("div", { class: "lesson-foot" });
-    const ctx = {
-      lessonId: lesson.id, quizN: 0,
-      quizRegister: (b) => quizzes.add(b),
-      quizAnswered: (b) => { answered.add(b); drawFoot(); },
-    };
-    const body = h("div", { class: "lesson-body" }, lesson.blocks.map((b) => M.renderBlock(b, ctx)));
-
-    const prev = index > 0 ? mod.lessons[index - 1] : null;
-    const nextL = index < mod.lessons.length - 1 ? mod.lessons[index + 1] : null;
-
-    function drawFoot() {
-      const missing = quizzes.size - answered.size;
-      const btn = h("button", { class: "btn btn-gold", type: "button" }, already ? "Aula concluída" : "Concluir aula", M.icon("check", 18));
-      if (already) btn.disabled = true;
-      else if (missing > 0) btn.setAttribute("aria-disabled", "true");
-      btn.addEventListener("click", async () => {
-        if (already) return;
-        if (missing > 0) { M.toast(`Faça ${missing === 1 ? "a atividade que falta" : "as " + missing + " atividades que faltam"} antes de concluir.`, "err"); return; }
-        btn.disabled = true;
-        try {
-          const d = await M.post("progress/lesson", { lessonId: lesson.id });
-          M.session.progress = d.progress;
-          M.toast("Aula concluída. +20 XP", "ok");
-          if (nextL) M.go("#/l/" + nextL.id);
-          else M.go("#/m/" + mod.id);
-        } catch (ex) { M.toast(ex.message, "err"); btn.disabled = false; }
-      });
-      foot.replaceChildren(
-        !already && missing > 0 ? h("div", { class: "need", role: "status", text: `Falta${missing > 1 ? "m" : ""} ${missing} atividade${missing > 1 ? "s" : ""} (quiz, simulação ou exercício) nesta aula para poder concluir.` }) : null,
-        h("div", { class: "row row-between" },
-          h("div", { class: "row" },
-            prev ? h("a", { class: "btn btn-ghost", href: "#/l/" + prev.id }, M.icon("back", 18), "Anterior") : h("a", { class: "btn btn-ghost", href: "#/m/" + mod.id }, M.icon("back", 18), "Módulo"),
-            already && nextL ? h("a", { class: "btn btn-ghost", href: "#/l/" + nextL.id }, "Próxima aula", M.icon("arrow", 18)) : null,
-            already && !nextL ? h("a", { class: "btn btn-ghost", href: "#/m/" + mod.id }, "Ir para a prova", M.icon("arrow", 18)) : null),
-          btn));
-    }
-    drawFoot();
-
-    const node = h("article", { class: "lesson" },
-      h("header", { class: "lesson-head" },
-        h("div", { class: "row" },
-          h("span", { class: "chip chip-gold", text: `Módulo ${mod.n}: aula ${index + 1} de ${mod.lessons.length}` }),
-          h("span", { class: "chip", text: `${lesson.minutes} min` }),
-          already ? h("span", { class: "chip chip-good", text: "Concluída" }) : null),
-        h("h2", { text: lesson.title }),
-        h("div", { class: "goal" }, h("b", { text: "Ao final desta aula" }), lesson.goal)),
-      body, foot);
-    node._crumbs = [{ text: "Trilhas", href: M.trailsHref }, { text: trail.title, href: M.trailHref(trail) }, { text: `Módulo ${mod.n}`, href: "#/m/" + mod.id }, { text: lesson.title }];
-    return node;
-  };
+  /* a aula (stories) fica em stories.js */
 
   /* ───── conta ───── */
   M.views.account = async function () {

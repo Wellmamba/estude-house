@@ -21,6 +21,20 @@ Com isso o Claude escreve as aulas, os quizzes, as questões das provas e devolv
 
 ---
 
+## Formato das aulas: Stories
+
+Toda aula é um **stories**: cada bloco de `blocks` vira um card de tela cheia (celular e PC). O aluno toca, desliza ou usa as setas. Quiz, simulação e "ache o erro" travam o avanço até serem respondidos.
+
+- Tom: Gen Z, direto, frases curtas, todo termo técnico traduzido na hora (bloco `jargon`) e conteúdo difícil em doses pequenas com **conta de exemplo** (bloco `conta`).
+- Blocos novos: `hook` (capa, obrigatório no início), `big` (frase de impacto), `jargon`, `conta`, `recap` (resumo, obrigatório no fim). `p` e `list` aceitam `title`. O bloco `h` não existe mais.
+- Cada aula: 10 a 24 cards, 2 a 8 minutos.
+- Regras completas, limites de palavras e exemplos: **GUIA-STORIES.md**.
+- Conferir antes de publicar: `node scripts/check-stories.mjs public/trilhas/<trilha>/content.js` (ou `npm run stories`).
+
+Mande o material do jeito que estiver (texto, transcrição, apresentação): o Claude dissolve em stories seguindo o guia.
+
+---
+
 ## Como publicar o que o Claude devolver
 
 Os passos são os mesmos de sempre, no GitHub pelo navegador:

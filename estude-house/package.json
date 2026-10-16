@@ -7,7 +7,8 @@
   "scripts": {
     "test": "node test/run.mjs && node test/social.mjs && node test/approval.mjs && node test/community.mjs && node test/content.mjs",
     "dev": "netlify dev",
-    "local": "node test/dev-server.mjs"
+    "local": "node test/dev-server.mjs",
+    "stories": "node scripts/check-stories.mjs public/trilhas/pricebot/content.js && node scripts/check-stories.mjs public/trilhas/rt/content.js"
   },
   "dependencies": {
     "@netlify/blobs": "^8.1.0"

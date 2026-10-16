@@ -47,6 +47,10 @@ O site abre num menu de trilhas. Cada trilha é uma pasta em `public/trilhas/<no
 
 Depois de mudar, rode `npm test`: ele confere o banco de questões, o currículo de todas as trilhas, as telas, as simulações e as regras de aprovação. Para checar o equilíbrio de um arquivo de questões (alternativas de tamanho parecido): `node scripts/check-bank.mjs <arquivo>`.
 
+## Aulas em formato Stories
+
+Cada aula é uma sequência de cards de tela cheia (como stories): toque ou deslize para avançar, setas no PC, quizzes e simulações travam o avanço até serem respondidos. A página do módulo mostra as aulas como "círculos" de stories. O player fica em `public/assets/stories.js`. Tom Gen Z e limites por card estão em **GUIA-STORIES.md**; `npm run stories` confere as trilhas.
+
 ## Rodar e testar localmente
 
 ```
