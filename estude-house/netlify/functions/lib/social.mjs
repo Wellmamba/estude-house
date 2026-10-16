@@ -97,6 +97,14 @@ async function putPost(d, kind) {
   bust("posts");
 }
 
+/* publica na hora um post em nome de alguém (usado quando um card de destaque vira post do feed) */
+export async function publishFor(authorId, { text, media }) {
+  const t = now();
+  const doc = { id: newId("po_"), authorId, text: cleanMultiline(text, MAX_TEXT), media: media || [], createdAt: t, status: "published", publishedAt: t };
+  await putPost(doc, "pub");
+  return doc;
+}
+
 // Troca tag ou fixação de um post publicado, mantendo os índices em dia.
 async function updatePost(found, change) {
   const f = await feed();
