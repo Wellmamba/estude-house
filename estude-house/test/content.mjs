@@ -36,7 +36,7 @@ console.log("Conteúdo");
   ok("todas as imagens das telas existem");
 }
 {
-  const calc = fs.readFileSync(pub("assets/calc.js"), "utf8");
+  const calc = fs.readFileSync(pub("assets/calc.js"), "utf8") + fs.readFileSync(pub("assets/calc-gf.js"), "utf8");
   const kinds = new Set([...calc.matchAll(/^    (\w+)\(\) \{/gm)].map((m) => m[1]));
   let n = 0;
   for (const { l } of lessons) for (const b of l.blocks) if (b.t === "sim") { n++; assert.ok(kinds.has(b.kind), `${l.id}: simulação desconhecida ${b.kind}`); }

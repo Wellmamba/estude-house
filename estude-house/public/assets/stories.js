@@ -27,13 +27,14 @@
 
   /* p e list aceitam `title` (vira o título do card; substitui o antigo bloco h) */
   const titled = (b, node) => (b.title ? h("div", { class: "txt" }, h("h3", { text: b.title }), node) : node);
-  const basicP = R.p, basicList = R.list;
+  const basicP = R.p, basicList = R.list, basicSteps = R.steps;
   R.p = (b) => titled(b, basicP(b));
   R.list = (b) => titled(b, basicList(b));
+  R.steps = (b) => titled(b, basicSteps(b));
 
   const GATED = new Set(["quiz", "sim", "find"]); // só avança depois de fazer
-  const NONAV = new Set(["quiz", "sim", "find", "shot", "video", "ruler"]); // toque no vazio não troca de card
-  const MOOD = { hook: "gold", big: "violet", jargon: "pink", conta: "mint", say: "dark", recap: "violet", end: "gold" };
+  const NONAV = new Set(["quiz", "sim", "find", "shot", "video", "ruler", "lab", "anno"]); // toque no vazio não troca de card
+  const MOOD = { hook: "gold", big: "violet", jargon: "pink", conta: "mint", say: "dark", recap: "violet", end: "gold", chart: "dark", flow: "plum", table: "dark", tree: "plum", timeline: "dark", stairs: "plum", anno: "dark", lab: "dark" };
   const TONE_MOOD = { dica: "violet", atencao: "amber", exemplo: "mint", regra: "violet" };
 
   function moodOf(b, i) {

@@ -1,0 +1,305 @@
+const M = "gf-m3";
+export default [
+  /* ───── Aula 1: conta, painel e usuários ───── */
+  {
+    id: "gf-m3-01", module: M, topic: "Conta e Mercado Pago",
+    q: "Qual é o papel do Mercado Pago na operação de um vendedor do Mercado Livre?",
+    options: [
+      "É o painel onde o vendedor cadastra anúncios, fotos e preços, ao lado das ferramentas de publicação",
+      "É o programa que define a cor do termômetro e os benefícios de frete do vendedor dentro do ML",
+      "É a carteira digital por onde o dinheiro das vendas chega, respeitando o prazo de liberação vigente",
+      "É o canal de atendimento em que o comprador abre reclamações e conversa com o vendedor sobre o pedido",
+    ],
+    answer: [2],
+    why: "O Mercado Pago é a carteira digital ligada à conta: é ali que o saldo das vendas aparece, no prazo de liberação vigente. Anúncios, reputação e reclamações ficam em outras áreas da conta.",
+  },
+  {
+    id: "gf-m3-02", module: M, topic: "Dados da conta",
+    q: "O nome no cadastro da conta é diferente do titular da conta bancária ligada ao Mercado Pago. O que você deve fazer?",
+    options: [
+      "Conferir os documentos e acertar os dados, pois divergências podem travar verificação, saque ou nota",
+      "Ignorar, pois o banco e o cadastro são sistemas separados e nunca precisam ter o mesmo titular",
+      "Alterar o nome do cadastro para o da conta bancária sem conferir documentos, para resolver rápido",
+      "Esperar o ML avisar de algum bloqueio e só então procurar o cliente para corrigir o cadastro",
+    ],
+    answer: [0],
+    why: "Nome, documento e dados bancários precisam bater com os documentos. Divergência pode travar a verificação, o saque ou a nota fiscal, então a conferência vem antes de tudo.",
+  },
+  {
+    id: "gf-m3-03", module: M, topic: "Checklist da conta",
+    q: "Marque todas: o que faz parte do checklist de 5 minutos da conta?",
+    options: [
+      "Conferir se titular e documento batem com o cadastro",
+      "Trocar a foto de capa de todos os anúncios da conta",
+      "Revisar a lista de usuários e remover quem já saiu",
+      "Aumentar o investimento diário em propaganda paga",
+      "Zerar o histórico de vendas para começar do zero",
+    ],
+    answer: [0, 2],
+    why: "O checklist da conta cuida de cadastro, Mercado Pago, contato, usuários e certificações. Foto de capa, propaganda paga e histórico de vendas não fazem parte dele.",
+  },
+  {
+    id: "gf-m3-04", module: M, topic: "Permissões e usuários",
+    q: "Qual afirmação sobre permissões de usuário está ERRADA?",
+    options: [
+      "Cada usuário pode ter acesso só ao que a função exige, como apenas mensagens e pós-venda",
+      "Dar acesso de usuário permite ao cliente retirar o acesso do assessor quando quiser",
+      "Quem sai do time deve perder o acesso à conta no mesmo dia em que deixa a função",
+      "Compartilhar a senha do dono é aceitável quando o cliente autoriza, pois ele assume o risco",
+    ],
+    answer: [3],
+    why: "Senha não se empresta, mesmo com autorização. O acesso de usuário dá só as permissões da função e pode ser retirado a qualquer momento.",
+  },
+  {
+    id: "gf-m3-05", module: M, topic: "Permissões e usuários",
+    q: "Uma atendente nova vai responder perguntas e mensagens dos compradores. Qual acesso faz mais sentido?",
+    options: [
+      "Acesso total à conta, para ela não precisar pedir ajuda ao dono sempre que algo novo aparecer",
+      "Um usuário próprio, só com permissão de mensagens e pós-venda, sem ver o financeiro",
+      "A senha do dono, já que o atendimento acontece dentro da mesma conta e é um trabalho simples",
+      "Um usuário com acesso ao financeiro e ao Mercado Pago, para ela resolver reembolsos sozinha",
+    ],
+    answer: [1],
+    why: "Cada pessoa recebe o mínimo que a função exige. Quem atende só precisa de mensagens e pós-venda, então o financeiro e a senha do dono ficam de fora.",
+  },
+
+  /* ───── Aula 2: reputação ───── */
+  {
+    id: "gf-m3-06", module: M, topic: "Taxa de problema",
+    q: "Uma conta vendeu 400 pedidos e teve 12 vendas com problema (números de exemplo). Qual é a taxa de problema?",
+    options: [
+      "12 ÷ 400 = 3%, que é a proporção de problemas sobre o total de vendas do período",
+      "400 ÷ 12 = 33%, que é a proporção do total de vendas sobre os problemas do período",
+      "12 ÷ 400 = 30%, porque o resultado da divisão deve ser multiplicado por mil",
+      "12 ÷ 400 = 0,3%, porque a taxa é dada em décimos de ponto e não em percentual",
+    ],
+    answer: [0],
+    why: "A taxa é problemas divididos por vendas: 12 ÷ 400 = 0,03, ou seja, 3%. Dividir ao contrário ou mudar a escala dá um número sem sentido.",
+  },
+  {
+    id: "gf-m3-07", module: M, topic: "O que pesa na reputação",
+    q: "Qual conjunto de itens pesa diretamente na reputação, segundo a aula?",
+    options: [
+      "Número de fotos, tamanho do título e quantidade de palavras da descrição do anúncio",
+      "Investimento em Ads, quantidade de variações e total de perguntas respondidas no mês",
+      "Preço do concorrente, número de seguidores e total de produtos cadastrados na loja",
+      "Reclamações, atrasos de despacho e cancelamentos feitos pelo vendedor",
+    ],
+    answer: [3],
+    why: "A reputação mede como o vendedor opera: reclamações, atrasos no despacho e cancelamentos. Conteúdo do anúncio, Ads e concorrência influenciam vendas, mas não são esses indicadores.",
+  },
+  {
+    id: "gf-m3-08", module: M, topic: "Conta pequena",
+    q: "Uma conta nova teve 2 reclamações em 20 vendas (números de exemplo). Por que isso preocupa mais do que 2 em 2.000?",
+    options: [
+      "Porque contas novas são sempre punidas pelo ML, não importando o resultado das suas primeiras vendas",
+      "Porque 2 em 20 é 10% das vendas, enquanto 2 em 2.000 é 0,1%: a proporção, e não o número, é que pesa",
+      "Porque duas reclamações sempre pesam o mesmo, mas o ML só avisa as contas que vendem pouco e são novas",
+      "Porque 2 em 20 é 1% das vendas e 2 em 2.000 é 0,01%, então a diferença é pequena e não preocupa",
+    ],
+    answer: [1],
+    why: "2 ÷ 20 = 10%, enquanto 2 ÷ 2.000 = 0,1%. Reputação é proporção, então conta com poucas vendas sente cada erro com muito mais força.",
+  },
+  {
+    id: "gf-m3-09", module: M, topic: "Recuperar a reputação",
+    q: "Marque todas: o que faz parte da rotina de recuperação da reputação?",
+    options: [
+      "Achar qual indicador está pior: reclamação, atraso ou cancelamento",
+      "Pausar tudo por um mês para a conta recomeçar sem histórico algum",
+      "Corrigir a causa, seja estoque, prazo de despacho ou resposta ao cliente",
+      "Cancelar pedidos atrasados em massa para tirá-los do cálculo",
+      "Esperar a cor melhorar sozinha sem mexer em nenhum processo",
+    ],
+    answer: [0, 2],
+    why: "A rotina é achar o vilão, corrigir a causa, segurar o processo e acompanhar toda semana. Pausar tudo, cancelar em massa ou esperar não recuperam a reputação.",
+  },
+  {
+    id: "gf-m3-10", module: M, topic: "Termômetro",
+    q: "Qual afirmação sobre o termômetro de reputação está ERRADA?",
+    options: [
+      "Ele mostra, por cores, o quanto o ML confia no vendedor, do vermelho ao verde",
+      "Cor ruim pode reduzir a exposição dos anúncios e o acesso a benefícios",
+      "Ficar no verde dispensa o acompanhamento, porque a cor não muda sem aviso",
+      "Os limites de cada cor mudam, então vale conferir sempre no painel do ML",
+    ],
+    answer: [2],
+    why: "Mesmo no verde é preciso acompanhar toda semana, porque a tendência de piora aparece antes da mudança de cor. As outras três afirmações estão de acordo com a aula.",
+  },
+
+  /* ───── Aula 3: pós-venda ───── */
+  {
+    id: "gf-m3-11", module: M, topic: "Perguntas dos compradores",
+    q: "Um comprador pergunta se o produto serve no modelo dele e o anúncio traz a lista de compatibilidade. Qual resposta é melhor?",
+    options: [
+      "Confirmar a compatibilidade usando a lista do anúncio, direto, e convidar o cliente a comprar",
+      "Dizer que está tudo no anúncio e que ele precisa ler com mais atenção antes de perguntar de novo",
+      "Passar um telefone para tirar a dúvida por fora e fechar a venda direto, sem taxas do ML",
+      "Responder só depois de dois dias, porque a pergunta não é urgente e o cliente pode esperar",
+    ],
+    answer: [0],
+    why: "Boa resposta é rápida, direta e baseada no dado do anúncio. Combinar venda fora da plataforma não é permitido e demorar manda o cliente para o concorrente.",
+  },
+  {
+    id: "gf-m3-12", module: M, topic: "Ceder ou brigar",
+    q: "Pedido de R$ 120,00 e frete de devolução de R$ 20,00 (números de exemplo). Sem prova, brigar e perder custa quanto a mais que ceder?",
+    options: [
+      "R$ 140,00 a mais: ceder custa R$ 20,00 e brigar e perder soma ainda os R$ 120,00 do pedido",
+      "R$ 20,00 a mais: brigar e perder custa R$ 140,00 e ceder custa R$ 120,00 do reembolso",
+      "R$ 120,00 a mais: brigar e perder custa R$ 140,00 e ceder custa só R$ 20,00 do frete",
+      "Nada a mais: nos dois caminhos o custo é de R$ 140,00, entre reembolso e frete de devolução",
+    ],
+    answer: [2],
+    why: "Cedendo e recebendo o produto de volta, a perda é de R$ 20,00. Brigando sem prova e perdendo, soma R$ 120,00 + R$ 20,00 = R$ 140,00. A diferença é de R$ 120,00, fora a reputação.",
+  },
+  {
+    id: "gf-m3-13", module: M, topic: "Mensagem firme e humana",
+    q: "Marque todas: o que uma mensagem firme e humana para um cliente irritado deve ter?",
+    options: [
+      "Acolhimento do problema, sem culpar o cliente",
+      "Texto longo com todas as justificativas do vendedor",
+      "Prazo e próximo passo claros para a solução",
+      "Tom de acusação para deixar a posição bem clara",
+      "Promessas amplas para acalmar, mesmo sem poder cumprir",
+    ],
+    answer: [0, 2],
+    why: "Firme é ter prazo e solução; humano é acolher sem acusar. Textão defensivo, acusação e promessa que não dá para cumprir pioram o caso.",
+  },
+  {
+    id: "gf-m3-14", module: M, topic: "Mediação",
+    q: "Quando acontece uma mediação, de acordo com a aula?",
+    options: [
+      "Quando o comprador faz uma pergunta no anúncio e o ML responde no lugar do vendedor ausente",
+      "Quando comprador e vendedor não chegam a acordo e o ML entra para analisar e decidir o caso",
+      "Quando o vendedor pede ao ML para trocar a cor do termômetro depois de resolver reclamações",
+      "Quando o produto é despachado e o ML confere o peso do pacote antes da coleta do pedido",
+    ],
+    answer: [1],
+    why: "Mediação é quando as duas partes não chegam a acordo e o ML entra para analisar as provas e decidir. Por isso guardar foto, rastreio e conversa ajuda.",
+  },
+  {
+    id: "gf-m3-15", module: M, topic: "Avaliações",
+    q: "Três avaliações seguidas dizem que a caixa chegou amassada. O que o vendedor deve fazer?",
+    options: [
+      "Ignorar, porque avaliação de cliente nunca ajuda a melhorar a operação e depende só do transporte",
+      "Discutir nas respostas com cada cliente até que ele admita que a caixa foi amassada por ele mesmo",
+      "Trocar o título do anúncio, porque a avaliação sobre embalagem mostra problema de palavra-chave",
+      "Tratar como pista: achar a causa na embalagem e corrigir na origem para não se repetir",
+    ],
+    answer: [3],
+    why: "Avaliação ruim é pista de onde a operação falha. Corrigir a causa na origem, aqui a embalagem, evita novas reclamações e protege a reputação.",
+  },
+
+  /* ───── Aula 4: pedidos, etiqueta e prazos ───── */
+  {
+    id: "gf-m3-16", module: M, topic: "Fluxo do pedido",
+    q: "Qual é a ordem correta da vida de um pedido, segundo a aula?",
+    options: [
+      "Venda aprovada, despacho, etiqueta, embalagem e nota fiscal",
+      "Embalagem, venda aprovada, etiqueta, nota fiscal e despacho",
+      "Etiqueta, venda aprovada, nota fiscal, despacho e embalagem",
+      "Venda aprovada, nota fiscal, embalagem, etiqueta e despacho",
+    ],
+    answer: [3],
+    why: "O pedido começa na venda aprovada, passa pela nota fiscal, pela embalagem e pela etiqueta, e termina no despacho dentro do prazo.",
+  },
+  {
+    id: "gf-m3-17", module: M, topic: "Dano na entrega",
+    q: "Venda de R$ 80,00 chegou quebrada: reembolso de R$ 80,00, produto perdido de R$ 35,00 e frete de R$ 14,00 (números de exemplo). Qual o resultado?",
+    options: [
+      "-R$ 14,00: só o frete pago conta como prejuízo, pois o reembolso zera a venda e o produto sobra",
+      "-R$ 49,00: recebeu 80, devolveu 80 e perdeu 35 do produto e 14 do frete",
+      "-R$ 129,00: soma reembolso, produto e frete sem considerar os R$ 80,00 que entraram na venda",
+      "-R$ 35,00: só o produto perdido conta, já que o frete de ida é custo normal da operação",
+    ],
+    answer: [1],
+    why: "Entraram R$ 80,00 e saíram R$ 80,00 de reembolso, então a venda zera. Sobram a perda do produto (R$ 35,00) e o frete (R$ 14,00): -R$ 49,00.",
+  },
+  {
+    id: "gf-m3-18", module: M, topic: "Atrasos de despacho",
+    q: "Marque todas: quais são causas comuns de atraso no despacho?",
+    options: [
+      "Estoque do sistema diferente do estoque real",
+      "Foto principal do anúncio com fundo branco e boa luz",
+      "Pico de vendas sem equipe para separar os pedidos",
+      "Título do anúncio com a palavra-chave no começo",
+      "Etiqueta impressa tarde ou com algum erro",
+    ],
+    answer: [0, 2, 4],
+    why: "Estoque desatualizado, falta de gente no pico e etiqueta tardia travam o pedido no meio do caminho. Foto e título afetam a venda, não o despacho.",
+  },
+  {
+    id: "gf-m3-19", module: M, topic: "Nota fiscal",
+    q: "O cliente pergunta se precisa emitir nota fiscal para um tipo de venda que você nunca viu. Qual é a resposta mais segura?",
+    options: [
+      "Combinar com o contador do cliente, que decide regime e nota, e só então orientar o time",
+      "Dizer que nunca precisa, pois marketplace emite sozinho a nota de todas as vendas feitas",
+      "Dizer que sempre precisa, em qualquer venda, porque a lei obriga sem nenhuma exceção possível",
+      "Decidir pelo bom senso e emitir do jeito mais simples, para não atrasar o despacho do pedido",
+    ],
+    answer: [0],
+    why: "Conteúdo fiscal é educativo: quem decide regime e nota é o contador do cliente. Assessor não deve chutar nem prometer o que não sabe.",
+  },
+
+  /* ───── Aula 5: programas, benefícios, Loja Oficial e auditoria ───── */
+  {
+    id: "gf-m3-20", module: M, topic: "Programas e benefícios",
+    q: "O que a aula orienta sobre regras de níveis, programas e benefícios de frete?",
+    options: [
+      "Que são fixas por vários anos, então basta decorar uma vez e aplicar igual em todas as contas",
+      "Que valem do mesmo jeito para todo vendedor, por isso blogs e fóruns são a fonte mais segura",
+      "Que mudam com frequência, então a fonte final é a documentação oficial e o contador do cliente",
+      "Que só mudam para contas grandes, então contas pequenas podem ignorar as atualizações do ML",
+    ],
+    answer: [2],
+    why: "Programas e benefícios mudam, por isso a aula manda revisar com frequência e confiar na documentação oficial, não em blog nem em memória.",
+  },
+  {
+    id: "gf-m3-21", module: M, topic: "Auditoria: visibilidade",
+    q: "O termômetro de uma conta passou de verde para amarelo na semana passada e as vendas caíram. Qual é a primeira checagem?",
+    options: [
+      "Aumentar o orçamento de Ads (anúncios pagos) para compensar a queda de exposição sem investigar",
+      "Ver qual indicador piorou (reclamação, atraso ou cancelamento) e achar a causa na operação",
+      "Baixar o preço de todos os produtos de uma vez para recuperar o ritmo das vendas da semana",
+      "Refazer título e fotos de todos os anúncios, já que a cor do termômetro depende da vitrine",
+    ],
+    answer: [1],
+    why: "Mudança de cor aponta para a operação. Achar o indicador que piorou e a causa vem antes de mexer em Ads, preço ou anúncios.",
+  },
+  {
+    id: "gf-m3-22", module: M, topic: "Matriz impacto x esforço",
+    q: "Qual ação cai no quadrante “Fazer já” da matriz de impacto x esforço?",
+    options: [
+      "Sincronizar o estoque, que tem alto impacto e esforço baixo",
+      "Registrar a marca, que tem alto impacto e esforço alto",
+      "Reordenar fotos, que tem baixo impacto e esforço baixo",
+      "Refazer todas as fotos, que tem impacto médio e esforço alto",
+    ],
+    answer: [0],
+    why: "“Fazer já” é alto impacto com pouco esforço, como sincronizar o estoque. Registro de marca é para planejar, e as outras ações rendem pouco pelo esforço.",
+  },
+  {
+    id: "gf-m3-23", module: M, topic: "Auditoria da conta",
+    q: "Marque todas: o que a auditoria de saúde da conta deve checar?",
+    options: [
+      "Cor do termômetro e atrasos, cancelamentos e reclamações abertas",
+      "Cor favorita da marca do cliente nos materiais de divulgação",
+      "Estoque, preço e frete dos anúncios que mais vendem",
+      "Quantos seguidores o cliente tem nas redes sociais pessoais",
+      "Dados da conta, Mercado Pago, usuários e certificações",
+    ],
+    answer: [0, 2, 4],
+    why: "A auditoria passa por reputação, pedidos, conta e operação dos anúncios que mais vendem, e termina em um plano com ação, responsável e prazo. Cor de marca e redes pessoais ficam de fora.",
+  },
+  {
+    id: "gf-m3-24", module: M, topic: "Benefícios de frete",
+    q: "Um benefício de frete deixa o anúncio mais atrativo. O que o assessor deve conferir antes de aderir?",
+    options: [
+      "Se o concorrente também aderiu, porque aderir sempre é melhor que ficar de fora em qualquer conta",
+      "Se o benefício está aberto para todos, porque o custo dele nunca entra no preço do produto",
+      "Se a reputação já está no vermelho, porque então ele garante o retorno da visibilidade perdida",
+      "Se o custo cabe no preço e na margem, porque benefício bom ainda precisa dar lucro",
+    ],
+    answer: [3],
+    why: "Benefício de frete tem custo, e ele entra no preço. Aderir só faz sentido se a conta fechar com margem, senão a venda cresce e o lucro some.",
+  },
+];

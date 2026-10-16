@@ -12,6 +12,7 @@ const args = process.argv.slice(2);
 const bi = args.indexOf("--base");
 const file = args.find((a, i) => !a.startsWith("--") && !(bi >= 0 && i === bi + 1));
 const baseFile = bi >= 0 ? args[bi + 1] : null;
+const needVisual = args.includes("--require-visual");
 if (!file) { console.error("Informe o arquivo."); process.exit(2); }
 const abs = path.resolve(file);
 let modules = [];
@@ -45,6 +46,11 @@ for (const mod of modules) {
     if (!(l.minutes >= 2 && l.minutes <= 8)) E("minutes entre 2 e 8");
     if (bl.length < 10 || bl.length > 24) E(`${bl.length} cards (de 10 a 24)`);
     if (bl[0]?.t !== "hook") E("o primeiro card precisa ser hook");
+    if (needVisual) {
+      const VIS = new Set(["chart", "flow", "table", "tree", "timeline", "stairs", "anno", "lab"]);
+      if (!bl.some((b) => VIS.has(b.t))) E("falta um card visual (chart, flow, table, tree, timeline, stairs, anno ou lab)");
+      if (!bl.some((b) => b.t === "quiz")) E("falta um quiz");
+    }
     if (bl[bl.length - 1]?.t !== "recap") E("o último card precisa ser recap");
     bl.forEach((b, i) => {
       const at = `card ${i + 1} (${b.t})`;
@@ -66,6 +72,57 @@ for (const mod of modules) {
         case "term": if (!b.items || b.items.length > 3) e("term com mais de 3 itens"); (b.items || []).forEach((t) => { if (words(t.def) > 24) e("definição longa"); }); break;
         case "shot": if (!(b.spots || []).length) e("shot precisa de spots (1 a 4 áreas)"); if ((b.spots || []).length > 4) e("shot com mais de 4 áreas (divida em mais cards)"); if (words(b.caption) > 30) e("caption longa"); break;
         case "quiz": if (words(b.q) > 40) e("pergunta longa"); break;
+        case "chart": {
+          const KINDS = ["bar", "hbar", "line", "donut", "stack", "waterfall", "funnel", "matrix", "meter", "pareto"];
+          if (!KINDS.includes(b.kind)) { e("chart.kind inválido: " + b.kind); break; }
+          if (words(b.title) > 8) e("title do gráfico longo (máx. 8 palavras)");
+          if (words(b.caption) > 30) e("caption do gráfico longa (máx. 30 palavras)");
+          const lab = (x) => { if (!x || String(x.label ?? "").length < 1 || String(x.label).length > 24) e("label de item vazio ou com mais de 24 caracteres: " + JSON.stringify(x?.label)); };
+          if (b.kind === "line") {
+            if (!Array.isArray(b.x) || b.x.length < 3 || b.x.length > 8) e("line: x com 3 a 8 rótulos");
+            if (!Array.isArray(b.series) || !b.series.length || b.series.length > 3) e("line: de 1 a 3 series");
+            (b.series || []).forEach((sr) => { if (!sr.name || !Array.isArray(sr.values) || sr.values.length !== (b.x || []).length || sr.values.some((v) => typeof v !== "number")) e("line: cada serie precisa de name e values numéricos do mesmo tamanho de x"); });
+          } else if (b.kind === "matrix") {
+            if (!b.x || !b.y) e("matrix: faltam x e y (nomes dos eixos)");
+            if (!Array.isArray(b.quad) || b.quad.length !== 4) e("matrix: quad com 4 textos [cima-esq, cima-dir, baixo-esq, baixo-dir]");
+            if (!Array.isArray(b.points) || b.points.length < 3 || b.points.length > 7) e("matrix: de 3 a 7 pontos");
+            (b.points || []).forEach((pt) => { lab(pt); if (!(pt.x >= 0 && pt.x <= 10 && pt.y >= 0 && pt.y <= 10)) e("matrix: x e y de 0 a 10"); });
+          } else if (b.kind === "meter") {
+            if (!Array.isArray(b.zones) || b.zones.length < 2 || b.zones.length > 6) e("meter: de 2 a 6 zonas");
+            (b.zones || []).forEach((z) => { if (!z.label || typeof z.from !== "number" || typeof z.to !== "number") e("meter: cada zona precisa de label, from e to"); });
+            if (typeof b.value !== "number") e("meter: falta value numérico");
+          } else {
+            const n = (b.data || []).length;
+            const [lo, hi] = b.kind === "waterfall" ? [3, 8] : b.kind === "donut" || b.kind === "stack" ? [2, 6] : b.kind === "funnel" ? [3, 6] : [2, 7];
+            if (n < lo || n > hi) e(`${b.kind}: data com ${lo} a ${hi} itens`);
+            (b.data || []).forEach((d) => { lab(d); if (typeof d.value !== "number" && !(b.kind === "waterfall" && d.type === "total")) e("item sem value numérico: " + d.label); });
+          }
+          break;
+        }
+        case "flow": if (!Array.isArray(b.items) || b.items.length < 2 || b.items.length > 6) e("flow de 2 a 6 itens"); (b.items || []).forEach((it) => { if (!it.title || words(it.title) > 6) e("flow: title de 1 a 6 palavras"); if (words(it.text) > 14) e("flow: text longo (máx. 14 palavras)"); }); if (words(b.caption) > 30) e("caption longa"); break;
+        case "table": {
+          if (!Array.isArray(b.head) || b.head.length < 2 || b.head.length > 4) e("table: head com 2 a 4 colunas");
+          if (!Array.isArray(b.rows) || b.rows.length < 2 || b.rows.length > 6) e("table: de 2 a 6 linhas");
+          (b.rows || []).forEach((r) => { if (r.length !== (b.head || []).length) e("table: linha com número de colunas diferente do head"); r.forEach((c) => { if (words(c) > 10) e("table: célula longa (máx. 10 palavras)"); }); });
+          if (words(b.caption) > 30) e("caption longa");
+          break;
+        }
+        case "tree": if (!b.root) e("tree: falta root"); if (!Array.isArray(b.branches) || b.branches.length < 2 || b.branches.length > 4) e("tree: de 2 a 4 branches"); (b.branches || []).forEach((br) => { if (!br.label || !Array.isArray(br.items) || br.items.length < 1 || br.items.length > 3) e("tree: branch com label e de 1 a 3 items"); (br.items || []).forEach((t) => { if (words(t) > 12) e("tree: item longo (máx. 12 palavras)"); }); }); break;
+        case "timeline": if (!Array.isArray(b.items) || b.items.length < 3 || b.items.length > 7) e("timeline de 3 a 7 itens"); (b.items || []).forEach((it) => { if (!it.when || !it.label || words(it.label) > 8) e("timeline: when e label (máx. 8 palavras)"); if (words(it.text) > 14) e("timeline: text longo (máx. 14 palavras)"); }); break;
+        case "stairs": if (!Array.isArray(b.items) || b.items.length < 3 || b.items.length > 5) e("stairs de 3 a 5 degraus"); (b.items || []).forEach((it) => { if (!it.tag || !it.title) e("stairs: tag e title"); if (words(it.text) > 16) e("stairs: text longo (máx. 16 palavras)"); }); break;
+        case "anno": {
+          const N = { anuncio: 6, nfe: 5, ads: 5, planilha: 5 }[b.preset];
+          if (!N) { e("anno.preset inválido (anuncio, nfe, ads, planilha)"); break; }
+          if (!Array.isArray(b.notes) || b.notes.length !== N) e(`anno ${b.preset}: notes precisa ter exatamente ${N} textos`);
+          (b.notes || []).forEach((t) => { if (words(t) > 16) e("anno: nota longa (máx. 16 palavras)"); });
+          break;
+        }
+        case "lab": {
+          const P = ["preco", "roas", "promo", "full", "regime", "cobertura", "pe"];
+          if (!P.includes(b.preset)) e("lab.preset inválido: " + b.preset);
+          if (words(b.intro) > 30) e("lab: intro longa (máx. 30 palavras)");
+          break;
+        }
         case "sim": case "find": case "video": case "ruler": break;
         default: e("tipo de bloco desconhecido");
       }

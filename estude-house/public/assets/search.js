@@ -1,7 +1,7 @@
 /* Busca em todo o sistema: pessoas (nome e @), posts do feed e o conteúdo das trilhas (aulas, módulos e telas). */
 (function () {
   const { h } = M;
-  const SKIP = new Set(["t", "id", "tone", "tela", "kind", "src", "url", "spots", "answer", "options", "why", "dur", "telas"]);
+  const SKIP = new Set(["t", "id", "tone", "preset", "unit", "icon", "hl", "loop", "defaults", "tela", "kind", "src", "url", "spots", "answer", "options", "why", "dur", "telas"]);
   const SKIP_BLOCKS = new Set(["quiz", "sim", "find"]); // perguntas e simulações têm gabarito: ficam fora da busca
 
   const strip = (s) => String(s).replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ").trim();

@@ -59,6 +59,10 @@ npm test          # 56 de regras, provas, admin e logs + 38 de feed e engajament
 npm run local     # http://localhost:8888, banco em memória (zera ao reiniciar)
 ```
 
+## Trilha Grade de Formação e blocos visuais
+
+A trilha **Grade de Formação Mamba** (14 módulos, 68 aulas) traz gráficos, telas desenhadas com pinos e simuladores dentro das aulas (`public/assets/viz.js` e `calc-gf.js`). Tudo explicado em **GUIA-GRADE-DE-FORMACAO.md**. Para conferir uma trilha com visuais obrigatórios: `node scripts/check-stories.mjs public/trilhas/gf/content.js --require-visual`.
+
 ## Várias trilhas
 
 Todas as trilhas vivem em `window.TRILHAS` (site) e em `TRAILS` (servidor, `manifest.mjs`). O andamento é por trilha (`progress.trails[id]`): módulos em sequência, prova final e certificado próprios. Reprovar na final zera só a trilha em questão. Usuários, logs e administração são compartilhados; o painel tem seletor de trilha. O certificado de cada trilha é emitido em `#/cert/<trilha>`, e a lista de certificados fica em `#/cert`.
