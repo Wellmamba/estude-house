@@ -31,6 +31,33 @@
        "text": "Em 6 minutos você vê onde começa, onde pode chegar e o que precisa provar pra subir de nível."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como a Mamba sabe que alguém está pronto pra subir de nível?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Nível é prova prática, não tempo de casa."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Cada nível (N0 a N3) tem uma entrega final avaliada por quem já está acima."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você descobre onde está e qual prova falta pro próximo degrau."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🎯",
        "html": "Não é só saber mexer no <b>painel</b>.",
@@ -263,6 +290,33 @@
        "emoji": "📚",
        "title": "Todo módulo segue a mesma receita",
        "text": "Em 7 minutos você vê as 5 partes de cada módulo, as regras de ouro e onde está a fonte final de cada regra."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como estudar sem se perder?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Todo módulo tem as mesmas 5 partes, sempre na mesma ordem."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Na dúvida entre blog e conta, vale o dado da conta. Sobre regra de plataforma ou imposto, vale a fonte oficial."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você sabe de onde tirar cada resposta e não decide por achismo."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -505,6 +559,33 @@
        "emoji": "⏱️",
        "title": "15 dias que mudam seu jogo",
        "text": "Veja como é a rotina da imersão, como a sua nota é feita e o que acontece depois dos 15 dias."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como a imersão vira nota e vira nível?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Prática pesa mais que teoria: entregas e banca valem 65% da nota."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Nota geral = soma de (nota × peso) das 4 partes. Aprova com 70% e nenhum eixo abaixo de 50%."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você usa a matriz de domínio pra estudar primeiro o eixo com o maior vão."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -801,12 +882,6 @@
        ]
       },
       {
-       "t": "say",
-       "emoji": "🗣️",
-       "title": "Fala assim: mensagem em 4 partes",
-       "html": "“Oi, Carla! Suas vendas caíram esta semana. O anúncio principal ficou sem estoque. Vamos repor o lote e pausar o anúncio pago. Preciso que você confirme a data de entrada.”"
-      },
-      {
        "t": "flow",
        "title": "E depois dos 15 dias",
        "items": [
@@ -884,6 +959,33 @@
        "emoji": "🛒",
        "title": "Entenda o jogo antes de jogar",
        "text": "Em poucos minutos você vê como o e-commerce funciona e o que faz o cliente clicar e comprar."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que o cliente compra de um anúncio e ignora outro?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Venda online é um funil: cada etapa perde gente."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Funil = viram → clicaram → consideraram → compraram. Ache a etapa com a maior queda."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você ataca onde vaza: título e foto pro clique; prazo e reputação pra compra."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -1100,6 +1202,33 @@
        "text": "GMV, ticket médio, conversão, CAC, LTV e margem. Você sai daqui falando a língua do mercado e fazendo as contas."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Quais números dizem se a loja vai bem?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Faturar não é ganhar: GMV mede volume e margem mede sobra."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Ticket médio = faturamento ÷ pedidos. Conversão = pedidos ÷ visitas. Margem = sobra ÷ preço."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você olha volume e margem juntos antes de comemorar."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "💬",
        "html": "Se você não fala a língua, o seller <b>não confia</b> em você.",
@@ -1307,6 +1436,33 @@
        "text": "ROAS, ACOS, TACOS, CPC, CTR e mais cinco termos de operação. Você aprende a ler e a calcular cada um."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "O anúncio pago e o estoque estão pagando a conta?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Ads só vale se a venda paga o clique."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "ROAS = vendas com ads ÷ gasto. ACOS = gasto ÷ vendas com ads (o inverso). TACOS = gasto ÷ faturamento total."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você lê o indicador certo e protege o produto curva A de ruptura."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "jargon",
        "term": "CPC",
        "tag": "Custo por clique",
@@ -1509,6 +1665,33 @@
        "emoji": "💸",
        "title": "Como o marketplace ganha dinheiro",
        "text": "Se você sabe como a plataforma ganha, entende por que ela cobra, o que ela empurra e o que ela premia."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que a plataforma cobra e premia o que premia?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O marketplace ganha com comissão, Ads, logística, crédito e assinatura."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Take rate = tudo o que fica com a plataforma ÷ valor vendido."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você adapta o plano: o ML tende a premiar reputação e prazo; a Shopee, oferta e campanha."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -1755,6 +1938,33 @@
        "emoji": "🐍",
        "title": "O que a Mamba vende e como entrega valor",
        "text": "A Mamba faz o vendedor vender mais. Você vê como isso funciona e treina o check do dia 1: explicar uma venda em 2 minutos."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "O que a Mamba entrega e como explicar uma venda?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O cliente percebe valor quando entende o que mudou."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Ciclo: diagnóstico → ação → resultado → conversa. Numa venda de R$ 100 do exemplo, sobram R$ 18."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você explica em 2 minutos, com número, de onde o dinheiro entra e sai."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -2004,6 +2214,33 @@
        "text": "Antes de anúncio, preço e propaganda paga, vem a conta. Em 5 minutos você vê o que checar nela e quem pode mexer."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "A conta está pronta pra vender e receber sem travar?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Os dados da conta precisam bater com os documentos, e cada pessoa tem o acesso mínimo da função."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Checklist de 5 minutos: titular, Mercado Pago, contato, usuários e certificações."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você corrige o que trava e opera com usuário próprio, nunca com a senha do cliente."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🧱",
        "html": "Conta bagunçada trava <b>venda</b>, <b>repasse</b> e <b>acesso</b>.",
@@ -2177,6 +2414,33 @@
        "emoji": "🌡️",
        "title": "Reputação: o termômetro da conta",
        "text": "Ela decide se seu anúncio aparece ou some. Em 7 minutos você aprende o que pesa e como recuperar."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que um anúncio bom perde visibilidade?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Reputação é proporção: problemas ÷ vendas."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Taxa de problema = (reclamações + atrasos + cancelamentos) ÷ vendas. Ache o indicador pior."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você corrige a causa e olha o termômetro toda semana, antes de a cor mudar."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -2414,6 +2678,33 @@
       },
       {
        "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Defendo ou cedo numa reclamação?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O que decide é o custo total de cada caminho, reputação incluída."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Compare: ceder custa o frete de volta; brigar sem prova e perder custa o valor do pedido + o frete."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Com prova, defenda. Com erro seu, ceda rápido, em tom firme e humano."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
+       "t": "flow",
        "title": "A jornada do pós-venda",
        "items": [
         {
@@ -2639,6 +2930,33 @@
        "emoji": "📦",
        "title": "O caminho do pedido, sem atraso",
        "text": "Da venda ao despacho, cada etapa tem prazo. Em 6 minutos você sabe o que fazer em cada uma."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Onde o pedido atrasa ou é cancelado?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Atraso e cancelamento caem direto na reputação."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Siga o funil do pedido: venda → embalagem → etiqueta → despacho no prazo e veja onde a barra cai."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você sincroniza o estoque, confere o preço e avisa o cliente antes que ele pergunte."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "flow",
@@ -2897,6 +3215,33 @@
        "emoji": "🏅",
        "title": "Níveis, benefícios e Loja Oficial",
        "text": "Quanto mais confiança a conta ganha, mais vitrine e benefício vêm junto. No fim, você faz uma auditoria completa."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que esta conta perdeu visibilidade?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Reputação boa abre benefícios; auditar é checar as causas em ordem."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Ordem: reputação → pedidos e estoque → anúncio e preço → Ads e benefícios. Priorize por impacto ÷ esforço."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você monta o plano com ação, responsável, prazo e métrica."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -3190,6 +3535,33 @@
        "text": "Em poucos minutos você entende a Central do Vendedor e sabe quando uma loja vira Shopee Mall."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como a Shopee organiza uma loja?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Outra lógica, outro público: a Central do Vendedor é o painel de tudo."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Cadastro → perfil → envio → produtos → primeira venda. Loja comum e Shopee Mall diferem na prova de marca."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você começa na loja comum e só vai pro Mall com marca ou autorização."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🧭",
        "html": "A Shopee tem <b>outra lógica</b>, outro público e outras ferramentas.",
@@ -3369,6 +3741,33 @@
        "emoji": "🚦",
        "title": "Seu placar na Shopee",
        "text": "Veja o que a plataforma mede, como as penalidades aparecem e como recuperar uma loja que escorregou."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que a loja perde vitrine na Shopee?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Erro repetido vira ponto negativo e menos visibilidade."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Taxa de não cumpridos = (cancelados + devolvidos) ÷ pedidos. Ache a maior fatia dos pontos."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você conserta a causa da maior fatia e acompanha toda semana."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -3595,6 +3994,33 @@
       },
       {
        "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Onde o pedido da Shopee se perde?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O prazo de envio conta no placar mesmo sem reclamação."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Funil: pagos → despachados no prazo → entregues → sem devolução. Devolução se decide com prova."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você mantém estoque certo, horário de corte real e prova guardada antes de contestar."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
+       "t": "flow",
        "title": "A vida de um pedido",
        "items": [
         {
@@ -3811,6 +4237,33 @@
        "emoji": "🎟️",
        "title": "Promoção que vende e dá lucro",
        "text": "Aprenda as ferramentas de venda da Shopee, faça a conta antes de dar desconto e monte um plano de data dupla."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "A promoção vale a pena?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Desconto come margem, e a venda extra precisa compensar."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Sobra com desconto = preço novo − produto − taxas. Vendas extras pra empatar = lucro antes ÷ lucro depois."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Só entra na oferta quem tem margem e estoque, e o preparo da data dupla começa semanas antes."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -4080,6 +4533,33 @@
        "text": "Veja como afiliados e vitrines trazem gente pra loja e feche o módulo comparando Mercado Livre e Shopee."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Afiliado compensa, e ML e Shopee pedem o mesmo plano?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "A comissão sai da sua margem, e cada plataforma premia coisas diferentes."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Sobra = preço − produto − taxas − comissão do afiliado. Compare as 5 diferenças práticas entre ML e Shopee."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você libera afiliado só onde a sobra continua boa e monta um plano próprio pra Shopee."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "📣",
        "html": "Tem gente que <b>divulga por você</b> e só ganha se vender.",
@@ -4324,6 +4804,33 @@
        "text": "Em 6 minutos você aprende o que forma um anúncio e por que Ads não conserta anúncio ruim."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que Ads não conserta anúncio fraco?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Ads traz a visita, e o anúncio converte."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Seis peças, checadas uma a uma: título, fotos, preço, frete, variações e ficha técnica."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você arruma as peças antes de aumentar a verba."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🔥",
        "html": "Anúncio ruim <b>queima</b> o dinheiro do Ads.",
@@ -4528,6 +5035,33 @@
        "emoji": "📸",
        "title": "A foto abre a venda",
        "text": "Em 6 minutos você monta o pacote de imagens do anúncio: foto principal, infográfico e prova social."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Qual imagem faz o cliente clicar e confiar?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Cada foto tem uma função: chamar o clique, informar ou provar o uso."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Mude uma coisa por vez e meça o clique (CTR) antes e depois."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você padroniza o que subiu o clique e testa outra ideia no que não subiu."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -4738,6 +5272,33 @@
        "emoji": "🔎",
        "title": "Título que o cliente encontra",
        "text": "Em 6 minutos você aprende a pesquisar palavra-chave, ler a intenção da busca e montar um título que aparece."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como o cliente acha o meu anúncio?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Palavra-chave é o que o cliente digita, e a intenção diz se ele quer comprar, comparar ou entender."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Pesquise a busca real → escolha os termos → monte o título: produto, marca, característica."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você deixa o título limpo, sem enfeite e sem copiar o concorrente."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -4983,6 +5544,33 @@
        "emoji": "🏷️",
        "title": "Clássico, premium, catálogo: qual usar?",
        "text": "Em 6 minutos você entende os tipos de anúncio do Mercado Livre e como entrar na disputa pelo botão de compra."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Vale brigar pelo buy box com preço?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O buy box considera preço, reputação e estoque, não só preço."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Calcule o preço mínimo antes. Se baixar o preço passa do piso, a briga não vale."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você entra na disputa só se a sobra aguenta."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -5249,6 +5837,33 @@
        "text": "Em 7 minutos você decide quando usar variação, kit, multipack e atacado, e confere o efeito na margem e no estoque."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Variação, kit, combo ou atacado?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Variação é o mesmo produto em versões, e kit consome o estoque dos componentes."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Simule a sobra por pedido com o desconto e veja se o ticket médio sobe o bastante."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você liga o atacado só se o cliente levar mais unidades por pedido."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🤔",
        "html": "Cada formato mexe em <b>preço, estoque e giro</b>.",
@@ -5491,6 +6106,33 @@
        "emoji": "🚀",
        "title": "Subir 500 anúncios sem bagunça",
        "text": "Em 8 minutos você vê como publicar em lote, sincronizar estoque e escolher qual anúncio arrumar primeiro."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Qual anúncio arrumar primeiro?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Audite pelo impacto: curva ABC e visita com conversão baixa."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Teste pequeno antes do lote, mapeamento do ERP ou hub conferido e medição de 30 dias."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Cada mudança tem o dado que a justifica e a métrica que a prova."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -5851,6 +6493,33 @@
        "text": "Em poucos minutos você entende os 4 regimes, o que é CNAE e por que o regime mexe no preço do seu cliente."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como o regime da empresa muda o preço?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Regime é a regra de como a empresa paga imposto."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "MEI, Simples, Presumido e Real calculam de jeitos diferentes. Compare o imposto efetivo dentro do preço."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você leva a margem por produto ao contador, e a decisão do regime é dele."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🍽️",
        "html": "Quem erra imposto <b>devora a margem</b> do cliente.",
@@ -6062,6 +6731,33 @@
        "text": "Você aprende os 3 tipos de nota, o que é CFOP e como falar com o contador sem fingir que é um."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "A nota fiscal está certa?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "A rota da venda decide o CFOP."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "CFOP começado em 5 é dentro do estado, e em 6 é pra outro estado. Entrada, saída e devolução têm CFOPs diferentes."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Dúvida vai pro contador, com o número do pedido e o print da nota."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🚨",
        "html": "Nota emitida errada vira <b>dor de cabeça</b> pro seller.",
@@ -6257,6 +6953,33 @@
        "emoji": "🏷️",
        "title": "O RG fiscal de cada produto",
        "text": "NCM, CEST, origem e CST/CSOSN: em poucos minutos você sabe pra que serve cada código e quanto custa errar."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que a nota dá erro?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Cadastro de produto errado vira erro em toda nota."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "NCM classifica, CEST vem com ST, origem diz se é nacional ou importado, e CST (regime normal) ou CSOSN (Simples) define a tributação."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você pega o dado na nota de compra ou no fornecedor, e o contador confere."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -6463,6 +7186,33 @@
        "emoji": "💸",
        "title": "Os impostos que mordem o preço",
        "text": "Você vê o que cada imposto cobra, o que é “por dentro” e “por fora” e como a rota da venda entra na conta."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Quanto de imposto cai dentro do preço?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Imposto é fatia do preço, não custo extra."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "ICMS é por dentro e IPI é por fora. ST e DIFAL são jeitos de cobrar ICMS, e a rota da venda muda a conta."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você calcula o preço mínimo já com a fatia certa, e o contador confirma as alíquotas."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -6709,6 +7459,33 @@
        "emoji": "🗺️",
        "title": "Dado fiscal: onde ele mora?",
        "text": "Você monta o mapa de onde cada dado fiscal vive e aprende a conferir o repasse do marketplace."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Onde mora cada dado fiscal, e por que o repasse veio menor?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Cada dado fiscal tem um lugar certo, e o repasse é a venda menos os descontos do marketplace."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Conciliação cruza pedido, nota e extrato, linha por linha."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Diferença sem nome vai pro contador."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -6975,6 +7752,33 @@
        "emoji": "⚖️",
        "title": "Mesmo produto, dois regimes",
        "text": "Você simula o preço mínimo em dois regimes, vê quem vence e entende o custo de nacionalizar um importado."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Qual regime ou qual importação compensa?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Planejar é simular cenários com dados reais."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Preço mínimo = custos em reais ÷ (1 − % − margem alvo), em cada cenário. No importado, some o custo de nacionalização."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você leva o resultado ao contador: vencer na conta não é decisão final."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -7296,6 +8100,33 @@
        "text": "Em 6 minutos você abre o preço de um produto e vê quanto sobra de verdade no bolso."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Pra onde vai cada real do preço?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Faturamento é o que entra, e lucro é o que sobra."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Preço − produto − imposto − comissão − tarifa − frete − Ads − provisão de devolução = sobra."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você fala em sobra por R$ 100, não em faturamento."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🕳️",
        "html": "Vendeu <b>R$ 100</b>? Calma: nem tudo isso é seu.",
@@ -7485,6 +8316,33 @@
        "emoji": "🎯",
        "title": "Vender mais pode te fazer perder?",
        "text": "Você aprende a margem de contribuição e o ponto de equilíbrio: quantas vendas pagam as contas antes de sobrar lucro."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Quantas vendas pagam as contas?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Custo fixo se paga vendendo ou não, e a margem de contribuição é quem paga o fixo."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Margem de contribuição = preço − custos variáveis. Ponto de equilíbrio = fixos ÷ margem por unidade."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Com margem negativa, vender mais só piora: conserte o preço antes."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -7711,6 +8569,33 @@
        "emoji": "🧱",
        "title": "Qual o menor preço que você aceita?",
        "text": "Você aprende a calcular o piso do preço e a escolher onde vender entre o piso, o alvo e o teto."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Qual é o menor preço aceitável?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O preço parte do seu piso, não do concorrente."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Piso = custos em reais ÷ (1 − custos em % − margem alvo). O teto vem do mercado."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Promoção mora entre o piso e o alvo. Abaixo do piso, recuse."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -8008,6 +8893,33 @@
        "text": "Você compara a sobra em ML, Shopee e loja própria e descobre quanto o desconto de atacado come do seu lucro."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que a mesma venda rende diferente em cada canal?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Compare canais pela sobra, não pela comissão."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Calcule o preço mínimo de cada canal e veja quanto o desconto por volume tira da sobra."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você aceita atacado só se a conta empata."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "⚖️",
        "html": "Compare canais pelo que <b>sobra</b>, não pela taxa.",
@@ -8277,6 +9189,33 @@
        "emoji": "📣",
        "title": "Seu Ads dá lucro ou prejuízo?",
        "text": "Você aprende a achar o ROAS mínimo de cada produto: abaixo dele, cada R$ 1 de Ads vendido tira dinheiro do bolso."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Até onde o ROAS pode cair?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Cada produto tem o seu ROAS mínimo."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "ROAS de equilíbrio = 1 ÷ margem antes do Ads. ACOS de equilíbrio = a própria margem."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Se o ROAS está abaixo do mínimo, acerte preço ou custo antes de subir a verba."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -8569,6 +9508,33 @@
        "emoji": "🏦",
        "title": "Lucro no papel não paga boleto",
        "text": "Você lê um DRE por SKU e por conta, entende o caminho do dinheiro até o repasse e monta sua planilha de preços."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Lucro no papel é dinheiro no caixa?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O DRE mostra o resultado, e o caixa mostra quando o dinheiro chega."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Leia o DRE por SKU e projete o caixa até o repasse. Capital de giro cobre o intervalo."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Antes de comprar estoque, você olha o caixa dos próximos 45 dias."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "jargon",
@@ -8866,6 +9832,33 @@
        "text": "Em 6 minutos você conhece as modalidades de envio do Mercado Livre e escolhe a certa pra cada SKU (versão do produto)."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Qual modalidade de envio usar?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Quem leva o pacote muda o custo e o risco."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Compare Coleta, Flex, Places, Correios e Full, SKU por SKU."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você escolhe por SKU, não pela conta toda."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "💸",
        "html": "Logística define <b>prazo, custo, reputação</b> e se o cliente compra.",
@@ -9067,6 +10060,11 @@
        "why": "A modalidade certa muda de SKU pra SKU: depende de quanto o produto gira, do peso e tamanho, de onde estão os clientes e da margem que sobra."
       },
       {
+       "t": "say",
+       "title": "Fala assim com o seller",
+       "html": "“Cada SKU tem a sua modalidade: o que gira vai pro Full, o que vende perto de você vai no Flex e o resto vai na Coleta. Eu escolho pela conta do SKU, não pela conta toda.”"
+      },
+      {
        "t": "recap",
        "items": [
         "Cinco modalidades: Coleta, Flex, Places, Correios e Full",
@@ -9088,6 +10086,33 @@
        "emoji": "🏍️",
        "title": "Flex e Coleta sem susto",
        "text": "Em 7 minutos você entende a rotina de cada uma, onde mora o risco de atraso e como avisar o cliente."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Onde mora o risco de atraso?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Atraso pesa na reputação e na visibilidade."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Flex: horário de corte e cobertura realistas. Coleta: pacote pronto e etiquetado no horário."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você avisa o cliente antes que ele pergunte."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -9315,6 +10340,33 @@
        "text": "Em 7 minutos você vê como o Places funciona e por que cadastrar peso e medida no chute derruba a margem."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por que o frete saiu maior do que o previsto?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O frete nasce do peso e das medidas cadastrados."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Peso cúbico = volume ÷ fator. Vale o maior entre o peso real e o cúbico."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você pesa e mede a caixa fechada antes de cadastrar."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "jargon",
        "term": "Places",
        "means": "Pontos de postagem (agências): você leva o pacote embalado e etiquetado, e o parceiro despacha.",
@@ -9504,6 +10556,11 @@
        "why": "O volume é 30 x 20 x 10 = 6.000 cm³. Dividindo por 6.000, o peso cúbico é 1,0 kg. Como 1,0 é maior que o peso real de 0,4, ele entra no frete."
       },
       {
+       "t": "say",
+       "title": "Fala assim com o seller",
+       "html": "“O frete subiu porque o peso cadastrado estava abaixo do peso cúbico da caixa. Eu pesei e medi a caixa fechada, corrigi o cadastro e refiz o preço mínimo com o frete certo.”"
+      },
+      {
        "t": "recap",
        "items": [
         "Places: você leva o pacote a uma agência",
@@ -9525,6 +10582,33 @@
        "emoji": "📦",
        "title": "Full: vale ou não vale?",
        "text": "Em 8 minutos você decide com planilha se um SKU (versão do produto) vale o Full, o estoque guardado pelo Mercado Livre."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Este SKU vale o Full?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Full é decisão por SKU, com conta."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Compare giro, armazenagem e ruptura. Ponto de pedido = venda diária × (prazo + folga)."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você manda o que gira com margem folgada e já define um plano B."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -9785,6 +10869,33 @@
        "text": "Em 7 minutos você vê como a Shopee coleta e entrega, o que são programas de frete e quando guardar estoque nela compensa."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como a Shopee coleta, entrega e armazena?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "O prazo de postagem manda, e programa de frete tem custo."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Coleta Xpress ou ponto de entrega, conforme o volume. Refaça a conta da margem com o programa de frete."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "O fulfillment segue a lógica do Full: decida por SKU."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "⏳",
        "html": "Na Shopee, o <b>prazo de postagem</b> manda no jogo.",
@@ -10001,6 +11112,11 @@
        "why": "O programa pode ter taxa ou regra extra. Só a conta com a regra vigente mostra se a sobra por pedido e o volume extra compensam."
       },
       {
+       "t": "say",
+       "title": "Fala assim com o seller",
+       "html": "“Na Shopee, o prazo de postagem manda. Vamos escolher coleta ou ponto de entrega pelo seu volume e refazer a margem com o programa de frete, que tem custo.”"
+      },
+      {
        "t": "recap",
        "items": [
         "Prazo de postagem manda na Shopee",
@@ -10022,6 +11138,33 @@
        "emoji": "🧩",
        "title": "Fechando a logística: matriz por SKU",
        "text": "Em 8 minutos você junta embalagem, devolução e modalidade numa estratégia por SKU (cada versão do produto)."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como fechar a estratégia logística?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Embalagem barata evita avaria cara, e devolução bem tratada volta pro estoque."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Matriz por SKU: Full pro que gira, Flex pro que vende perto e Coleta pro resto."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você entrega a matriz com números e plano B."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -10261,6 +11404,11 @@
        "why": "Cliente concentrado perto do estoque é o perfil do Flex. A decisão sai do cruzamento de peso, giro, região e margem, nunca de uma regra única pra todo SKU pesado."
       },
       {
+       "t": "say",
+       "title": "Fala assim com o seller",
+       "html": "“Aqui está a matriz por SKU: o que gira vai pro Full, o que vende perto vai no Flex e o resto na Coleta. Cada linha tem número e um plano B, caso o giro mude.”"
+      },
+      {
        "t": "recap",
        "items": [
         "Embalagem barata evita avaria cara",
@@ -10291,6 +11439,33 @@
        "emoji": "🧭",
        "title": "Vender bem começa antes do anúncio",
        "text": "Escolher o que vender e contra quem competir vale mais que ajustar título. Bora aprender a ler mercado e produto."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Vale entrar neste mercado?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Tamanho de categoria mostra volume, não facilidade."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Leia tamanho, sazonalidade, ciclo de vida e as reclamações dos concorrentes."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você decide com o dado da conta e usa o mercado só como pista."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -10516,6 +11691,11 @@
        "why": "A reclamação mostra uma dor que o líder não resolve. Medida real no anúncio transforma essa dor em confiança e em diferencial."
       },
       {
+       "t": "say",
+       "title": "Fala assim com o seller",
+       "html": "“Essa categoria é grande, mas grande não é fácil. Olhei a sazonalidade, o ciclo do produto e as reclamações dos concorrentes, e agora confirmo tudo com o dado da sua conta.”"
+      },
+      {
        "t": "recap",
        "items": [
         "Tamanho de categoria mostra volume, não facilidade",
@@ -10537,6 +11717,33 @@
        "emoji": "🔎",
        "title": "Quem está na prateleira ao lado",
        "text": "Concorrente é quem aparece antes de você, não só quem vende igual. Bora montar uma matriz pra comparar com dado."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Contra quem eu competo, e como?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Concorrente é quem aparece antes de você."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Matriz de 8 itens (não só o preço) e simulação de margem antes de igualar preço."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você ajusta o que ganha venda (prazo, avaliação) antes de mexer no preço."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -10780,6 +11987,33 @@
        "emoji": "🧩",
        "title": "Cada seller joga um jogo diferente",
        "text": "Revendedor, fabricante, importador, MEI... cada perfil tem dor, estratégia e risco próprios. Bora aprender a abordar cada um."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Todo seller pede a mesma estratégia?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Cada perfil tem dor, estratégia e risco próprios."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Descubra o perfil (compra pronto ou fabrica, quanto caixa fica parado) e aplique a conta dele, como a faixa de preço no atacado."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você monta o plano do perfil, não um plano genérico."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -11063,6 +12297,33 @@
        "text": "Faltar produto derruba venda; sobrar prende caixa. Você aprende sourcing (achar fornecedor), lead time, MOQ e estoque de segurança."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como comprar sem faltar e sem encalhar?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Faltar derruba a venda, e sobrar prende caixa."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Ponto de pedido = venda por dia × (lead time + segurança). Compare o MOQ com os meses de venda."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você negocia prazo, defeito e entrega, não só preço."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "⚖️",
        "html": "Comprar errado vira <b>ruptura</b> (acabou) ou <b>encalhe</b> (sobrou parado).",
@@ -11286,6 +12547,33 @@
        "emoji": "🗓️",
        "title": "O ano de vendas tem datas fortes",
        "text": "Dia das Mães, Black Friday, Natal... quem se prepara cedo vende mais e sem sufoco. Bora montar um plano de compra de 90 dias."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Quanto comprar pras datas fortes?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Previsão = histórico + tendência + calendário."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Compra = previsão − estoque − o que está a caminho + segurança. O lead time define a data limite do pedido."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você fecha o pedido antes da data limite."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -11548,6 +12836,11 @@
        "why": "Repetir o pico sem olhar tendência é o erro do retrovisor. O plano combina histórico, tendência, estoque existente e lead time."
       },
       {
+       "t": "say",
+       "title": "Fala assim com o seller",
+       "html": "“Pro Dia das Mães, o pedido ao fornecedor precisa sair até a data limite, que é a data da venda menos o lead time. Compra = previsão − estoque − o que já está a caminho + segurança.”"
+      },
+      {
        "t": "recap",
        "items": [
         "Datas fortes pedem decisão de estoque antes",
@@ -11578,6 +12871,33 @@
        "emoji": "🏷️",
        "title": "Promoção vende. Mas lucra?",
        "text": "Em poucos minutos você conhece as mecânicas de promoção e descobre onde cada uma morde a margem."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Qual mecânica de promoção usar?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Cada mecânica pesa na margem de um jeito."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Simule a sobra por unidade em cada uma: oferta, cupom, progressivo, combo, frete e campanha."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Convite não é decisão: simule antes de ativar."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -11810,6 +13130,33 @@
        "emoji": "🧮",
        "title": "Participar ou recusar? Conta primeiro",
        "text": "Você aprende a simular margem com desconto e taxa extra e a decidir com número se a campanha vale a pena."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Participo desta campanha?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Visibilidade sem margem não é resultado."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Vendas pra empatar = lucro antes ÷ lucro depois, já com o preço novo e a taxa extra."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Abaixo do piso, recuse ou renegocie."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -12162,6 +13509,33 @@
        "text": "Você aprende a montar o calendário de preço e estoque e a medir o que acontece depois do pico."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "A campanha deu lucro de verdade?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Depois do pico vem a retração."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Cobertura = estoque ÷ vendas por dia. Meça o período inteiro: antes, pico e depois."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você registra o que aprendeu pro próximo calendário."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🧭",
        "html": "Quem planeja <b>escolhe</b>. Quem não planeja aceita o que sobrou.",
@@ -12502,6 +13876,33 @@
        "text": "Em poucos minutos você entende como o Product Ads cobra, como o leilão escolhe quem aparece e quando usar automática ou manual."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como o Product Ads decide quem aparece?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "É um leilão: lance e relevância decidem."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Você paga por clique. A automática dá menos trabalho e a manual dá mais controle."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Arrume o anúncio antes de colocar verba."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🚀",
        "html": "Ads é o <b>acelerador</b>. Mas precisa de base boa embaixo.",
@@ -12689,6 +14090,33 @@
        "emoji": "📊",
        "title": "Os números que mandam no ads",
        "text": "Em poucos minutos você calcula ACOS, ROAS e TACOS e entende por que um ROAS bom pode dar prejuízo."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Um ROAS bom pode dar prejuízo?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Depende da margem do produto."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "ACOS = ads ÷ vendas com ads. ROAS = vendas com ads ÷ ads. TACOS = ads ÷ vendas totais. Piso do ROAS = 1 ÷ margem."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Compare o ROAS com o piso do produto."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -12906,6 +14334,11 @@
        "why": "Com margem de 20%, o ROAS de equilíbrio é 1 ÷ 0,20 = 5x. Em 4x, cada R$ 1.000 de ads gera R$ 4.000 de vendas, R$ 800 de margem e perde R$ 200."
       },
       {
+       "t": "say",
+       "title": "Fala assim com o seller",
+       "html": "“Seu ROAS está em 4, mas o produto deixa só 20% de margem, então o piso do ROAS é 1 ÷ 0,20 = 5. Ou seja, o Ads está dando prejuízo. Primeiro acertamos preço ou custo, depois mexemos na verba.”"
+      },
+      {
        "t": "recap",
        "items": [
         "<b>ACOS</b> = ads ÷ vendas com ads",
@@ -12927,6 +14360,33 @@
        "emoji": "🧱",
        "title": "Campanha arrumada, verba que rende",
        "text": "Você aprende a separar campanhas por curva e margem, montar a rotina semanal e escrever regras de decisão."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como organizar e otimizar as campanhas?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Cada grupo de produtos tem o seu ROAS objetivo."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Separe por curva, margem e objetivo. Rotina semanal: ler, cortar, escalar e testar, com regras “se X, então Y”."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Ads não conserta preço ruim, estoque curto nem anúncio fraco."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -13215,6 +14675,33 @@
        "text": "Veja pra que servem Brand Ads e Display, como gerir verba em datas comemorativas e como evitar pagar por venda grátis."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Brand Ads e Display valem a verba?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Ads pode pagar por venda que viria de graça: é a canibalização."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Compare as vendas totais antes e depois, não só as vendas com ads."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você define teto, ROAS mínimo e produtos antes do pico."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🎯",
        "html": "Product Ads <b>vende hoje</b>. Brand e Display <b>constroem</b> marca.",
@@ -13456,6 +14943,11 @@
        "why": "Antes eram 100 vendas. Depois, 60 com ads mais 50 orgânicas dão 110. O ganho real é de 10 unidades, bem menor que as 60 que o painel mostra."
       },
       {
+       "t": "say",
+       "title": "Fala assim com o seller",
+       "html": "“Vamos comparar as vendas totais antes e depois do Brand Ads, e não só as vendas com Ads. Se o total não subiu, estamos pagando por uma venda que viria de graça.”"
+      },
+      {
        "t": "recap",
        "items": [
         "<b>Brand Ads</b> defende a marca. <b>Display</b> alcança e lembra",
@@ -13477,6 +14969,33 @@
        "emoji": "🛍️",
        "title": "Shopee Ads sem cabeça de Mercado Livre",
        "text": "Veja os três formatos do Shopee Ads, como funciona a campanha automatizada e quando vale manter o controle na mão."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como funciona o Shopee Ads?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "São três formatos: busca de produto, busca de loja e descoberta."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Automatizada: menos trabalho, menos controle. GMV é faturamento, não lucro."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você usa teto de orçamento e meta de ROAS."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -13706,6 +15225,33 @@
        "emoji": "💰",
        "title": "Onde entra o próximo R$ 1.000?",
        "text": "Você aprende a comparar o retorno entre canais, mover verba com critério e defender a decisão com o seller."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Onde entra o próximo R$ 1.000 de Ads?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Compare o retorno do próximo real, não a média."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Mova verba só pra quem fica acima do piso, em passos pequenos, e meça na rotina."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você defende a realocação com conta, prazo e plano de volta."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -13938,6 +15484,33 @@
        "emoji": "📊",
        "title": "Planilha e painel: seu superpoder",
        "text": "Em poucos minutos você vê como transformar relatório bagunçado em número que explica a conta e ajuda a decidir."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como transformar relatório bagunçado em número que explica?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Planilha é a oficina, e painel é a vitrine."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "PROCX traz valor pela chave (o SKU) e a tabela dinâmica resume milhares de linhas."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Painel com poucos números, na mesma ordem, toda semana."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -14238,6 +15811,33 @@
        "emoji": "🔍",
        "title": "O que mudou e por quê?",
        "text": "Você aprende a ler uma queda de vendas olhando vários números juntos, e não um só."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "O que mudou nas vendas?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Nunca leia uma métrica sozinha."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Vendas = visitas × conversão × ticket médio. Compare períodos parecidos."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você aponta qual dos três caiu e investiga ali."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -14561,6 +16161,33 @@
        "emoji": "🌳",
        "title": "Vendas caíram 30%: por onde começar?",
        "text": "Você aprende a montar hipóteses, testar uma por uma e chegar na causa raiz sem chute."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Qual é a causa da queda?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Queda é sintoma, e a causa raiz está abaixo dela."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Hipótese = afirmação + teste + critério. Teste primeiro o barato e provável."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você confirma ou descarta cada hipótese, lembrando que correlação não prova causa."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -14907,6 +16534,33 @@
        "emoji": "🧪",
        "title": "Análises que separam gestor de operador",
        "text": "Curva ABC com margem, coorte, elasticidade e IA com critério: como ir além do número do dia."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "O que o número do dia não mostra?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Faturamento sozinho esconde o lucro."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Curva ABC com margem, coorte (um grupo acompanhado no tempo) e elasticidade (desconto × vendas)."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "A IA rascunha, e você revisa e decide."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -15292,6 +16946,33 @@
        "text": "Em poucos minutos você aprende a olhar a conta inteira em 8 frentes e achar o gargalo antes de mexer em qualquer coisa."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Por onde começar numa conta?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Olhe a conta inteira antes de agir."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Raio-X em 8 frentes, com nota por critério escrito e as frentes lidas juntas."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Termina numa lista de ações."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🔭",
        "html": "Operador executa tarefa. <b>Gestor</b> enxerga a conta inteira.",
@@ -15621,6 +17302,33 @@
        "text": "Em poucos minutos você aprende a escolher o que fazer primeiro numa conta, usando a matriz de impacto x esforço."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "O que fazer primeiro?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Nem tudo tem o mesmo retorno."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Impacto (margem, vendas, risco) × esforço (tempo, dinheiro, dependência). Estime o ganho em reais."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Alto impacto com baixo esforço sai primeiro, e o plano tem poucas prioridades."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🎯",
        "html": "Se tudo é prioridade, <b>nada</b> é.",
@@ -15895,6 +17603,33 @@
        "emoji": "📋",
        "title": "Plano de conta que cabe numa folha",
        "text": "Em poucos minutos você aprende a montar o plano de 90 dias, com metas que a conta aguenta e OKRs que o cliente entende."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Que meta prometer?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "A meta nasce da margem e da capacidade da conta."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Plano: objetivo, ações, dono, prazo, meta e risco. OKR = objetivo + números que provam."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você revisa o plano de 90 dias com o dado."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -16243,6 +17978,33 @@
        "text": "Em poucos minutos você aprende a priorizar clientes, enxergar o risco de saída e conduzir uma reunião de resultado com dado."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Quem atender primeiro, e como conduzir a reunião?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "A carteira se prioriza por valor e risco de saída."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Reunião em 4 passos: conclusão, causa, ação e pedido."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Você responde objeção com dado, não com defesa."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "👥",
        "html": "Você não cuida de clientes soltos. Cuida de uma <b>carteira</b>.",
@@ -16574,6 +18336,33 @@
        "text": "Em 7 minutos você aprende a estrutura de 4 passos que deixa mensagem, e-mail e ata claros pro cliente."
       },
       {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como escrever pro cliente leigo?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Uma ordem fixa evita confusão."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Contexto → o que houve → o que fazemos → o que precisamos. Número antes de adjetivo."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "A ata sai com decisão, dono e prazo."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
+      },
+      {
        "t": "big",
        "emoji": "🎯",
        "html": "O melhor técnico perde cliente se não souber <b>explicar</b>.",
@@ -16796,6 +18585,33 @@
        "emoji": "📈",
        "title": "Número sozinho não convence",
        "text": "Você vai juntar número, contexto e tendência numa história que o cliente entende, acredita e consegue usar pra decidir."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como contar a história do dado?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Número sem contexto não convence."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Número + contexto + tendência. Prometa prazo, resultado e risco juntos."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "A planilha vai de anexo, e a história vai no texto."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -17101,6 +18917,33 @@
        "emoji": "🤝",
        "title": "Dizer “não” sem perder o cliente",
        "text": "Você vai conduzir o cliente com dado, segurar conversa difícil com calma e dar feedback que melhora o trabalho."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como conduzir uma conversa difícil?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Conduza com dado, motivo e plano."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Escute, resuma, resolva. Feedback em 4 passos: fato, efeito, pedido, combinado."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "A decisão do cliente fica registrada."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",
@@ -17420,6 +19263,33 @@
        "emoji": "🗓️",
        "title": "Rotina, gente e segurança",
        "text": "Você vai montar a cadência de uma conta, aprender a delegar e formar colegas, e proteger os dados do cliente."
+      },
+      {
+       "t": "flow",
+       "title": "A linha de raciocínio da aula",
+       "items": [
+        {
+         "icon": "❓",
+         "title": "A pergunta",
+         "text": "Como sustentar a conta no dia a dia?"
+        },
+        {
+         "icon": "🧠",
+         "title": "O princípio",
+         "text": "Cadência cria previsibilidade."
+        },
+        {
+         "icon": "🧮",
+         "title": "O método",
+         "text": "Rotina diária, semanal, mensal e trimestral. Delegar é passar objetivo, prazo e checagem."
+        },
+        {
+         "icon": "✅",
+         "title": "A decisão",
+         "text": "Senha e dado de cliente nunca circulam no chat."
+        }
+       ],
+       "caption": "Se você consegue contar estes 4 passos com as suas palavras, entendeu a aula."
       },
       {
        "t": "big",

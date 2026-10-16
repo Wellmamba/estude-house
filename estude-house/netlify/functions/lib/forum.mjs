@@ -5,6 +5,7 @@ import { store, pmap } from "./db.mjs";
 import { newId } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import { match, snippet } from "./textsearch.mjs";
+import { FORUM_MANUAL } from "./forum-manual.mjs";
 
 const MAX_TITLE = 120, MAX_CAT = 30, MAX_TEXT = 8000, PAGE = 20, MAX_POSTS = 2000;
 const t13 = (n) => String(n).padStart(13, "0");
@@ -91,6 +92,26 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     bust();
     await ctx.logEvent(req, "forum_publicou", user, { post: d.id, titulo: title });
     return json({ post: view(d, await authorOf(user.id)) }, 201);
+  }
+
+  /* importa de uma vez os posts iniciais do manual (uma publicação por categoria). Pode repetir sem duplicar. */
+  if (path === "forum/importar-manuais" && method === "POST") {
+    needAdmin();
+    const f = await forum();
+    const existing = (await f.keys({ prefix: "f:", limit: MAX_POSTS + 1 })).length;
+    const have = new Set((await pmap(FORUM_MANUAL, async (m) => ((await f.get("seed:" + m.key)) ? m.key : null))).filter(Boolean));
+    const todo = FORUM_MANUAL.filter((m) => !have.has(m.key));
+    if (existing + todo.length > MAX_POSTS) fail(400, `O fórum chegaria a mais de ${MAX_POSTS} publicações. Apague alguma antes de importar.`);
+    const base = now();
+    /* a ordem do manual vira a ordem da lista: o primeiro da fila fica por cima */
+    await pmap(todo.map((m, i) => ({ m, t: base - i })), async ({ m, t }) => {
+      const d = { id: newId("fo_"), title: m.title, text: m.text, category: m.category, authorId: user.id, createdAt: t, seed: m.key };
+      const k = `f:${inv(t)}:${d.id}`;
+      await Promise.all([f.set(k, d), f.set("ix:" + d.id, { k }), f.set("seed:" + m.key, { id: d.id })]);
+    });
+    bust();
+    if (todo.length) await ctx.logEvent(req, "forum_importou_manuais", user, { criados: todo.length });
+    return json({ created: todo.length, skipped: FORUM_MANUAL.length - todo.length, total: FORUM_MANUAL.length }, todo.length ? 201 : 200);
   }
 
   const id = parts[1];

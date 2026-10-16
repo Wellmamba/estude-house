@@ -78,7 +78,7 @@ A Início (`#/`) é um feed no estilo rede social, com Hype (foguete), comentár
 Upload de foto, vídeo e arquivo usa o Cloudinary (variáveis `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`); links funcionam sem nada. **Guia completo: `COMO-CONFIGURAR-FEED-E-UPLOAD.md`.**
 
 ## Destaques e Fórum
-Destaques (Stories permanentes, só gestor posta, aluno assiste e ganha XP) e Fórum de listas úteis (só aparece na busca para o aluno). Veja `GUIA-DESTAQUES-E-FORUM.md`. A tela inicial agora se chama **Feed** e, no celular, tem menu inferior no estilo Instagram.
+Destaques (Stories permanentes, só gestor posta, aluno assiste e ganha XP) e Fórum de listas úteis (só aparece na busca para o aluno). Destaques no formato Instagram (anel com a foto de quem postou, vídeo automático, gestor adiciona cartões, edita e converte em post do Feed) e botão que importa 90 publicações do manual do suporte para o Fórum. Veja `GUIA-DESTAQUES-E-FORUM.md`. A tela inicial agora se chama **Feed** e, no celular, tem menu inferior no estilo Instagram.
 
 ## Tags, enquetes, fixados, @, emoji, filtro e sino
 

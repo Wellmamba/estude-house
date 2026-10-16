@@ -4,9 +4,9 @@ import { store, pmap } from "./db.mjs";
 import { newId } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as eng from "./engage.mjs";
-import { sanitizeMedia, cleanMultiline } from "./social.mjs";
+import { sanitizeMedia, cleanMultiline, publishFor } from "./social.mjs";
 
-const MAX_TITLE = 24, MAX_SLIDES = 8, MAX_TEXT = 280, SHOW = 30;
+const MAX_TITLE = 24, MAX_SLIDES = 20, MAX_TEXT = 280, SHOW = 30;
 const MOODS = ["gold", "violet", "pink", "mint", "dark"];
 const t13 = (n) => String(n).padStart(13, "0");
 const inv = (ts) => t13(9e12 - ts);
@@ -24,6 +24,12 @@ async function find(id) {
 async function seenIds(userId) {
   const keys = await (await seenStore()).keys({ prefix: userId + ":" });
   return new Set(keys.map((k) => k.slice(userId.length + 1)));
+}
+
+async function resetSeen(id, keepUserId) {
+  const ss = await seenStore();
+  const keys = (await ss.keys({})).filter((k) => k.endsWith(":" + id) && !k.startsWith(keepUserId + ":"));
+  await pmap(keys, (k) => ss.delete(k));
 }
 
 /* quantos destaques novos (ainda não assistidos até o fim) a pessoa tem */
@@ -66,6 +72,7 @@ export async function handle(ctx, { req, method, path, body, user }) {
     }
     const items = docs.map((d) => {
       const first = d.slides[0] || {};
+      // a bolinha mostra a foto de perfil de quem postou (cover só serve de reserva quando a pessoa não tem foto)
       return { id: d.id, title: d.title, author: au.get(d.authorId), createdAt: d.createdAt, count: d.slides.length, seen: seen.has(d.id), cover: first.media?.type === "image" ? first.media.url : null, mood: first.mood || "violet", hasVideo: d.slides.some((x) => x.media?.type === "video") };
     });
     items.sort((a, b) => (a.seen === b.seen ? b.createdAt - a.createdAt : a.seen ? 1 : -1));
@@ -108,6 +115,45 @@ export async function handle(ctx, { req, method, path, body, user }) {
     await ss.set(k, { at: now() });
     const r = f.doc.authorId === user.id ? { gained: 0, goals: [] } : await eng.record(user, "destaque", "Assistiu um destaque");
     return json({ ok: true, gained: r.gained, goals: r.goals });
+  }
+
+  /* editar (só gestor): troca o nome e a lista de cards inteira. Serve para acrescentar, tirar e reordenar cards. */
+  if (parts.length === 2 && method === "PUT") {
+    if (!isAdmin) fail(403, "Só gestores editam destaques.");
+    const f = await find(id);
+    if (!f) fail(404, "Esse destaque não existe mais.");
+    const title = String(body.title ?? f.doc.title).replace(/\s+/g, " ").trim().slice(0, MAX_TITLE);
+    if (title.length < 2) fail(400, "Dê um nome curto ao destaque (ele aparece embaixo da bolinha).");
+    const slides = sanitizeSlides(body.slides, fail);
+    const doc = { ...f.doc, title, slides, editedAt: now() };
+    await (await hl()).set(f.key, doc);
+    // quem já tinha assistido volta a ver como novo quando entram cards novos
+    if (slides.length > f.doc.slides.length) await resetSeen(id, user.id);
+    await ctx.logEvent(req, "destaque_editado", user, { destaque: id, titulo: title, cards: slides.length });
+    return json({ item: { id, title, count: slides.length } });
+  }
+
+  /* vira post do feed e sai dos destaques. body.slide = número do card ("all" = destaque inteiro) */
+  if (parts[2] === "to-feed" && method === "POST") {
+    if (!isAdmin) fail(403, "Só gestores transformam destaques em post.");
+    const f = await find(id);
+    if (!f) fail(404, "Esse destaque não existe mais.");
+    const all = body.slide === "all";
+    const n = Number(body.slide);
+    if (!all && !(Number.isInteger(n) && n >= 0 && n < f.doc.slides.length)) fail(400, "Card inválido.");
+    const picked = all ? f.doc.slides : [f.doc.slides[n]];
+    const media = picked.map((s) => s.media).filter(Boolean);
+    if (media.length > 4) fail(400, "Um post aceita até 4 fotos ou vídeos. Transforme os cards em partes (um por vez).");
+    const text = picked.map((s) => s.text).filter(Boolean).join("\n\n");
+    if (!text && !media.length) fail(400, "Esse card está vazio.");
+    const authorId = (await ctx.loadUser(f.doc.authorId)) ? f.doc.authorId : user.id;
+    const post = await publishFor(authorId, { text, media });
+    const s = await hl();
+    const rest = all ? [] : f.doc.slides.filter((_, k) => k !== n);
+    if (rest.length) await s.set(f.key, { ...f.doc, slides: rest, editedAt: now() });
+    else await Promise.all([s.delete(f.key), s.delete("ix:" + id)]);
+    await ctx.logEvent(req, "destaque_virou_post", user, { destaque: id, titulo: f.doc.title, post: post.id, cards: picked.length });
+    return json({ ok: true, post: post.id, removed: !rest.length, left: rest.length });
   }
 
   if (parts.length === 2 && method === "DELETE") {

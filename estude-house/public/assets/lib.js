@@ -142,7 +142,7 @@
     try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
     location.reload(); // recarrega para o navegador reler o tamanho da tela
   };
-  M.BUILD = "2026-10-16-d"; // igual ao BUILD de netlify/functions/api.mjs
+  M.BUILD = "2026-10-16-e"; // igual ao BUILD de netlify/functions/api.mjs
   M.modeSwitch = function ({ label = true } = {}) {
     const cur = M.effectiveMode(), saved = M.getMode();
     const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
@@ -273,6 +273,9 @@
     pin: "M12 17v5M8 3h8l-1 6 3 4H6l3-4zM6 13h12",
     chart: "M5 20V11M12 20V4M19 20v-6",
     more: "M5 12h.01M12 12h.01M19 12h.01",
+    pause: "M8 5v14M16 5v14", play: "M7 4l13 8-13 8z", edit: "M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z",
+    vol: "M11 5L6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 010 7M19 5a9 9 0 010 14", mute: "M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6",
+    up: "M12 19V5M5 12l7-7 7 7", down: "M12 5v14M19 12l-7 7-7-7",
   };
   M.icon = (name, size = 20) =>
     M.svg(`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[name] || ""}"/></svg>`);

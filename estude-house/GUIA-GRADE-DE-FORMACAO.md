@@ -7,6 +7,9 @@ Trilha completa de formação do assessor e do gestor de performance em marketpl
 - Provas: cada módulo tem banco de 24 questões (sorteia 12). A prova final sorteia 40 questões: algumas de cada módulo + questões exclusivas (24 no banco `gf-final`).
 - Trava sequencial: aluno só abre a aula seguinte depois de concluir a anterior; admin navega livre (regra geral da plataforma).
 
+## Como cada aula conduz o raciocínio
+Todas as 68 aulas abrem (logo depois do primeiro card) com **"A linha de raciocínio da aula"**: A pergunta, O princípio, O método e A decisão. É o fio da aula em 4 passos, com a fórmula ou o critério que vai ser usado. O resto da aula desenvolve esse fio (exemplo com conta, simulação, quiz) e fecha com "Fala assim com o seller" e o resumo. Ao criar ou mudar uma aula, escreva primeiro esse card: se não cabe em 4 linhas, a aula está confusa.
+
 ## Módulos
 
 1. Comece por aqui (a grade, os níveis, como estudar)

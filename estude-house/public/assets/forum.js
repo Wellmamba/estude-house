@@ -95,6 +95,16 @@
         if (first && editId) { try { const r = await M.get("forum/" + editId); edit(r.post); } catch {} editId = null; }
       } catch (e) { list.replaceChildren(h("div", { class: "form-error", text: e.message })); }
     }
+    const importBtn = h("button", { class: "btn btn-ghost", type: "button", text: "Importar manuais para o fórum" });
+    importBtn.addEventListener("click", async () => {
+      importBtn.disabled = true;
+      try {
+        const r = await M.post("forum/importar-manuais", {});
+        M.toast(r.created ? `${r.created} publicações criadas.` : "Tudo já estava importado.", "ok");
+        await load(true);
+      } catch (e) { M.toast(e.message, "err"); }
+      importBtn.disabled = false;
+    });
     load(true);
 
     return h("div", { class: "feed" },
@@ -103,6 +113,10 @@
       h("section", { class: "panel forum-form" }, formHead,
         h("div", { class: "field" }, title), h("div", { class: "field" }, cat, dl), h("div", { class: "field" }, text),
         err, h("div", { class: "row" }, send, cancel, h("span", { class: "spacer" }), count)),
+      h("section", { class: "panel forum-import" },
+        h("h3", { text: "Manual de operação do suporte" }),
+        h("p", { class: "muted small", text: "Cria de uma vez uma publicação por categoria do manual (Amazon, Mercado Livre, Shopee, TikTok Shop, Bling e Upseller): 90 publicações com os passos básicos e as fontes oficiais. Dá para repetir sem duplicar, e depois editar ou apagar cada uma." }),
+        h("div", { class: "row" }, importBtn)),
       h("h3", { style: "margin:26px 0 12px", text: "Publicações" }), list, more);
   };
 })();

@@ -40,8 +40,8 @@ let id1, id2;
   assert.equal(r.status, 400); ok("destaque precisa de nome");
   r = await call("POST", "destaques", { token: adm.token, body: { title: "Vazio", slides: [{ text: "  " }] } });
   assert.equal(r.status, 400); ok("card vazio é recusado");
-  r = await call("POST", "destaques", { token: adm.token, body: { title: "Muitos", slides: Array.from({ length: 9 }, () => ({ text: "a" })) } });
-  assert.equal(r.status, 400); ok("no máximo 8 cards");
+  r = await call("POST", "destaques", { token: adm.token, body: { title: "Muitos", slides: Array.from({ length: 21 }, () => ({ text: "a" })) } });
+  assert.equal(r.status, 400); ok("no máximo 20 cards");
   r = await call("POST", "destaques", { token: adm.token, body: { title: "Foto", slides: [{ media: { type: "image", url: "https://exemplo.com/a.jpg" } }] } });
   assert.equal(r.status, 400); ok("foto precisa vir do envio da plataforma");
 
@@ -82,6 +82,39 @@ let id1, id2;
   assert.equal(r.status, 200);
   r = await call("GET", "destaques/" + id2, { token: ana.token });
   assert.equal(r.status, 404); ok("só gestor apaga; some para todos");
+
+  // editar: acrescentar cards a um destaque que já existe
+  r = await call("PUT", "destaques/" + id1, { token: ana.token, body: { title: "x", slides: [{ text: "x" }] } });
+  assert.equal(r.status, 403); ok("aluno não edita destaque");
+  r = await call("PUT", "destaques/" + id1, { token: adm.token, body: { title: "Meta da semana", slides: [{ text: "Bora bater 5 posts", mood: "gold" }, { text: "Segundo card", mood: "pink" }, { text: "Terceiro card, novo", mood: "mint" }] } });
+  assert.equal(r.status, 200, JSON.stringify(r.data)); assert.equal(r.data.item.count, 3);
+  r = await call("GET", "destaques/" + id1, { token: ana.token });
+  assert.equal(r.data.destaque.slides.length, 3); assert.equal(r.data.destaque.slides[2].text, "Terceiro card, novo");
+  r = await call("GET", "destaques", { token: ana.token });
+  assert.equal(r.data.items.find((x) => x.id === id1).seen, false); ok("gestor acrescenta card e quem já viu volta a ver como novo");
+  r = await call("GET", "destaques", { token: adm.token });
+  assert.equal(r.data.items.find((x) => x.id === id1).seen, true);
+  assert.equal(r.data.items[0].author.name, "Wellington"); ok("a bolinha traz o autor (foto de perfil) e o gestor segue como visto");
+
+  // virar post do feed
+  r = await call("POST", `destaques/${id1}/to-feed`, { token: ana.token, body: { slide: 0 } });
+  assert.equal(r.status, 403); ok("aluno não transforma destaque em post");
+  r = await call("POST", `destaques/${id1}/to-feed`, { token: adm.token, body: { slide: 9 } });
+  assert.equal(r.status, 400);
+  r = await call("POST", `destaques/${id1}/to-feed`, { token: adm.token, body: { slide: 1 } });
+  assert.equal(r.status, 200, JSON.stringify(r.data)); assert.equal(r.data.left, 2); assert.equal(r.data.removed, false);
+  const postId = r.data.post;
+  r = await call("GET", "destaques/" + id1, { token: ana.token });
+  assert.deepEqual(r.data.destaque.slides.map((x) => x.text), ["Bora bater 5 posts", "Terceiro card, novo"]);
+  r = await call("GET", "feed", { token: ana.token });
+  const hit = r.data.posts.find((x) => x.id === postId);
+  assert.ok(hit && hit.text === "Segundo card" && hit.author.name === "Wellington"); ok("um card vira post publicado no Feed e sai do destaque");
+  r = await call("POST", `destaques/${id1}/to-feed`, { token: adm.token, body: { slide: "all" } });
+  assert.equal(r.status, 200); assert.equal(r.data.removed, true);
+  r = await call("GET", "destaques/" + id1, { token: ana.token });
+  assert.equal(r.status, 404);
+  r = await call("GET", "feed", { token: ana.token });
+  assert.ok(r.data.posts.some((x) => x.text.includes("Bora bater 5 posts") && x.text.includes("Terceiro card, novo"))); ok("o destaque inteiro vira um post e some da barra");
 
   r = await call("GET", "admin/engage/config", { token: adm.token });
   assert.equal(r.data.config.xp.destaque, 3); assert.equal(r.data.config.caps.destaque, 10); ok("XP do destaque aparece na configuração");
@@ -127,6 +160,26 @@ console.log("Fórum dos gestores");
   assert.equal(r.data.forum.length, 0);
   r = await call("GET", "forum/" + fid, { token: ana.token });
   assert.equal(r.status, 404); ok("apagar tira do fórum e da busca");
+
+  /* manuais iniciais: uma publicação por categoria */
+  r = await call("POST", "forum/importar-manuais", { token: ana.token, body: {} });
+  assert.equal(r.status, 403); ok("aluno não importa os manuais");
+  r = await call("POST", "forum/importar-manuais", { token: adm.token, body: {} });
+  assert.equal(r.status, 201, JSON.stringify(r.data)); assert.equal(r.data.created, 90); assert.equal(r.data.skipped, 0); ok("gestor importa os 90 posts do manual");
+  r = await call("POST", "forum/importar-manuais", { token: adm.token, body: {} });
+  assert.equal(r.status, 200); assert.equal(r.data.created, 0); assert.equal(r.data.skipped, 90); ok("importar de novo não duplica");
+  let n = 0, next = null;
+  const cats = new Set();
+  do {
+    r = await call("GET", "forum" + (next ? "?after=" + encodeURIComponent(next) : ""), { token: adm.token });
+    n += r.data.items.length; r.data.items.forEach((x) => { assert.ok(x.text.length <= 8000 && x.title.length <= 120); cats.add(x.category); }); next = r.data.next;
+  } while (next);
+  assert.equal(n, 90); assert.deepEqual([...cats].sort(), ["Amazon", "Bling", "Mercado Livre", "Shopee", "TikTok Shop", "Upseller"]); ok("90 publicações em 6 plataformas");
+  for (const [q, cat] of [["gmv max", "TikTok Shop"], ["certificado digital A1", "Bling"], ["shopee xpress", "Shopee"], ["product ads", "Mercado Livre"], ["conciliação bancária", "Bling"], ["central de educação do vendedor", "Shopee"], ["Upseller vídeos tutoriais", "Upseller"]]) {
+    r = await call("GET", "search?q=" + encodeURIComponent(q), { token: ana.token });
+    assert.ok(r.data.forum.some((f) => f.category === cat), `a busca "${q}" deveria achar um post de ${cat}: ` + JSON.stringify(r.data.forum.map((f) => f.title)));
+  }
+  ok("o aluno acha os passos básicos pela busca");
 }
 
 console.log("Aulas em sequência");
