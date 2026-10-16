@@ -1,3 +1,5 @@
+> Os cards também podem ser montados pelo construtor do site (`GUIA-CONSTRUTOR-DE-TRILHAS.md`), com os mesmos limites de tom e tamanho.
+
 # Guia: reescrever aulas no formato Stories (Estude House · Mamba Digital)
 
 ## Contexto

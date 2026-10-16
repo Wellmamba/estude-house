@@ -64,6 +64,25 @@ console.log("Conteúdo");
   ok(`${files.length} bancos de questões equilibrados (alternativas de tamanho parecido, sem a certa se destacar)`);
 }
 {
+  // O construtor (navegador) e o servidor precisam concordar sobre os tipos de card e o formato de cada um.
+  const { cleanBlock, CARD_TYPES } = await import("../netlify/functions/lib/trails.mjs");
+  const stub = { h: () => ({}), icon: () => ({}), esc: (x) => x };
+  vm.runInNewContext(fs.readFileSync(pub("assets/builder-cards.js"), "utf8"), { M: stub, window: {}, console });
+  const CARDS = stub.builder.CARDS;
+  assert.deepEqual(Object.keys(CARDS).sort(), [...CARD_TYPES].sort(), "tipos de card do construtor x servidor");
+  for (const [t, def] of Object.entries(CARDS)) {
+    const b = def.make();
+    const c = cleanBlock(JSON.parse(JSON.stringify(b)));
+    assert.ok(c && c.t === t, `${t}: o servidor recusou o card padrão`);
+    for (const k of Object.keys(b)) {
+      if (k === "layers") assert.equal(c.layers.length, b.layers.length, `${t}: camadas`);
+      else if (k === "style") assert.equal(c.style?.bg, b.style.bg, `${t}: fundo`);
+      else assert.equal(JSON.stringify(c[k]), JSON.stringify(b[k]), `${t}.${k}: o servidor mudou o valor padrão`);
+    }
+  }
+  ok(`${Object.keys(CARDS).length} tipos de card do construtor são aceitos pelo servidor sem mudar nada`);
+}
+{
   const front = fs.readFileSync(pub("assets/lib.js"), "utf8").match(/M\.BUILD = "([^"]+)"/)?.[1];
   const back = fs.readFileSync(path.join(root, "netlify/functions/api.mjs"), "utf8").match(/const BUILD = "([^"]+)"/)?.[1];
   assert.ok(front && front === back, `versão do site (${front}) e do servidor (${back}) precisam ser iguais`);

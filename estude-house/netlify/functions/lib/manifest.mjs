@@ -6,7 +6,7 @@
 // A trilha PriceBot mantém os ids originais (m0..m6, "final") para preservar o progresso de quem já estuda.
 // Para uma trilha nova, use um prefixo no id (ex.: "ads-m1", "ads-l1-1", finalScope "final-ads").
 // Opcional: `finalSize` = quantas questões a prova final dessa trilha sorteia (padrão: EXAM_SIZE.final).
-export const TRAILS = [
+const BUILTIN_TRAILS = [
   {
     id: "pricebot",
     title: "Formação PriceBot",
@@ -56,6 +56,21 @@ export const TRAILS = [
   },
 ];
 
+
+// Trilhas nativas (acima) + trilhas criadas pelo gestor no construtor (carregadas do banco por lib/trails.mjs).
+// O array é o mesmo objeto o tempo todo: setCustomTrails troca só a parte das trilhas criadas.
+export const TRAILS = [...BUILTIN_TRAILS];
+export const BUILTIN_IDS = new Set(BUILTIN_TRAILS.map((t) => t.id));
+export function setCustomTrails(list) {
+  TRAILS.length = BUILTIN_TRAILS.length;
+  TRAILS.push(...list);
+}
+// Trilhas inativas: somem para o aluno e não aceitam aula nem prova nova. O gestor continua vendo tudo.
+const INACTIVE = new Set();
+export function setInactive(ids) { INACTIVE.clear(); for (const id of ids) INACTIVE.add(id); }
+export const isTrailActive = (id) => !INACTIVE.has(id);
+export const inactiveIds = () => [...INACTIVE];
+
 export const trailById = (id) => TRAILS.find((t) => t.id === id) || null;
 export const trailOfLesson = (lessonId) => TRAILS.find((t) => t.modules.some((m) => m.lessons.includes(lessonId))) || null;
 // Para um id de prova (módulo ou final) devolve { trail, module, index, isFinal }; ou null.
@@ -76,7 +91,7 @@ export const EXAM_SIZE = { module: 12, final: 30, m0: 15 };
 export const examSizeFor = (scope) => {
   const r = trailOfScope(scope);
   if (r?.isFinal) return r.trail.finalSize || EXAM_SIZE.final;
-  return EXAM_SIZE[scope] || EXAM_SIZE.module;
+  return r?.module?.examSize || EXAM_SIZE[scope] || EXAM_SIZE.module;
 };
 
 // Regras de aprovação (em % de acerto).

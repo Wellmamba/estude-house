@@ -142,7 +142,7 @@
     try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
     location.reload(); // recarrega para o navegador reler o tamanho da tela
   };
-  M.BUILD = "2026-10-16-c"; // igual ao BUILD de netlify/functions/api.mjs
+  M.BUILD = "2026-10-16-d"; // igual ao BUILD de netlify/functions/api.mjs
   M.modeSwitch = function ({ label = true } = {}) {
     const cur = M.effectiveMode(), saved = M.getMode();
     const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
@@ -187,7 +187,19 @@
   /* ───── currículo: consultas (várias trilhas) ───── */
   /* Cada trilha se registra em window.TRILHAS (ver public/trilhas/<nome>/content.js).
      Ids de módulos, aulas e provas finais são únicos entre todas as trilhas. */
-  M.trails = () => window.TRILHAS || [];
+  /* Trilhas nativas (window.TRILHAS) + trilhas criadas no construtor (M.customTrails, vindas do servidor).
+     Trilha inativa some para o aluno; o gestor vê todas. */
+  M.customTrails = [];
+  M.allTrails = () => [...(window.TRILHAS || []), ...M.customTrails];
+  M.isInactive = (id) => (M.session.inactive || []).includes(id);
+  M.trails = () => (M.isAdmin() ? M.allTrails() : M.allTrails().filter((t) => !M.isInactive(t.id)));
+  /* baixa as trilhas criadas quando a versão mudou (o /me traz o número da versão) */
+  M.syncCustomTrails = async function (ctv) {
+    if (ctv == null || ctv === M.ctv) return;
+    const d = await M.get("trails/custom" + (M.ctv != null ? "?v=" + M.ctv : ""));
+    if (!d.same) M.customTrails = d.trails || [];
+    M.ctv = d.ver ?? ctv;
+  };
   M.trailById = (id) => M.trails().find((t) => t.id === id) || null;
   M.trailOfModule = (id) => M.trails().find((t) => t.modules.some((m) => m.id === id)) || null;
   M.trailOfLesson = (id) => M.trails().find((t) => t.modules.some((m) => m.lessons.some((l) => l.id === id))) || null;
@@ -196,7 +208,7 @@
   M.isFinal = (scope) => !!M.trailOfFinal(scope);
   M.trailOfScope = (scope) => M.trailOfFinal(scope) || M.trailOfModule(scope);
   M.trailHref = (t) => "#/t/" + t.id;
-  M.curso = () => M.trails()[0];
+  M.curso = () => M.allTrails()[0];
   M.modulo = (id) => { for (const t of M.trails()) { const m = t.modules.find((x) => x.id === id); if (m) return m; } return undefined; };
   M.aula = (id) => {
     for (const t of M.trails()) {
@@ -215,7 +227,7 @@
     const ex = M.session.rules?.examSize || {};
     const fin = M.trailOfFinal(scope);
     if (fin) return fin.finalSize || ex.final || 30;
-    return ex[scope] || ex.module || 12;
+    return M.modulo(scope)?.examSize || ex[scope] || ex.module || 12;
   };
   M.isAdmin = () => M.session.user?.role === "admin";
 

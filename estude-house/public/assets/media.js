@@ -82,6 +82,7 @@
   const posterUrl = (url) => (url.includes("/video/upload/") ? insertT(url, "video", "so_0,f_jpg,w_900").replace(/\.\w+$/, ".jpg") : undefined);
   const prettySize = (b) => (!b ? "" : b > 1048576 ? (b / 1048576).toFixed(1).replace(".", ",") + " MB" : Math.max(1, Math.round(b / 1024)) + " KB");
   M.prettySize = prettySize;
+  M.imgUrl = imgUrl; M.vidUrl = vidUrl; M.posterUrl = posterUrl;
 
   /* ───── tela cheia ───── */
   M.viewer = function (node, title) {

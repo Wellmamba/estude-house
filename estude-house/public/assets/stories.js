@@ -33,8 +33,8 @@
   R.steps = (b) => titled(b, basicSteps(b));
 
   const GATED = new Set(["quiz", "sim", "find"]); // só avança depois de fazer
-  const NONAV = new Set(["quiz", "sim", "find", "shot", "video", "ruler", "lab", "anno"]); // toque no vazio não troca de card
-  const MOOD = { hook: "gold", big: "violet", jargon: "pink", conta: "mint", say: "dark", recap: "violet", end: "gold", chart: "dark", flow: "plum", table: "dark", tree: "plum", timeline: "dark", stairs: "plum", anno: "dark", lab: "dark" };
+  const NONAV = new Set(["quiz", "sim", "find", "shot", "video", "mvideo", "ruler", "lab", "anno"]); // toque no vazio não troca de card
+  const MOOD = { img: "dark", mvideo: "dark", free: "night", hook: "gold", big: "violet", jargon: "pink", conta: "mint", say: "dark", recap: "violet", end: "gold", chart: "dark", flow: "plum", table: "dark", tree: "plum", timeline: "dark", stairs: "plum", anno: "dark", lab: "dark" };
   const TONE_MOOD = { dica: "violet", atencao: "amber", exemplo: "mint", regra: "violet" };
 
   function moodOf(b, i) {
@@ -43,6 +43,8 @@
     if (NONAV.has(b.t)) return "dark";
     return i % 2 ? "plum" : "night";
   }
+
+  M.cardMood = moodOf;
 
   /* prepara a lista de cards: junta títulos soltos (h) no card seguinte e garante capa e final */
   function buildCards(lesson) {
@@ -63,7 +65,7 @@
     const found = M.aula(id);
     if (!found) return M.notFound();
     const { trail, mod, lesson, index } = found;
-    const p = M.session.progress, st = M.tp(trail).modules[mod.n - 1];
+    const st = M.tp(trail).modules[mod.n - 1];
     if (!st.unlocked && !M.isAdmin()) {
       return h("div", { class: "empty" }, h("h3", { text: "Aula bloqueada" }),
         h("p", { text: "Termine o módulo anterior para chegar aqui." }), h("a", { class: "btn btn-gold", href: M.trailHref(trail) }, "Voltar à trilha"));
@@ -73,7 +75,18 @@
       return h("div", { class: "empty" }, h("h3", { text: "Essa aula ainda está bloqueada" }),
         h("p", { text: "Assista a aula anterior até o fim para liberar essa." }), h("a", { class: "btn btn-gold", href: "#/l/" + prev.id }, "Ir para a aula anterior"));
     }
-    const already = !!p.lessons[lesson.id];
+    return buildPlayer(found, {});
+  };
+
+  /* Player de stories. `opts.preview` = prévia do construtor: não grava progresso, não bloqueia nada e fecha pelo `opts.onClose`. */
+  M.playLesson = (found, opts) => buildPlayer(found, { ...opts, preview: true });
+
+  function buildPlayer(found, opts) {
+    const { trail, mod, lesson, index } = found;
+    const preview = !!opts.preview;
+    const exit = () => { if (preview) opts.onClose && opts.onClose(); else M.go("#/m/" + mod.id); };
+    const p = preview ? { lessons: {} } : M.session.progress;
+    const already = !preview && !!p.lessons[lesson.id];
     const cards = buildCards(lesson);
     const last = cards.length - 1;
     const nextL = index < mod.lessons.length - 1 ? mod.lessons[index + 1] : null;
@@ -88,7 +101,7 @@
 
     const bars = h("div", { class: "st-bars", role: "progressbar", "aria-valuemin": "1", "aria-valuemax": String(cards.length), "aria-label": "Progresso da aula" },
       cards.map(() => h("span", { class: "st-seg" }, h("i"))));
-    const close = h("button", { class: "st-x", type: "button", "aria-label": "Sair da aula", onclick: () => M.go("#/m/" + mod.id) }, M.icon("x", 22));
+    const close = h("button", { class: "st-x", type: "button", "aria-label": "Sair da aula", onclick: exit }, M.icon("x", 22));
     const head = h("div", { class: "st-head" },
       h("span", { class: "st-ring", "aria-hidden": "true" }, h("b", { text: String(mod.n) })),
       h("div", { class: "st-who" }, h("b", { text: lesson.title }), h("span", { text: `${trail.title.split(" ").slice(0, 3).join(" ")} · aula ${index + 1} de ${mod.lessons.length}` })),
@@ -103,10 +116,15 @@
     const arrowR = h("button", { class: "st-arrow st-arrow-r", type: "button", "aria-label": "Próximo card", onclick: () => go(1) }, M.icon("arrow", 22));
     const node = h("article", { class: "stories", "aria-label": "Aula: " + lesson.title }, arrowL, frame, arrowR);
 
-    const gatedNow = () => !already && GATED.has(cards[i].t) && !answered.has(cards[i]);
+    const gatedNow = () => !already && !preview && GATED.has(cards[i].t) && !answered.has(cards[i]);
 
     function endCard() {
       const go2 = nextL ? { href: "#/l/" + nextL.id, text: "Próxima aula" } : { href: "#/m/" + mod.id, text: "Ir pra prova do módulo" };
+      if (preview) {
+        return h("div", { class: "endcard" }, sticker("🏀"), h("h2", { text: "Fim da aula" }), h("p", { text: "É assim que o aluno vê o final. Ele clica em Concluir e ganha +20 XP." }),
+          h("div", { class: "end-actions" }, h("button", { class: "btn btn-gold st-cta", type: "button", onclick: exit }, "Fechar prévia"),
+            h("button", { class: "btn btn-ghost", type: "button", onclick: () => { dir = -1; i = 0; show(); } }, "Rever do começo")));
+      }
       const btn = h("button", { class: "btn btn-gold st-cta", type: "button" }, already ? go2.text : "Concluir e seguir", M.icon("arrow", 18));
       btn.addEventListener("click", async () => {
         if (already) { M.go(go2.href); return; }
@@ -132,6 +150,7 @@
       const b = cards[k];
       const body = b.t === "end" ? endCard() : M.renderBlock(b, ctx);
       els[k] = h("div", { class: `slide k-${b.t}${b.tone ? " tone-" + b.tone : ""}`, "data-k": String(k) }, body);
+      M.cardStyle(els[k], b);
       return els[k];
     }
 
@@ -139,7 +158,7 @@
       const b = cards[i];
       [...bars.children].forEach((s, k) => { s.classList.toggle("on", k < i); s.classList.toggle("cur", k === i); });
       bars.setAttribute("aria-valuenow", String(i + 1));
-      frame.dataset.mood = moodOf(b, i);
+      M.cardFrame(frame, b, moodOf(b, i));
       frame.classList.toggle("is-end", b.t === "end");
       prevBtn.hidden = i === 0;
       arrowL.hidden = i === 0;
@@ -153,10 +172,12 @@
     }
 
     function show() {
+      if (card.firstChild) M.cardHidden(card.firstChild);
       card.replaceChildren(render(i));
       card.className = "st-card " + (dir > 0 ? "in-next" : "in-prev");
       card.scrollTop = 0;
       paint();
+      M.cardShown(card.firstChild);
     }
 
     function go(d) {
@@ -193,7 +214,7 @@
       if (!node.isConnected) { document.removeEventListener("keydown", onKey); return; }
       if (document.querySelector("dialog[open]")) return;
       const tag = (e.target.tagName || "").toLowerCase();
-      if (e.key === "Escape") { M.go("#/m/" + mod.id); return; }
+      if (e.key === "Escape") { exit(); return; }
       if (tag === "input" || tag === "textarea" || tag === "select") return;
       if (e.key === "ArrowRight") go(1);
       else if (e.key === "ArrowLeft") go(-1);
@@ -202,8 +223,8 @@
     document.addEventListener("keydown", onKey);
 
     show();
-    node._crumbs = [{ text: "Trilhas", href: M.trailsHref }, { text: trail.title, href: M.trailHref(trail) }, { text: `Módulo ${mod.n}`, href: "#/m/" + mod.id }, { text: lesson.title }];
+    if (!preview) node._crumbs = [{ text: "Trilhas", href: M.trailsHref }, { text: trail.title, href: M.trailHref(trail) }, { text: `Módulo ${mod.n}`, href: "#/m/" + mod.id }, { text: lesson.title }];
     node._stories = true;
     return node;
-  };
+  }
 })();

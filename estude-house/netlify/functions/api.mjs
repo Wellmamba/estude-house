@@ -3,8 +3,9 @@ import {
   normalizeEmail, isValidEmail, emailKey, hashPassword, verifyPassword, signToken, verifyToken,
   passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed, isLive,
 } from "./lib/auth.mjs";
-import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope } from "./lib/manifest.mjs";
-import { QUESTIONS } from "./lib/questions/index.mjs";
+import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope, isTrailActive } from "./lib/manifest.mjs";
+import { QUESTIONS, byId } from "./lib/questions/index.mjs";
+import * as trailsLib from "./lib/trails.mjs";
 import * as social from "./lib/social.mjs";
 import * as eng from "./lib/engage.mjs";
 import * as signup from "./lib/signup.mjs";
@@ -20,7 +21,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-16-c";
+const BUILD = "2026-10-16-d";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -229,10 +230,16 @@ function examScope(scope) {
   return info;
 }
 
+// Trilha inativa: o aluno não estuda nem faz prova (o gestor continua livre para testar).
+function needActive(user, trail) {
+  if (user.role !== "admin" && !isTrailActive(trail.id)) fail(403, "Esta trilha está inativa no momento.");
+}
+
 async function completeLesson(req, user, body) {
   const lessonId = String(body.lessonId || "");
   const trail = trailOfLesson(lessonId);
   if (!trail) fail(400, "Aula inexistente.");
+  needActive(user, trail);
   const mod = trail.modules.find((m) => m.lessons.includes(lessonId));
   const p = await loadProgress(user.id);
   const idx = trail.modules.indexOf(mod);
@@ -250,6 +257,7 @@ async function completeLesson(req, user, body) {
 
 async function startExam(req, user, body) {
   const { trail, isFinal, index } = examScope(body.scope);
+  needActive(user, trail);
   const scope = isFinal ? trail.finalScope : trail.modules[index].id;
   const p = await loadProgress(user.id);
   const isAdmin = user.role === "admin";
@@ -304,6 +312,9 @@ async function submitExam(req, user, body) {
   if (!attempt || attempt.userId !== user.id) fail(404, "Prova não encontrada.");
   if (attempt.submittedAt) fail(409, "Esta prova já foi enviada.");
   const scope = attempt.scope;
+  const scopeInfo = trailOfScope(scope);
+  if (!scopeInfo) fail(410, "Esta prova não existe mais.");
+  needActive(user, scopeInfo.trail);
   const p = await loadProgress(user.id);
 
   const g = grade(attempt.items, body.answers || {});
@@ -324,7 +335,7 @@ async function submitExam(req, user, body) {
       p.exams[scope] = { ...prev, ...base, status: "retry", retry: { qids: wrong.map((r) => r.qid) } };
       result = {
         mode: "retry", outcome: "refazer-erros", correct: g.correct, total: g.total, remaining: wrong.length,
-        topics: [...new Set(wrong.map((r) => QUESTIONS.find((q) => q.id === r.qid).topic))],
+        topics: [...new Set(wrong.map((r) => byId(r.qid)?.topic).filter(Boolean))],
       };
     }
   } else {
@@ -339,7 +350,7 @@ async function submitExam(req, user, body) {
       p.exams[scope] = { ...base, status: "retry", retry: { qids: wrong.map((r) => r.qid) } };
       result = {
         mode: "full", outcome, pct: g.pct, correct: g.correct, total: g.total, remaining: wrong.length,
-        topics: [...new Set(wrong.map((r) => QUESTIONS.find((q) => q.id === r.qid).topic))],
+        topics: [...new Set(wrong.map((r) => byId(r.qid)?.topic).filter(Boolean))],
       };
     } else {
       // reprovado: refaz tudo
@@ -651,6 +662,8 @@ export default async (req, context) => {
     if (path === "auth/activate" && method === "POST") return await signup.activate({ json, fail, logEvent, loadUser, saveUser, findByEmail }, req, body);
 
     const user = await requireUser(req);
+    // trilhas criadas no construtor + trilhas inativas (barato: no máximo uma leitura pequena a cada 4 s)
+    await trailsLib.sync().catch((e) => console.error("trilhas não carregaram", e));
 
     if (path === "me" && method === "GET") {
       const [p, e, pending, pendingSignups, unread, newDest] = await Promise.all([
@@ -661,7 +674,7 @@ export default async (req, context) => {
         notify.unreadCount(user).catch(() => 0),
         destaques.unseenCount(user).catch(() => 0),
       ]);
-      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, unread, destaques: newDest, rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     if (path === "auth/password" && method === "POST") {
       if (!verifyPassword(String(body.current || ""), user.passHash)) fail(400, "A senha atual não confere.");
@@ -685,6 +698,8 @@ export default async (req, context) => {
     if (social_) return social_;
 
     const ctx2 = { json, fail, logEvent, loadUser, saveUser, allUsers, publicUser };
+    const trails_ = await trailsLib.handle(ctx2, { req, method, path, url, body, user });
+    if (trails_) return trails_;
     const dest_ = await destaques.handle(ctx2, { req, method, path, url, body, user });
     if (dest_) return dest_;
     const forum_ = await forum.handle(ctx2, { req, method, path, url, body, user });

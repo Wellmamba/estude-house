@@ -6,7 +6,8 @@
   M.go = (hash) => { if (location.hash === hash) M.render(); else location.hash = hash; };
   M.refreshMe = async function () {
     const d = await M.get("me");
-    M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules;
+    M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules; M.session.inactive = d.inactive || [];
+    try { await M.syncCustomTrails(d.ctv); } catch (e) { console.warn("trilhas criadas não carregaram", e); }
     M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.unread = d.unread || 0; M.session.destaques = d.destaques || 0;
     if (M.updateBell) M.updateBell();
     return d;
@@ -118,6 +119,7 @@
         h("div", { class: "nav-sep", text: "Administração" }),
         link("admin", "#/admin", "shield", "Painel"),
         link("admin-approve", "#/admin/aprovacoes", "flag", "Aprovações", true),
+        link("admin-trails", "#/admin/trilhas", "book", "Gestão de trilhas"),
         link("admin-forum", "#/admin/forum", "chat", "Fórum"),
         link("admin-engage", "#/admin/engajamento", "bolt", "Engajamento"),
         link("admin-tags", "#/admin/tags", "tag", "Tags e moderação"),
@@ -377,7 +379,7 @@
       return h("a", { class: "trail-card" + (st === "done" ? " is-done" : ""), href: M.trailHref(t) },
         h("div", { class: "row row-between" },
           h("span", { class: "chip chip-tag", text: t.tag || "Trilha" }),
-          h("span", { class: chip[0], text: chip[1] })),
+          h("span", { class: "row" }, M.isInactive(t.id) ? h("span", { class: "chip chip-bad", text: "Inativa (só gestor vê)" }) : null, h("span", { class: chip[0], text: chip[1] }))),
         h("h3", { text: t.title }),
         h("p", { class: "trail-tag", text: t.tagline }),
         h("div", { class: "trail-meta" },
@@ -398,6 +400,12 @@
       h("div", { class: "page-head" },
         h("h2", { text: "Olá, " + M.firstName(M.session.user.name) }),
         h("p", { text: "Escolha uma trilha para estudar. Cada uma tem aulas, quizzes, provas por módulo e uma prova final que libera o certificado." })),
+      M.isAdmin() ? h("div", { class: "panel tr-admin", "aria-label": "Ferramentas do gestor" },
+        h("div", null, h("b", { text: "Gestor" }), h("p", { class: "muted small", text: "Crie uma trilha do zero, edite as suas e ative ou inative qualquer uma." })),
+        h("div", { class: "row" },
+          h("button", { class: "btn btn-gold", type: "button", onclick: M.createTrailDialog }, M.icon("plus", 18), " Criar nova trilha"),
+          h("a", { class: "btn btn-ghost", href: "#/admin/trilhas" }, "Gerenciar trilhas"))) : null,
+      M.isAdmin() ? h("div", { style: "height:18px" }) : null,
       resume, resume ? h("div", { style: "height:18px" }) : null,
       h("div", { class: "grid grid-4" },
         stat(`${doneTrails}/${trails.length}`, trails.length === 1 ? "trilha concluída" : "trilhas concluídas"),

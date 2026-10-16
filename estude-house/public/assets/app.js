@@ -15,6 +15,8 @@
     [/^#\/ranking$/, "rank", () => ({ key: "rank", crumbs: [T("Ranking")], view: () => M.views.ranking() })],
     [/^#\/busca(?:\?(.*))?$/, "search", (m) => { const q = new URLSearchParams(m[1] || ""); return { key: "search", crumbs: [T("Busca")], view: () => M.views.search(q.get("q") || "", q.get("tag") || "") }; }],
     [/^#\/tag\/([\w-]+)$/, "tag", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Tag")], view: () => M.views.home({ tag: m[1] }) })],
+    [/^#\/admin\/trilhas$/, "admin", () => ({ key: "admin-trails", crumbs: [T("Administração"), T("Trilhas")], view: () => M.views.adminTrails(), wide: true })],
+    [/^#\/admin\/trilhas\/(c[0-9a-f]{6})$/, "admin", (m) => ({ key: "admin-trails", crumbs: [T("Administração"), { text: "Trilhas", href: "#/admin/trilhas" }, T("Editor")], view: () => M.views.trailBuilder(m[1]), wide: true, bare: true })],
     [/^#\/admin\/tags$/, "admin", () => ({ key: "admin-tags", crumbs: [T("Administração"), T("Tags e moderação")], view: () => M.views.adminTags(), wide: true })],
     [/^#\/admin\/aprovacoes$/, "admin", () => ({ key: "admin-approve", crumbs: [T("Administração"), T("Aprovações")], view: () => M.views.adminApprovals(), wide: true })],
     [/^#\/admin\/engajamento$/, "admin", () => ({ key: "admin-engage", crumbs: [T("Administração"), T("Engajamento")], view: () => M.views.adminEngage(), wide: true })],
