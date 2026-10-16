@@ -10,6 +10,7 @@ import * as eng from "./engage.mjs";
 import * as mod from "./moderation.mjs";
 import * as notify from "./notify.mjs";
 import { match, snippet } from "./textsearch.mjs";
+import * as forum from "./forum.mjs";
 
 const MAX_TEXT = 2000, MAX_COMMENT = 500, MAX_MEDIA = 4, PAGE = 12, MAX_PENDING = 3;
 const MAX_TAGS = 30, MAX_PINNED = 3, MAX_QUESTIONS = 6, MAX_OPTIONS = 8;
@@ -38,7 +39,7 @@ const bust = (prefix) => { for (const k of MEMO.keys()) if (k.startsWith(prefix)
 const cloud = () => ({ name: process.env.CLOUDINARY_CLOUD_NAME || "", key: process.env.CLOUDINARY_API_KEY || "", secret: process.env.CLOUDINARY_API_SECRET || "" });
 export const uploadsOn = () => { const c = cloud(); return !!(c.name && c.key && c.secret); };
 
-function sanitizeMedia(list, fail) {
+export function sanitizeMedia(list, fail) {
   if (list == null) return [];
   if (!Array.isArray(list)) fail(400, "Anexos inválidos.");
   if (list.length > MAX_MEDIA) fail(400, `No máximo ${MAX_MEDIA} anexos por post.`);
@@ -71,7 +72,7 @@ function signUpload(user) {
 }
 
 /* ---------- textos ---------- */
-const cleanMultiline = (s, max) => String(s ?? "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0009\u000b-\u001f]/g, " ").replace(/\n{3,}/g, "\n\n").trim().slice(0, max);
+export const cleanMultiline = (s, max) => String(s ?? "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0009\u000b-\u001f]/g, " ").replace(/\n{3,}/g, "\n\n").trim().slice(0, max);
 
 /* ---------- gravação dos posts ---------- */
 const feed = () => store("feed");
@@ -597,15 +598,15 @@ function nickProblem(nick) {
 async function search(ctx, user, q, tagId = "") {
   const tags = await loadTags();
   const tag = tagId ? tags.find((t) => t.id === tagId) : null;
-  if (tagId && !tag) return { people: [], posts: [], tag: null };
+  if (tagId && !tag) return { people: [], posts: [], forum: [], tag: null };
   if (norm1(q).length < 2) {
-    if (!tag) return { people: [], posts: [] };
+    if (!tag) return { people: [], posts: [], forum: [] };
     // só a tag escolhida: lista os posts mais recentes dela
     const f = await feed();
     const keys = await f.keys({ prefix: `tg:${tag.id}:`, limit: 15 });
     const docs = (await pmap(keys, async (k) => f.get((await f.get(k))?.k || "x"))).filter(Boolean);
     const authors = await authorsFor(ctx, docs.map((p) => p.authorId));
-    return { people: [], tag: tagView(tag), posts: docs.map((p) => ({ id: p.id, author: authors.get(p.authorId), snippet: String(p.text || (p.poll ? "Enquete: " + p.poll.questions[0].text : "") || (p.media || []).map((m) => m.name || m.url).join(" ")).slice(0, 160), publishedAt: p.publishedAt, media: (p.media || []).map((m) => m.type), tag: tagView(tag) })) };
+    return { people: [], forum: [], tag: tagView(tag), posts: docs.map((p) => ({ id: p.id, author: authors.get(p.authorId), snippet: String(p.text || (p.poll ? "Enquete: " + p.poll.questions[0].text : "") || (p.media || []).map((m) => m.name || m.url).join(" ")).slice(0, 160), publishedAt: p.publishedAt, media: (p.media || []).map((m) => m.type), tag: tagView(tag) })) };
   }
   const people = await memo("people", 30000, () => ctx.allUsers());
   const qPerson = q.replace(/^@/, "");
@@ -637,6 +638,7 @@ async function search(ctx, user, q, tagId = "") {
   hRows.sort((a, b) => b.s - a.s);
   return {
     people: pRows.slice(0, 8).map((r) => r.p),
+    forum: tag ? [] : await forum.search(q),
     tag: tag ? tagView(tag) : undefined,
     posts: hRows.slice(0, 15).map(({ p, a }) => ({ id: p.id, author: a, snippet: snippet(p.text || (p.poll ? "Enquete: " + p.poll.questions[0].text : "") || (p.media || []).map((m) => m.name || m.url).join(" "), q), publishedAt: p.publishedAt, media: (p.media || []).map((m) => m.type), tag: tagMap.get(p.tag) ? tagView(tagMap.get(p.tag)) : null })),
   };

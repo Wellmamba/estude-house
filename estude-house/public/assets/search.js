@@ -73,11 +73,11 @@
       if (top) top.value = term;
       const my = ++seq;
       if (!tagId && TextSearch.tokens(term).length === 0 && term.replace(/[^\p{L}\p{N}]/gu, "").length < 2) {
-        out.replaceChildren(h("div", { class: "empty" }, h("h3", { text: "O que você procura?" }), h("p", { text: "Pesquise o nome de alguém, um @, um assunto de aula ou uma palavra de um post. A busca ignora acento e maiúscula, aceita plural e pequenos erros de digitação. Escolha uma tag para buscar só nos posts dela." })));
+        out.replaceChildren(h("div", { class: "empty" }, h("h3", { text: "O que você procura?" }), h("p", { text: "Pesquise o nome de alguém, um @, um assunto de aula, uma palavra de um post ou qualquer tema que o time já documentou. A busca ignora acento e maiúscula, aceita plural e pequenos erros de digitação. Escolha uma tag para buscar só nos posts dela." })));
         return;
       }
       out.replaceChildren(M.loading("Buscando…"));
-      let srv = { people: [], posts: [] };
+      let srv = { people: [], posts: [], forum: [] };
       let warn = null;
       try { srv = await M.get("search?" + new URLSearchParams({ q: term, ...(tagId ? { tag: tagId } : {}) })); } catch (e) { warn = e.message; }
       if (my !== seq) return;
@@ -89,7 +89,12 @@
         h("ul", { class: "s-people" }, srv.people.map((p) => h("li", null, h("a", { class: "s-person", href: M.profileHref(p) }, M.avatar(p, 42),
           h("span", null, h("strong", null, ...M.highlight(p.name, term)), h("span", { class: "muted small", style: "display:block" }, p.nickname ? "@" + p.nickname : "", p.role === "admin" ? " · Gestor" : "")))))) ));
 
-      if (srv.posts.length) sections.push(h("section", null, h("h3", { class: "s-h", text: tagNow ? `Posts com a tag ${tagNow.name}` : "Posts do feed" }),
+      if ((srv.forum || []).length) sections.push(h("section", null, h("h3", { class: "s-h", text: "Fórum" }),
+        h("ul", { class: "s-list" }, srv.forum.map((f) => h("li", null, h("a", { class: "s-item", href: "#/forum/" + f.id },
+          h("div", { class: "row", style: "gap:8px" }, h("span", { class: "chip chip-xs chip-gold", text: "Fórum" }), h("strong", null, ...M.highlight(f.title, term)), f.category ? h("span", { class: "chip chip-xs", text: f.category }) : null),
+          h("p", { class: "s-snip" }, ...M.highlight(f.snippet, term)))))) ));
+
+      if (srv.posts.length) sections.push(h("section", null, h("h3", { class: "s-h", text: tagNow ? `Posts com a tag ${tagNow.name}` : "Posts do Feed" }),
         h("ul", { class: "s-list" }, srv.posts.map((p) => h("li", null, h("a", { class: "s-item", href: "#/post/" + p.id },
           h("div", { class: "row", style: "gap:8px" }, M.avatar(p.author, 26), h("strong", { class: "small", text: p.author.name }), h("span", { class: "muted small", text: "· " + M.timeAgo(p.publishedAt) }),
             p.media.length ? h("span", { class: "chip chip-xs", text: p.media.includes("video") ? "Vídeo" : p.media.includes("image") ? "Imagem" : "Anexo" }) : null,
@@ -110,6 +115,6 @@
         sections.length ? sections : h("div", { class: "empty" }, h("h3", { text: tagNow ? (term ? `Nada encontrado para “${term}” na tag ${tagNow.name}` : `Nenhum post com a tag ${tagNow.name}`) : `Nada encontrado para “${term}”` }), h("p", { text: "Tente outra palavra, o início de um nome ou um termo parecido." })));
     }
     go(q);
-    return h("div", { class: "feed" }, h("div", { class: "page-head" }, h("h2", { text: "Busca" }), h("p", { text: "Pessoas, posts do feed e conteúdo das trilhas, tudo de uma vez. Traz palavras parecidas, não só iguais. Escolha uma tag para buscar só nos posts dela." })), form, out);
+    return h("div", { class: "feed" }, h("div", { class: "page-head" }, h("h2", { text: "Busca" }), h("p", { text: "Pessoas, posts do Feed, conteúdo das trilhas e materiais do time, tudo de uma vez. Traz palavras parecidas, não só iguais. Escolha uma tag para buscar só nos posts dela." })), form, out);
   };
 })();

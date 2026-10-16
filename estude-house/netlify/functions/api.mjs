@@ -9,6 +9,8 @@ import * as social from "./lib/social.mjs";
 import * as eng from "./lib/engage.mjs";
 import * as signup from "./lib/signup.mjs";
 import * as notify from "./lib/notify.mjs";
+import * as destaques from "./lib/destaques.mjs";
+import * as forum from "./lib/forum.mjs";
 import { now } from "./lib/clock.mjs";
 import { outcomeFor, drawQuestionIds, buildItems, publicQuestions, grade, reviewItem } from "./lib/exam.mjs";
 
@@ -18,7 +20,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-16-a";
+const BUILD = "2026-10-16-b";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -235,6 +237,9 @@ async function completeLesson(req, user, body) {
   const p = await loadProgress(user.id);
   const idx = trail.modules.indexOf(mod);
   if (user.role !== "admin" && !moduleState(p, trail, idx).unlocked) fail(403, "Este módulo ainda está bloqueado.");
+  const li = mod.lessons.indexOf(lessonId);
+  // o aluno assiste na ordem: a aula só abre depois de concluir a anterior (gestor navega livre)
+  if (user.role !== "admin" && li > 0 && !p.lessons[lessonId] && !p.lessons[mod.lessons[li - 1]]) fail(403, "Assista a aula anterior primeiro.");
   if (p.exams[mod.id]?.status === "approved") return json({ progress: progressView(p) });
   if (!p.lessons[lessonId]) {
     p.lessons[lessonId] = Date.now();
@@ -648,14 +653,15 @@ export default async (req, context) => {
     const user = await requireUser(req);
 
     if (path === "me" && method === "GET") {
-      const [p, e, pending, pendingSignups, unread] = await Promise.all([
+      const [p, e, pending, pendingSignups, unread, newDest] = await Promise.all([
         loadProgress(user.id),
         user.role === "aluno" ? eng.loadEng(user.id) : null,
         user.role === "admin" ? social.pendingCount() : 0,
         user.role === "admin" ? signup.pendingCount() : 0,
         notify.unreadCount(user).catch(() => 0),
+        destaques.unseenCount(user).catch(() => 0),
       ]);
-      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, unread, rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, unread, destaques: newDest, rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     if (path === "auth/password" && method === "POST") {
       if (!verifyPassword(String(body.current || ""), user.passHash)) fail(400, "A senha atual não confere.");
@@ -677,6 +683,12 @@ export default async (req, context) => {
       { req, method, path, url, body, user },
     );
     if (social_) return social_;
+
+    const ctx2 = { json, fail, logEvent, loadUser, saveUser, allUsers, publicUser };
+    const dest_ = await destaques.handle(ctx2, { req, method, path, url, body, user });
+    if (dest_) return dest_;
+    const forum_ = await forum.handle(ctx2, { req, method, path, url, body, user });
+    if (forum_) return forum_;
 
     if (path.startsWith("admin/")) {
       const admin = await requireAdmin(req);

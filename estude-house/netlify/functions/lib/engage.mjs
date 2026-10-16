@@ -3,14 +3,14 @@
 import { store, pmap } from "./db.mjs";
 import { now, dayKey, addDays, weekKey, monthKey, daysOfWeek } from "./clock.mjs";
 
-export const METRICS = { checkin: "check-ins", hype: "hypes dados", comment: "comentários", post: "posts aprovados" };
+export const METRICS = { checkin: "check-ins", hype: "hypes dados", comment: "comentários", post: "posts aprovados", destaque: "destaques assistidos" };
 const KEEP_DAYS = 75;
 
 export const DEFAULT_CFG = {
   // XP de cada ação. "streakBonus": a cada dia seguido de check-in soma esse valor (até "streakBonusMax").
-  xp: { checkin: 10, streakBonus: 2, streakBonusMax: 10, hype: 1, comment: 2, post: 30 },
+  xp: { checkin: 10, streakBonus: 2, streakBonusMax: 10, hype: 1, comment: 2, post: 30, destaque: 3 },
   // Quantas ações por dia ainda rendem XP (evita farmar com cliques).
-  caps: { hype: 10, comment: 5, post: 2 },
+  caps: { hype: 10, comment: 5, post: 2, destaque: 10 },
   goals: [
     { id: "g-checkin-semana", title: "Check-in em 5 dias da semana", metric: "checkin", target: 5, period: "week", xp: 40, active: true },
     { id: "g-hype-dia", title: "Dê 5 hypes hoje", metric: "hype", target: 5, period: "day", xp: 10, active: true },
@@ -52,7 +52,8 @@ export async function saveCfg(input, newId, fail) {
   cfg.xp.hype = num(x.hype ?? DEFAULT_CFG.xp.hype, 0, 1000, "XP do hype");
   cfg.xp.comment = num(x.comment ?? DEFAULT_CFG.xp.comment, 0, 1000, "XP do comentário");
   cfg.xp.post = num(x.post ?? DEFAULT_CFG.xp.post, 0, 1000, "XP do post aprovado");
-  for (const k of ["hype", "comment", "post"]) cfg.caps[k] = num(c[k] ?? DEFAULT_CFG.caps[k], 1, 100, `Limite diário de ${METRICS[k]}`);
+  cfg.xp.destaque = num(x.destaque ?? DEFAULT_CFG.xp.destaque, 0, 1000, "XP de assistir um destaque");
+  for (const k of ["hype", "comment", "post", "destaque"]) cfg.caps[k] = num(c[k] ?? DEFAULT_CFG.caps[k], 1, 100, `Limite diário de ${METRICS[k]}`);
   const goals = Array.isArray(input?.goals) ? input.goals : [];
   if (goals.length > 12) fail(400, "No máximo 12 metas.");
   const seen = new Set();
@@ -70,7 +71,7 @@ export async function saveCfg(input, newId, fail) {
   return cfg;
 }
 
-const dayRec = (e, day) => (e.days[day] ||= { xp: 0, checkin: 0, hype: 0, comment: 0, post: 0 });
+const dayRec = (e, day) => (e.days[day] ||= { xp: 0, checkin: 0, hype: 0, comment: 0, post: 0, destaque: 0 });
 
 function periodDays(goal, day) {
   return goal.period === "day" ? [day] : daysOfWeek(weekKey(day));
@@ -167,7 +168,7 @@ export async function view(user) {
   return {
     ...summary(e),
     checkins: e.checkins,
-    today: { xp: today.xp || 0, hype: today.hype || 0, comment: today.comment || 0, post: today.post || 0 },
+    today: { xp: today.xp || 0, hype: today.hype || 0, comment: today.comment || 0, post: today.post || 0, destaque: today.destaque || 0 },
     earns: earns(user),
     goals: cfg.goals.filter((g) => g.active).map((g) => {
       const progress = goalProgress(e, g, day);

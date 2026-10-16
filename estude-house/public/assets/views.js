@@ -7,7 +7,7 @@
   M.refreshMe = async function () {
     const d = await M.get("me");
     M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules;
-    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.unread = d.unread || 0;
+    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.unread = d.unread || 0; M.session.destaques = d.destaques || 0;
     if (M.updateBell) M.updateBell();
     return d;
   };
@@ -105,10 +105,10 @@
   M.resetShell = () => { shell = null; };
   function buildShell() {
     const u = M.session.user;
-    const link = (key, href, icon, text, badge) => h("a", { href, "data-key": key }, M.icon(icon), h("span", { text }), badge ? h("span", { class: "nav-badge", hidden: true }) : null);
+    const link = (key, href, icon, text, badge) => h("a", { href, "data-key": key }, M.icon(icon), h("span", { text }), badge ? h("span", badge === "dst" ? { class: "nav-badge", "data-dst-badge": "", hidden: true } : { class: "nav-badge", hidden: true }) : null);
     const nav = h("nav", { class: "nav", "aria-label": "Principal" },
       h("div", { class: "nav-sep", text: "Estudos" }),
-      link("home", "#/", "home", "Início"),
+      link("home", "#/", "home", "Feed", "dst"),
       link("trails", "#/trilhas", "book", "Trilhas"),
       link("rank", "#/ranking", "trophy", "Ranking"),
       link("cert", "#/cert", "cert", "Certificados"),
@@ -118,6 +118,7 @@
         h("div", { class: "nav-sep", text: "Administração" }),
         link("admin", "#/admin", "shield", "Painel"),
         link("admin-approve", "#/admin/aprovacoes", "flag", "Aprovações", true),
+        link("admin-forum", "#/admin/forum", "chat", "Fórum"),
         link("admin-engage", "#/admin/engajamento", "bolt", "Engajamento"),
         link("admin-tags", "#/admin/tags", "tag", "Tags e moderação"),
         link("admin-users", "#/admin/usuarios", "users", "Acessos"),
@@ -137,18 +138,31 @@
       const open = side.classList.toggle("open");
       menuBtn.setAttribute("aria-expanded", String(open));
     });
-    side.addEventListener("click", (e) => { if (e.target.closest("a")) { side.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); } });
+    side.addEventListener("click", (e) => { if (e.target.closest("a")) setDrawer(false); });
     const crumbs = h("div", { class: "crumbs" });
     const xp = h("button", { class: "chip chip-gold xp-btn", type: "button", "aria-label": "Abrir meu XP, check-in e metas", onclick: () => M.openXp() }, M.icon("bolt", 16), h("span", { class: "xp-val" }));
     const sInput = h("input", { type: "search", placeholder: "Buscar pessoas, posts e aulas", "aria-label": "Buscar no sistema", enterkeyhint: "search" });
     const search = h("form", { class: "top-search", role: "search" }, M.icon("search", 18), sInput);
     search.addEventListener("submit", (e) => { e.preventDefault(); const v = sInput.value.trim(); if (v) location.hash = "#/busca?q=" + encodeURIComponent(v); });
-    const top = h("header", { class: "top" }, menuBtn, crumbs, h("span", { class: "spacer" }), search, M.bell(), xp);
+    const topBrand = h("a", { class: "top-brand", href: "#/", "aria-label": "Estude House: ir para o Feed" },
+      h("span", { class: "brand-mark" }, svg(`<svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="none" stroke="#fdb927" stroke-width="3.2"/><path d="M7 16h18M16 7c3 3 3 15 0 18M16 7c-3 3-3 15 0 18" stroke="#fdb927" stroke-width="1.6" fill="none" opacity=".75"/></svg>`)),
+      h("span", { text: "Estude House" }));
+    const top = h("header", { class: "top" }, menuBtn, topBrand, crumbs, h("span", { class: "spacer" }), search, M.bell(), xp);
     const page = h("div", { class: "page", id: "main", tabindex: "-1" });
     const main = h("main", { class: "main" }, top, page);
-    const root = h("div", { class: "shell" }, side, main);
+
+    /* menu de baixo, como no Instagram (só aparece no celular) */
+    const tab = (key, href, icon, label, dst) => h("a", { class: "tab", href, "data-key": key, "aria-label": label }, h("span", { class: "tab-ico" }, M.icon(icon, 26), dst ? h("i", { class: "tab-dot", "data-dst-badge": "", hidden: true }) : null), h("span", { class: "tab-txt", text: label }));
+    const meTab = h("button", { class: "tab tab-me", type: "button", "aria-label": "Menu: certificados, conta e mais", "aria-controls": "side", "aria-expanded": "false" },
+      h("span", { class: "tab-ico" }, M.avatar(u, 28)), h("span", { class: "tab-txt", text: "Você" }));
+    const setDrawer = (open) => { side.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", String(open)); meTab.setAttribute("aria-expanded", String(open)); };
+    meTab.addEventListener("click", () => setDrawer(!side.classList.contains("open")));
+    const tabbar = h("nav", { class: "tabbar", "aria-label": "Navegação do celular" },
+      tab("home", "#/", "home", "Feed", true), tab("search", "#/busca", "search", "Busca"), tab("trails", "#/trilhas", "book", "Trilhas"), tab("rank", "#/ranking", "trophy", "Ranking"), meTab);
+    const root = h("div", { class: "shell" }, side, main, tabbar);
+    root.addEventListener("click", (e) => { if (side.classList.contains("open") && !side.contains(e.target) && !meTab.contains(e.target) && !menuBtn.contains(e.target)) setDrawer(false); });
     M.mount(root);
-    return { root, side, nav, crumbs, xp, page };
+    return { root, side, nav, crumbs, xp, page, tabbar, meTab };
   }
 
   M.updateXpChip = function () {
@@ -165,6 +179,10 @@
       return i ? [" / ", el] : [el];
     }));
     M.updateXpChip();
+    shell.tabbar.querySelectorAll("a.tab").forEach((a) => { if (a.dataset.key === key) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    const meKeys = /^(conta|cert|admin)/.test(key);
+    if (meKeys) shell.meTab.setAttribute("data-on", ""); else shell.meTab.removeAttribute("data-on");
+    if (M.paintBadges) M.paintBadges();
     const badge = shell.nav.querySelector('[data-key="admin-approve"] .nav-badge');
     const nPend = (M.session.pending || 0) + (M.session.pendingSignups || 0);
     if (badge) { badge.hidden = !(nPend > 0); badge.textContent = String(nPend || ""); }
@@ -457,6 +475,8 @@
   };
 
   /* ───── módulo ───── */
+  /* o aluno assiste na ordem: a aula abre depois de concluir a anterior (gestor navega livre) */
+  M.lessonOpen = (mod, k) => M.isAdmin() || k === 0 || !!M.session.progress.lessons[mod.lessons[k].id] || !!M.session.progress.lessons[mod.lessons[k - 1].id];
   M.views.module = async function (id) {
     await M.refreshMe();
     const m = M.modulo(id);
@@ -483,7 +503,8 @@
       examCard = ["ready", h("span", { class: "chip chip-gold", text: "Liberada" }), `${M.examSize(m.id)} questões sobre o módulo. Reserve de 20 a 30 minutos.`,
         h("a", { class: "btn btn-gold", href: "#/exam/" + m.id }, "Fazer a prova do módulo")];
     } else {
-      examCard = ["", h("span", { class: "chip", text: "Bloqueada" }), `Conclua as ${st.total - st.done} aulas restantes para liberar a prova.`, null];
+      examCard = ["", h("span", { class: "chip", text: "Bloqueada" }), `Conclua as ${st.total - st.done} aulas restantes para liberar a prova.`,
+        M.isAdmin() ? h("a", { class: "btn btn-ghost", href: "#/exam/" + m.id }, "Abrir a prova (acesso de gestor)") : null];
     }
     const modNode = h("div", null,
       h("div", { class: "page-head" },
@@ -496,10 +517,14 @@
       h("ul", { class: "reel" }, m.lessons.map((l, k) => {
         const done = !!p.lessons[l.id];
         const cur = !done && k === m.lessons.findIndex((x) => !p.lessons[x.id]);
-        return h("li", null, h("a", { class: "reel-item" + (done ? " done" : "") + (cur ? " cur" : ""), href: "#/l/" + l.id },
-          h("span", { class: "ring", "aria-hidden": "true" }, h("b", { text: done ? "✓" : String(k + 1) })),
+        const open = M.lessonOpen(m, k);
+        const inner = [
+          h("span", { class: "ring", "aria-hidden": "true" }, h("b", { text: done ? "✓" : open ? String(k + 1) : "" }, done || open ? null : M.icon("lock", 20))),
           h("strong", { text: l.title }),
-          h("span", { class: "meta", text: `${l.minutes} min` })));
+          h("span", { class: "meta", text: open ? `${l.minutes} min` : "assista a anterior" })];
+        return h("li", null, open
+          ? h("a", { class: "reel-item" + (done ? " done" : "") + (cur ? " cur" : ""), href: "#/l/" + l.id }, inner)
+          : h("div", { class: "reel-item locked", role: "img", "aria-label": `${l.title}: bloqueada. Assista a aula anterior para liberar.` }, inner));
       })),
       h("section", { class: "panel exam-card " + examCard[0], style: "margin-top:28px" },
         h("div", { class: "row row-between" }, h("h3", { style: "margin:0", text: M.examName(m.id) }), examCard[1]),
@@ -510,7 +535,7 @@
     return modNode;
   };
   function notFound() {
-    return h("div", { class: "empty" }, h("h3", { text: "Página não encontrada" }), h("a", { class: "btn btn-gold", href: "#/" }, "Voltar ao início"));
+    return h("div", { class: "empty" }, h("h3", { text: "Página não encontrada" }), h("a", { class: "btn btn-gold", href: "#/" }, "Voltar ao Feed"));
   }
   M.notFound = notFound;
 

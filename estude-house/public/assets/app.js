@@ -6,13 +6,15 @@
   const T = (text) => ({ text });
   const trailCrumb = (t) => ({ text: t.title, href: M.trailHref(t) });
   const routes = [
-    [/^#?\/?$/, "home", () => ({ key: "home", crumbs: [T("Início")], view: () => M.views.home() })],
+    [/^#?\/?$/, "home", () => ({ key: "home", crumbs: [T("Feed")], view: () => M.views.home() })],
     [/^#\/trilhas$/, "trails", () => ({ key: "trails", crumbs: [T("Trilhas")], view: () => M.views.trails() })],
-    [/^#\/post\/([\w-]+)$/, "post", (m) => ({ key: "home", crumbs: [{ text: "Início", href: "#/" }, T("Post")], view: () => M.views.post(m[1]) })],
-    [/^#\/u\/([^/?]+)$/, "profile", (m) => ({ key: "home", crumbs: [{ text: "Início", href: "#/" }, T("Perfil")], view: () => M.views.profile(decodeURIComponent(m[1])) })],
+    [/^#\/post\/([\w-]+)$/, "post", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Post")], view: () => M.views.post(m[1]) })],
+    [/^#\/u\/([^/?]+)$/, "profile", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Perfil")], view: () => M.views.profile(decodeURIComponent(m[1])) })],
+    [/^#\/forum\/([\w-]+)$/, "search", (m) => ({ key: "search", crumbs: [{ text: "Busca", href: "#/busca" }, T("Fórum")], view: () => M.views.forumPost(m[1]) })],
+    [/^#\/admin\/forum(?:\?e=([\w-]+))?$/, "admin", (m) => ({ key: "admin-forum", crumbs: [T("Administração"), T("Fórum")], view: () => M.views.forumAdmin(m[1] || ""), wide: false })],
     [/^#\/ranking$/, "rank", () => ({ key: "rank", crumbs: [T("Ranking")], view: () => M.views.ranking() })],
     [/^#\/busca(?:\?(.*))?$/, "search", (m) => { const q = new URLSearchParams(m[1] || ""); return { key: "search", crumbs: [T("Busca")], view: () => M.views.search(q.get("q") || "", q.get("tag") || "") }; }],
-    [/^#\/tag\/([\w-]+)$/, "tag", (m) => ({ key: "home", crumbs: [{ text: "Início", href: "#/" }, T("Tag")], view: () => M.views.home({ tag: m[1] }) })],
+    [/^#\/tag\/([\w-]+)$/, "tag", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Tag")], view: () => M.views.home({ tag: m[1] }) })],
     [/^#\/admin\/tags$/, "admin", () => ({ key: "admin-tags", crumbs: [T("Administração"), T("Tags e moderação")], view: () => M.views.adminTags(), wide: true })],
     [/^#\/admin\/aprovacoes$/, "admin", () => ({ key: "admin-approve", crumbs: [T("Administração"), T("Aprovações")], view: () => M.views.adminApprovals(), wide: true })],
     [/^#\/admin\/engajamento$/, "admin", () => ({ key: "admin-engage", crumbs: [T("Administração"), T("Engajamento")], view: () => M.views.adminEngage(), wide: true })],

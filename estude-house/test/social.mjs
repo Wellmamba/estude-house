@@ -290,7 +290,7 @@ console.log("Busca");
   r = await call("GET", "search?q=terceiro", { token: beto.token });
   assert.equal(r.data.posts.length, 0); ok("busca em posts: palavra, termos parecidos, e posts não aprovados não aparecem");
   r = await call("GET", "search?q=a", { token: beto.token });
-  assert.deepEqual(r.data, { people: [], posts: [] });
+  assert.deepEqual(r.data, { people: [], posts: [], forum: [] });
 }
 
 console.log("Posts por pessoa, páginas e remoção");

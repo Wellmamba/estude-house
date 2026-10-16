@@ -67,6 +67,11 @@
       return h("div", { class: "empty" }, h("h3", { text: "Aula bloqueada" }),
         h("p", { text: "Termine o módulo anterior para chegar aqui." }), h("a", { class: "btn btn-gold", href: M.trailHref(trail) }, "Voltar à trilha"));
     }
+    if (!M.lessonOpen(mod, index)) {
+      const prev = mod.lessons[index - 1];
+      return h("div", { class: "empty" }, h("h3", { text: "Essa aula ainda está bloqueada" }),
+        h("p", { text: "Assista a aula anterior até o fim para liberar essa." }), h("a", { class: "btn btn-gold", href: "#/l/" + prev.id }, "Ir para a aula anterior"));
+    }
     const already = !!p.lessons[lesson.id];
     const cards = buildCards(lesson);
     const last = cards.length - 1;

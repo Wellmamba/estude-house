@@ -392,6 +392,7 @@
     const isAdm = M.isAdmin();
     const curTag = tagId ? tags.find((t) => t.id === tagId) : null;
     const top = h("div", { class: "feed-top" });
+    const dst = M.destaquesBar();
     const list = h("div", { class: "feed-list" });
     const more = h("div", { class: "row", style: "justify-content:center;margin:20px 0" });
     let next = null, tab = "feed";
@@ -449,12 +450,13 @@
     async function pulse() {
       if (tab !== "feed" || document.hidden) return;
       if (!node.isConnected) { stopLive(); return; }
+      dst.refresh();
       if (base === null) { await rebase(); return; }
       try {
         const d = await M.get(pulseUrl(base));
         const pinsChanged = !tagId && (d.pins || "") !== pinsSig;
         if (d.fresh) live.textContent = `Mostrar ${d.fresh}${d.more ? "+" : ""} ${d.fresh === 1 && !d.more ? "post novo" : "posts novos"}`;
-        else if (pinsChanged) live.textContent = "Mostrar mudanças no feed";
+        else if (pinsChanged) live.textContent = "Mostrar mudanças no Feed";
         else return;
         live.hidden = false;
       } catch {}
@@ -480,10 +482,10 @@
         if (reset) list.replaceChildren();
         if (!d.posts.length && reset) list.append(curTag
           ? h("div", { class: "empty" }, h("h3", { text: `Nenhum post com a tag ${curTag.name}` }), h("p", { text: "Quando alguém publicar com essa tag, aparece aqui." }))
-          : h("div", { class: "empty" }, h("h3", { text: "O feed ainda está vazio" }), h("p", { text: isAdm ? "Publique o primeiro post para começar." : "Quando o gestor ou o time publicar, aparece aqui." })));
+          : h("div", { class: "empty" }, h("h3", { text: "O Feed ainda está vazio" }), h("p", { text: isAdm ? "Publique o primeiro post para começar." : "Quando o gestor ou o time publicar, aparece aqui." })));
         d.posts.forEach((p) => list.append(M.postCard(p, { onChange: () => load(true) })));
         next = d.next;
-        more.replaceChildren(next ? h("button", { class: "btn btn-ghost", type: "button", onclick: () => load(false), text: "Carregar mais" }) : (list.children.length ? h("span", { class: "muted small", text: "Você chegou ao fim do feed." }) : null));
+        more.replaceChildren(next ? h("button", { class: "btn btn-ghost", type: "button", onclick: () => load(false), text: "Carregar mais" }) : (list.children.length ? h("span", { class: "muted small", text: "Você chegou ao fim do Feed." }) : null));
       } catch (e) { list.replaceChildren(h("div", { class: "form-error", text: e.message })); }
     }
 
@@ -497,7 +499,7 @@
       tagId && !curTag ? h("span", { class: "muted small", text: "Essa tag não existe mais." }) : null,
       h("a", { class: "tag-pill search-pill", href: "#/busca" + (tagId ? "?tag=" + tagId : "") }, M.icon("search", 13), curTag ? "Buscar nesta tag" : "Buscar por tag")) : null;
     const node = h("div", { class: "feed" },
-      top,
+      dst, top,
       composer({ uploads: status.uploads, defaultTag: tagId, limits: status, onPosted: (r) => { rebase();
         if (r.status === "published") { if (tab === "feed") { if (r.post.pinned || (tagId && r.post.tag?.id !== tagId)) load(true); else { list.querySelector(".empty")?.remove(); { const card = M.postCard(r.post, { onChange: () => load(true) }); const pins = list.querySelectorAll(":scope > .post.is-pinned"); if (pins.length) pins[pins.length - 1].after(card); else list.prepend(card); } } } }
         else { tab = "mine"; tabs.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-selected", String(i === 1))); load(true); }
@@ -513,7 +515,7 @@
   M.views.post = async function (id) {
     await M.refreshMe();
     let d;
-    try { d = await M.get("feed/post/" + id); } catch (e) { return h("div", { class: "empty" }, h("h3", { text: "Post não encontrado" }), h("p", { text: "Ele pode ter sido apagado." }), h("a", { class: "btn btn-gold", href: "#/" }, "Voltar ao feed")); }
+    try { d = await M.get("feed/post/" + id); } catch (e) { return h("div", { class: "empty" }, h("h3", { text: "Post não encontrado" }), h("p", { text: "Ele pode ter sido apagado." }), h("a", { class: "btn btn-gold", href: "#/" }, "Voltar ao Feed")); }
     return h("div", { class: "feed" }, M.postCard(d.post, { openComments: true, onDelete: () => { location.hash = "#/"; } }));
   };
 
@@ -521,7 +523,7 @@
   M.views.profile = async function (key) {
     await M.refreshMe();
     let d;
-    try { d = await M.get("people/" + encodeURIComponent(key)); } catch (e) { return h("div", { class: "empty" }, h("h3", { text: "Pessoa não encontrada" }), h("a", { class: "btn btn-gold", href: "#/" }, "Voltar ao feed")); }
+    try { d = await M.get("people/" + encodeURIComponent(key)); } catch (e) { return h("div", { class: "empty" }, h("h3", { text: "Pessoa não encontrada" }), h("a", { class: "btn btn-gold", href: "#/" }, "Voltar ao Feed")); }
     const p = d.person, mine = p.id === M.session.user.id;
     const list = h("div", { class: "feed-list" }), more = h("div", { class: "row", style: "justify-content:center;margin:20px 0" });
     let next = null;

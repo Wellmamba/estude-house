@@ -89,9 +89,10 @@
           h("li", null, h("b", { text: `+${r.xp.post}` }), ` post aprovado (até ${r.caps.post} por dia)`),
           h("li", null, h("b", { text: `+${r.xp.comment}` }), ` comentário de verdade (até ${r.caps.comment} por dia)`),
           h("li", null, h("b", { text: `+${r.xp.hype}` }), ` hype em post de outra pessoa (até ${r.caps.hype} por dia)`),
+          h("li", null, h("b", { text: `+${r.xp.destaque ?? 3}` }), ` assistir um destaque até o fim (uma vez por destaque, até ${r.caps.destaque ?? 10} por dia)`),
           h("li", null, h("b", { text: "+" }), " bônus por cada meta batida"))),
       v.log.length ? h("section", null, h("h4", { class: "xp-h", text: "Últimos ganhos" }), h("ul", { class: "xp-log" }, v.log.map((l) => h("li", null, h("span", { text: l.text }), h("b", { text: "+" + l.xp }))))) : null,
-      h("div", { class: "xp-links" }, h("a", { class: "btn btn-ghost", href: "#/ranking", onclick: () => M.closeXp() }, M.icon("trophy", 18), "Ver ranking"), h("a", { class: "btn btn-ghost", href: "#/", onclick: () => M.closeXp() }, "Ir ao feed")));
+      h("div", { class: "xp-links" }, h("a", { class: "btn btn-ghost", href: "#/ranking", onclick: () => M.closeXp() }, M.icon("trophy", 18), "Ver ranking"), h("a", { class: "btn btn-ghost", href: "#/", onclick: () => M.closeXp() }, "Ir ao Feed")));
   }
 
   /* ───── ranking ───── */
@@ -108,7 +109,7 @@
       try {
         const d = await M.get("engage/ranking?period=" + period);
         if (!d.rows.length) {
-          holder.replaceChildren(h("div", { class: "empty" }, h("h3", { text: "Ninguém pontuou ainda neste período" }), h("p", { text: "Faça o check-in, comente, dê hype e publique para abrir a corrida." }), h("a", { class: "btn btn-gold", href: "#/" }, "Ir ao feed")));
+          holder.replaceChildren(h("div", { class: "empty" }, h("h3", { text: "Ninguém pontuou ainda neste período" }), h("p", { text: "Faça o check-in, comente, dê hype e publique para abrir a corrida." }), h("a", { class: "btn btn-gold", href: "#/" }, "Ir ao Feed")));
           return;
         }
         const row = (r) => h("li", { class: "rank-row" + (r.id === meId ? " me" : "") + (r.pos <= 3 ? " top" : "") },
