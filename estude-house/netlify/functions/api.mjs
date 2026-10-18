@@ -22,7 +22,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-18-n";
+const BUILD = "2026-10-18-o";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
