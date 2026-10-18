@@ -43,7 +43,7 @@
     if (/^#\/ativar/.test(hash)) {
       M.resetShell();
       M.mount(M.views.activate(hash.split("?")[1] || ""));
-      document.title = "Ativar acesso · BRANTY SHOOT";
+      document.title = "Ativar acesso · BRYANT SHOOT";
       return;
     }
 
@@ -53,7 +53,7 @@
       if (M.session.token && M.session.user) { location.hash = "#/"; return; }
       M.resetShell();
       M.mount(M.views.auth(hash === "#/cadastro" ? "cadastro" : "entrar"));
-      document.title = "Entrar · BRANTY SHOOT";
+      document.title = "Entrar · BRYANT SHOOT";
       return;
     }
     if (!M.session.token) { location.hash = "#/entrar"; return; }
@@ -92,7 +92,7 @@
       const node = await def.view();
       if (my !== seq) return;
       M.setPage(def.key, node._crumbs || def.crumbs, node, { wide: def.wide });
-      document.title = (node._crumbs ? node._crumbs[node._crumbs.length - 1].text : def.crumbs[def.crumbs.length - 1].text) + " · BRANTY SHOOT";
+      document.title = (node._crumbs ? node._crumbs[node._crumbs.length - 1].text : def.crumbs[def.crumbs.length - 1].text) + " · BRYANT SHOOT";
     } catch (e) {
       if (my !== seq || e.status === 401) return;
       M.setPage(def.key, def.crumbs, h("div", { class: "empty" }, h("h3", { text: "Não foi possível abrir esta página" }), h("p", { text: e.message }),

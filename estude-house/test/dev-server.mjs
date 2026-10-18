@@ -24,4 +24,4 @@ http.createServer(async (req, res) => {
     const data = await readFile(join(root, p));
     res.writeHead(200, { "content-type": types[extname(p)] || "application/octet-stream" }); res.end(data);
   } catch { res.writeHead(404); res.end("404"); }
-}).listen(port, () => console.log(`BRANTY SHOOT local em http://localhost:${port}`));
+}).listen(port, () => console.log(`BRYANT SHOOT local em http://localhost:${port}`));

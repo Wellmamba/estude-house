@@ -151,9 +151,9 @@
     const sInput = h("input", { type: "search", placeholder: "Buscar pessoas, posts e aulas", "aria-label": "Buscar no sistema", enterkeyhint: "search" });
     const search = h("form", { class: "top-search", role: "search" }, M.icon("search", 18), sInput);
     search.addEventListener("submit", (e) => { e.preventDefault(); const v = sInput.value.trim(); if (v) location.hash = "#/busca?q=" + encodeURIComponent(v); });
-    const topBrand = h("a", { class: "top-brand", href: "#/", "aria-label": "Estude House: ir para o Feed" },
-      h("span", { class: "brand-mark" }, svg(`<svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="none" stroke="#fdb927" stroke-width="3.2"/><path d="M7 16h18M16 7c3 3 3 15 0 18M16 7c-3 3-3 15 0 18" stroke="#fdb927" stroke-width="1.6" fill="none" opacity=".75"/></svg>`)),
-      h("span", { text: "Estude House" }));
+    const topBrand = h("a", { class: "top-brand", href: "#/", "aria-label": "BRYANT SHOOT: ir para o Feed" },
+      h("span", { class: "brand-mark" }, svg(M.ballSvg(22))),
+      h("span", { text: "BRYANT SHOOT" }));
     const top = h("header", { class: "top" }, menuBtn, topBrand, crumbs, h("span", { class: "spacer" }), search, M.bell(), xp);
     const page = h("div", { class: "page", id: "main", tabindex: "-1" });
     const main = h("main", { class: "main" }, top, page);

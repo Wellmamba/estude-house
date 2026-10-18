@@ -5,7 +5,7 @@ Em **Gestão de trilhas** há o botão **Importar trilha pronta (.json)**. Ele c
 ## Passo a passo
 
 1. Publique esta versão do site (zip no GitHub, como sempre). As imagens da trilha já estão dentro do arquivo .json, então não há pasta de imagens para subir.
-2. Confira em `/api/health` que o campo `build` mostra `2026-10-18-j` ou mais novo.
+2. Confira em `/api/health` que o campo `build` mostra `2026-10-18-k` ou mais novo.
 3. Entre como gestor, abra **Gestão de trilhas** e clique em **Importar trilha pronta (.json)**.
 4. Escolha o arquivo da pasta `trilhas-prontas/` (por exemplo `funil-de-vendas-ml.json`).
 5. O editor abre sozinho. Use **Ver aula como aluno**, ajuste o que quiser e clique em **Publicar**.

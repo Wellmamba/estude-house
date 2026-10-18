@@ -7353,7 +7353,7 @@
        "t": "callout",
        "tone": "atencao",
        "title": "Confira o valor vigente",
-       "html": "Alíquotas de rota, ST e DIFAL mudam. Confira na documentação oficial e com o contador. O que muda com a reforma está na trilha “Reforma Tributária nos Marketplaces”, aqui no Estude House."
+       "html": "Alíquotas de rota, ST e DIFAL mudam. Confira na documentação oficial e com o contador. O que muda com a reforma está na trilha “Reforma Tributária nos Marketplaces”, aqui no BRYANT SHOOT."
       },
       {
        "t": "callout",
