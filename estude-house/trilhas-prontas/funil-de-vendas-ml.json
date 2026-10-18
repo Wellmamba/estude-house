@@ -1,0 +1,1446 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "Funil de Vendas no Mercado Livre",
+  "tag": "Mercado Livre",
+  "tagline": "Ache a etapa onde a conta trava e escolha a ação certa pra destravar.",
+  "subtitle": "Descoberta, consideração, conversão e lealdade: o que olhar e o que fazer em cada uma.",
+  "finalSize": 15,
+  "modules": [
+   {
+    "title": "O funil e o gargalo",
+    "tagline": "O mapa que mostra onde a venda se perde",
+    "outcome": "Explicar as 4 etapas do funil e achar o gargalo de uma conta.",
+    "lessons": [
+     {
+      "title": "As 4 etapas do funil",
+      "minutes": 3,
+      "goal": "Entender as 4 etapas do funil e a métrica de cada uma.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎯",
+        "title": "Por que a venda não acontece?",
+        "text": "Todo comprador passa por 4 etapas. Saber onde ele trava é o segredo pra vender mais."
+       },
+       {
+        "t": "big",
+        "emoji": "💡",
+        "html": "Cada etapa é um <b>comportamento diferente</b> do comprador",
+        "sub": "E cada uma pede uma ação diferente de você."
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "Funil de vendas",
+        "means": "O caminho que o comprador faz: vê, compara, compra e volta. Quanto mais ele avança, menos gente sobra.",
+        "ex": "De 1.000 pessoas que veem o anúncio, só algumas clicam e menos ainda compram."
+       },
+       {
+        "t": "flow",
+        "title": "As 4 etapas do funil",
+        "caption": "",
+        "loop": true,
+        "items": [
+         {
+          "icon": "1",
+          "title": "Descoberta",
+          "text": "O comprador vê o produto. Métrica: impressões."
+         },
+         {
+          "icon": "2",
+          "title": "Consideração",
+          "text": "Ele compara e clica. Métrica: CTR%."
+         },
+         {
+          "icon": "3",
+          "title": "Conversão",
+          "text": "Ele decide e compra. Métrica: CVR%."
+         },
+         {
+          "icon": "4",
+          "title": "Lealdade",
+          "text": "Ele volta a comprar. Métrica: taxa de recompra."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Etapa, métrica e a pergunta que ela responde",
+        "caption": "Cada etapa tem uma métrica e uma pergunta.",
+        "head": [
+         "Etapa",
+         "Métrica",
+         "Pergunta que responde"
+        ],
+        "rows": [
+         [
+          "Descoberta",
+          "Impressões",
+          "Estão vendo o produto?"
+         ],
+         [
+          "Consideração",
+          "CTR%",
+          "Estão clicando?"
+         ],
+         [
+          "Conversão",
+          "CVR%",
+          "Estão comprando?"
+         ],
+         [
+          "Lealdade",
+          "Taxa de recompra",
+          "Estão voltando?"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "Gargalo",
+        "means": "A etapa onde mais gente desiste. É ali que você mexe primeiro.",
+        "ex": "Muita visita e pouca venda? O gargalo está na conversão."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual etapa do funil mede quantos compradores clicam no anúncio?",
+        "options": [
+         "Descoberta, medida em impressões",
+         "Consideração, medida em CTR%",
+         "Conversão, medida em CVR%",
+         "Lealdade, medida em recompra"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Clicar é decidir olhar de perto. Essa etapa é a consideração, e a métrica é o CTR%."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Ads não resolve tudo",
+        "html": "Anúncio patrocinado (Ads) põe o produto na frente de mais gente. Mas se ninguém clica ou ninguém compra, o problema está em outra etapa."
+       },
+       {
+        "t": "say",
+        "title": "Como explicar pro seller",
+        "html": "“Antes de pôr mais verba, vamos ver onde a venda trava: na visualização, no clique ou na compra. Cada uma se resolve de um jeito.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "4 etapas: descoberta, consideração, conversão, lealdade",
+         "Cada etapa tem sua métrica: impressões, CTR, CVR, recompra",
+         "Gargalo é a etapa onde mais gente desiste",
+         "Ads empurra impressão e não resolve o resto",
+         "Ache o gargalo antes de escolher a ação"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Lendo o funil numa conta real",
+      "minutes": 4,
+      "goal": "Achar o gargalo de uma conta olhando visitas, vendas e conversão.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔍",
+        "title": "O caso da conta que vende muito",
+        "text": "Faturamento alto e muita visita. Mesmo assim, tem algo travando. Bora achar o quê."
+       },
+       {
+        "t": "img",
+        "url": "/trilhas/funil-ml/img/painel-e-ranking.jpg",
+        "caption": "Autopeças, 14º lugar em GMV no Mercado Livre. Os nomes das lojas estão borrados.",
+        "fit": "contain",
+        "alt": "Painel de vendas e ranking de GMV"
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "GMV",
+        "means": "O total vendido em reais no período, somando todas as vendas.",
+        "ex": "Vendeu R$ 3,7 milhões no período? Esse é o GMV."
+       },
+       {
+        "t": "list",
+        "title": "O que o painel mostra",
+        "items": [
+         "Faturamento alto",
+         "Número de visitas alto",
+         "14º lugar em GMV na categoria de autopeças",
+         "Conversão de apenas 1,5%"
+        ]
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Essa conta",
+         "tone": "bad",
+         "items": [
+          "774 mil visitas",
+          "Conversão de 1,5%"
+         ]
+        },
+        "right": {
+         "title": "Vizinhos do ranking",
+         "tone": "good",
+         "items": [
+          "190 mil a 369 mil visitas",
+          "Conversão de 3,0% a 4,5%"
+         ]
+        }
+       },
+       {
+        "t": "conta",
+        "title": "Conta de bolso: e se a conversão dobrasse?",
+        "rows": [
+         [
+          "Visitas no período",
+          "800.000",
+          ""
+         ],
+         [
+          "Vendas com conversão de 1,5%",
+          "12.000",
+          ""
+         ],
+         [
+          "Vendas com conversão de 3,0%",
+          "24.000",
+          "pos"
+         ]
+        ],
+        "total": [
+         "Vendas a mais, com as mesmas visitas",
+         "+12.000"
+        ],
+        "note": "Números arredondados, só pra mostrar a lógica."
+       },
+       {
+        "t": "big",
+        "emoji": "🚧",
+        "html": "Visita sobrando e venda faltando? O gargalo é a <b>conversão</b>",
+        "sub": "Mais Ads aqui só traria mais gente pra desistir."
+       },
+       {
+        "t": "quiz",
+        "q": "Uma conta tem muitas visitas e conversão bem abaixo dos concorrentes. Onde está o gargalo?",
+        "options": [
+         "Descoberta, porque faltam impressões",
+         "Conversão, porque a visita chega e não compra",
+         "Lealdade, porque ninguém volta a comprar",
+         "Em nenhuma etapa, porque o faturamento é alto"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Muita visita mostra que o produto é descoberto e clicado. Conversão baixa mostra que a página não fecha a venda."
+       },
+       {
+        "t": "say",
+        "title": "Como explicar pro seller",
+        "html": "“Seu anúncio já tem público, o problema não é aparecer. É a página convencer. Vamos ajustar imagens e descrição antes de gastar mais em Ads.”"
+       },
+       {
+        "t": "steps",
+        "title": "Como achar o gargalo em 3 passos",
+        "items": [
+         {
+          "title": "Olhe as visitas",
+          "html": "Poucas? O problema está em descoberta ou clique."
+         },
+         {
+          "title": "Olhe a conversão",
+          "html": "Baixa perto dos concorrentes? Gargalo na página."
+         },
+         {
+          "title": "Compare com a categoria",
+          "html": "Use o ranking pra ver o que é normal."
+         }
+        ]
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Faturamento alto não quer dizer funil saudável",
+         "Compare visitas e conversão com os vizinhos",
+         "Muita visita e pouca venda: gargalo na conversão",
+         "Antes de pôr mais verba, ache o gargalo"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Quais são as 4 etapas do funil, na ordem?",
+      "options": [
+       "Consideração, descoberta, conversão, lealdade",
+       "Descoberta, consideração, conversão, lealdade",
+       "Descoberta, conversão, consideração, lealdade",
+       "Conversão, descoberta, lealdade, consideração"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "O comprador primeiro descobre o produto, depois compara e clica, compra e, se gostar, volta."
+     },
+     {
+      "q": "Uma conta tem muitas visitas e conversão de 1,5%, enquanto os vizinhos do ranking convertem de 3% a 4,5%. Onde está o gargalo?",
+      "options": [
+       "Descoberta, o anúncio quase não aparece",
+       "Consideração, ninguém clica no anúncio",
+       "Conversão, a visita chega e não compra",
+       "Lealdade, o cliente não volta a comprar"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Tem visita de sobra, então o produto é visto e clicado. O que falha é a página fechar a venda."
+     },
+     {
+      "q": "Qual é o papel do Ads dentro do funil?",
+      "options": [
+       "Aumenta a conversão da página do anúncio",
+       "Melhora a ficha técnica do produto",
+       "Faz o cliente voltar a comprar depois",
+       "Impulsiona só as impressões do anúncio"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Ads empurra impressões. Clique e conversão dependem do próprio anúncio."
+     },
+     {
+      "q": "O que é gargalo no funil?",
+      "options": [
+       "A etapa onde mais gente desiste",
+       "A etapa com mais impressões",
+       "A etapa mais barata de melhorar",
+       "A última etapa, a da venda"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "É onde mais gente desiste, então é onde uma melhoria rende mais."
+     }
+    ]
+   },
+   {
+    "title": "Descoberta: ser visto",
+    "tagline": "Impressões: a primeira exposição do produto",
+    "outcome": "Saber o que gera impressões e por que só Ads não basta.",
+    "lessons": [
+     {
+      "title": "Impressões: a primeira exposição",
+      "minutes": 5,
+      "goal": "Saber o que gera impressões e por que só investir em Ads não basta.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "👀",
+        "title": "Primeiro, precisam te ver",
+        "text": "Sem impressão não existe clique nem venda. Veja como o produto aparece pra quem compra."
+       },
+       {
+        "t": "big",
+        "emoji": "🔎",
+        "html": "Descoberta é a <b>primeira exposição</b> do produto ao comprador",
+        "sub": "Na home, na busca, nos anúncios e nos Clips."
+       },
+       {
+        "t": "img",
+        "url": "/trilhas/funil-ml/img/descoberta-home-busca-clips.jpg",
+        "caption": "Onde o comprador descobre: home, busca e Clips.",
+        "fit": "contain",
+        "alt": "Home, busca e Clips do Mercado Livre"
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "Impressão",
+        "means": "Cada vez que o anúncio aparece na tela de alguém, mesmo que ele não clique.",
+        "ex": "Apareceu na busca por “bicicleta amarela” pra 1.000 pessoas? São 1.000 impressões."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Métrica-chave: impressões",
+        "html": "Se as impressões caem, menos gente vê o produto. Comece por aqui quando a conta perde visita."
+       },
+       {
+        "t": "list",
+        "title": "As 4 ações da descoberta",
+        "items": [
+         "Criação e otimização de Ads",
+         "Otimização de palavras-chave",
+         "Aplicação de promoções",
+         "Clips"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Ads: o impulsionador",
+        "html": "Ads (anúncios patrocinados) paga pra aparecer mais. Ele aumenta as impressões, mas não muda a taxa de cliques nem a conversão. Quem melhora isso é o próprio anúncio."
+       },
+       {
+        "t": "quiz",
+        "q": "O que o Ads faz pelo anúncio?",
+        "options": [
+         "Aumenta impressões, não cliques nem conversão",
+         "Aumenta a taxa de conversão da página",
+         "Troca a imagem de capa automaticamente",
+         "Melhora a ficha técnica automaticamente"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Ads é um impulsionador de impressões. Cliques e conversão dependem da capa, do título e da página."
+       },
+       {
+        "t": "p",
+        "title": "Palavras-chave",
+        "html": "Palavra-chave é o termo que o comprador digita na busca. Quanto mais o título e a ficha técnica casam com o que ele procura, mais o anúncio aparece sem você pagar."
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "Orgânico",
+        "means": "Aparecer bem na busca sem pagar Ads. Palavras-chave e promoções ajudam nisso.",
+        "ex": "O anúncio sobe na busca sem você aumentar a verba."
+       },
+       {
+        "t": "p",
+        "title": "Promoções",
+        "html": "Promoção também aumenta a exposição. O anúncio em oferta ganha destaque, como o selo “Oferta do dia” e o desconto à vista."
+       },
+       {
+        "t": "p",
+        "title": "Clips",
+        "html": "Clips são vídeos curtos de produto dentro do Mercado Livre, em tela vertical, como num feed. Mostram o produto em uso e colocam ele na frente de mais gente."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Erros comuns",
+         "tone": "bad",
+         "items": [
+          "Achar que só investir em Ads gera impressão",
+          "Ignorar palavras-chave e promoções no orgânico"
+         ]
+        },
+        "right": {
+         "title": "Posturas esperadas",
+         "tone": "good",
+         "items": [
+          "Ads impulsiona impressões, não clique nem conversão",
+          "Usar o orgânico pra crescer sem investir mais"
+         ]
+        }
+       },
+       {
+        "t": "say",
+        "title": "Como explicar pro seller",
+        "html": "“Ads é o megafone: faz mais gente ver o produto. Pra quem vê clicar e comprar, o anúncio precisa estar bom. Vamos arrumar título e promoção antes de subir a verba.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Descoberta é a primeira exposição do produto",
+         "Impressões são a métrica dessa etapa",
+         "Ads impulsiona impressão, não clique nem venda",
+         "Palavras-chave e promoções ajudam sem custo de Ads",
+         "Clips colocam o produto na frente de mais gente"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O que são impressões?",
+      "options": [
+       "Quantas pessoas clicaram no anúncio",
+       "Quantas vezes o anúncio apareceu pra alguém",
+       "Quantas vendas o anúncio fechou",
+       "Quantos compradores voltaram a comprar"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Impressão é cada vez que o anúncio aparece na tela, com ou sem clique."
+     },
+     {
+      "q": "Qual ação ajuda a aparecer mais sem aumentar a verba de Ads?",
+      "options": [
+       "Dobrar o orçamento da campanha",
+       "Mandar cupom pelo canal da loja",
+       "Otimizar palavras-chave e promoções",
+       "Reescrever a descrição do anúncio"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Palavras-chave e promoções melhoram o posicionamento orgânico, sem custo de Ads."
+     },
+     {
+      "q": "Por que só investir em Ads é um erro?",
+      "options": [
+       "Ads não gera impressão nenhuma no anúncio",
+       "Ads não funciona junto com promoção ativa",
+       "Ads dispensa o trabalho de otimizar título",
+       "Ads só gera impressão, não clique nem venda"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Ads impulsiona impressões. Pra gerar clique e venda, o anúncio em si precisa estar otimizado."
+     }
+    ]
+   },
+   {
+    "title": "Consideração: ser clicado",
+    "tagline": "CTR: o que faz o comprador escolher o seu anúncio",
+    "outcome": "Melhorar a vitrine do anúncio pra ganhar mais cliques.",
+    "lessons": [
+     {
+      "title": "CTR: o que faz o comprador clicar",
+      "minutes": 5,
+      "goal": "Melhorar a vitrine do anúncio pra ganhar mais cliques.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🖱️",
+        "title": "O que faz o comprador clicar?",
+        "text": "Ele já quer comprar. Agora decide qual anúncio abrir. Sua vitrine tem que ganhar essa disputa."
+       },
+       {
+        "t": "big",
+        "emoji": "🎯",
+        "html": "Na consideração, o comprador <b>já tem intenção clara</b> de compra",
+        "sub": "Só falta escolher qual anúncio abrir."
+       },
+       {
+        "t": "img",
+        "url": "/trilhas/funil-ml/img/consideracao-vitrine.jpg",
+        "caption": "Três anúncios do mesmo produto. Qual você abriria?",
+        "fit": "contain",
+        "alt": "Três anúncios de kit de canetinhas lado a lado"
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "CTR%",
+        "means": "Taxa de cliques: de cada 100 impressões, quantas viraram clique.",
+        "ex": "100 pessoas viram o anúncio e 3 clicaram? CTR de 3%."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Métrica-chave: CTR%",
+        "html": "Muita impressão e CTR baixo? O anúncio aparece, mas perde a disputa pelo clique na vitrine."
+       },
+       {
+        "t": "list",
+        "title": "As 4 ações da consideração",
+        "items": [
+         "Aplicação de promoção",
+         "Otimização de imagem de capa",
+         "Otimização de título",
+         "Envio de Full"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Imagem de capa",
+        "html": "A capa é a primeira coisa que o comprador vê. Foto limpa, produto grande e um diferencial visual, como o “48 cores”, destacam o anúncio na lista."
+       },
+       {
+        "t": "p",
+        "title": "Título estratégico",
+        "html": "O título traz o que o comprador busca: produto, marca, modelo e o diferencial. Título genérico se perde no meio dos concorrentes."
+       },
+       {
+        "t": "p",
+        "title": "Promoção na vitrine",
+        "html": "Desconto visível, como “28% OFF”, e o preço riscado chamam o olhar na lista. Compare com os anúncios vizinhos antes de decidir o tamanho do desconto."
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "Full",
+        "means": "O produto fica guardado no centro de distribuição do Mercado Livre, que embala e entrega. Na vitrine aparece o selo FULL.",
+        "ex": "“Chegará grátis amanhã” e “Enviado pelo FULL” aparecem no cartão do anúncio."
+       },
+       {
+        "t": "list",
+        "title": "O que o comprador pesa na vitrine",
+        "items": [
+         "Preço e desconto visível",
+         "Reputação do vendedor",
+         "Frete e prazo de chegada, como no Full",
+         "Imagem de capa que chama atenção"
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "Um anúncio tem muita impressão e CTR baixo. Qual ação ataca o problema?",
+        "options": [
+         "Otimizar a imagem de capa e o título",
+         "Aumentar só o orçamento de Ads",
+         "Reescrever só a descrição do anúncio",
+         "Esperar o CTR melhorar sozinho"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "CTR baixo é problema de vitrine. Capa e título decidem o clique. Mais Ads só traria mais impressão."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Erros comuns",
+         "tone": "bad",
+         "items": [
+          "Imagens pouco atrativas e títulos genéricos",
+          "Comparar só o preço, sem ver logística, tipo de anúncio e reputação"
+         ]
+        },
+        "right": {
+         "title": "Posturas esperadas",
+         "tone": "good",
+         "items": [
+          "Capa forte, título estratégico e diferenciais visuais",
+          "Avaliar a vitrine completa: preço, reputação, frete e imagem"
+         ]
+        }
+       },
+       {
+        "t": "say",
+        "title": "Como explicar pro seller",
+        "html": "“Seu anúncio aparece, só que o comprador escolhe o do lado. Vamos trocar a capa e ajustar o título pra ele ganhar o clique.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Consideração é decidir qual anúncio abrir",
+         "CTR% é a métrica dessa etapa",
+         "Capa e título fortes ganham o clique",
+         "Preço, reputação, frete e imagem pesam juntos",
+         "Promoção e Full também puxam clique"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O que é CTR%?",
+      "options": [
+       "De cada 100 impressões, quantas viram clique",
+       "De cada 100 visitas, quantas viram venda",
+       "De cada 100 compradores, quantos voltam",
+       "De cada 100 anúncios, quantos têm desconto"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "CTR% é a taxa de cliques: cliques divididos por impressões."
+     },
+     {
+      "q": "Na vitrine, o que o comprador pesa antes de clicar?",
+      "options": [
+       "Só o menor preço dentre os anúncios",
+       "Apenas a descrição completa do anúncio",
+       "Preço, reputação, frete e imagem",
+       "Somente a ficha técnica do produto"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O clique sai da experiência completa da vitrine: preço, reputação, frete e imagem."
+     },
+     {
+      "q": "Por que comparar só o preço com os concorrentes é um erro?",
+      "options": [
+       "Porque o preço não influencia nenhum clique",
+       "Porque a vitrine também pesa frete e reputação",
+       "Porque o concorrente não importa na vitrine",
+       "Porque só a descrição decide a compra"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Dois preços iguais podem render cliques diferentes por causa de logística, tipo de anúncio e reputação."
+     }
+    ]
+   },
+   {
+    "title": "Conversão: virar venda",
+    "tagline": "CVR: o que fecha a compra",
+    "outcome": "Ajustar a página do anúncio pra transformar visita em venda.",
+    "lessons": [
+     {
+      "title": "CVR: o que fecha a compra",
+      "minutes": 6,
+      "goal": "Ajustar a página do anúncio pra transformar visita em venda.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🛒",
+        "title": "Clicou. E agora, compra?",
+        "text": "A maioria das vendas é decidida na página do anúncio. Vamos ver o que fecha a compra."
+       },
+       {
+        "t": "big",
+        "emoji": "📍",
+        "html": "A maioria das conversões acontece <b>aqui</b>",
+        "sub": "No recorte principal da página do anúncio."
+       },
+       {
+        "t": "img",
+        "url": "/trilhas/funil-ml/img/conversao-pagina-anuncio.jpg",
+        "caption": "O recorte principal: fotos, preço, frete e avaliações.",
+        "fit": "contain",
+        "alt": "Página de um anúncio no Mercado Livre"
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "CVR%",
+        "means": "Taxa de conversão: de cada 100 visitas ao anúncio, quantas viraram venda.",
+        "ex": "200 visitas e 6 vendas? CVR de 3%."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual métrica mostra se a página do anúncio convence quem chegou?",
+        "options": [
+         "Impressões, vezes que o anúncio aparece",
+         "CTR%, cliques sobre impressões vistas",
+         "CVR%, vendas sobre visitas ao anúncio",
+         "Recompra, quem voltou a comprar depois"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "CVR% compara vendas com visitas. Se ela é baixa, a página não está convencendo."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não dependa só da ficha e da descrição",
+        "html": "A maior parte da decisão acontece no topo da página: fotos, preço, frete e avaliações. Ficha e descrição ajudam, mas não carregam a venda sozinhas."
+       },
+       {
+        "t": "table",
+        "title": "As 6 ações da conversão",
+        "caption": "",
+        "head": [
+         "Ação",
+         "Ajuda a…"
+        ],
+        "rows": [
+         [
+          "Aplicação de promoção",
+          "Preço atraente na hora da decisão"
+         ],
+         [
+          "Imagens complementares",
+          "Mostrar detalhes e tirar dúvidas"
+         ],
+         [
+          "Sugestão de Clips",
+          "Mostrar o produto em uso"
+         ],
+         [
+          "Envio de Full",
+          "Entrega rápida e frete grátis"
+         ],
+         [
+          "Ficha técnica",
+          "Dar certeza sobre o produto"
+         ],
+         [
+          "Descrição",
+          "Explicar os benefícios com clareza"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Imagens complementares",
+        "html": "As fotos depois da capa respondem dúvidas: tamanho, uso, o que vem na caixa. No kit de 60 canetinhas, os selos de ponta dupla, secagem rápida e durabilidade já tiram objeções."
+       },
+       {
+        "t": "p",
+        "title": "Vídeos e Clips",
+        "html": "Vídeo curto mostra o produto em uso e resolve a dúvida que a foto não resolve. Sugira Clips quando a página tem boas fotos, mas converte pouco."
+       },
+       {
+        "t": "p",
+        "title": "Ficha técnica",
+        "html": "Ficha técnica é a lista de características: marca, modelo, material, tipo. Completa e correta, passa segurança pro comprador e ajuda a busca a achar o anúncio."
+       },
+       {
+        "t": "p",
+        "title": "Descrição",
+        "html": "Boa descrição é clara, bem formatada e reforça os benefícios. Descrição genérica ou em bloco de texto corrido não convence ninguém."
+       },
+       {
+        "t": "img",
+        "url": "/trilhas/funil-ml/img/conversao-ficha-e-descricao.jpg",
+        "caption": "Ficha técnica e descrição ficam mais abaixo na página.",
+        "fit": "contain",
+        "alt": "Ficha técnica e descrição de um anúncio"
+       },
+       {
+        "t": "quiz",
+        "q": "Os cliques estão ok, mas as vendas são baixas. A página tem 2 fotos e descrição genérica. Qual ação?",
+        "options": [
+         "Trocar só a imagem de capa do anúncio",
+         "Aumentar o orçamento de Ads da campanha",
+         "Reforçar imagens extras e a descrição",
+         "Esperar a taxa de recompra subir sozinha"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Cliques bons e venda baixa apontam pra conversão. Fotos extras e descrição clara tiram as dúvidas."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Erros comuns",
+         "tone": "bad",
+         "items": [
+          "Ignorar o recorte principal da página do anúncio",
+          "Descrição genérica, mal formatada, sem benefícios",
+          "Focar só no clique e não ajustar o conteúdo interno"
+         ]
+        },
+        "right": {
+         "title": "Posturas esperadas",
+         "tone": "good",
+         "items": [
+          "Imagens extras, vídeos e descrição detalhada tiram objeções",
+          "Ficha técnica otimizada e Clips aumentam a conversão"
+         ]
+        }
+       },
+       {
+        "t": "say",
+        "title": "Como explicar pro seller",
+        "html": "“Já tem gente chegando no seu anúncio, só que poucos compram. Vamos reforçar fotos, ficha e descrição pra tirar toda dúvida de quem tá na página.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Conversão é o clique virar venda",
+         "CVR% é a métrica dessa etapa",
+         "O topo da página decide a maior parte das vendas",
+         "Fotos, vídeo, ficha e descrição tiram objeções",
+         "Promoção e Full ajudam a fechar a compra"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O que é CVR%?",
+      "options": [
+       "De cada 100 visitas, quantas viram venda",
+       "De cada 100 impressões, quantas viram clique",
+       "De cada 100 compradores, quantos voltam",
+       "De cada 100 anúncios, quantos têm Full"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "CVR% é a taxa de conversão: vendas divididas por visitas."
+     },
+     {
+      "q": "Onde acontece a maior parte das conversões?",
+      "options": [
+       "Na lista de resultados da busca",
+       "No recorte principal da página do anúncio",
+       "Na descrição completa, no fim da página",
+       "Na ficha técnica, no meio da página"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Fotos, preço, frete e avaliações, no topo da página, concentram a decisão de compra."
+     },
+     {
+      "q": "Os cliques estão bons e as vendas, baixas. Qual combinação ajuda a eliminar objeções?",
+      "options": [
+       "Mais verba em Ads e menos fotos extras",
+       "Título curto e capa sem destaque nenhum",
+       "Imagens extras, vídeos e descrição clara",
+       "Só trocar o preço e esperar a semana"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Imagens, vídeos e descrição detalhada respondem as dúvidas e dão segurança pra comprar."
+     },
+     {
+      "q": "Qual destes é um erro comum na etapa de conversão?",
+      "options": [
+       "Usar vídeos e descrição detalhada no anúncio",
+       "Otimizar a ficha técnica do produto",
+       "Sugerir Clips pra mostrar o produto em uso",
+       "Cuidar do clique e esquecer o conteúdo interno"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Clique sem conversão não paga a conta. É preciso ajustar também o conteúdo dentro do anúncio."
+     }
+    ]
+   },
+   {
+    "title": "Lealdade e rotina",
+    "tagline": "Fazer o cliente voltar e usar o funil todo dia",
+    "outcome": "Gerar recompra e aplicar o funil em toda ação do dia a dia.",
+    "lessons": [
+     {
+      "title": "A venda não acaba no pagamento",
+      "minutes": 5,
+      "goal": "Usar Minha Página, canal de transmissão e cupons pra fazer o comprador voltar.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔁",
+        "title": "A venda não acaba no pagamento",
+        "text": "Quem compra uma vez pode comprar de novo. Vem ver como fazer ele voltar."
+       },
+       {
+        "t": "big",
+        "emoji": "🔄",
+        "html": "O funil <b>não acaba</b> depois da venda",
+        "sub": "Cada venda é o começo de um ciclo de relacionamento."
+       },
+       {
+        "t": "img",
+        "url": "/trilhas/funil-ml/img/lealdade-minha-pagina.jpg",
+        "caption": "A vitrine da loja dentro do Mercado Livre.",
+        "fit": "contain",
+        "alt": "Minha Página de uma loja"
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "Taxa de recompra",
+        "means": "De cada 100 compradores, quantos voltam a comprar de você.",
+        "ex": "100 clientes e 20 compraram de novo? Recompra de 20%."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Métrica-chave: taxa de recompra",
+        "html": "Recompra alta mostra que o comprador gostou e voltou. É venda que não depende de anúncio."
+       },
+       {
+        "t": "list",
+        "title": "As ações da lealdade",
+        "items": [
+         "Minha Página",
+         "Canal de transmissão",
+         "Cupons pra novos seguidores",
+         "Cupons pra receber as primeiras avaliações com foto"
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Termo",
+        "term": "Minha Página",
+        "means": "A vitrine da sua loja dentro do Mercado Livre, com banner, categorias e todos os seus produtos.",
+        "ex": "O comprador gostou do tênis e entra na página pra ver o resto da linha."
+       },
+       {
+        "t": "p",
+        "title": "Canal de transmissão",
+        "html": "É o canal pra falar direto com quem segue a loja: avisar de produto novo, desconto e queda de preço. Mantém o cliente antigo por perto sem gastar com anúncio."
+       },
+       {
+        "t": "p",
+        "title": "Cupons",
+        "html": "Cupom pra quem segue a loja traz seguidor novo. Cupom pra quem deixa a primeira avaliação com foto dá confiança pra quem chega depois."
+       },
+       {
+        "t": "img",
+        "url": "/trilhas/funil-ml/img/lealdade-canal-e-avaliacao.jpg",
+        "caption": "Cupom, canal de transmissão e avaliação com foto.",
+        "fit": "contain",
+        "alt": "Exemplos de cupom, canal de transmissão e avaliação com foto"
+       },
+       {
+        "t": "quiz",
+        "q": "Qual ação ajuda a manter clientes antigos engajados sem depender de anúncios?",
+        "options": [
+         "Aumentar a verba de Ads de busca",
+         "Usar o canal de transmissão da loja",
+         "Trocar a imagem de capa do anúncio",
+         "Reescrever a descrição dos produtos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O canal de transmissão fala direto com quem já segue a loja, sem pagar por impressão."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Erros comuns",
+         "tone": "bad",
+         "items": [
+          "Achar que a venda termina depois do pagamento",
+          "Não usar seguidores nem canal de transmissão pra estimular o retorno"
+         ]
+        },
+        "right": {
+         "title": "Posturas esperadas",
+         "tone": "good",
+         "items": [
+          "Ver cada venda como o início de um ciclo de relacionamento",
+          "Usar Minha Página, recompra e canal pra vender sem depender de anúncio"
+         ]
+        }
+       },
+       {
+        "t": "say",
+        "title": "Como explicar pro seller",
+        "html": "“Quem já comprou de você é o público mais fácil de vender de novo. Vamos caprichar na Minha Página e mandar novidades e cupons pelo canal de transmissão.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "A venda é o começo do relacionamento",
+         "Taxa de recompra é a métrica da lealdade",
+         "Minha Página mostra a loja inteira",
+         "Canal de transmissão mantém o cliente por perto",
+         "Cupom traz seguidor e avaliação com foto"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Funil na rotina",
+      "minutes": 5,
+      "goal": "Aplicar o funil em toda ação do dia a dia e escolher a ação certa pro gargalo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📅",
+        "title": "Funil: todo dia, o dia todo",
+        "text": "Você já faz ações em todas as etapas sem perceber. Agora com mapa na mão."
+       },
+       {
+        "t": "big",
+        "emoji": "⏱️",
+        "html": "<b>100% do tempo</b>: toda ação passa pelo funil",
+        "sub": "Mexeu em promoção, foto, título ou cupom? Mexeu numa etapa."
+       },
+       {
+        "t": "table",
+        "title": "Cada ação, a etapa que ela mexe (1/2)",
+        "caption": "",
+        "head": [
+         "Ação",
+         "Etapa que ela mexe"
+        ],
+        "rows": [
+         [
+          "Criação e otimização de Ads",
+          "Descoberta"
+         ],
+         [
+          "Palavras-chave",
+          "Descoberta"
+         ],
+         [
+          "Promoção",
+          "Descoberta, consideração e conversão"
+         ],
+         [
+          "Clips",
+          "Descoberta e conversão"
+         ],
+         [
+          "Imagem de capa",
+          "Consideração"
+         ],
+         [
+          "Título",
+          "Consideração"
+         ]
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Cada ação, a etapa que ela mexe (2/2)",
+        "caption": "",
+        "head": [
+         "Ação",
+         "Etapa que ela mexe"
+        ],
+        "rows": [
+         [
+          "Envio de Full",
+          "Consideração e conversão"
+         ],
+         [
+          "Imagens complementares",
+          "Conversão"
+         ],
+         [
+          "Ficha técnica",
+          "Conversão"
+         ],
+         [
+          "Descrição",
+          "Conversão"
+         ],
+         [
+          "Minha Página, canal e cupons",
+          "Lealdade"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Uma ação, várias etapas",
+        "html": "Promoção, Full e Clips aparecem em mais de uma etapa. Se o gargalo estiver nelas, uma ação só ajuda em vários pontos."
+       },
+       {
+        "t": "flow",
+        "title": "Do sintoma à ação",
+        "caption": "",
+        "loop": true,
+        "items": [
+         {
+          "icon": "1",
+          "title": "Olhe a métrica",
+          "text": "Impressões, CTR, CVR ou recompra."
+         },
+         {
+          "icon": "2",
+          "title": "Ache o gargalo",
+          "text": "A etapa onde mais gente desiste."
+         },
+         {
+          "icon": "3",
+          "title": "Escolha a ação",
+          "text": "Use as ações daquela etapa."
+         },
+         {
+          "icon": "4",
+          "title": "Meça de novo",
+          "text": "Mudou o número? Então funcionou."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Do sintoma à primeira ação",
+        "caption": "",
+        "head": [
+         "Sintoma",
+         "Etapa",
+         "Primeiras ações"
+        ],
+        "rows": [
+         [
+          "Poucas impressões",
+          "Descoberta",
+          "Palavras-chave, promoção, Ads, Clips"
+         ],
+         [
+          "CTR baixo",
+          "Consideração",
+          "Capa, título, promoção, Full"
+         ],
+         [
+          "CVR baixa",
+          "Conversão",
+          "Imagens extras, descrição, ficha, Clips"
+         ],
+         [
+          "Pouca recompra",
+          "Lealdade",
+          "Minha Página, canal, cupons"
+         ]
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "Um anúncio tem muita impressão e CTR de 0,5%. Onde está o gargalo e qual a primeira ação?",
+        "options": [
+         "Consideração: melhorar capa e título",
+         "Descoberta: dobrar a verba de Ads",
+         "Conversão: reescrever a descrição",
+         "Lealdade: criar cupom de recompra"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Muita impressão com pouco clique é problema de vitrine. A ação é capa e título."
+       },
+       {
+        "t": "quiz",
+        "q": "O CTR está bom, mas a CVR é baixa. Qual a melhor primeira ação?",
+        "options": [
+         "Trocar o título pra ganhar mais clique",
+         "Subir a verba de Ads de busca",
+         "Criar uma campanha de recompra",
+         "Reforçar imagens extras e descrição"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O comprador clica, mas não compra. O gargalo é a página, então o foco é fotos, descrição e ficha."
+       },
+       {
+        "t": "quiz",
+        "q": "As vendas dependem 100% de anúncio e quase ninguém volta a comprar. Qual etapa trabalhar?",
+        "options": [
+         "Descoberta, com mais palavras-chave",
+         "Consideração, com novo título",
+         "Conversão, com mais fotos",
+         "Lealdade, com canal e cupons"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Pouca recompra é sintoma de lealdade. Canal de transmissão, Minha Página e cupons trazem o cliente de volta sem anunciar."
+       },
+       {
+        "t": "say",
+        "title": "Como explicar pro seller",
+        "html": "“Em vez de mexer em tudo ao mesmo tempo, vamos achar onde a venda trava e atacar essa etapa primeiro. Aí a gente sabe o que funcionou.”"
+       },
+       {
+        "t": "list",
+        "title": "Checklist de domínio",
+        "items": [
+         "Consigo explicar as 4 etapas do funil no Mercado Livre?",
+         "Sei identificar onde está o gargalo da conta?",
+         "Consigo ligar ações, como promoção e Ads, ao impacto em cada etapa?",
+         "Entendo como o funil guia decisões, de criar Clips a configurar Ads?"
+        ]
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Toda ação do dia a dia passa pelo funil",
+         "Ache o gargalo antes de escolher a ação",
+         "Cada etapa tem a sua métrica e as suas ações",
+         "Promoção, Full e Clips ajudam em mais de uma etapa",
+         "Meça de novo depois de cada ajuste"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O funil acaba quando o pagamento é aprovado?",
+      "options": [
+       "Sim, a venda termina quando o cliente paga",
+       "Só em lojas oficiais com Minha Página",
+       "Não, a venda abre um ciclo de relacionamento",
+       "Só quando o produto é enviado pelo Full"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Cada venda é o começo de um ciclo de relacionamento, que pode gerar recompra."
+     },
+     {
+      "q": "Qual é a métrica-chave da lealdade?",
+      "options": [
+       "CTR%, cliques sobre impressões vistas",
+       "Taxa de recompra, quem volta a comprar",
+       "Impressões, vezes que o anúncio apareceu",
+       "CVR%, visitas que viram venda"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Lealdade é o comprador voltar, e a taxa de recompra mede isso."
+     },
+     {
+      "q": "Quais ações ajudam a manter clientes antigos engajados?",
+      "options": [
+       "Imagem de capa, título e Full",
+       "Ads, palavras-chave e Clips",
+       "Ficha técnica, descrição e imagens extras",
+       "Minha Página, canal de transmissão e cupons"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "São as ferramentas de lealdade: mantêm o cliente por perto e geram nova venda sem depender de anúncio."
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Uma conta tem poucas impressões. Qual etapa e qual ação?",
+    "options": [
+     "Conversão: reescrever a descrição",
+     "Descoberta: palavras-chave e promoções",
+     "Lealdade: criar cupom de recompra",
+     "Consideração: trocar a ficha técnica"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Poucas impressões são problema de descoberta. Palavras-chave, promoções, Ads e Clips mexem nela."
+   },
+   {
+    "q": "O anúncio tem muita impressão e CTR baixo. Onde está o gargalo?",
+    "options": [
+     "Descoberta: o anúncio quase não aparece",
+     "Conversão: a página não fecha a venda",
+     "Lealdade: ninguém volta a comprar",
+     "Consideração: a vitrine não ganha o clique"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "O anúncio aparece, mas perde a disputa pelo clique. O problema está na vitrine: capa, título, preço e frete."
+   },
+   {
+    "q": "O CTR está bom, mas a CVR é baixa. Onde está o gargalo?",
+    "options": [
+     "Conversão: a página não fecha a venda",
+     "Descoberta: o anúncio quase não aparece",
+     "Consideração: a vitrine não ganha o clique",
+     "Lealdade: ninguém volta a comprar"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "O comprador clica, mas não compra. Isso aponta pra página do anúncio."
+   },
+   {
+    "q": "Qual a métrica de cada etapa, na ordem do funil?",
+    "options": [
+     "CTR%, impressões, CVR%, taxa de recompra",
+     "Impressões, CVR%, CTR%, taxa de recompra",
+     "Impressões, CTR%, CVR%, taxa de recompra",
+     "Taxa de recompra, CVR%, CTR%, impressões"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Descoberta mede impressões, consideração mede CTR%, conversão mede CVR% e lealdade mede a taxa de recompra."
+   },
+   {
+    "q": "Depois de dobrar a verba de Ads, as impressões subiram, mas CTR e CVR ficaram iguais. Por quê?",
+    "options": [
+     "Ads troca a capa do anúncio",
+     "Ads impulsiona só as impressões",
+     "Ads melhora a ficha técnica",
+     "Ads cria cupom de recompra"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Ads aumenta impressões. Clique e conversão dependem do próprio anúncio."
+   },
+   {
+    "q": "Qual o efeito do envio de Full no funil?",
+    "options": [
+     "Ajuda só na recompra do cliente",
+     "Gera só impressão na busca",
+     "Ajuda no clique e na conversão",
+     "Não muda nada no funil"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O Full aparece na vitrine, com selo e prazo, e também ajuda a fechar a compra com entrega rápida e frete grátis."
+   },
+   {
+    "q": "Por que não dá pra depender só da ficha técnica e da descrição?",
+    "options": [
+     "Porque a decisão acontece no topo da página",
+     "Porque o Mercado Livre esconde esses campos",
+     "Porque ficha e descrição só valem pra Ads",
+     "Porque o comprador só olha a reputação"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Fotos, preço, frete e avaliações no topo da página concentram a maior parte das conversões."
+   },
+   {
+    "q": "O comprador gostou e já pagou. O que fazer pra ele voltar?",
+    "options": [
+     "Esquecer, a venda terminou no pagamento",
+     "Subir a verba de Ads de busca",
+     "Usar canal de transmissão e cupons",
+     "Trocar a imagem de capa do anúncio"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Lealdade se trabalha depois da venda: Minha Página, canal de transmissão e cupons mantêm o cliente por perto."
+   },
+   {
+    "q": "Em que momento do dia a dia o funil entra?",
+    "options": [
+     "Só quando as vendas caem",
+     "Só na reunião mensal de resultado",
+     "Em 100% do tempo, em toda ação",
+     "Só em datas como Black Friday"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Toda ação do dia a dia, de criar Clips a configurar Ads, mexe em alguma etapa do funil."
+   },
+   {
+    "q": "Antes de escolher uma ação, o que você faz?",
+    "options": [
+     "Aplica promoção em tudo pra testar",
+     "Acha o gargalo pelas métricas do funil",
+     "Dobra a verba de Ads por garantia",
+     "Reescreve todas as descrições do anúncio"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Primeiro acha onde a venda trava. Só depois escolhe a ação daquela etapa."
+   }
+  ]
+ }
+}

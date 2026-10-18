@@ -229,6 +229,39 @@ console.log("Duplicar e excluir");
   assert.equal(r.status, 400); ok("trilha nativa não se exclui");
 }
 
+console.log("Importar trilha pronta (.json)");
+{
+  const fs = await import("node:fs");
+  const file = JSON.parse(fs.readFileSync(new URL("../trilhas-prontas/funil-de-vendas-ml.json", import.meta.url), "utf8"));
+  let r = await call("POST", "admin/trails/import", { token: ana.token, body: file });
+  assert.equal(r.status, 403); ok("aluno não importa trilha");
+  r = await call("POST", "admin/trails/import", { token: adm.token, body: { oi: 1 } });
+  assert.equal(r.status, 400); ok("arquivo que não é trilha é recusado");
+  r = await call("POST", "admin/trails/import", { token: adm.token, body: file });
+  assert.equal(r.status, 201, JSON.stringify(r.data));
+  const t = r.data.trail; assert.deepEqual(r.data.problems, []); ok("importa o Funil de Vendas ML sem pendências");
+  assert.equal(t.draft.modules.length, 5);
+  assert.equal(t.draft.modules.reduce((a, m) => a + m.lessons.length, 0), 7);
+  assert.equal(t.draft.finalQuestions.length, 10);
+  const imgs = t.draft.modules.flatMap((m) => m.lessons.flatMap((l) => l.blocks.filter((b) => b.t === "img")));
+  assert.equal(imgs.length, 7); assert.ok(imgs.every((b) => b.url.startsWith("/trilhas/funil-ml/img/")));
+  for (const b of imgs) assert.ok(fs.existsSync(new URL("../public" + b.url, import.meta.url)), "falta o arquivo " + b.url);
+  ok("7 imagens do PDF ficam ligadas aos arquivos que vão junto com o site");
+  r = await call("GET", "trails/custom", { token: ana.token });
+  assert.equal(r.data.trails.length, 0); ok("importada fica como rascunho: o aluno não vê");
+  r = await call("POST", `admin/trails/${t.id}/publish`, { token: adm.token });
+  assert.equal(r.status, 200, JSON.stringify(r.data)); ok("publica direto, sem ajustes");
+  r = await call("GET", "trails/custom", { token: ana.token });
+  assert.equal(r.data.trails.length, 1); assert.ok(!JSON.stringify(r.data).includes("Resposta"));
+  r = await call("DELETE", "admin/trails/" + t.id, { token: adm.token });
+  assert.equal(r.status, 200);
+  // links de fora do site e caminhos com ".." continuam barrados
+  const evil = JSON.parse(JSON.stringify(file)); evil.draft.modules[0].lessons[0].blocks[1] = { t: "img", url: "/trilhas/../../etc/passwd.png", caption: "x" };
+  r = await call("POST", "admin/trails/import", { token: adm.token, body: evil });
+  assert.equal(r.status, 201); assert.equal(r.data.trail.draft.modules[0].lessons[0].blocks[1].url, ""); ok("caminho com .. é descartado");
+  await call("DELETE", "admin/trails/" + r.data.trail.id, { token: adm.token });
+}
+
 console.log("Limpeza de HTML");
 {
   assert.equal(trailsLib.cleanHtml("<b>a</b> & <i>b</i> <u>c</u><br/>d"), "<b>a</b> &amp; <i>b</i> <u>c</u><br>d");

@@ -8,7 +8,7 @@ import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 const api = (await import("../netlify/functions/api.mjs")).default;
 const root = join(fileURLToPath(new URL(".", import.meta.url)), "..", "public");
-const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp" };
+const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".json": "application/json" };
 const port = Number(process.env.PORT) || 8888;
 http.createServer(async (req, res) => {
   try {

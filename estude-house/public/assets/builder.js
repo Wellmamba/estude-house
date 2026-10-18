@@ -27,6 +27,23 @@
     } catch (e) { M.toast(e.message, "err"); }
   };
 
+  /* ───── importar uma trilha pronta (.json) ───── */
+  M.importTrailDialog = function () {
+    const inp = h("input", { type: "file", accept: ".json,application/json", hidden: true });
+    inp.addEventListener("change", async () => {
+      const f = inp.files[0]; if (!f) return;
+      try {
+        if (f.size > 2_000_000) throw new Error("Arquivo grande demais para ser uma trilha.");
+        let j; try { j = JSON.parse(await f.text()); } catch { throw new Error("Esse arquivo não é um .json válido."); }
+        const r = await M.post("admin/trails/import", j);
+        M.toast(r.problems?.length ? `Trilha importada como rascunho. Faltam ${r.problems.length} ajustes pra publicar.` : "Trilha importada como rascunho. Confira e publique.", "ok");
+        location.hash = "#/admin/trilhas/" + r.trail.id;
+      } catch (e) { M.toast(e.message, "err"); }
+      inp.value = "";
+    });
+    inp.click();
+  };
+
   /* ───── quem vê a trilha: todos os alunos ou só os escolhidos ───── */
   M.audienceDialog = async function (t, onSaved) {
     let d;
@@ -131,7 +148,9 @@
       h("div", { class: "page-head" },
         h("h2", { text: "Gestão de trilhas" }),
         h("p", { text: "Ative ou inative qualquer trilha e crie as suas, do zero. Trilha inativa some para os alunos; o progresso e os certificados ficam guardados e voltam quando você ativar de novo." })),
-      h("div", { class: "row", style: "margin-bottom:18px" }, h("button", { class: "btn btn-gold", type: "button", onclick: M.createTrailDialog }, M.icon("plus", 18), " Criar nova trilha")),
+      h("div", { class: "row", style: "margin-bottom:18px;gap:10px;flex-wrap:wrap" },
+        h("button", { class: "btn btn-gold", type: "button", onclick: M.createTrailDialog }, M.icon("plus", 18), " Criar nova trilha"),
+        h("button", { class: "btn btn-ghost", type: "button", onclick: M.importTrailDialog }, M.icon("clip", 18), " Importar trilha pronta (.json)")),
       list);
   };
 
