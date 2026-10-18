@@ -13,6 +13,8 @@
     [/^#\/forum\/envios$/, "forum-envios", () => ({ key: "forum-envios", crumbs: [T("Dúvidas e sugestões")], view: () => M.views.forumEnvios() })],
     [/^#\/forum\/([\w-]+)$/, "search", (m) => ({ key: "search", crumbs: [{ text: "Busca", href: "#/busca" }, T("Fórum")], view: () => M.views.forumPost(m[1]) })],
     [/^#\/admin\/forum(?:\?(.*))?$/, "admin", (m) => { const q = new URLSearchParams(m[1] || ""); return { key: "admin-forum", crumbs: [T("Administração"), T("Fórum")], view: () => M.views.forumAdmin(q.get("e") || "", q.get("tab") || ""), wide: false }; }],
+    [/^#\/reels$/, "reels", () => ({ key: "reels", crumbs: [T("Engajamento"), T("Reels")], view: () => M.views.reels(), wide: true })],
+    [/^#\/voce$/, "voce", () => ({ key: "voce", crumbs: [T("Você")], view: () => M.views.voce() })],
     [/^#\/ranking$/, "rank", () => ({ key: "rank", crumbs: [T("Ranking")], view: () => M.views.ranking() })],
     [/^#\/busca(?:\?(.*))?$/, "search", (m) => { const q = new URLSearchParams(m[1] || ""); return { key: "search", crumbs: [T("Busca")], view: () => M.views.search(q.get("q") || "", q.get("tag") || "") }; }],
     [/^#\/tag\/([\w-]+)$/, "tag", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Tag")], view: () => M.views.home({ tag: m[1] }) })],
@@ -23,6 +25,7 @@
     [/^#\/prova\/(pv[0-9a-f]{6})$/, "prova", (m) => ({ key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, T("Prova")], view: () => M.views.prova(m[1]) })],
     [/^#\/admin\/tags$/, "admin", () => ({ key: "admin-tags", crumbs: [T("Administração"), T("Tags e moderação")], view: () => M.views.adminTags(), wide: true })],
     [/^#\/admin\/aprovacoes$/, "admin", () => ({ key: "admin-approve", crumbs: [T("Administração"), T("Aprovações")], view: () => M.views.adminApprovals(), wide: true })],
+    [/^#\/admin\/avisos$/, "admin", () => ({ key: "admin-avisos", crumbs: [T("Administração"), T("Avisos")], view: () => M.views.adminAvisos() })],
     [/^#\/admin\/engajamento$/, "admin", () => ({ key: "admin-engage", crumbs: [T("Administração"), T("Engajamento")], view: () => M.views.adminEngage(), wide: true })],
     [/^#\/t\/([\w-]+)$/, "trail", (m) => ({ key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, T(M.trailById(m[1])?.title || "Trilha")], view: () => M.views.trail(m[1]) })],
     [/^#\/m\/([\w-]+)$/, "module", (m) => { const t = M.trailOfModule(m[1]); return { key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, t ? trailCrumb(t) : T("Trilha"), T("Módulo " + (M.modulo(m[1])?.n ?? ""))], view: () => M.views.module(m[1]) }; }],
@@ -81,10 +84,10 @@
     if (!def) { M.setPage("home", [{ text: "Página não encontrada" }], M.notFound()); return; }
     if (def.key.startsWith("admin")) {
       /* cada área do menu pede uma permissão; sem ela, a pessoa vai para a primeira área que pode usar */
-      const NEED = { admin: "usuarios", "admin-users": "usuarios", "admin-logs": "usuarios", "admin-q": "trilhas", "admin-trails": "trilhas", "admin-tags": "moderar", "admin-approve": "aprovar", "admin-engage": "engajamento", "admin-forum": "forum" };
+      const NEED = { admin: "usuarios", "admin-users": "usuarios", "admin-logs": "usuarios", "admin-q": "trilhas", "admin-trails": "trilhas", "admin-tags": "moderar", "admin-approve": "aprovar", "admin-engage": "engajamento", "admin-forum": "forum", "admin-avisos": "publicar" };
       if (!M.isAdmin()) { location.hash = "#/"; return; }
       if (NEED[def.key] && !M.can(NEED[def.key])) {
-        const first = [["usuarios", "#/admin"], ["aprovar", "#/admin/aprovacoes"], ["forum", "#/admin/forum"], ["moderar", "#/admin/tags"], ["trilhas", "#/admin/trilhas"], ["engajamento", "#/admin/engajamento"]].find(([k]) => M.can(k));
+        const first = [["usuarios", "#/admin"], ["aprovar", "#/admin/aprovacoes"], ["publicar", "#/admin/avisos"], ["forum", "#/admin/forum"], ["moderar", "#/admin/tags"], ["trilhas", "#/admin/trilhas"], ["engajamento", "#/admin/engajamento"]].find(([k]) => M.can(k));
         location.hash = first ? first[1] : "#/"; return;
       }
     }

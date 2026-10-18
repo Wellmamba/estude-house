@@ -105,6 +105,42 @@
     return h("div", { class: "playbook pb-scroll" }, svg(`<svg viewBox="0 28 ${W} 250" role="img" aria-label="Como funciona: aulas e vídeos, quizzes, provas e certificado">${paths}${nodes}</svg>`));
   };
 
+  /* ───── menu do gestor em grupos: cada grupo vira um menu recolhível e uma faixa de abas no topo da tela ───── */
+  M.adminGroups = () => [
+    { id: "com", label: "Comunidade", icon: "chat", items: [
+      { key: "admin-approve", href: "#/admin/aprovacoes", icon: "flag", text: "Aprovações", perm: "aprovar", badge: true },
+      { key: "admin-forum", href: "#/admin/forum", icon: "chat", text: "Fórum", perm: "forum", badge: true },
+      { key: "admin-tags", href: "#/admin/tags", icon: "tag", text: "Tags e moderação", perm: "moderar" },
+      { key: "admin-avisos", href: "#/admin/avisos", icon: "bell", text: "Avisos", perm: "publicar" },
+    ] },
+    { id: "cont", label: "Conteúdo", icon: "book", items: [
+      { key: "admin-trails", href: "#/admin/trilhas", icon: "book", text: "Trilhas", perm: "trilhas" },
+      { key: "admin-trails", href: "#/admin/provas", icon: "cert", text: "Provas avulsas", perm: "trilhas" },
+      { key: "admin-q", href: "#/admin/perguntas", icon: "help", text: "Banco de questões", perm: "trilhas" },
+    ] },
+    { id: "pes", label: "Pessoas", icon: "users", items: [
+      { key: "admin-users", href: "#/admin/usuarios", icon: "users", text: "Acessos", perm: "usuarios" },
+      { key: "admin-engage", href: "#/admin/engajamento", icon: "bolt", text: "Engajamento", perm: "engajamento" },
+      { key: "admin-logs", href: "#/admin/logs", icon: "list", text: "Logs", perm: "usuarios" },
+    ] },
+  ].map((g) => ({ ...g, items: g.items.filter((i) => M.can(i.perm)) })).filter((g) => g.items.length);
+  M.adminBadge = (key) => (key === "admin-approve" ? (M.session.pending || 0) + (M.session.pendingSignups || 0) : key === "admin-forum" ? M.session.pendingForum || 0 : 0);
+  const grpState = () => { try { return JSON.parse(localStorage.getItem("eh-grp") || "{}"); } catch { return {}; } };
+  const grpSave = (st) => { try { localStorage.setItem("eh-grp", JSON.stringify(st)); } catch {} };
+
+  /* faixa de abas no topo das telas de gestão: troca de tela sem abrir o menu */
+  function adminStrip() {
+    const hash = (location.hash || "").split("?")[0];
+    const g = M.adminGroups().find((x) => x.items.some((i) => i.href === hash));
+    if (!g || g.items.length < 2) return null;
+    return h("nav", { class: "admin-tabs", "aria-label": g.label },
+      h("span", { class: "at-label" }, M.icon(g.icon, 16), g.label),
+      h("div", { class: "at-row" }, g.items.map((i) => {
+        const n = i.badge ? M.adminBadge(i.key) : 0;
+        return h("a", { class: "at", href: i.href, "aria-current": i.href === hash ? "page" : null }, i.text, n ? h("b", { class: "at-n", text: String(n) }) : null);
+      })));
+  }
+
   /* ───── casca ───── */
   let shell = null;
   M.resetShell = () => { shell = null; };
@@ -114,6 +150,7 @@
     const nav = h("nav", { class: "nav", "aria-label": "Principal" },
       h("div", { class: "nav-sep", text: "Estudos" }),
       link("home", "#/", "home", "Feed", "dst"),
+      link("reels", "#/reels", "reels", "Reels"),
       link("trails", "#/trilhas", "book", "Trilhas"),
       link("rank", "#/ranking", "trophy", "Ranking"),
       u.role === "aluno" ? link("forum-envios", "#/forum/envios", "chat", "Dúvidas e sugestões") : null,
@@ -123,14 +160,15 @@
       M.isAdmin() ? [
         h("div", { class: "nav-sep", text: u.role === "subadmin" ? "Sub-administração" : "Administração" }),
         M.can("usuarios") ? link("admin", "#/admin", "shield", "Painel") : null,
-        M.can("aprovar") ? link("admin-approve", "#/admin/aprovacoes", "flag", "Aprovações", true) : null,
-        M.can("trilhas") ? link("admin-trails", "#/admin/trilhas", "book", "Gestão de trilhas") : null,
-        M.can("forum") ? link("admin-forum", "#/admin/forum", "chat", "Fórum", true) : null,
-        M.can("engajamento") ? link("admin-engage", "#/admin/engajamento", "bolt", "Engajamento") : null,
-        M.can("moderar") ? link("admin-tags", "#/admin/tags", "tag", "Tags e moderação") : null,
-        M.can("usuarios") ? link("admin-users", "#/admin/usuarios", "users", "Acessos") : null,
-        M.can("usuarios") ? link("admin-logs", "#/admin/logs", "list", "Logs") : null,
-        M.can("trilhas") ? link("admin-q", "#/admin/perguntas", "help", "Banco de questões") : null,
+        M.adminGroups().map((g) => {
+          const st = grpState();
+          const open = st[g.id] !== false && st[g.id] !== undefined ? true : false;
+          const head = h("button", { class: "nav-grp-h", type: "button", "aria-expanded": String(open), "aria-controls": "grp-" + g.id }, M.icon(g.icon), h("span", { text: g.label }), h("b", { class: "grp-badge", "data-grp-badge": g.id, hidden: true }), h("span", { class: "grp-chev" }, M.icon("chev", 16)));
+          const body = h("div", { class: "nav-grp-b", id: "grp-" + g.id }, g.items.map((it) => link(it.key, it.href, it.icon, it.text, it.badge)));
+          const wrap = h("div", { class: "nav-grp" + (open ? " open" : ""), "data-grp": g.id }, head, body);
+          head.addEventListener("click", () => { const o = !wrap.classList.contains("open"); wrap.classList.toggle("open", o); head.setAttribute("aria-expanded", String(o)); const s2 = grpState(); s2[g.id] = o; grpSave(s2); });
+          return wrap;
+        }),
       ] : null);
     const side = h("aside", { class: "side", id: "side" },
       M.brand("#/"), nav,
@@ -154,23 +192,38 @@
     const topBrand = h("a", { class: "top-brand", href: "#/", "aria-label": "BRYANT SHOOT: ir para o Feed" },
       h("span", { class: "brand-mark" }, svg(M.ballSvg(22))),
       h("span", { text: "BRYANT SHOOT" }));
-    const top = h("header", { class: "top" }, menuBtn, topBrand, crumbs, h("span", { class: "spacer" }), search, M.bell(), xp);
+    const searchBtn = h("a", { class: "icon-btn top-search-btn", href: "#/busca", "aria-label": "Buscar" }, M.icon("search", 22));
+    const top = h("header", { class: "top" }, menuBtn, topBrand, crumbs, h("span", { class: "spacer" }), search, searchBtn, M.bell(), xp);
     const page = h("div", { class: "page", id: "main", tabindex: "-1" });
     const main = h("main", { class: "main" }, top, page);
 
     /* menu de baixo, como no Instagram (só aparece no celular) */
     const tab = (key, href, icon, label, dst) => h("a", { class: "tab", href, "data-key": key, "aria-label": label }, h("span", { class: "tab-ico" }, M.icon(icon, 26), dst ? h("i", { class: "tab-dot", "data-dst-badge": "", hidden: true }) : null), h("span", { class: "tab-txt", text: label }));
-    const meTab = h("button", { class: "tab tab-me", type: "button", "aria-label": "Menu: certificados, conta e mais", "aria-controls": "side", "aria-expanded": "false" },
-      h("span", { class: "tab-ico" }, M.avatar(u, 28)), h("span", { class: "tab-txt", text: "Você" }));
-    const setDrawer = (open) => { side.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", String(open)); meTab.setAttribute("aria-expanded", String(open)); };
-    meTab.addEventListener("click", () => setDrawer(!side.classList.contains("open")));
+    /* "Você" abre uma tela própria (conta, certificados, gestão…) em vez do menu lateral do PC */
+    const meTab = h("a", { class: "tab tab-me", href: "#/voce", "data-key": "voce", "aria-label": "Você: conta, certificados e mais" },
+      h("span", { class: "tab-ico" }, M.avatar(u, 28), h("i", { class: "tab-dot", "data-me-badge": "", hidden: true })), h("span", { class: "tab-txt", text: "Você" }));
+    const setDrawer = (open) => { side.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", String(open)); };
     const tabbar = h("nav", { class: "tabbar", "aria-label": "Navegação do celular" },
-      tab("home", "#/", "home", "Feed", true), tab("search", "#/busca", "search", "Busca"), tab("trails", "#/trilhas", "book", "Trilhas"), tab("rank", "#/ranking", "trophy", "Ranking"), meTab);
+      tab("home", "#/", "home", "Feed", true), tab("reels", "#/reels", "reels", "Reels"), tab("trails", "#/trilhas", "book", "Trilhas"), tab("rank", "#/ranking", "trophy", "Ranking"), meTab);
     const root = h("div", { class: "shell" }, side, main, tabbar);
-    root.addEventListener("click", (e) => { if (side.classList.contains("open") && !side.contains(e.target) && !meTab.contains(e.target) && !menuBtn.contains(e.target)) setDrawer(false); });
+    root.addEventListener("click", (e) => { if (side.classList.contains("open") && !side.contains(e.target) && !menuBtn.contains(e.target)) setDrawer(false); });
     M.mount(root);
     return { root, side, nav, crumbs, xp, page, tabbar, meTab };
   }
+
+  /* soma das pendências de cada grupo, para o gestor ver sem abrir o menu */
+  function paintGroupBadges() {
+    if (!shell) return;
+    const me = M.adminGroups().reduce((a, g) => a + g.items.reduce((b, i) => b + (i.badge ? M.adminBadge(i.key) : 0), 0), 0);
+    M.adminGroups().forEach((g) => {
+      const n = g.items.reduce((b, i) => b + (i.badge ? M.adminBadge(i.key) : 0), 0);
+      const el = shell.nav.querySelector(`[data-grp-badge="${g.id}"]`);
+      if (el) { el.hidden = !n; el.textContent = String(n || ""); }
+    });
+    const dot = shell.tabbar.querySelector("[data-me-badge]");
+    if (dot) { dot.hidden = !me; dot.textContent = me ? String(me) : ""; }
+  }
+  M.paintGroupBadges = paintGroupBadges;
 
   M.updateXpChip = function () {
     const v = shell?.xp?.querySelector(".xp-val");
@@ -178,25 +231,34 @@
   };
   M.setPage = function (key, crumbParts, node, { wide = false } = {}) {
     if (!shell || !document.body.contains(shell.root)) shell = buildShell();
+    const hashPath = (location.hash || "#/").split("?")[0];
     shell.nav.querySelectorAll("a").forEach((a) => {
-      if (a.dataset.key === key) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+      const sameKey = a.dataset.key === key;
+      /* duas entradas com a mesma chave (Trilhas e Provas avulsas): vale a que bate com o endereço */
+      const twins = sameKey && shell.nav.querySelectorAll(`a[data-key="${key}"]`).length > 1;
+      const on = twins ? a.getAttribute("href") === hashPath || (a.getAttribute("href") === "#/admin/trilhas" && hashPath.startsWith("#/admin/trilhas")) : sameKey;
+      if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
+    shell.nav.querySelectorAll(".nav-grp").forEach((g) => { if (g.querySelector('a[aria-current="page"]')) { g.classList.add("open", "has-current"); g.querySelector(".nav-grp-h").setAttribute("aria-expanded", "true"); } else g.classList.remove("has-current"); });
     shell.crumbs.replaceChildren(...(crumbParts || []).flatMap((c, i) => {
       const el = c.href ? h("a", { href: c.href, text: c.text }) : h("span", { text: c.text });
       return i ? [" / ", el] : [el];
     }));
     M.updateXpChip();
     shell.tabbar.querySelectorAll("a.tab").forEach((a) => { if (a.dataset.key === key) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
-    const meKeys = /^(conta|cert|admin)/.test(key);
-    if (meKeys) shell.meTab.setAttribute("data-on", ""); else shell.meTab.removeAttribute("data-on");
+    const meKeys = /^(conta|cert|admin|voce|forum-envios)/.test(key);
+    if (meKeys) { shell.meTab.setAttribute("data-on", ""); shell.meTab.setAttribute("aria-current", "page"); } else { shell.meTab.removeAttribute("data-on"); shell.meTab.removeAttribute("aria-current"); }
     if (M.paintBadges) M.paintBadges();
     const badge = shell.nav.querySelector('[data-key="admin-approve"] .nav-badge');
     const nPend = (M.session.pending || 0) + (M.session.pendingSignups || 0);
     if (badge) { badge.hidden = !(nPend > 0); badge.textContent = String(nPend || ""); }
     const fBadge = shell.nav.querySelector('[data-key="admin-forum"] .nav-badge');
     if (fBadge) { const n = M.session.pendingForum || 0; fBadge.hidden = !(n > 0); fBadge.textContent = String(n || ""); }
-    shell.page.className = "page" + (wide ? " page-wide" : "");
-    shell.page.replaceChildren(node);
+    shell.page.className = "page" + (wide ? " page-wide" : "") + (key === "reels" ? " page-reels" : "");
+    const strip = key.startsWith("admin") ? adminStrip() : null;
+    shell.page.replaceChildren(...(strip ? [strip, node] : [node]));
+    document.body.classList.toggle("is-reels", key === "reels");
+    paintGroupBadges();
     window.scrollTo(0, 0);
     shell.page.focus({ preventScroll: true });
   };
@@ -656,6 +718,7 @@
       h("section", { class: "panel" }, h("h3", { text: "Seu @ no feed" }),
         h("p", { class: "muted small", style: "margin:0 0 12px", text: "O @ é o seu nome de usuário: o time te encontra na busca e te marca nos posts. Dá para trocar uma vez a cada 7 dias." }),
         M.nickForm()),
+      M.pushCard ? M.pushCard() : null,
       h("section", { class: "panel" }, h("h3", { text: "Tour guiado" }),
         h("p", { class: "muted small", style: "margin:0 0 12px", text: "Um passeio rápido mostrando onde fica cada coisa no BRYANT SHOOT." }),
         h("button", { class: "btn btn-ghost", type: "button", onclick: () => { if (M.tour) M.tour.start({ force: true }); } }, M.icon("rocket", 18), " Rever o tour")),

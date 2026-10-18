@@ -46,6 +46,18 @@
     return wrap;
   }
 
+  M.hypeButton = hypeButton;
+  M.commentsBox = (post, onCount) => commentsBox(post, onCount);
+
+  /* tipos de post: dão contexto e incentivam o aluno a compartilhar */
+  M.KINDS = {
+    curiosidade: { label: "Curiosidade", icon: "bulb", ph: "Qual curiosidade do marketplace você descobriu? Conte em poucas linhas…" },
+    case: { label: "Case", icon: "trophy", ph: "Conte um case: o que você fez, o que mudou e o resultado (números ajudam)…" },
+    dica: { label: "Dica", icon: "bolt", ph: "Qual dica rápida ajudaria o time? Pode ser um passo a passo de 2 ou 3 linhas…" },
+    conquista: { label: "Conquista", icon: "star", ph: "Bateu uma meta, fechou uma conta ou concluiu uma trilha? Comemore com o time!" },
+  };
+  M.kindChip = (k) => (M.KINDS[k] ? h("span", { class: "chip chip-xs kind-chip kind-" + k }, M.icon(M.KINDS[k].icon, 12), M.KINDS[k].label) : null);
+
   /* ───── comentários ───── */
   function commentsBox(post, onCount) {
     const box = h("section", { class: "comments", "aria-label": "Comentários" });
@@ -141,6 +153,7 @@
           h("a", { class: "post-name", href: M.profileHref(a), text: a.name }),
           a.role === "admin" || a.role === "subadmin" ? h("span", { class: "chip chip-gold chip-xs", text: "Gestor" }) : null,
           post.pinned ? h("span", { class: "chip chip-gold chip-xs pin-chip" }, M.icon("pin", 12), "Fixado") : null,
+          M.kindChip(post.kind),
           M.tagChip(post.tag),
           post.status === "pending" ? h("span", { class: "chip chip-warn chip-xs", text: "Aguardando aprovação" }) : null,
           post.status === "rejected" ? h("span", { class: "chip chip-bad chip-xs", text: "Recusado" }) : null),
@@ -276,7 +289,10 @@
     const me = M.session.user;
     let items = [];
     let seq = 0;
-    const ta = h("textarea", { class: "textarea composer-text", rows: "3", maxlength: "2000", placeholder: isAdm ? "Compartilhe um aviso, um aprendizado ou um vídeo com o time…" : "Compartilhe um aprendizado, uma conquista ou uma dúvida com o time…", "aria-label": "Texto do post" });
+    const first = String(me.nickname || me.name || "").split(" ")[0];
+    const basePh = isAdm ? "Compartilhe um aviso, um aprendizado ou um vídeo com o time…" : `No que você está pensando${first ? ", " + first : ""}?`;
+    let kind = "";
+    const ta = h("textarea", { class: "textarea composer-text", rows: "3", maxlength: "2000", placeholder: basePh, "aria-label": "Texto do post" });
     const taHost = M.mentionField(ta);
     const pollB = isAdm ? M.pollBuilder({ maxQuestions: limits.maxQuestions, maxOptions: limits.maxOptions }) : null;
     const tagSel = isAdm ? h("select", { class: "select", "aria-label": "Tag do post" }, h("option", { value: "", text: "Sem tag" })) : null;
@@ -348,20 +364,33 @@
       items.push({ id: ++seq, type: "link", name: emb?.provider ? `${emb.provider}: ${v.replace(/^https?:\/\/(www\.)?/, "").slice(0, 50)}` : v.replace(/^https?:\/\/(www\.)?/, "").slice(0, 60), url: v, status: "done" });
       inp.value = ""; linkRow.hidden = true; draw();
     });
+    const kindBtns = Object.entries(M.KINDS).map(([k, m]) => {
+      const b = h("button", { class: "kind-btn kind-" + k, type: "button", "aria-pressed": "false", "data-kind": k }, M.icon(m.icon, 16), h("span", { text: m.label }));
+      b.addEventListener("click", (ev) => { ev.stopPropagation(); setKind(kind === k ? "" : k); openBox(); ta.focus(); });
+      return b;
+    });
+    function setKind(k) {
+      kind = k;
+      kindBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.kind === k)));
+      ta.placeholder = k ? M.KINDS[k].ph : basePh;
+      box.classList.toggle("has-kind", !!k);
+    }
+    const kindRow = h("div", { class: "kind-row", role: "group", "aria-label": "Tipo do post" }, h("span", { class: "kind-lead", text: isAdm ? "Tipo:" : "Compartilhe:" }), kindBtns);
     const box = h("section", { class: "composer panel", "aria-label": "Novo post" },
-      h("div", { class: "composer-top" }, M.avatar(me, 44), taHost), list, linkRow, fileInput, pollB ? pollB.node : null,
+      h("div", { class: "composer-top" }, M.avatar(me, 40), taHost), kindRow, list, linkRow, fileInput, pollB ? pollB.node : null,
       isAdm ? h("div", { class: "composer-meta" }, h("label", { class: "small muted", for: "tag-new" }, M.icon("tag", 14), "Tag"), (tagSel.id = "tag-new", tagSel), h("label", { class: "check-inline small", for: "pin-new" }, pinChk, M.icon("pin", 14), "Fixar no topo")) : null,
       h("div", { class: "composer-bar" }, tools, h("span", { class: "spacer", style: "flex:1" }), count, btn),
-      isAdm ? null : h("p", { class: "muted small", style: "margin:10px 0 0", text: "Seu post passa pela aprovação do gestor antes de aparecer no feed. Post aprovado vale XP." }));
+      isAdm ? null : h("p", { class: "composer-note small", text: `O gestor dá uma olhada rápida antes de publicar.${limits.postXp ? ` Quando entra no Feed, você ganha +${limits.postXp} XP e o time vê o seu nome.` : ""}` }));
     // fechado por padrão: só a caixa de texto, para o feed aparecer logo abaixo
     box.classList.add("is-compact");
+    box.pick = (k) => { setKind(k); openBox(); ta.focus(); };
     const isEmpty = () => !ta.value.trim() && !items.length && !(pollB && pollB.isOpen()) && linkRow.hidden;
     const openBox = () => box.classList.remove("is-compact");
     box.addEventListener("focusin", openBox);
     box.addEventListener("click", openBox);
     const away = (e) => {
       if (!box.isConnected) { document.removeEventListener("pointerdown", away); return; }
-      if (!box.contains(e.target) && !e.target.closest(".emoji-pop, .mention-list, .modal, .pop-menu, .dlg") && isEmpty()) box.classList.add("is-compact");
+      if (!box.contains(e.target) && !e.target.closest(".emoji-pop, .mention-list, .modal, .pop-menu, .dlg") && isEmpty()) { box.classList.add("is-compact"); setKind(""); }
     };
     document.addEventListener("pointerdown", away);
     box.addEventListener("dragover", (e) => { if (uploads && e.dataTransfer?.types?.includes("Files")) { e.preventDefault(); box.classList.add("drop"); } });
@@ -372,11 +401,12 @@
       const media = items.filter((i) => i.status === "done").map((i) => ({ type: i.type, url: i.url, name: i.type === "link" ? undefined : i.name, bytes: i.bytes }));
       try {
         const extra = isAdm ? { tag: tagSel.value || undefined, pinned: pinChk.checked || undefined, poll: pollB.get() || undefined } : {};
-        const r = await M.post("feed/post", { text: ta.value, media, ...extra });
+        const r = await M.post("feed/post", { text: ta.value, media, kind: kind || undefined, ...extra });
+        setKind("");
         ta.value = ""; ta.style.height = ""; items.forEach((i) => i.preview && URL.revokeObjectURL(i.preview)); items = [];
         if (isAdm) { pollB.reset(); pollTool.classList.remove("on"); pinChk.checked = false; }
         draw();
-        M.toast(r.status === "pending" ? "Enviado! O gestor vai analisar o seu post." : "Post publicado.", "ok");
+        M.toast(r.status === "pending" ? `Enviado! Assim que o gestor aprovar, seu post aparece no Feed${limits.postXp ? ` e você ganha +${limits.postXp} XP` : ""}.` : "Post publicado.", "ok");
         box.classList.add("is-compact"); document.activeElement?.blur?.();
         onPosted(r);
       } catch (e) { M.toast(e.message, "err"); draw(); }
@@ -397,51 +427,104 @@
     const more = h("div", { class: "row", style: "justify-content:center;margin:20px 0" });
     let next = null, tab = "feed";
 
-    /* topo: @ , check-in, fila */
+    /* topo enxuto: uma linha de status (apelido, fila, check-in) e, no PC, o resto vai para a coluna da direita */
+    const doCheckin = async (b) => {
+      b.disabled = true;
+      try {
+        const r = await M.post("engage/checkin");
+        M.session.engage = { ...M.session.engage, checkedToday: true, streak: r.streak };
+        M.bumpXp(r);
+        top.classList.add("is-leaving");
+        setTimeout(() => { top.classList.remove("is-leaving"); drawTop(); }, 320);
+      } catch (ex) { M.toast(ex.message, "err"); b.disabled = false; }
+    };
+    function nickPrompt() {
+      const wrap = h("section", { class: "panel fnick" });
+      let open = false;
+      const btn = h("button", { class: "btn btn-gold btn-sm", type: "button", text: "Escolher" });
+      const paint = () => {
+        btn.textContent = open ? "Fechar" : "Escolher";
+        wrap.replaceChildren(
+          h("div", { class: "fstrip-row" }, h("span", { class: "fs-ico" }, M.icon("user", 16)), h("span", { class: "fs-text" }, h("strong", { text: "Escolha o seu @" }), h("span", { class: "muted", text: " para o time te marcar nos posts" })), btn),
+          open ? M.nickForm({ compact: true, onSaved: () => drawTop() }) : null);
+      };
+      btn.addEventListener("click", () => { open = !open; paint(); });
+      paint();
+      return wrap;
+    }
+    let askShown = false;
+    function pushAsk() {
+      const on = h("button", { class: "btn btn-gold btn-sm", type: "button", text: "Ativar" });
+      const no = h("button", { class: "icon-btn", type: "button", "aria-label": "Agora não", onclick: () => { M.push.dismissAsk(); card.remove(); } }, M.icon("x", 16));
+      const card = h("section", { class: "panel fnick fpush" }, h("div", { class: "fstrip-row" }, h("span", { class: "fs-ico" }, M.icon("bell", 16)), h("span", { class: "fs-text" }, h("strong", { text: "Receba os avisos no aparelho" }), h("span", { class: "muted", text: " : comentários, aprovações e novidades" })), on, no));
+      on.addEventListener("click", async () => { await M.openPush(); card.remove(); M.push.dismissAsk(); });
+      return card;
+    }
     function drawTop() {
       const me = M.session.user;
       const parts = [];
-      if (!me.nickname) {
-        parts.push(h("section", { class: "panel nick-banner" },
-          h("div", { class: "nick-intro" }, h("strong", { text: "Escolha o seu @" }), h("p", { class: "muted small", style: "margin:2px 0 0" }, "É assim que o time te acha na busca e te marca nos posts. A foto é opcional e fica em ", h("a", { href: "#/conta", text: "Minha conta" }), ".")),
-          M.nickForm({ compact: true, onSaved: () => { drawTop(); } })));
-      }
+      if (!me.nickname) parts.push(nickPrompt());
       const nPosts = M.session.pending || 0, nSign = M.session.pendingSignups || 0;
+      const row = [];
       if (M.can("aprovar") && (nPosts || nSign)) {
         const what = [nSign ? `${nSign} ${nSign === 1 ? "cadastro" : "cadastros"}` : "", nPosts ? `${nPosts} ${nPosts === 1 ? "post" : "posts"}` : ""].filter(Boolean).join(" e ");
-        parts.push(h("a", { class: "panel pending-banner", href: "#/admin/aprovacoes" }, M.icon("flag", 20),
-          h("span", null, h("strong", { text: `${what} ${nPosts + nSign === 1 ? "aguarda" : "aguardam"} aprovação` }), h("span", { class: "muted", text: " · Analisar agora" })), M.icon("arrow", 18)));
+        row.push(h("a", { class: "fs-chip warn", href: "#/admin/aprovacoes" }, M.icon("flag", 15), h("span", { text: `${what} ${nPosts + nSign === 1 ? "aguarda" : "aguardam"} aprovação` }), M.icon("chevr", 14)));
       }
-      if (me.role === "aluno") { const ck = checkinCard(); if (ck) parts.push(ck); }
+      if (me.role === "aluno" && !M.session.engage.checkedToday) {
+        const e = M.session.engage;
+        const b = h("button", { class: "btn btn-gold btn-sm", type: "button" }, M.icon("bolt", 16), "Check-in");
+        b.addEventListener("click", () => doCheckin(b));
+        row.push(h("div", { class: "fs-checkin" },
+          e.streak > 0 ? h("span", { class: "fs-chip fire" }, M.icon("fire", 15), `${e.streak} ${e.streak === 1 ? "dia" : "dias"} seguidos`) : h("span", { class: "fs-text muted", text: "Entre todo dia e ganhe XP" }), b));
+      }
+      if (row.length) parts.push(h("div", { class: "fstrip" }, row));
       top.replaceChildren(...parts);
+      if (M.push && !askShown) { askShown = true; M.push.shouldAsk().then((yes) => { if (!yes || !top.isConnected) return; top.append(pushAsk()); }); }
+      drawRail();
     }
     const onEngage = () => { if (!node.isConnected) { document.removeEventListener("estude:engage", onEngage); return; } drawTop(); };
     document.addEventListener("estude:engage", onEngage);
-    /* o balão do check-in só aparece enquanto o check-in de hoje não foi feito: ao marcar, ele sai do feed */
-    function checkinCard() {
-      const e = M.session.engage;
-      if (e.checkedToday) return null;
-      const card = h("section", { class: "panel checkin" });
-      const b = h("button", { class: "btn btn-gold", type: "button" }, M.icon("bolt", 18), "Fazer check-in");
-      b.addEventListener("click", async () => {
-        b.disabled = true;
-        try {
-          const r = await M.post("engage/checkin");
-          M.session.engage = { ...M.session.engage, checkedToday: true, streak: r.streak };
-          M.bumpXp(r);
-          card.classList.add("is-leaving");
-          setTimeout(drawTop, 380);
-        } catch (ex) { M.toast(ex.message, "err"); b.disabled = false; }
-      });
-      card.append(h("span", { class: "ck-ico" }, M.icon("bolt", 20)),
-        h("div", null, h("strong", { text: "Check-in diário" }), h("span", { class: "muted small", style: "display:block", text: e.streak > 0 ? `Sequência atual: ${e.streak} ${e.streak === 1 ? "dia" : "dias"}. Não deixe cair.` : "Entre todo dia e ganhe XP. Dias seguidos rendem bônus." })), b);
-      return card;
+
+    /* coluna da direita (só no PC largo): resumo do dia, atalhos e ideias para postar */
+    let railGoals = null;
+    function drawRail() {
+      const me = M.session.user, parts = [];
+      if (me.role === "aluno") {
+        const e = M.session.engage;
+        const card = h("section", { class: "panel rail-card" }, h("h3", { class: "rail-h", text: "Seu dia" }));
+        card.append(h("div", { class: "rail-stats" },
+          h("div", null, h("b", { text: String(e.streak || 0) }), h("span", { text: (e.streak || 0) === 1 ? "dia seguido" : "dias seguidos" })),
+          h("div", null, h("b", { text: String(e.xp || 0) }), h("span", { text: "XP de engajamento" }))));
+        if (!e.checkedToday) {
+          const b = h("button", { class: "btn btn-gold", type: "button", style: "width:100%" }, M.icon("bolt", 18), "Fazer check-in");
+          b.addEventListener("click", () => doCheckin(b));
+          card.append(b);
+        } else card.append(h("p", { class: "rail-ok small" }, M.icon("check", 15), "Check-in de hoje feito"));
+        if (railGoals) card.append(h("ul", { class: "rail-goals" }, railGoals.slice(0, 3).map((g) => {
+          const pct = M.pct(g.progress, g.target);
+          return h("li", { class: g.done ? "done" : "" }, h("div", { class: "row-between" }, h("span", { text: g.title }), h("span", { class: "muted", text: g.done ? "Feita" : `${g.progress}/${g.target}` })), h("div", { class: "bar" }, h("i", { style: `width:${pct}%` })));
+        })));
+        card.append(h("a", { class: "rail-link", href: "#/ranking" }, M.icon("trophy", 15), "Ver ranking", M.icon("chevr", 14)));
+        parts.push(card);
+        parts.push(h("section", { class: "panel rail-card rail-ideas" }, h("h3", { class: "rail-h", text: "O que postar?" }),
+          h("p", { class: "small muted", style: "margin:0 0 8px", text: "O time quer saber do que você viveu. Escolha um formato:" }),
+          h("div", { class: "rail-kinds" }, Object.entries(M.KINDS).map(([k, m]) => { const b = h("button", { class: "kind-btn kind-" + k, type: "button" }, M.icon(m.icon, 16), m.label); b.addEventListener("click", () => { composerBox.pick(k); composerBox.scrollIntoView({ block: "center", behavior: "smooth" }); }); return b; }))));
+      } else {
+        const nPosts = M.session.pending || 0, nSign = M.session.pendingSignups || 0, nForum = M.session.pendingForum || 0;
+        const items = [];
+        if (M.can("aprovar")) { items.push(["Posts para aprovar", nPosts, "#/admin/aprovacoes"], ["Cadastros para liberar", nSign, "#/admin/aprovacoes"]); }
+        if (M.can("forum")) items.push(["Dúvidas do fórum", nForum, "#/admin/forum"]);
+        if (items.length) parts.push(h("section", { class: "panel rail-card" }, h("h3", { class: "rail-h", text: "Fila do gestor" }),
+          h("ul", { class: "rail-queue" }, items.map(([t, n, href]) => h("li", null, h("a", { href }, h("span", { text: t }), h("b", { class: n ? "has" : "", text: String(n) })))))));
+      }
+      parts.push(h("a", { class: "panel rail-card rail-reels", href: "#/reels" }, h("span", { class: "rr-ico" }, M.icon("reels", 22)), h("div", null, h("strong", { text: "Reels do time" }), h("span", { class: "small muted", style: "display:block", text: "Vídeos recentes, um por vez" })), M.icon("chevr", 18)));
+      rail.replaceChildren(...parts);
     }
 
     /* ───── atualização automática: avisa de post novo sem mexer na tela ───── */
     const live = h("button", { class: "live-bar", type: "button", hidden: true, onclick: () => { live.hidden = true; load(true); const t = tagBarTop(); if (t) t.scrollIntoView({ block: "start" }); } });
     const liveWrap = h("div", { class: "live-wrap", role: "status", "aria-live": "polite" }, live);
-    const tagBarTop = () => node.querySelector(".tag-bar, .composer");
+    const tagBarTop = () => node.querySelector(".fbar, .composer");
     let base = null, pinsSig = "", timer = null;
     const pulseUrl = (since) => { const q = new URLSearchParams(); if (tagId) q.set("tag", tagId); if (since) q.set("since", since); return "feed/pulse" + (q.toString() ? "?" + q : ""); };
     async function rebase() {
@@ -489,26 +572,29 @@
       } catch (e) { list.replaceChildren(h("div", { class: "form-error", text: e.message })); }
     }
 
-    const tabs = h("div", { class: "tabs-lite", role: "tablist" },
-      ["feed", "mine"].map((k) => h("button", { type: "button", role: "tab", "aria-selected": String(tab === k), text: k === "feed" ? "Feed" : "Meus posts", onclick: (ev) => { tab = k; tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-selected", String(b === ev.currentTarget))); load(true); } })));
-
-    drawTop();
-    const tagBar = tags.length || tagId ? h("nav", { class: "tag-bar", "aria-label": "Filtrar por tag" },
-      h("a", { class: "tag-pill" + (!tagId ? " on" : ""), href: "#/", "aria-current": !tagId ? "true" : null, text: "Todos" }),
-      tags.map((t) => h("a", { class: "tag-pill tag-" + t.color + (t.id === tagId ? " on" : ""), href: "#/tag/" + t.id, "aria-current": t.id === tagId ? "true" : null }, M.icon("tag", 13), t.name)),
-      tagId && !curTag ? h("span", { class: "muted small", text: "Essa tag não existe mais." }) : null,
-      h("a", { class: "tag-pill search-pill", href: "#/busca" + (tagId ? "?tag=" + tagId : "") }, M.icon("search", 13), curTag ? "Buscar nesta tag" : "Buscar por tag")) : null;
-    const node = h("div", { class: "feed" },
-      dst, top,
-      composer({ uploads: status.uploads, defaultTag: tagId, limits: status, onPosted: (r) => { rebase();
+    const rail = h("aside", { class: "feed-rail", "aria-label": "Resumo e atalhos" });
+    let composerBox = null;
+    const mineBtn = isAdm ? null : h("button", { class: "fpill mine", type: "button", "aria-pressed": "false" }, M.icon("inbox", 14), "Meus posts");
+    if (mineBtn) mineBtn.addEventListener("click", () => { tab = tab === "mine" ? "feed" : "mine"; mineBtn.setAttribute("aria-pressed", String(tab === "mine")); bar.classList.toggle("is-mine", tab === "mine"); load(true); });
+    const bar = tags.length || tagId || mineBtn ? h("nav", { class: "fbar", "aria-label": "Filtrar o Feed" },
+      h("div", { class: "fbar-scroll" },
+        h("a", { class: "fpill" + (!tagId ? " on" : ""), href: "#/", "aria-current": !tagId ? "true" : null, text: "Todos" }),
+        tags.map((t) => h("a", { class: "fpill tag-" + t.color + (t.id === tagId ? " on" : ""), href: "#/tag/" + t.id, "aria-current": t.id === tagId ? "true" : null }, t.name)),
+        tagId && !curTag ? h("span", { class: "muted small", text: "Essa tag não existe mais." }) : null),
+      h("div", { class: "fbar-end" }, mineBtn,
+        h("a", { class: "fpill ghost", href: "#/busca" + (tagId ? "?tag=" + tagId : ""), "aria-label": curTag ? "Buscar nesta tag" : "Buscar" }, M.icon("search", 14), h("span", { class: "fp-t", text: "Buscar" })))) : null;
+    composerBox = composer({ uploads: status.uploads, defaultTag: tagId, limits: status, onPosted: (r) => { rebase();
         if (r.status === "published") { if (tab === "feed") { if (r.post.pinned || (tagId && r.post.tag?.id !== tagId)) load(true); else { list.querySelector(".empty")?.remove(); { const card = M.postCard(r.post, { onChange: () => load(true) }); const pins = list.querySelectorAll(":scope > .post.is-pinned"); if (pins.length) pins[pins.length - 1].after(card); else list.prepend(card); } } } }
-        else { tab = "mine"; tabs.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-selected", String(i === 1))); load(true); }
-      } }),
-      tagBar, isAdm ? null : tabs, liveWrap, list, more);
+        else { tab = "mine"; if (mineBtn) { mineBtn.setAttribute("aria-pressed", "true"); bar.classList.add("is-mine"); } load(true); }
+      } });
+    const node = h("div", { class: "feed" }, dst, top, composerBox, bar, liveWrap, list, more);
+    const layout = h("div", { class: "feed-layout" }, node, rail);
+    drawTop();
+    if (!isAdm && M.session.user.role === "aluno" && matchMedia("(min-width: 1180px)").matches) M.get("engage/me").then((v) => { railGoals = (v.goals || []).filter((g) => !g.done).concat((v.goals || []).filter((g) => g.done)); if (layout.isConnected) drawRail(); }).catch(() => {});
     load(true);
     timer = setInterval(pulse, window.__LIVE_MS || 20000);
     document.addEventListener("visibilitychange", onVisible); window.addEventListener("focus", onVisible);
-    return node;
+    return layout;
   };
 
   /* ───── um post ───── */

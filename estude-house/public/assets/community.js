@@ -219,13 +219,20 @@
     forum_ok: () => "aprovou a sua dúvida/sugestão: virou publicação do fórum",
     forum_no: () => "reprovou a sua dúvida/sugestão. Veja o motivo",
     prova_nova: () => "liberou uma prova para você",
+    reel: () => "publicou um vídeo novo nos Reels",
   };
   M.bell = function () {
     const badge = h("span", { class: "bell-n", hidden: true });
     const btn = h("button", { class: "icon-btn bell-btn", type: "button", "aria-label": "Notificações", "aria-expanded": "false", "aria-haspopup": "true" }, M.icon("bell", 20), badge);
     const wrap = h("div", { class: "bell-wrap" }, btn);
     let panel = null, timer = null;
-    const setN = (n) => { M.session.unread = n; badge.hidden = !n; badge.textContent = n > 9 ? "9+" : String(n || ""); btn.setAttribute("aria-label", n ? `Notificações: ${n} novas` : "Notificações"); };
+    const setN = (n) => {
+      const more = n > (M.session.unread || 0);
+      M.session.unread = n; badge.hidden = !n; badge.textContent = n > 9 ? "9+" : String(n || ""); btn.setAttribute("aria-label", n ? `Notificações: ${n} novas` : "Notificações");
+      /* com notificação nova o sininho fica pulando; ao abrir a lista ele sossega */
+      btn.classList.toggle("has-new", n > 0);
+      if (more) { btn.classList.remove("rang"); void btn.offsetWidth; btn.classList.add("rang"); }
+    };
     setN(M.session.unread || 0);
     M.updateBell = () => setN(M.session.unread || 0);
     function close() { if (!panel) return; panel.remove(); panel = null; btn.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", onDoc); document.removeEventListener("keydown", onKey); }
@@ -233,6 +240,7 @@
     const onKey = (e) => { if (e.key === "Escape") { close(); btn.focus(); } };
     async function open() {
       panel = h("div", { class: "notif-panel", role: "dialog", "aria-label": "Notificações" }, h("div", { class: "notif-head" }, h("strong", { text: "Notificações" })), M.loading("Carregando…"));
+      const pushBtn = () => h("button", { class: "linkish notif-push", type: "button", onclick: () => { close(); M.openPush && M.openPush(); } }, M.icon("bell", 14), "Avisos no aparelho");
       wrap.append(panel); btn.setAttribute("aria-expanded", "true");
       setTimeout(() => { document.addEventListener("pointerdown", onDoc); document.addEventListener("keydown", onKey); }, 0);
       try {
@@ -246,7 +254,7 @@
               n.text ? h("span", { class: "muted small notif-snip", text: n.text }) : null,
               h("span", { class: "muted small", text: M.timeAgo(n.at) }))))))
           : h("p", { class: "muted", style: "padding:18px;margin:0;text-align:center", text: "Nada por aqui ainda. Quando alguém marcar você com @, aparece aqui." });
-        panel.replaceChildren(h("div", { class: "notif-head" }, h("strong", { text: "Notificações" })), body);
+        panel.replaceChildren(h("div", { class: "notif-head" }, h("strong", { text: "Notificações" }), pushBtn()), body);
         if (d.unread) { setN(0); M.post("notifs/read").catch(() => {}); }
       } catch (e) { panel?.replaceChildren(h("p", { class: "form-error", style: "margin:12px", text: e.message })); }
     }
