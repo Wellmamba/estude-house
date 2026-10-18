@@ -236,7 +236,7 @@
           busy = ""; url = j.secure_url; onPick(url, "upload"); draw();
         } catch (e) { busy = ""; draw(); M.toast(e.message, "err"); }
       });
-      const link = h("input", { class: "input", type: "url", placeholder: kind === "image" ? "https://…/imagem.jpg" : "Link do YouTube, Vimeo, Loom, Drive ou .mp4", value: url && !/res\.cloudinary\.com/.test(url) ? url : "" });
+      const link = h("input", { class: "input", type: "url", placeholder: kind === "image" ? "https://…/imagem.jpg" : "Link do YouTube, Vimeo, Loom, Drive ou .mp4", value: url && !/^data:|res\.cloudinary\.com/.test(url) ? url : "" });
       const okLink = () => {
         const v = link.value.trim();
         if (!validLink(v)) { M.toast("Cole um link que comece com https://", "err"); return; }

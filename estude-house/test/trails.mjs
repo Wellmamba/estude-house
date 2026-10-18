@@ -244,9 +244,8 @@ console.log("Importar trilha pronta (.json)");
   assert.equal(t.draft.modules.reduce((a, m) => a + m.lessons.length, 0), 7);
   assert.equal(t.draft.finalQuestions.length, 10);
   const imgs = t.draft.modules.flatMap((m) => m.lessons.flatMap((l) => l.blocks.filter((b) => b.t === "img")));
-  assert.equal(imgs.length, 7); assert.ok(imgs.every((b) => b.url.startsWith("/trilhas/funil-ml/img/")));
-  for (const b of imgs) assert.ok(fs.existsSync(new URL("../public" + b.url, import.meta.url)), "falta o arquivo " + b.url);
-  ok("7 imagens do PDF ficam ligadas aos arquivos que vão junto com o site");
+  assert.equal(imgs.length, 7); assert.ok(imgs.every((b) => /^data:image\/jpeg;base64,/.test(b.url) && b.url.length > 20000));
+  ok("7 imagens do PDF vão embutidas no próprio arquivo (nada depende de subir pastas)");
   r = await call("GET", "trails/custom", { token: ana.token });
   assert.equal(r.data.trails.length, 0); ok("importada fica como rascunho: o aluno não vê");
   r = await call("POST", `admin/trails/${t.id}/publish`, { token: adm.token });
@@ -255,10 +254,16 @@ console.log("Importar trilha pronta (.json)");
   assert.equal(r.data.trails.length, 1); assert.ok(!JSON.stringify(r.data).includes("Resposta"));
   r = await call("DELETE", "admin/trails/" + t.id, { token: adm.token });
   assert.equal(r.status, 200);
-  // links de fora do site e caminhos com ".." continuam barrados
-  const evil = JSON.parse(JSON.stringify(file)); evil.draft.modules[0].lessons[0].blocks[1] = { t: "img", url: "/trilhas/../../etc/passwd.png", caption: "x" };
+  // caminhos com "..", svg embutido e script em data: continuam barrados
+  const evil = JSON.parse(JSON.stringify(file));
+  const bl = evil.draft.modules[0].lessons[0].blocks;
+  bl[1] = { t: "img", url: "/trilhas/../../etc/passwd.png", caption: "x" };
+  bl[2] = { t: "img", url: "data:image/svg+xml;base64,PHN2Zy8+", caption: "x" };
+  bl[3] = { t: "img", url: "data:text/html;base64,PHNjcmlwdD4=", caption: "x" };
   r = await call("POST", "admin/trails/import", { token: adm.token, body: evil });
-  assert.equal(r.status, 201); assert.equal(r.data.trail.draft.modules[0].lessons[0].blocks[1].url, ""); ok("caminho com .. é descartado");
+  assert.equal(r.status, 201);
+  const eb = r.data.trail.draft.modules[0].lessons[0].blocks;
+  assert.equal(eb[1].url, ""); assert.equal(eb[2].url, ""); assert.equal(eb[3].url, ""); ok("caminho com .., svg e html embutidos são descartados");
   await call("DELETE", "admin/trails/" + r.data.trail.id, { token: adm.token });
 }
 

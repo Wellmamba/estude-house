@@ -50,9 +50,11 @@ const H = (v, max) => cleanHtml(v, max);
 
 // Links de imagem e vídeo: só https.
 function U(v) {
+  // imagem embutida no arquivo da trilha (importação): só jpeg, png ou webp, até ~450 KB
+  if (typeof v === "string" && v.length <= 450_000 && /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(v)) return v;
   const raw = S(v, 700);
   if (!raw) return "";
-  // imagens que vêm junto com o site (ex.: trilhas importadas): só dentro de /trilhas/, sem "..".
+  // imagens que vêm junto com o site: só dentro de /trilhas/, sem "..".
   if (/^\/trilhas\/[A-Za-z0-9_\-./]+\.(?:jpe?g|png|webp|gif|svg|mp4|webm)$/i.test(raw) && !raw.includes("..")) return raw;
   try { const u = new URL(raw); return u.protocol === "https:" ? u.href : ""; } catch { return ""; }
 }
