@@ -1,0 +1,1504 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 5: pós-venda e atendimento",
+  "tag": "TikTok Shop",
+  "tagline": "Cancelamentos, devoluções, estornos e atendimento sem perder reputação.",
+  "subtitle": "Cancelamento, devolução, reembolso rápido e parcial, dano, item errado, estorno, chat, avaliações e CRM. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Cancelar, devolver e reembolsar",
+    "tagline": "O ciclo pós-venda",
+    "outcome": "Tratar cancelamentos, devoluções e reembolsos no prazo e sem prejuízo.",
+    "lessons": [
+     {
+      "title": "Cancelamentos de pedido",
+      "minutes": 4,
+      "goal": "Saber quem pode cancelar, quando e quais os custos para a loja.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "❌",
+        "title": "Cancelar custa caro",
+        "text": "Cada cancelamento por culpa da loja pesa na reputação e pode virar multa. Conhecer as regras evita dor de cabeça."
+       },
+       {
+        "t": "table",
+        "title": "Quem pode cancelar e quando",
+        "caption": "Pedido em “Pronto para envio” não pode ser cancelado pelo cliente.",
+        "head": [
+         "Quem",
+         "Regra"
+        ],
+        "rows": [
+         [
+          "Cliente",
+          "Até o status Aguardando coleta, sem aprovação da loja"
+         ],
+         [
+          "Cliente",
+          "Se o pedido não virar “em trânsito” em 6 dias úteis"
+         ],
+         [
+          "Vendedor",
+          "Antes do status Aguardando coleta, no pedido inteiro"
+         ],
+         [
+          "Plataforma",
+          "Cancela sozinha se o pagamento falhar ou o prazo de envio vencer"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Cancelamento por falha da loja",
+        "items": [
+         "Item sem estoque ou danificado",
+         "Cliente recebe <b>reembolso total e imediato</b>",
+         "Aviso no app, em <b>português</b>, explicando o motivo",
+         "Entra na métrica <b>SFCR</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Nunca peça ao cliente para cancelar",
+        "html": "A loja <b>não pode</b> pedir que o cliente cancele por falta de estoque ou erro da própria loja. Também não pode mudar os termos da venda, como preço, depois do pedido. Erro de preço, em geral, não é motivo válido para cancelar."
+       },
+       {
+        "t": "list",
+        "title": "Cancelamento parcial",
+        "items": [
+         "Vale para pedidos com vários itens",
+         "Cancele só o item indisponível e despache os demais",
+         "Etiquetas e rastreios separados para cada pacote",
+         "Também pesa no SFCR"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Prazo de 24 horas",
+        "html": "Se o cliente pede cancelamento ou reembolso e a loja <b>não age em 24 horas</b>, a plataforma aprova a solicitação automaticamente e o cliente é reembolsado."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "SFCR acima de 5%",
+        "html": "Quando a taxa de cancelamento por falha do vendedor passa de <b>5%</b> em 7 dias, a loja paga <b>R$ 5,00 por pedido cancelado</b> por sua falha, para compensar os compradores afetados. Isso vem além de limite de pedidos, restrição de campanhas ou suspensão."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Regras automáticas",
+        "html": "Em Pedidos > Configurações de atendimento, a loja cria regras para aprovar cancelamentos automaticamente por motivo, categoria e faixa de valor. Defina a faixa com cuidado para evitar prejuízo."
+       },
+       {
+        "t": "quiz",
+        "q": "Em quanto tempo uma solicitação ignorada é aprovada pela plataforma?",
+        "options": [
+         "Nunca é aprovada sozinha",
+         "Apenas depois de um ano",
+         "Só depois de 30 dias",
+         "24 horas"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Sem ação em 24 horas, o cancelamento ou reembolso é aprovado automaticamente."
+       },
+       {
+        "t": "quiz",
+        "q": "A loja pode pedir ao cliente que cancele por falta de estoque?",
+        "options": [
+         "Não, ela mesma deve cancelar",
+         "Sim, com cupom",
+         "Sim, só em LIVE",
+         "Sim, é recomendado"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "É responsabilidade da loja conduzir o cancelamento."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Cliente cancela até <b>Aguardando coleta</b>",
+         "Falha da loja = reembolso total e <b>SFCR</b>",
+         "Sem ação em <b>24 horas</b> = aprovação automática",
+         "SFCR > 5%: <b>R$ 5,00 por pedido</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Devolução e reembolso: o fluxo",
+      "minutes": 4,
+      "goal": "Acompanhar prazos, responsabilidades e regras automáticas.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "↩️",
+        "title": "Devolução é parte do negócio",
+        "text": "Vender bem inclui tratar devolução rápido. Cliente satisfeito volta, e prazo perdido vira aprovação automática."
+       },
+       {
+        "t": "list",
+        "title": "Quando o cliente pode pedir",
+        "items": [
+         "Só depois que o pacote está <b>Enviado</b>",
+         "Até <b>30 dias corridos</b> após a entrega",
+         "Itens com defeito têm direito previsto em lei <b>depois desse prazo</b>",
+         "A loja pode ofertar <b>Somente reembolso</b> em pedidos em trânsito"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Prazos principais",
+        "caption": "Passou o prazo sem ação, a plataforma aprova.",
+        "head": [
+         "Situação",
+         "Prazo"
+        ],
+        "rows": [
+         [
+          "Cliente envia o item de volta",
+          "14 dias corridos após aprovação"
+         ],
+         [
+          "Loja analisa o produto devolvido",
+          "2 dias úteis após receber"
+         ],
+         [
+          "Solicitações que exigem aprovação",
+          "3 dias úteis para a loja analisar"
+         ],
+         [
+          "Somente reembolso",
+          "2 dias úteis para a loja responder"
+         ],
+         [
+          "Disputa de aprovação automática",
+          "15 dias na Central do vendedor"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Pós-venda",
+        "term": "Produto retornável",
+        "means": "Item que o cliente pode devolver. A maioria é aprovada automaticamente. Itens não retornáveis, como alimentos, seguem outro fluxo.",
+        "ex": "Camiseta é retornável; uma bebida não."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Reembolso sem devolução até <b>R$ 25</b>",
+        "sub": "Para itens retornáveis, com preço de compra sem frete e imposto, a plataforma pode aprovar sem pedir o produto de volta."
+       },
+       {
+        "t": "p",
+        "title": "Regras da própria loja",
+        "html": "Em Configurações de atendimento a loja cria regras para reembolso sem devolução e para aprovação automática. O guia sugere manter os reembolsos automáticos abaixo de <b>R$ 150</b>. Perdas decorrentes de regras personalizadas <b>não</b> são cobertas pela plataforma."
+       },
+       {
+        "t": "table",
+        "title": "Quem paga o frete da devolução",
+        "caption": "Resumo da tabela da política; exceções podem existir.",
+        "head": [
+         "Motivo",
+         "Responsável"
+        ],
+        "rows": [
+         [
+          "Não preciso mais",
+          "TikTok Shop"
+         ],
+         [
+          "Descrição imprecisa",
+          "Vendedor"
+         ],
+         [
+          "Item defeituoso ou errado",
+          "Vendedor"
+         ],
+         [
+          "Moda: não coube",
+          "TikTok Shop"
+         ],
+         [
+          "Moda: tecido ou estilo diferente",
+          "Vendedor"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Atualize o endereço de devolução",
+        "html": "Mudou o endereço do depósito? Atualize na conta. Devolução enviada para o endereço antigo pode ser perdida, e a loja assume o prejuízo."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o prazo do cliente para enviar o item devolvido?",
+        "options": [
+         "1 hora",
+         "Sem prazo",
+         "14 dias após aprovação",
+         "5 anos"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Passado esse prazo sem envio, a devolução é encerrada."
+       },
+       {
+        "t": "quiz",
+        "q": "Até que valor o reembolso sem devolução pode ser automático?",
+        "options": [
+         "R$ 2.500",
+         "Qualquer valor",
+         "R$ 100.000",
+         "R$ 25"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O limite padrão é de R$ 25 de preço de compra."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Cliente tem <b>30 dias corridos</b> após a entrega",
+         "Loja analisa em <b>2 a 3 dias úteis</b>, ou a plataforma aprova",
+         "Reembolso sem devolução: até <b>R$ 25</b>",
+         "Mudou de endereço? <b>Atualize o retorno</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Reembolso rápido, parcial e por chat",
+      "minutes": 4,
+      "goal": "Usar os atalhos que resolvem o caso sem perder dinheiro ou nota.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⚡",
+        "title": "Resolver sem esperar",
+        "text": "A plataforma tem atalhos para encerrar casos mais cedo. Saber quando cada um vale economiza frete, tempo e penalidade."
+       },
+       {
+        "t": "jargon",
+        "tag": "Pós-venda",
+        "term": "Reembolso rápido",
+        "means": "O cliente elegível recebe o dinheiro assim que o pacote de devolução é postado com sucesso, sem esperar a chegada.",
+        "ex": "Cliente deixa o pacote na agência e o reembolso já é liberado."
+       },
+       {
+        "t": "list",
+        "title": "Quando a loja pode recorrer do reembolso rápido",
+        "items": [
+         "O pacote chegou, mas veio <b>danificado, errado ou incompleto</b>",
+         "O pacote <b>não chegou</b> até o fim do dia 14",
+         "Há motivos prontos de recurso, com provas opcionais (mas recomendadas)"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Prazos do recurso",
+        "caption": "Se você já clicou em Confirmar pacote, não dá mais para recorrer.",
+        "head": [
+         "Cenário",
+         "Prazo"
+        ],
+        "rows": [
+         [
+          "Pacote recebido, insatisfatório",
+          "Até 15 dias corridos do recebimento"
+         ],
+         [
+          "Pacote não recebido",
+          "Do dia 14 ao dia 29 após o reembolso"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Reembolso parcial",
+        "html": "A loja oferece ao cliente <b>parte do valor</b>, sem pedir devolução do item. Fica em Gerenciar devoluções/reembolsos > <b>Oferecer reembolso parcial</b>. O cliente tem <b>2 dias úteis</b> para responder. A recomendação é combinar o valor antes no chat."
+       },
+       {
+        "t": "list",
+        "title": "Resolver direto no Chat",
+        "items": [
+         "<b>Oferecer apenas reembolso:</b> a loja emite o valor total ou parcial",
+         "<b>Enviar cartão pós-venda:</b> o cliente abre a solicitação sozinho",
+         "Reembolso emitido vai na hora e <b>não pode ser desfeito</b>",
+         "Marcado como <b>O vendedor não tem culpa</b> e não afeta a SPS"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Combine antes de clicar",
+        "html": "O dinheiro sai imediatamente. Converse com o cliente e confirme o valor antes de emitir o reembolso por negociação."
+       },
+       {
+        "t": "quiz",
+        "q": "O reembolso emitido pelo Chat por negociação:",
+        "options": [
+         "Gera multa",
+         "Cancela a conta",
+         "Não pesa na pontuação da loja",
+         "Reduz a SPS"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Ele recebe a marcação de que o vendedor não tem culpa."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando o cliente responde a uma oferta de reembolso parcial?",
+        "options": [
+         "Ele não pode responder",
+         "Somente em 90 dias",
+         "Em um ano inteiro",
+         "Em até 2 dias úteis"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O cliente tem dois dias úteis para aceitar ou recusar."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Reembolso rápido</b> libera o valor na postagem",
+         "Recurso: <b>15 dias</b> (pacote ruim) ou <b>dia 14 a 29</b> (não chegou)",
+         "<b>Parcial</b> evita devolução física",
+         "Chat: reembolso <b>imediato e irreversível</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Sem ação em 24 horas, uma solicitação de cancelamento:",
+      "options": [
+       "É apagada",
+       "É aprovada automaticamente",
+       "É recusada",
+       "Fica pendente para sempre"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "O prazo evita que o cliente fique esperando.",
+      "topic": "Cancelamento"
+     },
+     {
+      "q": "Qual o prazo de devolução padrão do cliente após a entrega?",
+      "options": [
+       "10 anos",
+       "Sem prazo",
+       "30 dias corridos",
+       "1 dia"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "É o período padrão de devolução e reembolso.",
+      "topic": "Devolução"
+     },
+     {
+      "q": "Reembolso sem devolução automático vale até:",
+      "options": [
+       "R$ 1",
+       "R$ 25",
+       "Qualquer valor",
+       "R$ 25.000"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Limite padrão da plataforma para preço de compra.",
+      "topic": "Reembolso"
+     },
+     {
+      "q": "O reembolso por negociação no chat:",
+      "options": [
+       "Só vale em LIVE",
+       "Pode ser cancelado depois",
+       "É imediato e não pode ser desfeito",
+       "Demora 90 dias"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Combine o valor antes de emitir.",
+      "topic": "Chat"
+     },
+     {
+      "q": "Se SFCR passar de 5%, a loja paga:",
+      "options": [
+       "R$ 5,00 por pedido cancelado",
+       "Nada, não existe cobrança",
+       "R$ 500,00 de uma vez só",
+       "Todo o saldo disponível da loja"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "É uma contribuição para compensar compradores.",
+      "topic": "Cancelamento"
+     }
+    ]
+   },
+   {
+    "title": "Problemas de pedido e estorno",
+    "tagline": "Erros que custam reputação",
+    "outcome": "Prevenir e tratar dano, item errado e estorno.",
+    "lessons": [
+     {
+      "title": "Dano, item faltando e item errado",
+      "minutes": 4,
+      "goal": "Entender as violações mais comuns e como evitá-las com processo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📉",
+        "title": "Erro de separação custa nota",
+        "text": "Pedido incompleto, produto trocado ou item quebrado geram reclamação, devolução e punição."
+       },
+       {
+        "t": "list",
+        "title": "Item errado, faltando ou incorreto",
+        "items": [
+         "Cor, estampa ou formato diferentes do pedido",
+         "Tamanho, medidas ou peso fora do anunciado",
+         "Brinde, acessório ou unidade faltando",
+         "Anúncio <b>enganoso</b> sobre o conteúdo também conta"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Dano",
+        "items": [
+         "Produto com <b>defeito de fábrica</b> não inspecionado",
+         "Dano de transporte por <b>embalagem fraca</b>",
+         "Vazamentos, arranhões, amassados e quebras",
+         "Caixa intacta mas produto danificado = culpa da loja"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Como a plataforma responde",
+        "caption": "Depende do volume e da proporção de feedback negativo.",
+        "head": [
+         "Situação",
+         "Medida"
+        ],
+        "rows": [
+         [
+          "Menor",
+          "Advertência"
+         ],
+         [
+          "Geral",
+          "Visibilidade reduzida, congelamento ou desativação do produto"
+         ],
+         [
+          "Grave",
+          "Limite de exibição, perda de pontos no AHR e restrição na categoria"
+         ]
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Rotina que evita erro",
+        "items": [
+         {
+          "title": "Duas conferências",
+          "html": "Separador e embalador conferem o pedido."
+         },
+         {
+          "title": "Código de barras",
+          "html": "Leia o SKU ou use a lista impressa."
+         },
+         {
+          "title": "Prova visual",
+          "html": "Registre foto ou vídeo antes de lacrar."
+         },
+         {
+          "title": "Anúncio igual ao estoque",
+          "html": "Atualize cores e tamanhos que acabaram."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Live e promoção prometem demais",
+        "html": "Se a live mostra brinde ou kit que não existe no SKU, o cliente espera algo que não chega. Mande a lista de SKUs ao criador e tire do ar ofertas vencidas."
+       },
+       {
+        "t": "quiz",
+        "q": "A capa de celular chega arranhada em uma caixa intacta. Isso é:",
+        "options": [
+         "Algo normal e aceito pela política",
+         "Defeito de fábrica sem inspeção",
+         "Culpa da transportadora sempre",
+         "Culpa do cliente que comprou"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Sem sinais de dano no transporte, o problema é de fábrica não inspecionado."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual medida ajuda a evitar item errado?",
+        "options": [
+         "Trocar a foto principal do anúncio",
+         "Aumentar o preço do produto",
+         "Dupla conferência do pedido",
+         "Reduzir o estoque a cada semana"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Dupla conferência com leitura de código evita separação errada."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Errado, faltando e dano são <b>violações de pedido</b>",
+         "Duas conferências e <b>prova visual</b>",
+         "Anúncio e live devem bater com o <b>SKU</b>",
+         "Volume alto leva a <b>congelamento</b> e perda de AHR"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Estorno (chargeback)",
+      "minutes": 4,
+      "goal": "Prevenir e responder contestações feitas pelo cliente junto ao banco.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏦",
+        "title": "Quando o cliente fala com o banco",
+        "text": "No estorno, o cliente contesta a cobrança direto no emissor do cartão. A decisão passa por regras do banco e da bandeira."
+       },
+       {
+        "t": "jargon",
+        "tag": "Pagamento",
+        "term": "Estorno",
+        "means": "Contestação de uma cobrança feita pelo cliente ao emissor do cartão, que pede o dinheiro de volta.",
+        "ex": "“Não reconheço essa compra no meu cartão.”"
+       },
+       {
+        "t": "list",
+        "title": "Motivos comuns",
+        "items": [
+         "Pedido não recebido",
+         "Produto diferente da descrição ou danificado",
+         "Cobrança em duplicidade ou erro de cobrança",
+         "Transação não autorizada ou fraude"
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "Quando acontece",
+        "caption": "O prazo está na mensagem de notificação.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "🏦",
+          "title": "Cliente contesta",
+          "text": "O banco abre o estorno."
+         },
+         {
+          "icon": "📨",
+          "title": "Plataforma avisa",
+          "text": "A loja é notificada no Seller Center."
+         },
+         {
+          "icon": "📎",
+          "title": "Loja responde",
+          "text": "Envia as informações pedidas no prazo."
+         },
+         {
+          "icon": "⚖️",
+          "title": "Decisão",
+          "text": "O processador de pagamento decide."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Responda no prazo, com verdade",
+        "html": "As informações precisam ser enviadas no prazo indicado e ser verdadeiras e precisas. Excesso de estornos pode levar a medidas contra a loja."
+       },
+       {
+        "t": "list",
+        "title": "Como prevenir",
+        "items": [
+         "Fotos nítidas e descrição precisa",
+         "Política clara de devolução e reembolso",
+         "Resposta rápida e troca de itens com defeito",
+         "Embalagem protetora e <b>registros detalhados</b> das transações"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Quem arca com o custo",
+        "html": "A plataforma cobre os custos de pedidos marcados pelo emissor como <b>pagamento não autorizado</b>. Mesmo assim, estornos ligados a atividade suspeita podem continuar sob responsabilidade da loja, nos limites da lei."
+       },
+       {
+        "t": "quiz",
+        "q": "O que é um estorno?",
+        "options": [
+         "Uma avaliação deixada no produto",
+         "Um cupom de desconto da loja",
+         "Um tipo de frete da plataforma",
+         "Contestação do cliente com o banco"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O cliente pede ao emissor do cartão o dinheiro de volta."
+       },
+       {
+        "t": "quiz",
+        "q": "A loja recebeu pedido de informação sobre um estorno. O que fazer?",
+        "options": [
+         "Enviar dados verdadeiros no prazo",
+         "Esperar o banco desistir",
+         "Pedir ao cliente para pagar de novo",
+         "Ignorar a mensagem"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O prazo consta na mensagem e as informações devem ser precisas."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Estorno = <b>contestação no banco</b>",
+         "Responda no <b>prazo</b>, com informação <b>verdadeira</b>",
+         "Prevenção: boa descrição, embalagem e registros",
+         "Fraude não autorizada: a plataforma pode <b>cobrir</b> custos"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Item errado ou faltando é causado, em geral, por:",
+      "options": [
+       "Erro de separação ou anúncio enganoso",
+       "A cor da caixa usada",
+       "O preço do frete cobrado",
+       "O horário marcado da LIVE"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "A política cita erros de item, tamanho e quantidade.",
+      "topic": "Pedido"
+     },
+     {
+      "q": "Defeito aparente com caixa intacta indica:",
+      "options": [
+       "Culpa da transportadora",
+       "Culpa do banco",
+       "Falha de inspeção da loja",
+       "Culpa do cliente"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O produto saiu com defeito.",
+      "topic": "Dano"
+     },
+     {
+      "q": "Quem abre um estorno?",
+      "options": [
+       "O afiliado da campanha",
+       "O cliente, junto ao banco",
+       "A transportadora do pedido",
+       "A loja que vendeu o item"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "É uma contestação da cobrança.",
+      "topic": "Estorno"
+     },
+     {
+      "q": "Como responder a um pedido de informação de estorno?",
+      "options": [
+       "Seis meses depois do pedido",
+       "Ignorando a mensagem recebida",
+       "No prazo, com dados verdadeiros",
+       "Com documentos falsos prontos"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Prazo e precisão são exigidos.",
+      "topic": "Estorno"
+     },
+     {
+      "q": "Quais medidas valem para dano em volume alto?",
+      "options": [
+       "Isenção total das taxas",
+       "Congelamento e perda de pontos de AHR",
+       "Prêmio de destaque na busca",
+       "Frete grátis para a loja"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Depende da gravidade e da proporção.",
+      "topic": "Dano"
+     }
+    ]
+   },
+   {
+    "title": "Atendimento e relacionamento",
+    "tagline": "Conversar bem e dentro da regra",
+    "outcome": "Atender no chat, tratar avaliações e usar o CRM.",
+    "lessons": [
+     {
+      "title": "Chat, equipe e padrão de atendimento",
+      "minutes": 4,
+      "goal": "Organizar o chat de atendimento com equipe, horário e regras de conduta.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "💬",
+        "title": "O chat é a vitrine do atendimento",
+        "text": "Cliente que pergunta antes de comprar ou reclama depois procura o chat. A loja precisa estar acessível e profissional."
+       },
+       {
+        "t": "steps",
+        "title": "Onde fica",
+        "items": [
+         {
+          "title": "Central do vendedor",
+          "html": "Abra o Seller Center."
+         },
+         {
+          "title": "Mensagens do cliente",
+          "html": "Entre na área de mensagens."
+         },
+         {
+          "title": "Ou pelo pedido",
+          "html": "Clique em Falar com o cliente em Gerenciar pedidos."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Requisitos da política",
+        "items": [
+         "Atendimento <b>profissional e no tempo certo</b>",
+         "Gerenciar a equipe e as permissões de acesso",
+         "Definir o <b>horário de funcionamento</b> da loja",
+         "Usar o chat do TikTok Shop sempre que possível"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Funções no chat",
+        "caption": "Novos usuários criados em Minha conta > Gerenciamento de usuários.",
+        "head": [
+         "Função",
+         "O que faz"
+        ],
+        "rows": [
+         [
+          "Proprietário e administrador principal",
+          "Editam tudo e baixam painéis"
+         ],
+         [
+          "Agente de atendimento (SAC)",
+          "Responde clientes; só visualiza algumas configurações"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Atribuição automática",
+        "items": [
+         "Com <b>uma</b> conta, tudo vai para ela",
+         "Com várias, cada agente escolhe se <b>aceita chats automáticos</b>",
+         "O chat precisa estar <b>aberto no navegador</b> para receber",
+         "Supervisor pode desligar o recebimento automático"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Condutas proibidas",
+        "html": "Assédio e ofensas, <b>levar o cliente para fora do TikTok Shop</b>, pedir dados pessoais, cobrar pagamento extra, enviar links, QR codes ou contas bancárias de terceiros."
+       },
+       {
+        "t": "p",
+        "title": "Se o cliente for abusivo",
+        "html": "A loja pode abrir um <b>ticket no Seller Center</b>, enviando o histórico de conversa, para que a plataforma avalie o comportamento."
+       },
+       {
+        "t": "quiz",
+        "q": "O que a loja precisa definir no Seller Center?",
+        "options": [
+         "A senha de cada cliente",
+         "O horário de funcionamento",
+         "O valor do frete de cada cliente",
+         "O CPF de cada cliente"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O horário aparece para os clientes que mandam mensagem."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual conduta é proibida no chat?",
+        "options": [
+         "Pedir pagamento por fora da plataforma",
+         "Informar o rastreio",
+         "Avisar o prazo de envio",
+         "Tirar dúvida de tamanho"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Desviar transações para fora é proibido."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Chat: <b>Mensagens do cliente</b> ou <b>Falar com o cliente</b>",
+         "Defina <b>horário</b> e gerencie <b>permissões</b>",
+         "Proibido: assédio, link externo e <b>pagamento por fora</b>",
+         "Cliente abusivo: <b>ticket com histórico</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Respostas rápidas e Assistente de chat",
+      "minutes": 4,
+      "goal": "Ganhar velocidade e padrão no atendimento com as ferramentas de automação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🤖",
+        "title": "Atender mais rápido sem perder a mão",
+        "text": "Respostas sugeridas, FAQ e automações evitam repetir a mesma coisa cem vezes por dia."
+       },
+       {
+        "t": "jargon",
+        "tag": "Chat",
+        "term": "Base de conhecimento (FAQ)",
+        "means": "Conjunto de perguntas e respostas da loja. Quando o cliente escreve algo parecido, o chat sugere a resposta pronta.",
+        "ex": "“Qual o prazo de envio?” já tem texto salvo."
+       },
+       {
+        "t": "list",
+        "title": "Boas respostas",
+        "items": [
+         "Respondem <b>direto</b>, sem mandar o cliente procurar sozinho",
+         "Alinham <b>expectativas</b> com a realidade do produto",
+         "Informam tamanho do modelo e tabela de medidas",
+         "Usam dados reais de material, elasticidade e cor"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Pergunta de moda",
+        "html": "Cliente: “O tamanho M serve?”. Boa resposta: “A modelo tem 1,70 m e 60 kg e veste o P. A tabela de medidas está nas imagens do anúncio.” A resposta ajuda a decidir e reduz devolução por tamanho."
+       },
+       {
+        "t": "list",
+        "title": "Automações úteis",
+        "items": [
+         "<b>Resposta sobre programação de envio</b>, por dia da semana ou feriado",
+         "<b>Assistente de chat</b> (ativado nas ferramentas de automação)",
+         "Mensagens automáticas de cancelamento e devolução em breve",
+         "Painel de análise de serviços com métricas de atendimento"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Não prometa o que não é verdade",
+        "html": "A resposta precisa corresponder ao produto. Exagerar benefício gera avaliação negativa e reclamação em órgãos de defesa do consumidor."
+       },
+       {
+        "t": "quiz",
+        "q": "Para que serve a base de FAQ no chat?",
+        "options": [
+         "Apagar todas as mensagens antigas",
+         "Alterar sozinho o preço do produto",
+         "Sugerir respostas prontas",
+         "Mostrar a senha de cada cliente"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Quando a pergunta combina com o FAQ, o chat sugere a resposta."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual característica define uma boa resposta de moda?",
+        "options": [
+         "Informar tamanho do modelo e tabela de medidas",
+         "Responder só no dia seguinte",
+         "Dizer apenas “serve”",
+         "Mandar o cliente ver o site da concorrente"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Detalhes concretos reduzem devolução."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>FAQ</b> e respostas sugeridas poupam tempo",
+         "Respostas devem ser <b>diretas e verdadeiras</b>",
+         "Use <b>resposta automática de envio</b> em feriados",
+         "Acompanhe o <b>painel de análise de serviços</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Avaliações e comunicação ética",
+      "minutes": 4,
+      "goal": "Receber avaliações e conversar com o cliente sem violar a política.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⭐",
+        "title": "Avaliação honesta vale mais",
+        "text": "A plataforma quer avaliações reais. Pressionar ou comprar nota é proibido e costuma sair caro."
+       },
+       {
+        "t": "list",
+        "title": "Regras para o cliente avaliar",
+        "items": [
+         "Só quem <b>comprou</b> pode avaliar",
+         "Prazo de <b>60 dias corridos</b> após o recebimento",
+         "Uma avaliação por <b>produto</b> pedido",
+         "Só a <b>estrela</b> é obrigatória; texto, foto e vídeo são opcionais",
+         "Avaliação <b>não é removida</b> se o pedido foi devolvido"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "O que a loja nunca pode fazer",
+        "html": "Pedir avaliação positiva, <b>oferecer recompensa</b> (cupom, dinheiro, produto, reembolso), pedir que o cliente mude a nota, ou orientar o cliente a falar com o suporte em vez de avaliar."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Frases que viram violação",
+        "html": "“Dou um cupom se você me der 5 estrelas.” “Só reembolso se mudar a avaliação.” Qualquer variação disso é manipulação, mesmo que dita com educação."
+       },
+       {
+        "t": "list",
+        "title": "Outros limites da comunicação",
+        "items": [
+         "Nada de <b>ameaça</b>, assédio ou pressão",
+         "Não exponha dados pessoais do cliente",
+         "Não use bilhete no pacote pedindo avaliação",
+         "Não leve o cliente para fora da plataforma"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Responder a uma avaliação",
+        "html": "A loja pode responder, mas respeitando as diretrizes da comunidade. Uma resposta educada, com solução, reduz a chance de a reclamação virar devolução ou nova avaliação ruim."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Melhore a nota na origem",
+        "html": "Descrição fiel, tamanho informado, embalagem protegida e entrega no prazo reduzem avaliações de 1 e 2 estrelas."
+       },
+       {
+        "t": "quiz",
+        "q": "A loja pode oferecer cupom em troca de 5 estrelas?",
+        "options": [
+         "Sim, só em dias úteis",
+         "Não, é manipulação de avaliações",
+         "Sim, se for de até R$ 5",
+         "Sim, é permitido"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Incentivo em troca de avaliação positiva é proibido."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o prazo para o cliente avaliar?",
+        "options": [
+         "Não há prazo",
+         "7 dias",
+         "24 horas",
+         "60 dias corridos"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O prazo conta a partir da data de recebimento do produto."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Avaliação: <b>60 dias</b>, uma por produto",
+         "Proibido pedir nota, <b>premiar</b> ou pressionar",
+         "Não leve o cliente para fora; <b>sem bilhete</b> no pacote",
+         "A melhor defesa é <b>produto fiel e entrega no prazo</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "CRM: relacionamento com o cliente",
+      "minutes": 3,
+      "goal": "Usar mensagens de marketing para trazer o cliente de volta.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔁",
+        "title": "Vender de novo custa menos",
+        "text": "A ferramenta de relacionamento permite falar com clientes que já compraram ou abandonaram o carrinho."
+       },
+       {
+        "t": "jargon",
+        "tag": "Marketing",
+        "term": "CRM",
+        "means": "Gestão de relacionamento com clientes. Ferramenta gratuita para enviar mensagens e promoções personalizadas a segmentos de clientes.",
+        "ex": "Lembrete para quem deixou o produto no carrinho."
+       },
+       {
+        "t": "list",
+        "title": "O que dá para fazer",
+        "items": [
+         "Reengajar clientes esporádicos",
+         "Incentivar nova compra",
+         "Recuperar <b>carrinhos abandonados</b>",
+         "Automatizar confirmações e lembretes de queda de preço"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Quem pode usar",
+        "caption": "Também é preciso GMV maior que zero nos últimos 30 dias.",
+        "head": [
+         "Pontuação da loja (SPS)",
+         "Acesso"
+        ],
+        "rows": [
+         [
+          "3,5 ou mais",
+          "Completo"
+         ],
+         [
+          "De 3,0 a 3,49",
+          "Sem criar novos planos; os agendados seguem"
+         ],
+         [
+          "Abaixo de 3,0 ou sem SPS",
+          "Pausado"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Cota semanal",
+        "html": "Toda segunda-feira a loja recebe uma <b>cota de planos</b> de acordo com o nível de GMV. Taxa de leitura alta e baixo cancelamento de inscrição aumentam a cota. Hoje a ferramenta está disponível para vendedores da lista de permissões."
+       },
+       {
+        "t": "p",
+        "title": "Planos de uso único e automatizados",
+        "html": "O <b>plano de uso único</b> envia uma mensagem avulsa ou agendada para um segmento, como uma promoção ou um lançamento. O <b>plano automatizado</b> dispara mensagens sozinho, a partir do comportamento do cliente, como confirmação de pedido ou aviso de queda de preço."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Segmento certo, mensagem curta",
+        "html": "Fale com quem faz sentido: quem comprou há tempo, quem abandonou o carrinho, quem comprou duas vezes. Uma mensagem curta, com um motivo claro, tem mais leitura e menos cancelamento de inscrição."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual SPS dá acesso completo ao CRM?",
+        "options": [
+         "3,5 ou mais",
+         "0,5",
+         "Qualquer valor",
+         "1,0"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Abaixo disso o acesso é limitado ou pausado."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "CRM: mensagens para <b>segmentos de clientes</b>",
+         "Acesso depende da <b>SPS</b> e do GMV de 30 dias",
+         "Cota semanal conforme o <b>nível de GMV</b>",
+         "Disponível só na <b>lista de permissões</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Onde o atendente vê as mensagens dos clientes?",
+      "options": [
+       "Na loja de um concorrente",
+       "No e-mail pessoal do cliente",
+       "Em Mensagens do cliente, no Seller Center",
+       "No WhatsApp pessoal da loja"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O chat é a ferramenta oficial.",
+      "topic": "Chat"
+     },
+     {
+      "q": "Levar o cliente para pagar por fora da plataforma é:",
+      "options": [
+       "Permitido em promoções",
+       "Proibido",
+       "Recomendado",
+       "Obrigatório"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "É evasão da plataforma.",
+      "topic": "Conduta"
+     },
+     {
+      "q": "Prazo para o cliente avaliar o produto:",
+      "options": [
+       "2 anos",
+       "60 dias corridos",
+       "2 horas",
+       "Não há prazo"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Contado a partir do recebimento.",
+      "topic": "Avaliações"
+     },
+     {
+      "q": "A loja pode premiar uma avaliação 5 estrelas?",
+      "options": [
+       "Sim, com cupom",
+       "Não",
+       "Sim, com dinheiro",
+       "Sim, com produto"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Qualquer recompensa é manipulação.",
+      "topic": "Avaliações"
+     },
+     {
+      "q": "SPS mínimo para acesso completo ao CRM:",
+      "options": [
+       "3,5",
+       "2",
+       "1",
+       "0,1"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Entre 3,0 e 3,49 há restrições.",
+      "topic": "CRM"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Até quando o cliente pode cancelar sem aprovação da loja?",
+    "options": [
+     "Só em LIVE",
+     "Até o status Aguardando coleta",
+     "Depois de entregue",
+     "Nunca"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Depois disso o pedido segue para envio.",
+    "topic": "Cancelamento"
+   },
+   {
+    "q": "Cancelar por falta de estoque afeta qual métrica?",
+    "options": [
+     "ROI",
+     "FDR",
+     "SFCR",
+     "NRR"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "É cancelamento por falha do vendedor.",
+    "topic": "Cancelamento"
+   },
+   {
+    "q": "A loja pode pedir ao cliente que cancele por estoque?",
+    "options": [
+     "Não",
+     "Só aos sábados",
+     "Só com cupom",
+     "Sim"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "A loja cancela por conta própria.",
+    "topic": "Cancelamento"
+   },
+   {
+    "q": "Em quantos dias úteis a loja analisa um produto devolvido?",
+    "options": [
+     "20",
+     "200",
+     "0",
+     "2"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Sem ação, a plataforma aprova.",
+    "topic": "Devolução"
+   },
+   {
+    "q": "Prazo para o cliente enviar a devolução:",
+    "options": [
+     "Sem prazo",
+     "14 meses",
+     "1 hora",
+     "14 dias"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Passado o prazo, a devolução é encerrada.",
+    "topic": "Devolução"
+   },
+   {
+    "q": "Quem paga o frete de devolução quando o cliente não precisa mais?",
+    "options": [
+     "O afiliado",
+     "O banco",
+     "Sempre a loja",
+     "TikTok Shop"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Pela tabela de responsabilidades.",
+    "topic": "Devolução"
+   },
+   {
+    "q": "O que é o reembolso rápido?",
+    "options": [
+     "Um cupom de frete grátis",
+     "Uma meta de vendas da loja",
+     "Reembolso liberado na postagem",
+     "Um tipo especial de LIVE"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Reduz a espera do cliente.",
+    "topic": "Reembolso"
+   },
+   {
+    "q": "Prazo para recurso do reembolso rápido com pacote ruim:",
+    "options": [
+     "15 dias corridos",
+     "Sem prazo",
+     "15 minutos",
+     "3 anos"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Contado do recebimento.",
+    "topic": "Reembolso"
+   },
+   {
+    "q": "Reembolso parcial dispensa:",
+    "options": [
+     "O pedido",
+     "O pagamento",
+     "A devolução do item",
+     "O cliente"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A loja oferece parte do valor.",
+    "topic": "Reembolso"
+   },
+   {
+    "q": "Qual violação aparece quando falta um brinde anunciado?",
+    "options": [
+     "Estorno",
+     "Item ausente ou incorreto",
+     "Frete",
+     "IPPC"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Brinde faltando entra nessa categoria.",
+    "topic": "Pedido"
+   },
+   {
+    "q": "Embalagem fraca que causa quebra é:",
+    "options": [
+     "Promoção",
+     "Cupom",
+     "Culpa do cliente",
+     "Dano por embalagem inadequada"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "A política cita esse caso.",
+    "topic": "Dano"
+   },
+   {
+    "q": "Estorno é:",
+    "options": [
+     "Um desconto da loja",
+     "Uma tabela de medidas",
+     "Um tipo de cupom de frete",
+     "Contestação junto ao banco"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "O cliente pede o dinheiro ao banco.",
+    "topic": "Estorno"
+   },
+   {
+    "q": "Qual conduta é proibida no chat?",
+    "options": [
+     "Responder com educação",
+     "Informar o prazo de envio",
+     "Enviar link ou conta de terceiros",
+     "Pedir o número do pedido"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "É desvio da plataforma.",
+    "topic": "Chat"
+   },
+   {
+    "q": "O horário de atendimento da loja:",
+    "options": [
+     "É igual ao do banco",
+     "Não existe",
+     "É definido pelo cliente",
+     "Deve ser definido no Seller Center"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Aparece para quem manda mensagem.",
+    "topic": "Chat"
+   },
+   {
+    "q": "A loja pode dar cupom em troca de avaliação 5 estrelas?",
+    "options": [
+     "Só até R$ 10",
+     "Só em feriados",
+     "Não",
+     "Sim"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "É manipulação de avaliação.",
+    "topic": "Avaliações"
+   },
+   {
+    "q": "Qual SPS permite acesso completo ao CRM?",
+    "options": [
+     "3,5 ou mais",
+     "1,0",
+     "2,0",
+     "Sem SPS"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Abaixo disso há restrição.",
+    "topic": "CRM"
+   }
+  ]
+ }
+}

@@ -1,0 +1,1547 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 10: LIVE commerce",
+  "tag": "TikTok Shop",
+  "tagline": "Da primeira LIVE ao diagnóstico de resultado, com as ferramentas da Academia.",
+  "subtitle": "Preparação, segurança, apresentação, cupom, oferta relâmpago, formatos interativos, missões, destaques e análise de dados. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026; os vídeos dos cursos não foram assistidos, só seus resumos escritos).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Preparar a LIVE",
+    "tagline": "Da primeira transmissão às regras",
+    "outcome": "Montar a base: primeira LIVE, preparação e segurança.",
+    "lessons": [
+     {
+      "title": "Por que fazer LIVE e como é a primeira",
+      "minutes": 4,
+      "goal": "Entender o papel da LIVE no crescimento e dar o primeiro passo com o mínimo viável.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📡",
+        "title": "A loja que fala com o cliente em tempo real",
+        "text": "LIVE commerce junta conteúdo, comunidade e venda. O espectador pergunta, vê o produto funcionando e compra sem sair da transmissão."
+       },
+       {
+        "t": "p",
+        "title": "Por que vale a pena",
+        "html": "A LIVE é um dos três tipos de conteúdo que dividem o GMV da loja, ao lado do vídeo e do cartão de produto. Ela cria urgência, responde dúvidas na hora e constrói uma base de clientes que volta. Por isso o curso da Academia começa pela lógica de crescimento e pelos cases de vendedores."
+       },
+       {
+        "t": "list",
+        "title": "Configuração mínima viável",
+        "items": [
+         "<b>1 pessoa + 1 celular</b>",
+         "Cenário simples e organizado",
+         "Boa luz e áudio claro",
+         "Produtos já vinculados à sacola da LIVE"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Antes da primeira transmissão",
+        "items": [
+         {
+          "title": "Vincule a conta",
+          "html": "Conecte a conta TikTok à Central do vendedor."
+         },
+         {
+          "title": "Abra a Central de vendas em LIVE",
+          "html": "Em LIVE e vídeo > Vendas em LIVE há tutoriais, listas de verificação e tarefas."
+         },
+         {
+          "title": "Escolha onde transmitir",
+          "html": "Pelo celular ou pelo Gerenciador de LIVE no computador."
+         },
+         {
+          "title": "Adicione produtos",
+          "html": "Monte a sacola com poucos itens bem escolhidos."
+         },
+         {
+          "title": "Inicie",
+          "html": "Comece e acompanhe os números."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Conteúdos do centro Vendas em LIVE",
+        "items": [
+         "Pontos de entrada para transmitir no app e no PC",
+         "Tutorial rápido de 1 minuto",
+         "Vídeos e listas de verificação",
+         "<b>Tarefas de LIVE</b> com recompensas",
+         "Ferramentas de LIVE (oferta relâmpago, cupom e outras)"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Ritmo de iniciante",
+        "html": "Combine vídeos curtos e LIVEs sem se sobrecarregar. Frequência constante vale mais que uma maratona isolada."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Conta vinculada é pré-requisito",
+        "html": "Sem a conta de LIVE vinculada, os produtos da loja não aparecem na sacola e a venda não é atribuída à loja."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a configuração mínima para a primeira LIVE?",
+        "options": [
+         "Uma pessoa e um celular",
+         "Estúdio com cinco câmeras",
+         "Equipe de vinte pessoas",
+         "Servidor próprio"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Comece simples e ajuste com os dados."
+       },
+       {
+        "t": "quiz",
+        "q": "Onde estão tutoriais e tarefas para iniciantes?",
+        "options": [
+         "Finanças > Faturas",
+         "LIVE e vídeo > Vendas em LIVE",
+         "Pedidos > Cancelados",
+         "Produtos > Rascunhos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "É o centro de integração para LIVE."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "LIVE = <b>conteúdo + comunidade + venda</b>",
+         "Mínimo viável: <b>1 pessoa + 1 celular</b>",
+         "Vincule a <b>conta de LIVE</b> primeiro",
+         "Use o centro <b>Vendas em LIVE</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Preparar a LIVE: equipe, roteiro e produtos",
+      "minutes": 4,
+      "goal": "Organizar cenário, tarefas e a seleção de produtos antes de entrar ao vivo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎬",
+        "title": "LIVE boa é LIVE planejada",
+        "text": "O que o espectador vê é o resultado do que foi preparado antes. A Academia ensina um cronograma em três momentos."
+       },
+       {
+        "t": "flow",
+        "title": "Cronograma da LIVE",
+        "caption": "Gestão de Antes, Durante e Depois.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "🧰",
+          "title": "Antes",
+          "text": "Cenário, equipamentos, roteiro, produtos e testes."
+         },
+         {
+          "icon": "🔴",
+          "title": "Durante",
+          "text": "Apresentação, interação, ofertas e acompanhamento dos dados."
+         },
+         {
+          "icon": "📈",
+          "title": "Depois",
+          "text": "Análise, destaques em vídeo curto e ajustes."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Equipe mínima",
+        "items": [
+         "<b>Apresentador:</b> conduz a conversa e mostra o produto",
+         "<b>Operador:</b> fixa produtos, ativa ofertas e vigia comentários",
+         "Quem não tem equipe pode começar sozinho com um roteiro enxuto"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Curadoria de produtos",
+        "items": [
+         "Combine com o <b>posicionamento da conta</b>",
+         "Considere o <b>apresentador e o público</b>",
+         "Escolha por papel: <b>atrair, converter e dar lucro</b>",
+         "Organize a ordem de entrada na LIVE"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Método USP em 4 passos",
+        "html": "Para transformar características em motivos de compra: <b>listar</b> os pontos de venda, <b>selecionar</b> os mais fortes, <b>organizar</b> a ordem da fala e <b>converter</b> cada ponto em um ponto de compra, ou seja, em um benefício que o cliente sente."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Ponto de venda para ponto de compra",
+        "html": "Ponto de venda: “A garrafa tem 750 ml e isolamento térmico.” Ponto de compra: “Seu café continua quente até o fim da reunião.”"
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Conheça seu público",
+        "html": "Pense na faixa etária, nos hábitos de consumo e nos interesses de quem assiste, e adapte as ofertas a eles."
+       },
+       {
+        "t": "quiz",
+        "q": "Quais são os três momentos do cronograma da LIVE?",
+        "options": [
+         "Antes, durante e depois",
+         "Cupom, frete e imposto",
+         "Dia, noite e madrugada",
+         "Compra, envio e devolução"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Cada momento tem tarefas específicas."
+       },
+       {
+        "t": "quiz",
+        "q": "O que é converter um ponto de venda em ponto de compra?",
+        "options": [
+         "Traduzir a característica em benefício",
+         "Cobrar mais caro do cliente",
+         "Trocar todo o estoque",
+         "Aumentar o valor do frete"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O cliente compra o benefício, não a ficha técnica."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Cronograma: <b>antes, durante, depois</b>",
+         "Equipe mínima: <b>apresentador + operador</b>",
+         "USP: <b>listar, selecionar, organizar, converter</b>",
+         "Escolha produtos por <b>papel na LIVE</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "LIVE segura: o que não fazer",
+      "minutes": 4,
+      "goal": "Conhecer as linhas vermelhas da plataforma e evitar penalidades durante a transmissão.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚦",
+        "title": "Vender muito é bom; vender seguro é melhor",
+        "text": "Uma violação em LIVE pode derrubar a transmissão e afetar a conta. A Academia resume as regras em linhas vermelhas fáceis de lembrar."
+       },
+       {
+        "t": "list",
+        "title": "Linhas vermelhas",
+        "items": [
+         "O que é <b>absolutamente proibido</b> na plataforma",
+         "<b>Marketing enganoso:</b> promessas exageradas e demonstrações falsas",
+         "Ações que <b>prejudicam a sua loja</b> e os clientes"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Atenção especial",
+        "items": [
+         "Produtos proibidos ou restritos",
+         "Alegações de cura, resultado garantido ou prazo fixo",
+         "Comparações dramáticas de antes e depois",
+         "Uso de marcas, músicas e imagens sem permissão"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Checklist rápido antes de entrar",
+        "caption": "Resumo das ideias da Série 4 da Academia.",
+        "head": [
+         "Pergunta",
+         "Por quê"
+        ],
+        "rows": [
+         [
+          "O produto é permitido e está em conformidade?",
+          "Evita remoção e violação"
+         ],
+         [
+          "Vou prometer só o que posso comprovar?",
+          "Evita marketing enganoso"
+         ],
+         [
+          "Estoque, preço e embalagem estão prontos?",
+          "Evita cancelamento e atraso"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "LIVE Studio",
+        "html": "A aula 4 do curso reúne as regras importantes da plataforma e dicas de uso do <b>LIVE Studio</b> para planejar melhor, executar com organização e reduzir riscos operacionais. O Gerenciador de LIVE, no computador, concentra o console de ofertas."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "A conta paga pelo que se diz no ao vivo",
+        "html": "Uma frase dita em LIVE tem o mesmo peso de um anúncio escrito. Treine o apresentador nas regras."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Tenha um roteiro de frases seguras",
+        "html": "Deixe ao lado do apresentador exemplos de falas aceitáveis para cada produto."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual conteúdo viola as regras de LIVE?",
+        "options": [
+         "Prometer cura ou resultado garantido",
+         "Ler os comentários",
+         "Mostrar o produto em uso",
+         "Fixar um produto"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Alegações médicas e de resultado fixo são enganosas."
+       },
+       {
+        "t": "quiz",
+        "q": "O que o checklist de segurança ajuda a evitar?",
+        "options": [
+         "Aumento de seguidores",
+         "Excesso de vendas",
+         "Remoção, violação e cancelamento",
+         "Fotos bonitas"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Ele cobre produto, promessas e operação."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Três linhas vermelhas: <b>proibido, enganoso, prejudicial</b>",
+         "Cuidado com <b>alegações e antes/depois</b>",
+         "Confira <b>estoque, preço e embalagem</b>",
+         "Treine o <b>apresentador</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "A configuração mínima viável é:",
+      "options": [
+       "Cinco câmeras",
+       "1 pessoa e 1 celular",
+       "Estúdio completo",
+       "Equipe de vinte"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Comece simples.",
+      "topic": "Início"
+     },
+     {
+      "q": "Onde há tutoriais e tarefas de LIVE?",
+      "options": [
+       "Chat > Modelos",
+       "Finanças > Saque",
+       "LIVE e vídeo > Vendas em LIVE",
+       "Pedidos > Frete"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "É o centro de integração.",
+      "topic": "Início"
+     },
+     {
+      "q": "Os três momentos do cronograma são:",
+      "options": [
+       "Compra, envio e troca",
+       "Antes, durante e depois",
+       "Cupom, frete e nota",
+       "Ontem, hoje e amanhã"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Cada momento tem tarefas.",
+      "topic": "Preparação"
+     },
+     {
+      "q": "Equipe mínima de uma LIVE:",
+      "options": [
+       "Só o cliente",
+       "Apresentador e operador",
+       "Só o contador",
+       "Só o fornecedor"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "O operador cuida das ferramentas.",
+      "topic": "Equipe"
+     },
+     {
+      "q": "Qual fala viola as regras?",
+      "options": [
+       "“Contém vitamina C”",
+       "“Cura acne em 3 dias”",
+       "“Envio em até 2 dias”",
+       "“Tem tamanho P ao GG”"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Alegações médicas são proibidas.",
+      "topic": "Segurança"
+     }
+    ]
+   },
+   {
+    "title": "Vender na LIVE",
+    "tagline": "Apresentação e ferramentas",
+    "outcome": "Persuadir com honestidade e usar as ferramentas de LIVE.",
+    "lessons": [
+     {
+      "title": "Apresentador e técnicas de persuasão",
+      "minutes": 4,
+      "goal": "Engajar, valorizar o produto e reduzir devoluções com comunicação honesta.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎤",
+        "title": "Quem apresenta, vende",
+        "text": "Produto bom perde venda quando a apresentação é morna. As técnicas da Academia combinam comunicação e psicologia do consumidor."
+       },
+       {
+        "t": "table",
+        "title": "Técnicas do curso",
+        "caption": "Aula 6 do curso de LIVE.",
+        "head": [
+         "Técnica",
+         "Como aplicar"
+        ],
+        "rows": [
+         [
+          "Modelagem de valor",
+          "Storytelling e demonstração visual"
+         ],
+         [
+          "Precificação fracionada",
+          "Mostrar o preço por dia ou por unidade"
+         ],
+         [
+          "Efeito pico-fim",
+          "Valorizar o ponto alto e o encerramento da oferta"
+         ],
+         [
+          "Escassez e urgência",
+          "Estoque limitado e cronômetro reais"
+         ],
+         [
+          "Prova social",
+          "Avaliações, pedidos e depoimentos"
+         ],
+         [
+          "Voz e corpo",
+          "Ritmo vocal e linguagem corporal confiáveis"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Cinco táticas de engajamento",
+        "items": [
+         "Um <b>gancho inicial</b> forte",
+         "<b>Repetição estratégica</b> do que importa para quem chega depois",
+         "Perguntas e enquetes para manter participação",
+         "Dinâmicas e brindes",
+         "Chamadas claras para clicar e comprar"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Preço fracionado",
+        "html": "Um tênis de R$ 240 que dura um ano: “Menos de R$ 1 por dia de conforto.” O valor fica concreto sem mentir sobre o preço."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Repetição estratégica",
+        "html": "A cada poucos minutos, recomece resumindo: “Quem chegou agora: é a garrafa térmica de 750 ml, hoje com cupom até as 20h.” Quem entra no meio entende em segundos."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Escassez só se for verdade",
+        "html": "Estoque limitado e prazos precisam ser reais. Falsa urgência gera reclamação, devolução e violação."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Cuide do pós-venda",
+        "html": "Alinhar expectativas ao vivo, como tamanho, cor e prazo, reduz devolução e protege o SPS."
+       },
+       {
+        "t": "quiz",
+        "q": "Para que serve a repetição estratégica?",
+        "options": [
+         "Encher o tempo",
+         "Esconder o preço",
+         "Enganar o cliente",
+         "Informar quem chega no meio da LIVE"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Espectadores entram a todo momento."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual cuidado vale para escassez e urgência?",
+        "options": [
+         "Não existem",
+         "Podem ser inventadas",
+         "Só valem em LIVE pequena",
+         "Devem ser reais"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Falsas promessas violam as regras."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Valor: <b>storytelling e demonstração</b>",
+         "Preço: <b>fracionado</b> e honesto",
+         "Engajamento: <b>gancho, repetição, dinâmicas</b>",
+         "Escassez e urgência: <b>só reais</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Cupom de LIVE e Oferta relâmpago",
+      "minutes": 4,
+      "goal": "Usar as duas ferramentas que mais criam urgência durante a transmissão.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⚡",
+        "title": "O cronômetro que converte",
+        "text": "Cupom e oferta relâmpago dão motivo para comprar agora. Mas precisam de preço pensado antes."
+       },
+       {
+        "t": "list",
+        "title": "Cupom de LIVE do vendedor",
+        "items": [
+         "Distribuído <b>só durante a LIVE</b>",
+         "Tipo para <b>todos os espectadores</b> ou <b>só seguidores</b>",
+         "Desconto em valor ou percentual, com gasto mínimo",
+         "Vale a regra geral: <b>um cupom de vendedor por pedido</b>, o de maior desconto"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Dois cupons, dois públicos",
+        "html": "Para seguidores: gasto mínimo baixo e desconto pequeno. Para todos: gasto mínimo alto, desconto atraente e quantidade reduzida."
+       },
+       {
+        "t": "table",
+        "title": "Oferta relâmpago LIVE",
+        "caption": "Segundo o guia de oferta relâmpago LIVE.",
+        "head": [
+         "Item",
+         "Do vendedor",
+         "Do criador"
+        ],
+        "rows": [
+         [
+          "Onde aparece",
+          "LIVE da conta oficial e de marketing",
+          "LIVE da conta do criador afiliado"
+         ],
+         [
+          "Duração",
+          "De 1 a 180 minutos",
+          "De 10 minutos a 3 dias"
+         ],
+         [
+          "Pré-lançamento",
+          "5 minutos por padrão",
+          "Não tem"
+         ],
+         [
+          "Quem cria",
+          "Somente conta oficial",
+          "Somente conta oficial"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Regras de preço",
+        "items": [
+         "Preço <b>menor ou igual</b> ao menor dos <b>últimos 14 dias</b>",
+         "Sem histórico de pedidos em 14 dias: <b>abaixo do preço original</b>",
+         "Preço fixo ou desconto percentual",
+         "Limites de estoque e de compra por cliente"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Preparar e disparar",
+        "items": [
+         {
+          "title": "Antes da LIVE",
+          "html": "Crie várias ofertas no Console de LIVE."
+         },
+         {
+          "title": "Contador",
+          "html": "Defina contagem regressiva de até 300 segundos."
+         },
+         {
+          "title": "Durante",
+          "html": "Clique em Iniciar no melhor momento de audiência."
+         },
+         {
+          "title": "Depois",
+          "html": "Use Duplicar para repetir a oferta rapidamente."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Oferta do criador atrai parceiros",
+        "html": "Um preço exclusivo para criadores pode ajudar a fechar parceria quando a comissão é baixa ou o produto tem poucas avaliações."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a duração máxima da oferta relâmpago do vendedor em LIVE?",
+        "options": [
+         "5 segundos",
+         "1.800 minutos",
+         "18 minutos",
+         "180 minutos"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "A duração mínima é de 1 minuto."
+       },
+       {
+        "t": "quiz",
+        "q": "A referência de preço da oferta é o menor preço dos últimos:",
+        "options": [
+         "1 dia",
+         "14 dias",
+         "400 dias",
+         "3 anos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Houve redução de 30 para 14 dias em 2026."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Cupom de LIVE: <b>todos</b> ou <b>só seguidores</b>",
+         "Oferta: <b>1 a 180 minutos</b>, pré-lançamento de <b>5 min</b>",
+         "Preço ≤ menor dos <b>últimos 14 dias</b>",
+         "Prepare <b>antes</b>, dispare <b>no pico</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Ferramentas interativas: grupo, corte e lance",
+      "minutes": 4,
+      "goal": "Conhecer os formatos que transformam a compra em participação ao vivo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎮",
+        "title": "Compra como brincadeira",
+        "text": "Alguns formatos fazem o público trabalhar junto para destravar preço. Todos estão disponíveis só para vendedores selecionados, então confira a elegibilidade."
+       },
+       {
+        "t": "table",
+        "title": "Três formatos",
+        "caption": "Disponibilidade para vendedores selecionados.",
+        "head": [
+         "Formato",
+         "Como funciona"
+        ],
+        "rows": [
+         [
+          "Oferta em grupo",
+          "O grupo se forma para desbloquear o preço"
+         ],
+         [
+          "Corte de preço",
+          "Cada participante reduz o preço; quanto mais gente, menor o valor"
+         ],
+         [
+          "Lance ao Vivo",
+          "Quem der o maior lance compra"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Oferta em grupo",
+        "items": [
+         "Tamanho do grupo: <b>3 a 6 pessoas</b>",
+         "Duração: de <b>15 segundos a 20 minutos</b>",
+         "Estoque por rodada <b>≥ tamanho do grupo</b>",
+         "Grupo incompleto: <b>ninguém é cobrado</b> e o estoque é liberado"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Corte de preço",
+        "items": [
+         "Defina preço mínimo, meta de participantes, estoque e duração",
+         "Cada espectador reduz <b>uma vez</b>; a plataforma decide o valor",
+         "Estoque <b>≥ meta de participantes</b>",
+         "Preço <b>nunca</b> fica abaixo do mínimo",
+         "Enquanto ativo, o produto <b>não pode ser comprado pelo preço normal</b>"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Lance ao Vivo",
+        "items": [
+         "Só categorias <b>autorizadas</b>, por convite",
+         "AHR <b>> 150</b> e SPS <b>≥ 4,0</b> (ou sem SPS)",
+         "Produto cadastrado para lance <b>só vende por lance</b>",
+         "Contas oficiais e de marketing; <b>afiliados não podem</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Atenção com a NF-e no lance",
+        "html": "Se você depende do TikTok Shop para emitir a NF-e, não use o anúncio temporário: ele não permite informar os dados fiscais. Crie o anúncio pelo Seller Center antes da LIVE."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Aqueça antes de iniciar",
+        "html": "Fixe o produto e explique como funciona o formato. Quando o público demonstrar interesse, toque em Iniciar e comemore os participantes."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o tamanho do grupo na Oferta em grupo?",
+        "options": [
+         "1 pessoa",
+         "De 30 a 60",
+         "De 3 a 6 pessoas",
+         "Mais de 100"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O estoque da rodada deve ser pelo menos igual ao grupo."
+       },
+       {
+        "t": "quiz",
+        "q": "O que acontece com o produto durante um Corte de preço?",
+        "options": [
+         "Não pode ser comprado pelo preço normal",
+         "Fica com frete grátis para todos",
+         "Sai da loja automaticamente",
+         "Dobra o preço de venda"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Exclua a atividade depois para voltar às vendas normais."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Grupo: <b>3 a 6</b> pessoas, 15 s a 20 min",
+         "Corte: preço <b>mínimo</b> respeitado, <b>uma</b> redução por pessoa",
+         "Lance: <b>convite</b>, categorias autorizadas, AHR e SPS altos",
+         "Formatos <b>só para selecionados</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Missões, recompensas e destaques",
+      "minutes": 4,
+      "goal": "Usar as missões de LIVE, as recompensas e os cortes automáticos para crescer.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏅",
+        "title": "Ganhe recompensas e reaproveite a LIVE",
+        "text": "A plataforma oferece missões com prêmios e transforma os melhores momentos da LIVE em vídeos curtos prontos para postar."
+       },
+       {
+        "t": "list",
+        "title": "Missões LIVE do vendedor",
+        "items": [
+         "Desafios criados pela plataforma",
+         "Recompensa por cumprir <b>duração</b> e <b>número de sessões</b>",
+         "Acesso pelo perfil, pela Central do vendedor ou pela página da LIVE",
+         "No Seller Center: LIVE e vídeo > Vendas em LIVE ou Crescimento > Oportunidades de crescimento",
+         "O painel da missão <b>só aparece para o anfitrião</b>"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Recompensa da LIVE do criador",
+        "items": [
+         "Ferramenta de colaboração entre vendedor e criador",
+         "Pode ser um <b>produto</b> do vendedor ou um prêmio <b>personalizado</b>",
+         "Aumenta engajamento e tempo médio de visualização",
+         "Configuração em Marketing > Promoções > Colabore com criadores"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Destaques de LIVE",
+        "html": "A plataforma captura automaticamente os melhores momentos da LIVE e gera clipes de até <b>60 segundos</b>, com <b>1 produto</b>, sem menções a “links” ou interações com espectadores. Na Central do vendedor os clipes aparecem <b>no dia seguinte</b>, para transmissões com pelo menos <b>300 visualizações</b>. No app, são sugeridos nos <b>10 minutos finais</b> da LIVE."
+       },
+       {
+        "t": "steps",
+        "title": "Publicar um destaque",
+        "items": [
+         {
+          "title": "Hub",
+          "html": "Abra LIVE e vídeo > Hub de vídeos com produtos à venda."
+         },
+         {
+          "title": "Criar conteúdo",
+          "html": "Veja a seção Destaques de LIVE."
+         },
+         {
+          "title": "Usar destaques",
+          "html": "Edite automaticamente com nome do produto, legenda, adesivo de CTA e música."
+         },
+         {
+          "title": "Publicar",
+          "html": "Confira o link do produto e poste."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Duas utilidades do destaque",
+        "html": "Gera pedidos depois da LIVE e atrai tráfego para a próxima. Poste o clipe antes da transmissão seguinte."
+       },
+       {
+        "t": "quiz",
+        "q": "Por que reaproveitar os destaques de LIVE?",
+        "options": [
+         "Aumentar o SPS de forma direta",
+         "Gerar pedidos após a LIVE e atrair público",
+         "Evitar o custo do frete",
+         "Reduzir impostos da loja"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O clipe leva o produto vinculado para o feed."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o limite de duração de um destaque?",
+        "options": [
+         "6 horas",
+         "6 segundos",
+         "60 minutos",
+         "60 segundos"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O clipe tem 1 produto só."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Missões dão <b>recompensas</b> por duração e sessões",
+         "Recompensa de criador: <b>produto ou prêmio</b>",
+         "Destaques: até <b>60 s</b>, 1 produto",
+         "Poste o clipe e <b>leve público à próxima LIVE</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "A repetição estratégica serve para:",
+      "options": [
+       "Esconder o preço",
+       "Enganar o cliente",
+       "Informar quem entra no meio da LIVE",
+       "Aumentar o frete"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Espectadores chegam a todo momento.",
+      "topic": "Apresentação"
+     },
+     {
+      "q": "Escassez e urgência devem ser:",
+      "options": [
+       "Reais",
+       "Ilegais",
+       "Inventadas",
+       "Secretas"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Falsa urgência causa problemas.",
+      "topic": "Apresentação"
+     },
+     {
+      "q": "A oferta relâmpago do vendedor dura, no máximo:",
+      "options": [
+       "18 minutos",
+       "5 segundos",
+       "1.800 minutos",
+       "180 minutos"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Mínimo de 1 minuto.",
+      "topic": "Oferta"
+     },
+     {
+      "q": "Tamanho do grupo na Oferta em grupo:",
+      "options": [
+       "30 a 60",
+       "Mais de 100",
+       "3 a 6 pessoas",
+       "Exatamente 1"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Grupo incompleto não cobra.",
+      "topic": "Interativo"
+     },
+     {
+      "q": "Um destaque de LIVE dura até:",
+      "options": [
+       "60 minutos",
+       "60 segundos",
+       "60 dias",
+       "6 segundos"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Tem 1 produto.",
+      "topic": "Destaque"
+     }
+    ]
+   },
+   {
+    "title": "Medir e melhorar",
+    "tagline": "Painel e diagnóstico",
+    "outcome": "Ler o painel e planejar o próximo ajuste.",
+    "lessons": [
+     {
+      "title": "Painel de desempenho da LIVE",
+      "minutes": 4,
+      "goal": "Ler os números durante e depois da transmissão para ajustar em tempo real.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📺",
+        "title": "Os números mostram o que ajustar",
+        "text": "O painel unificado de LIVE concentra métricas, tráfego, funil, produtos e violações. Ele serve durante e depois da transmissão."
+       },
+       {
+        "t": "list",
+        "title": "O que o painel mostra",
+        "items": [
+         "Indicadores financeiros, de tráfego e de conversão",
+         "Tendência ao longo da LIVE, cruzada com eventos (violações, fixações, promoções)",
+         "Canais de tráfego <b>orgânicos e pagos</b>",
+         "<b>Funil</b> das impressões ao checkout",
+         "Perfil da audiência",
+         "Desempenho por produto, violações em tempo real e recompensas"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Métricas padrão em Desempenho da LIVE",
+        "items": [
+         "Receita",
+         "Pedidos",
+         "Compradores",
+         "Unidades vendidas",
+         "Taxa de conversão (CO)",
+         "Taxa de cliques (CTR)"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Outras métricas úteis",
+        "items": [
+         "Visualizações da LIVE",
+         "<b>Duração média de visualização</b>",
+         "<b>GPM</b> (GMV por mil exibições)",
+         "Ticket médio"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Onde abrir",
+        "items": [
+         {
+          "title": "Bússola de dados",
+          "html": "Entre em Transmissão ao vivo e vídeo."
+         },
+         {
+          "title": "LIVE",
+          "html": "Escolha Desempenho da LIVE ou Detalhes da LIVE."
+         },
+         {
+          "title": "Filtre",
+          "html": "Alterne entre Auto-operado e Afiliada."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Gargalo no funil",
+        "html": "Muita gente entra, mas poucos clicam no produto: o problema é a exposição dos itens. Muitos cliques e poucas compras: o preço, a oferta ou a confiança precisam melhorar."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Aja durante a LIVE",
+        "html": "Se a retenção cai em um trecho, mude o produto, dispare uma oferta ou faça uma pergunta ao público."
+       },
+       {
+        "t": "quiz",
+        "q": "O que significa GPM?",
+        "options": [
+         "GMV por mil exibições",
+         "Gastos por mil produtos",
+         "Garantia para mercadorias",
+         "Taxa de frete"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Mede o valor vendido a cada mil exibições."
+       },
+       {
+        "t": "quiz",
+        "q": "Muitos cliques e poucos pedidos indicam problema em:",
+        "options": [
+         "Cor do cenário da LIVE",
+         "Conversão (preço, oferta ou confiança)",
+         "Impressões dos produtos",
+         "Quantidade de seguidores"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "As pessoas veem o produto, mas não compram."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Painel: <b>métricas, tendência, funil, produtos, violações</b>",
+         "Seis métricas padrão incluem <b>receita, pedidos e CTR</b>",
+         "<b>GPM</b> e ticket médio completam a análise",
+         "Corrija <b>durante</b> a LIVE"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Diagnóstico pós-LIVE e plano de melhoria",
+      "minutes": 4,
+      "goal": "Transformar os dados em ajustes de pessoa, produto e cenário para a próxima LIVE.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔁",
+        "title": "Cada LIVE ensina a próxima",
+        "text": "Quem analisa depois da transmissão melhora mais rápido. A Academia propõe um diagnóstico em dimensões e taxas e ações em três eixos."
+       },
+       {
+        "t": "p",
+        "title": "Cinco dimensões e quatro taxas",
+        "html": "O curso usa o modelo de <b>cinco dimensões e quatro taxas</b> para achar onde a LIVE perde público: entrada na LIVE, exposição dos produtos, cliques e conversão. Compare GPM, ticket médio, taxa de conversão e cada etapa do funil com os benchmarks do painel."
+       },
+       {
+        "t": "table",
+        "title": "Três eixos de otimização",
+        "caption": "Aula 8 do curso de LIVE.",
+        "head": [
+         "Eixo",
+         "Perguntas para o próximo ajuste"
+        ],
+        "rows": [
+         [
+          "Pessoa",
+          "O apresentador explica o valor? Mantém ritmo e energia?"
+         ],
+         [
+          "Produto",
+          "A ordem e a escolha dos itens ajudam? A oferta é boa?"
+         ],
+         [
+          "Cenário",
+          "Luz, áudio e fundo passam confiança?"
+         ]
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Rotina pós-LIVE",
+        "items": [
+         {
+          "title": "Abra o painel",
+          "html": "Veja as três piores métricas em comparação ao mercado."
+         },
+         {
+          "title": "Ache o gargalo",
+          "html": "Entrada, exposição, clique ou conversão."
+         },
+         {
+          "title": "Escolha um eixo",
+          "html": "Pessoa, produto ou cenário."
+         },
+         {
+          "title": "Teste na próxima",
+          "html": "Mude uma coisa e compare."
+         },
+         {
+          "title": "Poste os destaques",
+          "html": "Divulgue os clipes antes da próxima LIVE."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Exemplo de ajuste",
+        "html": "Funil mostra bons cliques, mas conversão baixa. Hipótese de produto: oferta fraca. Teste na próxima LIVE um cupom para seguidores e uma oferta relâmpago no pico."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Anote o que mudou",
+        "html": "Registre em uma planilha o que você alterou em cada LIVE. Sem registro, você não sabe o que gerou a melhora."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não mude tudo de uma vez",
+        "html": "Se você troca cenário, produtos e roteiro juntos, perde a capacidade de aprender com o resultado."
+       },
+       {
+        "t": "quiz",
+        "q": "Quais são os três eixos de otimização?",
+        "options": [
+         "Texto, foto e áudio",
+         "Frete, taxa e imposto",
+         "Cupom, kit e brinde",
+         "Pessoa, produto e cenário"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Cada eixo tem perguntas próprias."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o primeiro passo da rotina pós-LIVE?",
+        "options": [
+         "Trocar de loja e de nome",
+         "Apagar a gravação da LIVE",
+         "Parar de transmitir de vez",
+         "Abrir o painel e ver as piores métricas"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Os dados mostram onde focar."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Modelo de <b>5 dimensões e 4 taxas</b>",
+         "Otimize <b>pessoa, produto, cenário</b>",
+         "Mude <b>uma coisa</b> por LIVE",
+         "Poste <b>destaques</b> antes da próxima"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "GPM é:",
+      "options": [
+       "Gastos por mil pedidos",
+       "Garantia de produto",
+       "GMV por mil exibições",
+       "Frete por pacote"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Mede eficiência de exposição.",
+      "topic": "Métrica"
+     },
+     {
+      "q": "Muitos cliques e poucas compras indicam problema de:",
+      "options": [
+       "Quantidade de seguidores",
+       "Impressão",
+       "Cenário vazio",
+       "Conversão"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Preço, oferta ou confiança.",
+      "topic": "Funil"
+     },
+     {
+      "q": "Os três eixos do diagnóstico são:",
+      "options": [
+       "Fretes, taxas e notas",
+       "Texto, foto e áudio",
+       "Pessoa, produto e cenário",
+       "Cupom, kit e brinde"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Cada um tem perguntas próprias.",
+      "topic": "Diagnóstico"
+     },
+     {
+      "q": "Por que mudar uma coisa por LIVE?",
+      "options": [
+       "Para cobrar menos",
+       "Porque é exigência legal",
+       "Para saber o que gerou o resultado",
+       "Para economizar luz"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Testes só ensinam quando são comparáveis.",
+      "topic": "Diagnóstico"
+     },
+     {
+      "q": "Quando destaques devem ser postados?",
+      "options": [
+       "Nunca",
+       "Antes da próxima LIVE",
+       "Um ano depois",
+       "Só em campanha"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Atraem tráfego para a próxima sessão.",
+      "topic": "Destaque"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Qual conta precisa ser vinculada para vender em LIVE?",
+    "options": [
+     "A conta TikTok à Central do vendedor",
+     "A conta de um concorrente da loja",
+     "Nenhuma conta é necessária",
+     "Um e-mail antigo da empresa"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Sem vínculo, a sacola não funciona.",
+    "topic": "Início"
+   },
+   {
+    "q": "Onde começa a integração de LIVE na Central?",
+    "options": [
+     "Produtos > Rascunhos",
+     "Finanças > Faturas",
+     "LIVE e vídeo > Vendas em LIVE",
+     "Pedidos > Cancelados"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Há tutoriais e tarefas.",
+    "topic": "Início"
+   },
+   {
+    "q": "O método USP tem:",
+    "options": [
+     "40 passos",
+     "400 passos",
+     "4 passos",
+     "1 passo"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Listar, selecionar, organizar e converter.",
+    "topic": "Preparação"
+   },
+   {
+    "q": "Ponto de compra é:",
+    "options": [
+     "Benefício que o cliente sente",
+     "Imposto",
+     "Código de barras",
+     "Ficha técnica"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "É a tradução do ponto de venda.",
+    "topic": "Preparação"
+   },
+   {
+    "q": "Qual NÃO é uma linha vermelha?",
+    "options": [
+     "Marketing enganoso",
+     "Conteúdo proibido",
+     "Ações que prejudicam a loja",
+     "Mostrar o produto funcionando"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Demonstrar é recomendado.",
+    "topic": "Segurança"
+   },
+   {
+    "q": "O cupom de LIVE pode ser para:",
+    "options": [
+     "Ninguém",
+     "Só funcionários",
+     "Todos ou só seguidores",
+     "Só concorrentes"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Segmentar ajuda a controlar o custo.",
+    "topic": "Cupom"
+   },
+   {
+    "q": "Quantos cupons do vendedor valem por pedido?",
+    "options": [
+     "Cinco",
+     "Um, o de maior desconto",
+     "Zero",
+     "Todos somados"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Não se acumulam.",
+    "topic": "Cupom"
+   },
+   {
+    "q": "O pré-lançamento padrão da oferta relâmpago é de:",
+    "options": [
+     "5 horas",
+     "50 minutos",
+     "5 minutos",
+     "5 dias"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Apenas na oferta do vendedor.",
+    "topic": "Oferta"
+   },
+   {
+    "q": "A referência de preço da oferta é o menor preço dos últimos:",
+    "options": [
+     "1 dia",
+     "14 dias",
+     "1 ano",
+     "10 anos"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Houve redução de 30 para 14 dias.",
+    "topic": "Oferta"
+   },
+   {
+    "q": "Quem pode criar oferta relâmpago de LIVE?",
+    "options": [
+     "Qualquer pessoa",
+     "Só clientes",
+     "Só bots",
+     "Contas oficiais"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Segundo o guia.",
+    "topic": "Oferta"
+   },
+   {
+    "q": "No Corte de preço, o espectador reduz:",
+    "options": [
+     "Ilimitadas vezes",
+     "Só o vendedor",
+     "Uma vez por evento",
+     "Nunca"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A plataforma define o valor.",
+    "topic": "Interativo"
+   },
+   {
+    "q": "No Lance ao Vivo, o produto cadastrado:",
+    "options": [
+     "Sai do estoque",
+     "Vende normalmente",
+     "Vende em dobro",
+     "Só pode ser vendido por lance"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Pode ser revertido depois.",
+    "topic": "Interativo"
+   },
+   {
+    "q": "Afiliados podem usar Lance ao Vivo?",
+    "options": [
+     "Sim, todos",
+     "Não",
+     "Só em campanha",
+     "Só com cupom"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Contas oficiais e de marketing, sim.",
+    "topic": "Interativo"
+   },
+   {
+    "q": "Clipes de destaque aparecem na Central:",
+    "options": [
+     "Antes da LIVE",
+     "Na semana seguinte",
+     "Nunca",
+     "No dia seguinte"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Para transmissões com 300 visualizações ou mais.",
+    "topic": "Destaque"
+   },
+   {
+    "q": "O modelo do curso de dados usa:",
+    "options": [
+     "5 dimensões e 4 taxas",
+     "Nenhuma taxa",
+     "1 dimensão e 1 taxa",
+     "50 dimensões"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Serve para achar o gargalo.",
+    "topic": "Diagnóstico"
+   },
+   {
+    "q": "Qual prática ajuda a aprender com cada LIVE?",
+    "options": [
+     "Mudar uma coisa e comparar",
+     "Mudar tudo",
+     "Apagar os dados",
+     "Nunca medir"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Registre o que foi alterado.",
+    "topic": "Diagnóstico"
+   }
+  ]
+ }
+}

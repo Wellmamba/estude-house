@@ -5,7 +5,7 @@ Em **Gestão de trilhas** há o botão **Importar trilha pronta (.json)**. Ele c
 ## Passo a passo
 
 1. Publique esta versão do site (zip no GitHub, como sempre). As imagens da trilha já estão dentro do arquivo .json, então não há pasta de imagens para subir.
-2. Confira em `/api/health` que o campo `build` mostra `2026-10-18-n` ou mais novo.
+2. Confira em `/api/health` que o campo `build` mostra `2026-10-18-o` ou mais novo.
 3. Entre como gestor, abra **Gestão de trilhas** e clique em **Importar trilha pronta (.json)**.
 4. Escolha o arquivo da pasta `trilhas-prontas/` (por exemplo `funil-de-vendas-ml.json`).
 5. O editor abre sozinho. Use **Ver aula como aluno**, ajuste o que quiser e clique em **Publicar**.
@@ -28,3 +28,4 @@ Os cards de imagem aceitam um link `https://`, um arquivo do site em `/trilhas/.
 | Arquivo | Conteúdo |
 | --- | --- |
 | `funil-de-vendas-ml.json` | Funil de Vendas no Mercado Livre: 5 módulos, 7 aulas, 94 cards, 17 questões de módulo e 10 da prova final (sorteia 15). 7 imagens do treinamento em PDF, embutidas no arquivo e com os nomes do ranking borrados. |
+| `tiktok-shop-01` a `tiktok-shop-14` | Categoria **TikTok Shop**: 14 trilhas de formação completa, com 3 ou 4 módulos cada. Veja a ordem sugerida e o conteúdo de cada uma em `GUIA-TIKTOK-SHOP.md`. |

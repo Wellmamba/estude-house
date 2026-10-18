@@ -1,0 +1,1705 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 9: vídeos compráveis",
+  "tag": "TikTok Shop",
+  "tagline": "Criar, publicar com segurança e medir vídeos que vendem.",
+  "subtitle": "Roteiro, formatos, regras de conteúdo, pré-verificação, IA, atribuição do GMV e métricas de vídeo. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026; os vídeos dos cursos não foram assistidos, só seus resumos escritos).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Criar vídeos que vendem",
+    "tagline": "Do roteiro ao formato",
+    "outcome": "Planejar, gravar e escolher o formato certo para cada produto.",
+    "lessons": [
+     {
+      "title": "O que é um vídeo comprável",
+      "minutes": 4,
+      "goal": "Entender o papel do vídeo com produto vinculado e dar o primeiro passo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎬",
+        "title": "O vídeo é a vitrine que se move",
+        "text": "No TikTok Shop o cliente descobre o produto enquanto assiste. O vídeo comprável leva o link do produto e transforma visualização em pedido."
+       },
+       {
+        "t": "p",
+        "title": "Definição",
+        "html": "Vídeo comprável é um vídeo curto publicado com um <b>produto da sua loja vinculado</b>. Quem assiste toca no link, vê o cartão do produto e pode comprar sem sair do app. Ele convive com a LIVE e com o cartão de produto: os três tipos de conteúdo dividem o GMV da loja."
+       },
+       {
+        "t": "steps",
+        "title": "Primeiro vídeo comprável",
+        "items": [
+         {
+          "title": "Crie",
+          "html": "Grave um vídeo curto mostrando o produto em uso."
+         },
+         {
+          "title": "Vincule",
+          "html": "Adicione o link e selecione o produto da loja."
+         },
+         {
+          "title": "Revise",
+          "html": "Passe a verificação de qualidade antes de publicar."
+         },
+         {
+          "title": "Publique",
+          "html": "Poste e acompanhe o desempenho depois."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Quem pode publicar",
+        "items": [
+         "A <b>conta oficial</b> da loja, vinculada à Central do vendedor",
+         "<b>Criadores afiliados</b>, que gravam e vendem por comissão",
+         "Contas de marketing e agências, quando configuradas"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Ritmo para quem está começando",
+        "items": [
+         "Combine <b>vídeos curtos e LIVEs</b> sem se sobrecarregar",
+         "Prefira um ritmo <b>constante</b> a uma explosão de posts",
+         "Comece simples, aprenda com os números e ajuste"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Comece com o campeão",
+        "html": "Vincule primeiro o produto de maior margem e mais estoque. Se o vídeo viralizar, a loja aguenta o pico."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Sem estoque, sem venda",
+        "html": "Um vídeo que viraliza com produto esgotado gera cancelamento e derruba o SFCR. Reponha antes de impulsionar."
+       },
+       {
+        "t": "quiz",
+        "q": "O que torna um vídeo “comprável”?",
+        "options": [
+         "Usar apenas música famosa",
+         "Ter um produto da loja vinculado",
+         "Ser feito por agência",
+         "Durar mais de 10 minutos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O link do produto leva o espectador direto ao cartão de compra."
+       },
+       {
+        "t": "quiz",
+        "q": "Quais são os três tipos de conteúdo que dividem o GMV?",
+        "options": [
+         "LIVE, vídeo e cartão de produto",
+         "Chat, cupom e frete",
+         "Banner, feed e e-mail",
+         "Foto, texto e áudio"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A atribuição é feita por tipo de conteúdo."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Vídeo comprável = vídeo com <b>produto vinculado</b>",
+         "Quatro passos: <b>criar, vincular, revisar, publicar</b>",
+         "Ritmo <b>constante</b> de vídeos e LIVEs",
+         "Comece pelo produto <b>campeão</b> e com estoque"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "A estrutura do vídeo que prende",
+      "minutes": 4,
+      "goal": "Montar o roteiro: gancho, apresentação, argumento e chamada para ação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⏱️",
+        "title": "Você tem 3 segundos",
+        "text": "A Academia ensina uma estrutura simples para vídeos de alto clique e alta conversão. Ela começa com um gancho nos primeiros 3 segundos."
+       },
+       {
+        "t": "flow",
+        "title": "Estrutura completa",
+        "caption": "Resumo do curso de vídeos curtos para comerciantes.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "🪝",
+          "title": "Gancho",
+          "text": "Primeiros 3 segundos: algo que faz parar de rolar."
+         },
+         {
+          "icon": "📦",
+          "title": "Apresentação",
+          "text": "Mostre o produto e para quem serve."
+         },
+         {
+          "icon": "💬",
+          "title": "Argumentos",
+          "text": "Benefícios e provas de que funciona."
+         },
+         {
+          "icon": "👉",
+          "title": "CTA",
+          "text": "Chamada final para clicar no produto."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Para melhorar retenção e conclusão",
+        "items": [
+         "Corte o que não ajuda a venda",
+         "Mostre o produto <b>logo no começo</b>",
+         "Mantenha <b>movimento</b> e ritmo",
+         "Termine com uma chamada clara"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Gancho que funciona",
+        "html": "Em vez de “Olá, pessoal, hoje vou mostrar um produto”, comece com o problema: “Sua marmita vaza na bolsa? Olha isso.” O espectador entende o benefício antes dos 3 segundos."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "CTA claro",
+        "html": "“O link está aqui embaixo: toca no carrinho e vê o tamanho que serve.” Diz o que fazer e onde."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Vídeo fraco",
+         "tone": "bad",
+         "items": [
+          "Abre com apresentação longa",
+          "Produto aparece só no fim",
+          "Fala genérica",
+          "Sem chamada para o link"
+         ]
+        },
+        "right": {
+         "title": "Vídeo forte",
+         "tone": "good",
+         "items": [
+          "Abre com o problema ou a surpresa",
+          "Produto na tela desde cedo",
+          "Provas e detalhes concretos",
+          "CTA direto para o carrinho"
+         ]
+        }
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Teste mais de um gancho",
+        "html": "Grave dois inícios diferentes para o mesmo produto e compare cliques e retenção. Descubra qual abertura segura a atenção."
+       },
+       {
+        "t": "quiz",
+        "q": "Quanto tempo você tem para o gancho?",
+        "options": [
+         "Os primeiros 3 minutos",
+         "Qualquer momento",
+         "Os primeiros 3 segundos",
+         "Os últimos 30 segundos"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O gancho define se a pessoa continua assistindo."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a última parte da estrutura?",
+        "options": [
+         "Música",
+         "Efeito de transição",
+         "Chamada para ação",
+         "Logo da loja"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A CTA pede que o espectador clique no produto."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Estrutura: <b>gancho, apresentação, argumentos, CTA</b>",
+         "Gancho nos <b>3 primeiros segundos</b>",
+         "Mostre o produto <b>cedo</b>",
+         "Teste <b>dois ganchos</b> e compare"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Formatos que vendem",
+      "minutes": 4,
+      "goal": "Escolher o formato certo para cada produto: rotina, depoimento, demonstração, storytelling e mais.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎞️",
+        "title": "Um produto, vários vídeos",
+        "text": "O mesmo item rende muitos formatos. A Academia destaca os que mais convertem, e todos pedem autenticidade."
+       },
+       {
+        "t": "table",
+        "title": "Formatos e quando usar",
+        "caption": "Cursos de vídeos curtos da TikTok Shop Academy.",
+        "head": [
+         "Formato",
+         "Para quê"
+        ],
+        "rows": [
+         [
+          "Rotina",
+          "Mostrar o produto no dia a dia"
+         ],
+         [
+          "Comparação",
+          "Evidenciar diferença entre opções"
+         ],
+         [
+          "Depoimento",
+          "Prova social de cliente real"
+         ],
+         [
+          "Demonstração",
+          "Mostrar o produto funcionando"
+         ],
+         [
+          "Antes e depois",
+          "Resultado visível (com cuidado)"
+         ],
+         [
+          "Storytelling",
+          "Contar uma história com o produto"
+         ],
+         [
+          "Características",
+          "Destacar o que o torna único"
+         ],
+         [
+          "Unboxing",
+          "Mostrar a abertura e a reação"
+         ],
+         [
+          "Resposta em vídeo",
+          "Responder a um comentário"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Regras de ouro",
+        "items": [
+         "Mostre o produto <b>em ação</b>, não parado",
+         "Fale como um amigo, <b>sem roteiro engessado</b>",
+         "Mostre <b>resultados reais</b>",
+         "Use depoimentos genuínos de clientes"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Resposta em vídeo",
+        "html": "Um cliente comenta: “Esse tênis é muito apertado?” Você grava um vídeo respondendo, calçando e mostrando o tamanho. A dúvida de um vira conteúdo para todos."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Unboxing",
+        "html": "Abra a caixa em câmera e mostre cada detalhe. Reaja de verdade, mostre o que vem dentro e explique como usar."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Antes e depois exige cautela",
+        "html": "Em categorias de saúde e beleza, comparações dramáticas violam as regras de funcionalidade enganosa. Use só quando o resultado for real e permitido."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Reaproveite perguntas",
+        "html": "O chat e os comentários mostram as dúvidas mais frequentes. Cada uma vira um vídeo de resposta."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual formato transforma um comentário em conteúdo?",
+        "options": [
+         "Banner",
+         "Unboxing",
+         "Antes e depois",
+         "Resposta em vídeo"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Você responde a dúvida direto no vídeo."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual formato oferece prova social?",
+        "options": [
+         "Música de fundo",
+         "Depoimento",
+         "Vídeo parado",
+         "Tela preta"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Clientes confiam em clientes."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Há <b>formatos para cada produto</b>",
+         "Mostre o produto <b>em ação</b>",
+         "Antes e depois: <b>só quando for real</b>",
+         "Comentários viram <b>vídeos de resposta</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Produzir com o celular",
+      "minutes": 4,
+      "goal": "Gravar bom conteúdo com poucos recursos e manter uma rotina.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📱",
+        "title": "Você não precisa de estúdio",
+        "text": "A Academia reforça: um celular, luz natural e ideias claras bastam para criar vídeos autênticos."
+       },
+       {
+        "t": "list",
+        "title": "Kit mínimo",
+        "items": [
+         "<b>Celular</b> com a câmera limpa",
+         "<b>Luz natural</b> perto de uma janela",
+         "Fundo simples e organizado",
+         "Áudio claro, em ambiente silencioso",
+         "Um <b>tripé</b> ou apoio para ficar estável"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Rotina de gravação",
+        "items": [
+         {
+          "title": "Planeje",
+          "html": "Liste 5 ideias de vídeo para o mesmo produto."
+         },
+         {
+          "title": "Grave em lote",
+          "html": "Filme várias takes no mesmo dia, com a mesma luz."
+         },
+         {
+          "title": "Edite",
+          "html": "Corte pausas e coloque legenda curta."
+         },
+         {
+          "title": "Revise",
+          "html": "Passe pela pré-verificação."
+         },
+         {
+          "title": "Publique",
+          "html": "Distribua os posts ao longo da semana."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Dicas de autenticidade",
+        "items": [
+         "Mostre o produto real, não imagens de banco",
+         "Fale com naturalidade",
+         "Evite exageros e promessas milagrosas",
+         "Mantenha o mesmo estilo para criar reconhecimento"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Semana de conteúdo",
+        "html": "Segunda: demonstração. Terça: resposta a comentário. Quarta: unboxing. Quinta: comparação. Sexta: depoimento de cliente. Mesmo produto, cinco vídeos."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Grave em lote",
+        "html": "Filmar tudo de uma vez poupa tempo e mantém a luz igual. Depois, distribua as postagens."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Sem violar direitos",
+        "html": "Use músicas, imagens e marcas apenas quando tiver permissão. Conteúdo copiado gera violação."
+       },
+       {
+        "t": "quiz",
+        "q": "O que é suficiente para gravar bons vídeos?",
+        "options": [
+         "Celular, luz natural e ideias claras",
+         "Câmera de cinema",
+         "Estúdio profissional",
+         "Equipe de dez pessoas"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A autenticidade vale mais que produção cara."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a vantagem de gravar em lote?",
+        "options": [
+         "Economiza tempo e mantém a luz igual",
+         "Reduz o estoque da loja",
+         "Aumenta o valor do frete",
+         "Troca o SKU do produto"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Depois você distribui as postagens."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Celular + <b>luz natural</b>",
+         "Grave <b>em lote</b>",
+         "Poste <b>ao longo da semana</b>",
+         "Autenticidade vale mais que <b>produção cara</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O que é um vídeo comprável?",
+      "options": [
+       "Vídeo de 1 hora",
+       "Vídeo só de texto",
+       "Vídeo com produto da loja vinculado",
+       "Vídeo sem som"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O espectador compra direto pelo link.",
+      "topic": "Conceito"
+     },
+     {
+      "q": "Quanto tempo tem o gancho?",
+      "options": [
+       "Não existe",
+       "Os últimos 3 minutos",
+       "Os primeiros 3 segundos",
+       "10 minutos"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Ele decide se a pessoa continua.",
+      "topic": "Roteiro"
+     },
+     {
+      "q": "Qual formato transforma um comentário em conteúdo?",
+      "options": [
+       "Boleto",
+       "Resposta em vídeo",
+       "Fatura",
+       "Banner estático"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "A dúvida de um vira conteúdo para todos.",
+      "topic": "Formato"
+     },
+     {
+      "q": "Qual a última parte da estrutura do vídeo?",
+      "options": [
+       "Tela preta",
+       "Chamada para ação",
+       "Logotipo grande",
+       "Música alta"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Pede que o espectador clique no produto.",
+      "topic": "Roteiro"
+     },
+     {
+      "q": "O que basta para gravar com autenticidade?",
+      "options": [
+       "Estúdio profissional caro",
+       "Equipe de dez pessoas",
+       "Celular, luz natural e boas ideias",
+       "Câmera de cinema nova"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "A autenticidade vale mais que produção cara.",
+      "topic": "Produção"
+     }
+    ]
+   },
+   {
+    "title": "Regras de conteúdo",
+    "tagline": "Publicar sem violar",
+    "outcome": "Evitar violações comuns, usar a pré-verificação e a IA com honestidade.",
+    "lessons": [
+     {
+      "title": "Conteúdo não original, irrelevante e estático",
+      "minutes": 4,
+      "goal": "Reconhecer as três violações mais comuns de quem começa e como evitá-las.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚧",
+        "title": "As três pegadinhas dos iniciantes",
+        "text": "A pré-verificação essencial olha exatamente para três problemas. Conhecê-los evita remoção de vídeos."
+       },
+       {
+        "t": "table",
+        "title": "Violações comuns",
+        "caption": "Itens analisados pela pré-verificação essencial.",
+        "head": [
+         "Problema",
+         "O que significa"
+        ],
+        "rows": [
+         [
+          "Conteúdo não original",
+          "Material reutilizado ou duplicado"
+         ],
+         [
+          "Promoção irrelevante",
+          "Produto sem relação clara com o vídeo"
+         ],
+         [
+          "Conteúdo estático",
+          "Pouco movimento ou engajamento"
+         ]
+        ]
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Evite",
+         "tone": "bad",
+         "items": [
+          "Postar o mesmo vídeo várias vezes",
+          "Copiar o vídeo de outro criador",
+          "Vincular produto que não aparece no vídeo",
+          "Imagem parada com texto"
+         ]
+        },
+        "right": {
+         "title": "Faça",
+         "tone": "good",
+         "items": [
+          "Gravar versões novas do vídeo",
+          "Criar com sua própria voz e cenas",
+          "Mostrar o produto vinculado em uso",
+          "Usar movimento, demonstração e reações"
+         ]
+        }
+       },
+       {
+        "t": "list",
+        "title": "Como criar conteúdo original",
+        "items": [
+         "Grave <b>cenas próprias</b> do produto",
+         "Dê seu <b>ponto de vista</b>",
+         "Varie ângulos, roteiros e formatos",
+         "Use depoimentos reais"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Promoção irrelevante",
+        "html": "Um vídeo de maquiagem que vincula uma capa de celular. O produto não tem relação com o conteúdo, e o vídeo pode ser removido."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Violações reduzem alcance",
+        "html": "Conteúdo infrator pode ser removido, e a conta pode sofrer restrições de publicação ou outras penalidades."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Estude os bons exemplos",
+        "html": "Veja vídeos de sucesso na sua categoria e observe o que gera comentários positivos. Aprenda o padrão, não copie o vídeo."
+       },
+       {
+        "t": "quiz",
+        "q": "O que é conteúdo não original?",
+        "options": [
+         "Vídeo curto",
+         "Material reutilizado ou duplicado",
+         "Vídeo com legenda",
+         "Vídeo gravado por você"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Postar vídeos copiados ou repetidos é violação."
+       },
+       {
+        "t": "quiz",
+        "q": "O que é promoção irrelevante?",
+        "options": [
+         "Produto sem relação com o vídeo",
+         "Produto em promoção",
+         "Produto caro",
+         "Produto novo"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O produto vinculado precisa aparecer e fazer sentido."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Três problemas: <b>não original, irrelevante, estático</b>",
+         "Crie <b>cenas próprias</b>",
+         "O produto vinculado deve <b>aparecer no vídeo</b>",
+         "Use <b>movimento e demonstração</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Pré-verificação de vídeo",
+      "minutes": 4,
+      "goal": "Usar a ferramenta gratuita para testar o vídeo antes de publicar.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔎",
+        "title": "Corrija antes de postar",
+        "text": "A pré-verificação aponta riscos de política em minutos. É melhor ajustar antes do que receber uma notificação depois."
+       },
+       {
+        "t": "list",
+        "title": "O que a ferramenta analisa",
+        "items": [
+         "<b>Visual:</b> texto na tela, legendas, imagens, produto e rótulos",
+         "<b>Áudio:</b> música, efeitos, voz e som de fundo",
+         "<b>Link do produto</b>",
+         "<b>Descrição:</b> texto, hashtags e emojis"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Fatos rápidos",
+        "caption": "Cota e resultado variam por desempenho.",
+        "head": [
+         "Item",
+         "Detalhe"
+        ],
+        "rows": [
+         [
+          "Custo",
+          "Gratuita"
+         ],
+         [
+          "Cota diária",
+          "Pelo menos 2; até 10 conforme o desempenho"
+         ],
+         [
+          "Tempo do resultado",
+          "Em geral até 10 minutos"
+         ],
+         [
+          "Garantia",
+          "Não garante ausência de violações"
+         ]
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Como acessar no Seller Center",
+        "items": [
+         {
+          "title": "LIVE e Vídeo",
+          "html": "Abra a aba LIVE e Vídeo na Central ou no app."
+         },
+         {
+          "title": "Criar conteúdo",
+          "html": "Selecione Criar conteúdo."
+         },
+         {
+          "title": "Verificação de qualidade",
+          "html": "Carregue o vídeo e vincule o produto."
+         },
+         {
+          "title": "Resultado",
+          "html": "Veja o relatório; se estiver ok, publique."
+         }
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Como usar o resultado",
+        "html": "Se houver problema, abra <b>Ver resultado</b> para ver o risco e as sugestões. O link “Saiba mais” leva à política. Quanto mais vendas você gerar, mais verificações e recursos desbloqueia."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não é salvo-conduto",
+        "html": "A ferramenta checa problemas comuns, mas <b>não detecta tudo</b>. Conhecer as políticas continua sendo a melhor proteção."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Hábito de revisão",
+        "html": "Passe todo vídeo por ela antes de postar, principalmente os que usam novas ideias, tendências ou categorias sensíveis."
+       },
+       {
+        "t": "quiz",
+        "q": "A pré-verificação garante que não haverá violação?",
+        "options": [
+         "Sim, só para vídeos curtos",
+         "Não, ela só reduz o risco",
+         "Sim, para afiliados",
+         "Sim, sempre"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Ela não detecta todas as violações."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantas pré-verificações por dia, no mínimo?",
+        "options": [
+         "Cem",
+         "Mil",
+         "Duas",
+         "Nenhuma"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O máximo é de dez, conforme o desempenho."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Ferramenta <b>gratuita</b> na Central do vendedor",
+         "Mínimo de <b>2 verificações por dia</b>",
+         "Resultado em até <b>10 minutos</b>",
+         "<b>Não garante</b> ausência de violações"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Alegações enganosas e uso de IA",
+      "minutes": 4,
+      "goal": "Evitar promessas irreais, antes e depois proibidos e usar IA com transparência.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⚠️",
+        "title": "Prometeu demais, perdeu o vídeo",
+        "text": "Alegações exageradas e conteúdo de IA mal usado são motivos frequentes de remoção. A regra geral é ser honesto."
+       },
+       {
+        "t": "list",
+        "title": "Funcionalidade e efeito enganosos",
+        "items": [
+         "Alegações sem comprovação (“cura acne em 3 dias”)",
+         "Antes e depois com mudanças drásticas",
+         "Resultados permanentes de beleza",
+         "Termos de cura, tratamento ou prevenção de doenças",
+         "Promessa de resultado em prazo fixo"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Alegações que podem ser aceitas",
+        "items": [
+         "Efeito de <b>ingrediente</b> conhecido, não do produto",
+         "Alegação <b>impressa na embalagem oficial</b>",
+         "Adequação a um tipo de pele ou público",
+         "Variação de tom em maquiagem",
+         "Creme dental que ajuda a prevenir cáries"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Reformulando",
+        "html": "Em vez de “queima gordura em 7 dias”, mostre o produto, o modo de uso e informações da embalagem. Evite prometer resultado corporal."
+       },
+       {
+        "t": "p",
+        "title": "Conteúdo gerado por IA",
+        "html": "A regra é <b>transparência e honestidade</b>. É proibido usar IA para enganar consumidores, se passar por outras pessoas, deturpar produtos ou violar propriedade intelectual. Violações podem levar à remoção do conteúdo, restrições na conta ou banimento permanente. Confira na Academia a política completa e a forma de divulgar o uso de IA."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Produto real, resultado real",
+        "html": "Imagens ou vídeos de IA que mostrem o produto diferente do real são deturpação e causam devolução e punição."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Quando duvidar, tire a promessa",
+        "html": "Se uma frase soa como milagre, retire. O vídeo vende pela demonstração, não pelo exagero."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual frase é uma alegação proibida?",
+        "options": [
+         "“Tamanhos P ao GG”",
+         "“Contém vitamina C”",
+         "“Adequado para pele sensível”",
+         "“Cura acne em 3 dias”"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Promessa de cura e prazo fixo viola a regra."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual uso de IA é proibido?",
+        "options": [
+         "Traduzir o roteiro para ler",
+         "Sugerir ideias de gancho",
+         "Ajustar a legenda do vídeo",
+         "Enganar consumidores ou se passar por outros"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "A IA não pode deturpar o produto nem violar PI."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Evite <b>promessas de cura</b> e prazo fixo",
+         "Aceitável: ingrediente, embalagem, adequação",
+         "IA: <b>transparência</b> e sem enganar",
+         "Violações: <b>remoção, restrição ou banimento</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Conteúdo não original é:",
+      "options": [
+       "Material reutilizado ou duplicado",
+       "Vídeo com legenda",
+       "Vídeo gravado por você",
+       "Vídeo com demonstração"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "É uma das violações mais comuns.",
+      "topic": "Violação"
+     },
+     {
+      "q": "Promoção irrelevante é:",
+      "options": [
+       "Produto sem relação clara com o vídeo",
+       "Produto recém-lançado",
+       "Produto em oferta no app",
+       "Produto de alto luxo"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O produto vinculado precisa aparecer no vídeo.",
+      "topic": "Violação"
+     },
+     {
+      "q": "A pré-verificação oferece, no mínimo:",
+      "options": [
+       "Mil por dia",
+       "Uma por ano",
+       "Nenhuma",
+       "Duas verificações por dia"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O máximo é de dez, conforme o desempenho.",
+      "topic": "Ferramenta"
+     },
+     {
+      "q": "Qual afirmação é proibida?",
+      "options": [
+       "“Tamanho M”",
+       "“Cura acne em 3 dias”",
+       "“Pele sensível”",
+       "“Contém vitamina C”"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Promessa de cura com prazo fixo é enganosa.",
+      "topic": "Alegação"
+     },
+     {
+      "q": "Sobre IA, é proibido:",
+      "options": [
+       "Enganar consumidores ou se passar por outros",
+       "Cortar silêncios do vídeo",
+       "Traduzir a legenda do vídeo",
+       "Ajustar a cor do vídeo"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "A IA exige transparência e honestidade.",
+      "topic": "IA"
+     }
+    ]
+   },
+   {
+    "title": "Medir e crescer",
+    "tagline": "Dados e funil",
+    "outcome": "Ler a atribuição, as métricas de vídeo e organizar testes de crescimento.",
+    "lessons": [
+     {
+      "title": "De onde vem o GMV: atribuição",
+      "minutes": 4,
+      "goal": "Entender como o TikTok Shop atribui a venda a LIVE, vídeo ou cartão de produto.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧭",
+        "title": "Quem fez a venda?",
+        "text": "Para decidir onde investir, é preciso saber como o GMV é dividido. A regra é simples e vale para toda a loja."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "100% do GMV = LIVE + Vídeo + Cartão de produto",
+        "sub": "Cada pedido é atribuído a um único tipo de conteúdo."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Último conteúdo antes do checkout",
+        "html": "O GMV é sempre atribuído ao <b>último tipo de conteúdo</b> com o qual o cliente interagiu antes de finalizar a compra, sem importar prazos ou mudança de SKU."
+       },
+       {
+        "t": "table",
+        "title": "Cenários",
+        "caption": "Segundo o guia de atribuição do GMV.",
+        "head": [
+         "Situação",
+         "Atribuição"
+        ],
+        "rows": [
+         [
+          "Comprou pelo cartão de produto nas recomendações",
+          "Cartão de produto"
+         ],
+         [
+          "Comprou durante a LIVE",
+          "LIVE"
+         ],
+         [
+          "Assistiu ao vídeo e comprou direto",
+          "Vídeo"
+         ],
+         [
+          "Adicionou pelo vídeo, mas trocou a cor no carrinho",
+          "Cartão de produto"
+         ],
+         [
+          "Adicionou na LIVE e comprou 14 dias depois",
+          "LIVE"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Direto e indireto",
+        "html": "O GMV <b>direto</b> é a compra feita enquanto o cliente interage com o conteúdo. O <b>indireto</b> é a compra posterior influenciada por ele, por exemplo, quando o cliente clica no produto no vídeo e dentro de 1 dia busca e compra. Há também a divisão por <b>origem do pedido</b>: afiliado ou vendedor."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Cartão de produto também importa",
+        "html": "Cartão de produto colabora muito com o GMV, mas LIVE e vídeo atraem o público. Trabalhe os três."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Atribuição não muda seu ganho",
+        "html": "A mudança de lógica não altera a comissão nem quanto dinheiro você recebe. Muda apenas como o GMV é dividido nos relatórios."
+       },
+       {
+        "t": "quiz",
+        "q": "A quem o GMV é atribuído?",
+        "options": [
+         "Ao último tipo de conteúdo antes do checkout",
+         "À loja de um concorrente",
+         "Ao primeiro vídeo que foi visto",
+         "Ao conteúdo com mais custo"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Prazos e mudanças de SKU não alteram a regra."
+       },
+       {
+        "t": "quiz",
+        "q": "O que é GMV indireto?",
+        "options": [
+         "Compra posterior influenciada pelo conteúdo",
+         "Compra feita por funcionário",
+         "Pedido que foi cancelado",
+         "Compra com frete grátis"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Exemplo: clica no vídeo e compra no dia seguinte."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "GMV = <b>LIVE + vídeo + cartão</b>",
+         "Vale o <b>último conteúdo</b> antes da compra",
+         "Há GMV <b>direto e indireto</b>",
+         "A lógica <b>não muda</b> seu ganho"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Medir o desempenho do vídeo",
+      "minutes": 4,
+      "goal": "Usar a Bússola de dados para descobrir quais vídeos vendem e por quê.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📊",
+        "title": "Número bom é número que gera ação",
+        "text": "A Bússola de dados mostra o que cada vídeo entregou. O truque é ler o funil: quem viu, quem clicou, quem comprou."
+       },
+       {
+        "t": "steps",
+        "title": "Onde ver",
+        "items": [
+         {
+          "title": "Bússola de dados",
+          "html": "Abra a Bússola na Central do vendedor."
+         },
+         {
+          "title": "LIVE e vídeo",
+          "html": "Escolha Transmissão ao vivo e vídeo."
+         },
+         {
+          "title": "Vídeo",
+          "html": "Abra Desempenho dos vídeos ou Detalhes do vídeo."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Sete dados principais",
+        "items": [
+         "GMV",
+         "Pedidos de SKU",
+         "Compradores",
+         "Taxa de cliques (CTR)",
+         "Cliques no produto",
+         "Impressões do produto",
+         "Taxa de clique para pedido (CTOR)"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Como ler o funil",
+        "caption": "CTOR = pedidos de SKU ÷ cliques no produto.",
+        "head": [
+         "Métrica",
+         "Pergunta que responde"
+        ],
+        "rows": [
+         [
+          "Impressões do produto",
+          "Quantas vezes o produto apareceu?"
+         ],
+         [
+          "CTR",
+          "Quem viu o produto clicou?"
+         ],
+         [
+          "Taxa de adições ao carrinho",
+          "Quem clicou colocou no carrinho?"
+         ],
+         [
+          "CTOR",
+          "Quem clicou fez o pedido?"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Detalhes do vídeo",
+        "items": [
+         "Abas <b>Auto-operado</b> e <b>Afiliada</b>",
+         "Informações básicas: título, hashtag, música e data",
+         "GMV por produto e <b>análise de conteúdo</b>",
+         "Perfil do espectador: idade, sexo e região",
+         "Quatro vídeos mais populares por GMV, conversão ou engajamento"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Diagnóstico",
+        "html": "Muitas impressões e CTR baixo: o gancho ou a miniatura não chama. Bom CTR, mas CTOR baixo: o preço, as avaliações ou a página do produto travam a compra."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Compare tráfego pago e orgânico",
+        "html": "A tela mostra de onde veio o público. Se a maior parte é paga e o orgânico é baixo, o conteúdo precisa de mais gancho."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual métrica indica quem clicou e fez o pedido?",
+        "options": [
+         "Impressões",
+         "CTOR",
+         "Seguidores",
+         "Músicas"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "É a taxa de conversão de cliques em pedidos de SKU."
+       },
+       {
+        "t": "quiz",
+        "q": "Muitas impressões e poucos cliques indicam:",
+        "options": [
+         "Preço de frete",
+         "Estoque alto",
+         "Falta de CNPJ",
+         "Gancho ou apresentação fracos"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O produto aparece, mas não chama atenção."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Bússola de dados > <b>Vídeo</b>",
+         "<b>CTR</b> e <b>CTOR</b> contam histórias diferentes",
+         "Veja perfil do <b>espectador</b>",
+         "Compare <b>pago e orgânico</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Método de Funil e plano de 7 dias",
+      "minutes": 4,
+      "goal": "Organizar o crescimento em quatro pilares e testar uma coisa por vez.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🪜",
+        "title": "Funil: onde está o gargalo?",
+        "text": "A Academia propõe o Método de Funil: em vez de mexer em tudo, descubra em qual etapa a loja perde mais gente."
+       },
+       {
+        "t": "table",
+        "title": "Os quatro pilares",
+        "caption": "Webinar “Como aumentar suas vendas com o Método de Funil”.",
+        "head": [
+         "Pilar",
+         "Ferramentas"
+        ],
+        "rows": [
+         [
+          "Exposição",
+          "Vídeos curtos, LIVEs e afiliados"
+         ],
+         [
+          "Cliques",
+          "Testes A/B e ganchos visuais"
+         ],
+         [
+          "Conversão",
+          "Método das 3 telas e promoções"
+         ],
+         [
+          "Retenção",
+          "Venda cruzada e fidelização"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Perguntas por pilar",
+        "items": [
+         "<b>Exposição:</b> o produto aparece o suficiente?",
+         "<b>Cliques:</b> o gancho e a imagem despertam curiosidade?",
+         "<b>Conversão:</b> preço, página e promoção convencem?",
+         "<b>Retenção:</b> o cliente volta e compra outro item?"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Plano de 7 dias",
+        "items": [
+         {
+          "title": "Dia 1",
+          "html": "Meça impressões, CTR e CTOR dos últimos vídeos."
+         },
+         {
+          "title": "Dia 2",
+          "html": "Ache a etapa mais fraca."
+         },
+         {
+          "title": "Dias 3 a 5",
+          "html": "Teste uma mudança (por exemplo, dois ganchos)."
+         },
+         {
+          "title": "Dia 6",
+          "html": "Compare os números."
+         },
+         {
+          "title": "Dia 7",
+          "html": "Mantenha o que funcionou e planeje o próximo teste."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Teste A/B",
+        "html": "Dois vídeos do mesmo produto: um começa com o problema, outro com o resultado. Compare CTR e retenção. O vencedor vira modelo para os próximos."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Mude uma variável por vez",
+        "html": "Se trocar gancho, preço e legenda ao mesmo tempo, você não sabe o que fez a diferença."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não force conversão com exagero",
+        "html": "Resultado fraco não justifica promessa falsa. Corrija o gargalo com demonstração, prova social e promoção real."
+       },
+       {
+        "t": "quiz",
+        "q": "Quais são os quatro pilares do funil?",
+        "options": [
+         "Exposição, cliques, conversão, retenção",
+         "Frete, taxa, imposto, nota",
+         "Compra, venda, troca, reembolso",
+         "Cupom, kit, brinde, frete"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Cada pilar tem ferramentas próprias."
+       },
+       {
+        "t": "quiz",
+        "q": "Por que mudar uma variável por vez?",
+        "options": [
+         "Para saber o que gerou o resultado",
+         "Porque a plataforma exige",
+         "Para aumentar o frete",
+         "Para gastar menos tempo"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Testes A/B só ensinam quando comparam uma diferença."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Funil: <b>exposição, cliques, conversão, retenção</b>",
+         "Ache o <b>gargalo</b> antes de mudar",
+         "Teste <b>uma variável</b> por vez",
+         "Plano de <b>7 dias</b> com medição"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O GMV é atribuído ao:",
+      "options": [
+       "Primeiro vídeo que foi visto",
+       "Último tipo de conteúdo antes do checkout",
+       "Cupom mais caro da loja",
+       "Vendedor mais antigo da loja"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Vale para LIVE, vídeo e cartão de produto.",
+      "topic": "GMV"
+     },
+     {
+      "q": "CTOR mede:",
+      "options": [
+       "Cliques no produto que viram pedido",
+       "Frete cobrado",
+       "Impressões do vídeo",
+       "Seguidores novos"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Pedido de SKU ÷ cliques no produto.",
+      "topic": "Métrica"
+     },
+     {
+      "q": "GMV indireto é:",
+      "options": [
+       "Compra posterior influenciada pelo conteúdo",
+       "Compra que foi cancelada",
+       "Compra com frete grátis",
+       "Compra feita só para teste"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Ex.: compra no dia seguinte.",
+      "topic": "GMV"
+     },
+     {
+      "q": "O pilar “Cliques” usa:",
+      "options": [
+       "Venda cruzada",
+       "Testes A/B e ganchos visuais",
+       "Fretes",
+       "Faturas"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Conversão usa método das 3 telas e promoções.",
+      "topic": "Funil"
+     },
+     {
+      "q": "Por que testar uma variável por vez?",
+      "options": [
+       "Para saber o que causou o resultado",
+       "Para gastar mais",
+       "Para evitar o chat",
+       "Para pagar menos"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Isso torna o teste comparável.",
+      "topic": "Teste"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Um vídeo comprável tem:",
+    "options": [
+     "Preço escondido",
+     "Produto da loja vinculado",
+     "Nenhum link",
+     "Apenas uma música"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "O link leva ao cartão do produto.",
+    "topic": "Conceito"
+   },
+   {
+    "q": "Quem pode publicar vídeos compráveis?",
+    "options": [
+     "Ninguém pode publicar",
+     "Conta da loja e criadores afiliados",
+     "Somente agências de anúncios",
+     "Somente clientes finais"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Afiliados vendem por comissão.",
+    "topic": "Conceito"
+   },
+   {
+    "q": "A estrutura começa com:",
+    "options": [
+     "Gancho",
+     "Preço do frete",
+     "CTA",
+     "Logotipo"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Nos primeiros 3 segundos.",
+    "topic": "Roteiro"
+   },
+   {
+    "q": "Qual formato mostra prova social?",
+    "options": [
+     "Depoimento de cliente",
+     "Tela estática",
+     "Vídeo sem produto",
+     "Anúncio sem som"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Clientes confiam em clientes.",
+    "topic": "Formato"
+   },
+   {
+    "q": "Qual vantagem de gravar em lote?",
+    "options": [
+     "Reduz estoque",
+     "Aumenta imposto",
+     "Troca de CNPJ",
+     "Economiza tempo e mantém a luz"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Depois, distribua as postagens.",
+    "topic": "Produção"
+   },
+   {
+    "q": "Qual NÃO é uma violação comum de iniciantes?",
+    "options": [
+     "Conteúdo não original",
+     "Vídeo com demonstração do produto",
+     "Promoção irrelevante",
+     "Conteúdo estático"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Demonstrar o produto é recomendado.",
+    "topic": "Violação"
+   },
+   {
+    "q": "A pré-verificação traz resultado em:",
+    "options": [
+     "10 meses",
+     "Cerca de 10 minutos",
+     "1 ano",
+     "10 dias"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Em geral, até esse prazo.",
+    "topic": "Ferramenta"
+   },
+   {
+    "q": "Ela garante ausência de violações?",
+    "options": [
+     "Garante sempre",
+     "Garante para afiliados",
+     "Não garante",
+     "Garante em 24 h"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Só detecta problemas comuns.",
+    "topic": "Ferramenta"
+   },
+   {
+    "q": "Alegação aceitável:",
+    "options": [
+     "Cura queda de cabelo",
+     "Elimina rugas para sempre",
+     "Adequado para pele sensível",
+     "Queima gordura"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Se factual e comprovada.",
+    "topic": "Alegação"
+   },
+   {
+    "q": "Antes e depois são aceitáveis quando:",
+    "options": [
+     "Prometem prazo",
+     "Mostram mudança drástica",
+     "Não têm prova",
+     "Aparecem na embalagem oficial"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Imagens da embalagem são exceção.",
+    "topic": "Alegação"
+   },
+   {
+    "q": "A IA exige:",
+    "options": [
+     "Imitar marcas",
+     "Esconder o uso",
+     "Transparência e honestidade",
+     "Copiar rostos"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Violações geram remoção ou banimento.",
+    "topic": "IA"
+   },
+   {
+    "q": "100% do GMV é:",
+    "options": [
+     "LIVE + vídeo + cartão de produto",
+     "SPS + AHR da conta",
+     "Frete + taxa de serviço",
+     "Cupom + kit promocional"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Cada tipo é atribuído ao último contato.",
+    "topic": "GMV"
+   },
+   {
+    "q": "Cliente adiciona na LIVE e compra 14 dias depois. O GMV vai para:",
+    "options": [
+     "LIVE",
+     "Ninguém",
+     "Cartão sem origem",
+     "Vídeo"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Prazos não mudam a regra.",
+    "topic": "GMV"
+   },
+   {
+    "q": "Qual métrica mostra cliques que viraram pedido?",
+    "options": [
+     "Hashtags",
+     "Músicas",
+     "CTOR",
+     "Seguidores"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Pedidos de SKU ÷ cliques.",
+    "topic": "Métrica"
+   },
+   {
+    "q": "Qual é o primeiro passo do Método de Funil?",
+    "options": [
+     "Reduzir o estoque",
+     "Achar a etapa mais fraca",
+     "Mudar tudo ao mesmo tempo",
+     "Trocar de loja"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Meça antes de mudar.",
+    "topic": "Funil"
+   },
+   {
+    "q": "O pilar “Retenção” usa:",
+    "options": [
+     "Só frete",
+     "Só anúncios",
+     "Só taxas",
+     "Venda cruzada e fidelização"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Conversão usa promoções e método das 3 telas.",
+    "topic": "Funil"
+   }
+  ]
+ }
+}

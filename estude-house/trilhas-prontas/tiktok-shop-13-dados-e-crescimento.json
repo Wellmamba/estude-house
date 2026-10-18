@@ -1,0 +1,1592 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 13: dados e crescimento",
+  "tag": "TikTok Shop",
+  "tagline": "Bússola de dados, oportunidades de produtos, missões de crescimento e Loja Estrela.",
+  "subtitle": "Leitura da Bússola de dados, análise de produtos e tráfego, oportunidades de produtos, seleção de produtos, Centro de crescimento e Loja Estrela. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Bússola de dados",
+    "tagline": "Leitura dos números",
+    "outcome": "Entender painéis de vendas, produtos, tráfego e pós-compra.",
+    "lessons": [
+     {
+      "title": "Bússola de dados: visão geral",
+      "minutes": 4,
+      "goal": "Ler o painel principal e saber onde aprofundar cada número.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧭",
+        "title": "O painel que resume sua loja",
+        "text": "A Visão geral da Bússola de dados mostra os números importantes da loja num só lugar e aponta para as análises detalhadas de LIVE, vídeo e cartão do produto."
+       },
+       {
+        "t": "p",
+        "title": "Onde fica",
+        "html": "No Seller Center, abra <b>Bússola de dados > Visão geral</b>. A guia principal, Dados de negócios, traz dois grupos de métricas. Você escolhe o período (últimos 7 dias, 28 dias, dia, semana, mês ou personalizado), vê o gráfico de tendência e exporta o resultado."
+       },
+       {
+        "t": "table",
+        "title": "Grupos de métricas",
+        "caption": "Escolha ao menos uma métrica secundária para ver a tendência.",
+        "head": [
+         "Grupo",
+         "O que mostra"
+        ],
+        "rows": [
+         [
+          "Vendas",
+          "GMV, itens vendidos, compradores, reembolsos, pedidos de SKU e pedidos"
+         ],
+         [
+          "Tráfego",
+          "Visualizações de página, visitantes e taxa de conversão"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Acompanhamento do dia",
+        "items": [
+         "GMV, itens vendidos, visitantes e compradores em <b>tempo real</b>",
+         "Botão <b>Tendências</b> abre o gráfico das quatro métricas",
+         "O GMV total inclui <b>LIVE, vídeos e cartão do produto</b>"
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "De onde vêm as vendas",
+        "caption": "Cada bloco tem o atalho Visualizar análise.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "🔴",
+          "title": "LIVE",
+          "text": "GMV das contas auto-operadas."
+         },
+         {
+          "icon": "🎬",
+          "title": "Vídeos",
+          "text": "GMV dos vídeos auto-operados."
+         },
+         {
+          "icon": "🛍️",
+          "title": "Cartão do produto",
+          "text": "Tráfego da loja e de afiliados."
+         },
+         {
+          "icon": "🤝",
+          "title": "Marketing",
+          "text": "Afiliados, ferramentas de promoção e campanhas."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "GMV não é dinheiro na conta",
+        "html": "O GMV da Bússola mostra o desempenho de vendas e <b>inclui</b> devoluções, reembolsos e cancelamentos. Para o valor que você recebe, consulte a página <b>Finanças</b>."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Dados em tempo real",
+        "html": "Para ver LIVEs e vídeos em tempo real, use a página de transmissão LIVE e vídeo. O GMV de afiliados fica no Centro de Afiliados > Análise."
+       },
+       {
+        "t": "quiz",
+        "q": "O GMV da Bússola de dados é igual ao dinheiro que entra na conta?",
+        "options": [
+         "Não, ele inclui devoluções, reembolsos e cancelamentos",
+         "Sim, mas somente nos fins de semana e feriados",
+         "Sim, é exatamente o valor já liquidado na conta",
+         "Não, ele só conta os pedidos feitos por afiliados"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Para finanças use a página Finanças."
+       },
+       {
+        "t": "quiz",
+        "q": "Quais períodos prontos a Visão geral oferece?",
+        "options": [
+         "Somente a última hora do dia corrente",
+         "Somente o mês atual completo, sem opções",
+         "Últimos 7 dias, 28 dias, dia, semana, mês ou personalizado",
+         "Somente o ano fiscal inteiro, sem recortes"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O período também pode ser personalizado."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Bússola de dados > Visão geral</b>",
+         "GMV = <b>LIVE + vídeos + cartão do produto</b>",
+         "GMV ≠ <b>dinheiro recebido</b>",
+         "Atalhos levam à <b>análise detalhada</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Análise de produtos",
+      "minutes": 4,
+      "goal": "Descobrir quais produtos, SKUs, conteúdos e criadores puxam a venda.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📦",
+        "title": "Cada produto conta uma história",
+        "text": "A Análise de produto reúne vendas, tráfego, estoque, preço e avaliações de cada item, e mostra os vídeos e criadores que mais o vendem."
+       },
+       {
+        "t": "p",
+        "title": "Como abrir",
+        "html": "Vá em <b>Bússola de dados > Produto > Detalhes do produto</b>. Alterne entre <b>produto</b> e <b>SKU</b>, busque pelo nome ou ID e filtre por status ativo ou inativo. O botão Métricas muda as colunas da tabela."
+       },
+       {
+        "t": "table",
+        "title": "Módulos da página de detalhes",
+        "caption": "Os módulos mudam conforme o filtro de fonte de dados.",
+        "head": [
+         "Módulo",
+         "Para que serve"
+        ],
+        "rows": [
+         [
+          "Vendas",
+          "GMV, pedidos e unidades vendidas"
+         ],
+         [
+          "Tráfego da ShopTab",
+          "Funil de impressões até compradores"
+         ],
+         [
+          "Visão geral do SKU",
+          "Desempenho de cada variação"
+         ],
+         [
+          "Conteúdo e criador",
+          "Vídeos, LIVEs e criadores que mais vendem o produto"
+         ],
+         [
+          "Cancelados e reembolsados",
+          "Volume e possíveis motivos"
+         ],
+         [
+          "Estoque",
+          "Dias estimados de estoque e sugestão para 30 dias"
+         ],
+         [
+          "Preços",
+          "Preço nos últimos 90 dias × unidades por dia"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Como usar o módulo de preços",
+        "html": "O produto vendeu em média 12 unidades por dia a R$ 80 e 20 unidades a R$ 70. Com essa leitura, você testa se o preço menor compensa a margem menor."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Replique o que funciona",
+        "html": "Veja os vídeos e LIVEs que mais venderam o produto. Repita o estilo em outros itens e ofereça amostras aos criadores que já vendem bem."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Cancelamento alto merece investigação",
+        "html": "Se o módulo mostra muitos cancelamentos ou reembolsos num período, descubra o motivo (estoque, prazo, descrição) antes de investir em tráfego."
+       },
+       {
+        "t": "quiz",
+        "q": "O módulo de estoque ajuda a decidir:",
+        "options": [
+         "Qual cor de fundo usar nos vídeos",
+         "Quantos seguidores comprar para a conta",
+         "Qual banco usar para fazer o saque",
+         "Quanto reabastecer para os próximos 30 dias"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Ele mostra os dias de estoque estimados."
+       },
+       {
+        "t": "quiz",
+        "q": "O módulo de preços compara:",
+        "options": [
+         "Preços dos concorrentes somente de hoje",
+         "Preços dos últimos 90 dias e unidades vendidas por dia",
+         "Cupons usados por outros vendedores",
+         "Fretes cobrados por todos os correios"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Ajuda a achar o preço que sustenta a venda."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Bússola > Produto > Detalhes do produto</b>",
+         "Alterne <b>produto ↔ SKU</b>",
+         "Veja <b>conteúdo e criadores</b> que vendem",
+         "Use estoque e preço para <b>decidir</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Funil e tráfego de produtos",
+      "minutes": 4,
+      "goal": "Ler impressões, cliques, CTR e CTOR para achar gargalos.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔍",
+        "title": "De onde vem o tráfego e onde ele se perde",
+        "text": "A Análise de tráfego de produtos mostra o funil de cada item e compara os canais para achar suas “minas de ouro de tráfego”."
+       },
+       {
+        "t": "p",
+        "title": "Três páginas",
+        "html": "A atualização de 2026 reorganizou o módulo em três páginas: <b>Lista de produtos</b>, <b>Detalhes</b> e <b>Tráfego de produtos</b>. O caminho é Bússola de dados > Análise de produtos > Detalhes/tráfego de produtos."
+       },
+       {
+        "t": "list",
+        "title": "Novidades na lista",
+        "items": [
+         "Ranking de produtos por <b>formato de conteúdo</b>",
+         "<b>Faixa de GMV</b> de cada produto",
+         "Indicação de <b>correspondência com oportunidades</b>",
+         "Código QR para abrir o produto no app"
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "Funil do produto",
+        "caption": "CTR = cliques ÷ impressões; CTOR = pedidos de SKU ÷ cliques.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "👀",
+          "title": "Impressões",
+          "text": "Quantas vezes o produto apareceu."
+         },
+         {
+          "icon": "👆",
+          "title": "Cliques",
+          "text": "Intenção de compra real."
+         },
+         {
+          "icon": "🧾",
+          "title": "Pedidos de SKU",
+          "text": "Compras concluídas."
+         },
+         {
+          "icon": "📈",
+          "title": "CTR e CTOR",
+          "text": "Taxas entre as etapas."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Métricas renomeadas",
+        "caption": "Vendas brutas saiu; use o GMV.",
+        "head": [
+         "Antes",
+         "Agora"
+        ],
+        "rows": [
+         [
+          "Visualizações de página",
+          "Cliques no produto"
+         ],
+         [
+          "Taxa de conversão",
+          "CTOR (cliques em pedidos de SKU)"
+         ],
+         [
+          "Clientes diários",
+          "Clientes estimados"
+         ],
+         [
+          "Taxa de conversão de carrinho",
+          "Contagem e taxa de adições ao carrinho"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Fontes de conteúdo",
+        "html": "O filtro de tipo de conteúdo separa <b>LIVE autoral</b>, <b>vídeo autoral</b> e <b>conteúdo de afiliados</b>. Em cada um você abre o diagnóstico da LIVE, os detalhes do vídeo ou a página do criador."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Diagnosticando um gargalo",
+        "html": "Muitas impressões e poucos cliques indicam imagem ou título fracos. Muitos cliques e poucos pedidos indicam problema de preço, avaliação ou página do produto."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Compare formatos",
+        "html": "Veja qual formato converte melhor cada produto (LIVE, vídeo ou cartão) e concentre esforço nele."
+       },
+       {
+        "t": "quiz",
+        "q": "CTOR é a taxa entre:",
+        "options": [
+         "Curtidas e comentários",
+         "Cliques no produto e pedidos de SKU",
+         "Reembolsos e envios",
+         "Impressões e seguidores"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Foi o novo nome da antiga taxa de conversão."
+       },
+       {
+        "t": "quiz",
+        "q": "Muitas impressões e poucos cliques sugerem:",
+        "options": [
+         "Falta de estoque no armazém",
+         "Problema na nota fiscal",
+         "Imagem ou título pouco atraentes",
+         "Saldo negativo na conta"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O produto aparece, mas não chama atenção."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Funil: <b>impressões → cliques → pedidos</b>",
+         "CTR e <b>CTOR</b>",
+         "Filtre por <b>LIVE, vídeo ou afiliados</b>",
+         "Ache o <b>gargalo</b> antes de gastar mais"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Desempenho de vídeo, cartão do produto e página da loja",
+      "minutes": 4,
+      "goal": "Medir cada canal de venda e saber o que melhorar.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📺",
+        "title": "Três lugares onde o cliente decide",
+        "text": "Vídeo, cartão do produto e página da loja têm painéis próprios na Bússola de dados."
+       },
+       {
+        "t": "p",
+        "title": "Desempenho de vídeo",
+        "html": "Em <b>Bússola de dados > Transmissão ao vivo e vídeo > Vídeo</b>, veja os sete dados principais: GMV, pedidos de SKU, compradores, taxa de cliques, cliques no produto, impressões do produto e taxa de clique para pedidos. Os quatro vídeos mais populares podem ser ordenados por GMV, conversão ou engajamento."
+       },
+       {
+        "t": "list",
+        "title": "Detalhes de um vídeo",
+        "items": [
+         "Informações básicas: título, hashtag, música e horário de publicação",
+         "GMV por produto dentro do vídeo",
+         "Análise do conteúdo com tendências",
+         "Perfil dos visualizadores e dos novos seguidores"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Cartão do produto",
+        "html": "O cartão aparece quando o cliente chega ao produto por <b>pesquisa, recomendação, aba Loja, loja ou mostruário</b>. A receita de canais que não são LIVE nem vídeo conta como receita do cartão. O painel mostra visualizadores, compradores, GMV e fontes de tráfego."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Melhore o cartão",
+        "html": "Imagem atraente, título claro, descrição simples, preço bem pensado e cupons aumentam o tráfego e a conversão do cartão."
+       },
+       {
+        "t": "p",
+        "title": "Página da loja",
+        "html": "A loja tem cinco páginas: <b>Início, Produto, Categoria, Campanha e Perfil</b>. Os canais de tráfego incluem recomendação, pesquisa, central de pedidos, perfil de LIVE e vídeo, e mensagem de IM."
+       },
+       {
+        "t": "table",
+        "title": "Indicadores da página da loja",
+        "caption": "Compare com o período anterior.",
+        "head": [
+         "Tipo",
+         "Exemplos"
+        ],
+        "rows": [
+         [
+          "Vendas",
+          "GMV, itens vendidos, compradores"
+         ],
+         [
+          "Tráfego",
+          "Visitantes, visualizações de página"
+         ],
+         [
+          "Conversão",
+          "Visualização para cliques e clique para pagamento"
+         ]
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "Qual conteúdo gera a receita do cartão do produto?",
+        "options": [
+         "Somente cupons de desconto no frete",
+         "Canais que não são LIVE nem vídeo",
+         "Somente vídeos publicados por afiliados",
+         "Somente mensagens enviadas pelo chat de IM"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Pesquisa, aba Loja e recomendação entram aqui."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantas páginas a loja tem nessa análise?",
+        "options": [
+         "Cinco: início, produto, categoria, campanha e perfil",
+         "Apenas a página de pagamento final do pedido",
+         "Duas: apenas início e carrinho de compras",
+         "Dez páginas fixas, sem possibilidade de mudança"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Cada página tem dados próprios."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Vídeo: <b>sete métricas</b> principais",
+         "Cartão: <b>pesquisa, recomendação, aba Loja</b>",
+         "Loja: <b>cinco páginas</b> e canais",
+         "Melhore <b>imagem, título e preço</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Promoções, atendimento e avaliações nos dados",
+      "minutes": 4,
+      "goal": "Usar análises de promoção, IM e avaliações negativas para corrigir a operação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧰",
+        "title": "Dados que corrigem a rotina",
+        "text": "Além de vendas, a Bússola mostra quais promoções rendem mais, como está o atendimento e por que o cliente reclama."
+       },
+       {
+        "t": "p",
+        "title": "Análise de ferramentas de promoção",
+        "html": "Em <b>Bússola de dados > Marketing > Ferramentas de promoção</b>, veja receita, pedidos e compradores das promoções e compare com o período anterior. A lista filtra por status (em andamento, futura, desativada, expirada) e por tipo (desconto no produto, oferta relâmpago, kit, frete, cupom, brinde, código promocional)."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Descubra o melhor horário",
+        "html": "Veja em quais períodos cada promoção rendeu mais e alinhe duração e tipo com as épocas de maior compra."
+       },
+       {
+        "t": "p",
+        "title": "Desempenho de IM",
+        "html": "Em <b>Pós-compra > Desempenho de IM</b>, acompanhe chats consultados, taxa de resposta em 24 horas, tempo médio da primeira resposta e taxa de satisfação (4 e 5 estrelas). Só usuários com acesso total e o administrador principal acessam."
+       },
+       {
+        "t": "p",
+        "title": "Avaliações negativas",
+        "html": "A análise de avaliações negativas considera os últimos 30 dias e separa as causadas por <b>problema com o produto</b>, <b>problema com o atendimento</b> e <b>outro problema</b> (nota baixa sem comentário). Só entram as de responsabilidade do vendedor."
+       },
+       {
+        "t": "table",
+        "title": "Causas e ações",
+        "caption": "Palavras-chave negativas aparecem por produto.",
+        "head": [
+         "Causa",
+         "Ação sugerida"
+        ],
+        "rows": [
+         [
+          "Qualificação e marcação incorretas",
+          "Corrigir as informações do produto"
+         ],
+         [
+          "Baixa qualidade ou funcionalidade",
+          "Melhorar o produto"
+         ],
+         [
+          "Não corresponde à descrição",
+          "Atualizar o anúncio"
+         ],
+         [
+          "Envio incorreto",
+          "Revisar o processo de envio"
+         ],
+         [
+          "Comunicação no atendimento",
+          "Otimizar o atendimento"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Números diferentes são normais",
+        "html": "A análise de avaliações negativas só conta as de responsabilidade do vendedor; a integridade da loja mostra todas. Por isso os totais podem divergir."
+       },
+       {
+        "t": "quiz",
+        "q": "Quem acessa a análise de desempenho de IM?",
+        "options": [
+         "Qualquer visitante que passe pela loja",
+         "Somente o transportador dos pedidos",
+         "Usuários com acesso total e o administrador principal",
+         "Somente os criadores afiliados da loja"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O acesso é restrito."
+       },
+       {
+        "t": "quiz",
+        "q": "A análise de avaliações negativas olha qual período?",
+        "options": [
+         "Os últimos 5 anos",
+         "Somente o dia de hoje",
+         "As últimas 2 horas",
+         "Os últimos 30 dias"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Ela separa produto, atendimento e outros."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Promoções: <b>status e tipo</b>",
+         "IM: <b>resposta, tempo e satisfação</b>",
+         "Avaliações: <b>produto × atendimento</b>",
+         "Cada causa tem <b>ação sugerida</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O GMV da Bússola de dados inclui:",
+      "options": [
+       "Apenas LIVEs encerradas",
+       "Apenas pedidos de afiliados",
+       "Devoluções, reembolsos e cancelamentos",
+       "Apenas o valor já liquidado"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Para dinheiro recebido, vá em Finanças.",
+      "topic": "Visão geral"
+     },
+     {
+      "q": "O GMV total da loja soma:",
+      "options": [
+       "LIVE, vídeos e cartão do produto",
+       "Somente frete cobrado",
+       "Somente cupons ativos",
+       "Somente e-mails enviados"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "São as três fontes de venda.",
+      "topic": "Visão geral"
+     },
+     {
+      "q": "CTOR mede a relação entre:",
+      "options": [
+       "Curtidas e comentários",
+       "Reembolsos e envios",
+       "Impressões e seguidores",
+       "Cliques no produto e pedidos de SKU"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "É o antigo conceito de conversão.",
+      "topic": "Funil"
+     },
+     {
+      "q": "O módulo de estoque sugere:",
+      "options": [
+       "Apagar o SKU antigo",
+       "Fechar a loja por 30 dias",
+       "Dobrar o preço do produto",
+       "Reposição para os próximos 30 dias"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Mostra dias estimados de estoque.",
+      "topic": "Produto"
+     },
+     {
+      "q": "O acesso ao Desempenho de IM é de:",
+      "options": [
+       "Todos os visitantes que acessam a loja",
+       "Somente criadores afiliados cadastrados na loja",
+       "Usuários com acesso total e administrador principal",
+       "Somente empresas transportadoras contratadas"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O acesso é restrito.",
+      "topic": "IM"
+     }
+    ]
+   },
+   {
+    "title": "Escolher o que vender",
+    "tagline": "Produtos e oportunidades",
+    "outcome": "Usar oportunidades e critérios para decidir catálogo.",
+    "lessons": [
+     {
+      "title": "Oportunidades de produtos",
+      "minutes": 4,
+      "goal": "Transformar tendências do TikTok em decisão de catálogo e conteúdo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "💡",
+        "title": "Descubra o que está em alta",
+        "text": "O recurso Oportunidades de produtos mostra produtos e palavras-chave com demanda crescente para orientar fornecimento, anúncios e vídeos."
+       },
+       {
+        "t": "p",
+        "title": "Onde fica",
+        "html": "No Seller Center, abra <b>Produtos > Oportunidades de produtos</b>. Há duas abas: <b>Produtos de alto potencial</b> e <b>Palavras-chave em alta</b>."
+       },
+       {
+        "t": "table",
+        "title": "Dois tipos de oportunidade",
+        "caption": "O produto enviado precisa corresponder à oportunidade.",
+        "head": [
+         "Tipo",
+         "Como usar"
+        ],
+        "rows": [
+         [
+          "Produtos de alto potencial",
+          "Veja se você vende um produto exatamente igual; se sim, vincule; se não, use para fornecimento ou lançamento"
+         ],
+         [
+          "Palavras-chave em alta",
+          "Inclua a palavra nos títulos, descrições, vídeos ou hashtags quando descrever o produto"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Sinais para priorizar",
+        "items": [
+         "Vendas em <b>crescimento</b>",
+         "Poucos produtos disponíveis (menos <b>concorrência</b>)",
+         "Compatível com seu <b>fornecimento</b> ou catálogo",
+         "Salve o lead para retomar depois"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Enviar um produto",
+        "items": [
+         {
+          "title": "Escolha o lead",
+          "html": "Filtre por categoria, marca, característica ou incentivo."
+         },
+         {
+          "title": "Confira a correspondência",
+          "html": "Em alto potencial, o produto precisa ser o mesmo em categoria, estilo, função e atributos."
+         },
+         {
+          "title": "Publique ou vincule",
+          "html": "Adicione um produto novo ou vincule um existente."
+         },
+         {
+          "title": "Acompanhe",
+          "html": "Veja em Seus envios se foi aprovado ou rejeitado."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não force palavra-chave",
+        "html": "Coloque a palavra no título só quando ela descrever o produto. Não induza o comprador ao erro."
+       },
+       {
+        "t": "list",
+        "title": "Recompensas possíveis",
+        "items": [
+         "Mais impressões na busca ou no feed da aba Loja",
+         "Missões do vendedor, como publicar produtos de oportunidade",
+         "Cupons da plataforma ao concluir tarefas aprovadas"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Ritmo de consulta",
+        "html": "Uma revisão semanal é prática para muitos vendedores; categorias de movimento rápido pedem checagem mais frequente."
+       },
+       {
+        "t": "quiz",
+        "q": "Para um produto de alto potencial, o item enviado deve ser:",
+        "options": [
+         "Uma correspondência exata do lead",
+         "Uma cópia de marca alheia",
+         "Qualquer produto da categoria",
+         "Um produto sem estoque"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Correspondência distante pode ser rejeitada."
+       },
+       {
+        "t": "quiz",
+        "q": "Por que um envio de palavra-chave costuma ser rejeitado?",
+        "options": [
+         "Excesso de cupons ativos na mesma loja",
+         "Preço muito acima do praticado no mercado",
+         "Categoria diferente ou palavra pouco clara no anúncio",
+         "Imagem do produto com fundo totalmente branco"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Use a palavra de forma natural no título."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Abas: <b>alto potencial</b> e <b>palavras-chave</b>",
+         "Alto potencial exige <b>correspondência exata</b>",
+         "Veja <b>Seus envios</b> para status",
+         "Revise <b>toda semana</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Seleção e viralização de produtos",
+      "minutes": 4,
+      "goal": "Entender o que a Academia aponta como fatores de produtos que vendem bem.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔥",
+        "title": "Produto bom é metade do trabalho",
+        "text": "Os cursos de seleção de produtos da Academia combinam critérios de escolha, regras de produtos proibidos e casos de sucesso."
+       },
+       {
+        "t": "list",
+        "title": "Temas dos cursos",
+        "items": [
+         "Como escolher um produto com alto potencial de vendas",
+         "Produtos proibidos e restritos",
+         "Análise de dados de desempenho para otimizar o catálogo",
+         "Fatores que ajudam um produto a viralizar: preço, design, posicionamento e logística",
+         "Análise de categorias mais vendidas"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Casos citados pela Academia",
+        "caption": "Resumo do curso de casos de sucesso (jan/2026).",
+        "head": [
+         "Produto",
+         "Fator destacado"
+        ],
+        "rows": [
+         [
+          "Perfume premium",
+          "Valor percebido, apelo visual e storytelling em vídeo"
+         ],
+         [
+          "Calça wide leg",
+          "Apelo visual e storytelling em vídeo"
+         ],
+         [
+          "Escova dental elétrica USB",
+          "Praticidade, preço acessível e demonstração real"
+         ],
+         [
+          "Mangueira extensível",
+          "Vídeos impactantes e demonstração real"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Aplicando",
+        "html": "Antes de escolher, cruze três fontes: <b>Oportunidades de produtos</b> (demanda), <b>Análise de produto</b> (o que já vende) e <b>regras de produtos proibidos</b> (o que pode ser anunciado)."
+       },
+       {
+        "t": "steps",
+        "title": "Checklist de escolha",
+        "items": [
+         {
+          "title": "Regra",
+          "html": "Confirme que o produto não é proibido nem restrito."
+         },
+         {
+          "title": "Demanda",
+          "html": "Procure sinais em Oportunidades de produtos."
+         },
+         {
+          "title": "Diferencial",
+          "html": "Defina preço, design e posicionamento."
+         },
+         {
+          "title": "Logística",
+          "html": "Garanta prazo, embalagem e estoque."
+         },
+         {
+          "title": "Conteúdo",
+          "html": "Planeje uma demonstração real em vídeo ou LIVE."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Viral não é garantia",
+        "html": "Casos de sucesso mostram fatores em comum, mas não prometem resultado. Teste com estoque controlado."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Demonstre",
+        "html": "Vídeos que mostram o produto funcionando aparecem repetidamente nos casos de sucesso da Academia."
+       },
+       {
+        "t": "quiz",
+        "q": "O que fazer antes de investir em um produto?",
+        "options": [
+         "Copiar a marca registrada de um concorrente",
+         "Confirmar que ele não é proibido nem restrito",
+         "Evitar qualquer vídeo de demonstração do item",
+         "Comprar o estoque máximo de uma vez só"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Regras de conformidade vêm primeiro."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual fator os casos de escova e mangueira destacam?",
+        "options": [
+         "Apenas luxo e exclusividade da marca",
+         "Apenas embalagem importada e sofisticada",
+         "Praticidade, preço acessível e demonstração real",
+         "Apenas desconto de 90% sobre o preço"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A demonstração real em vídeo foi central."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Cruze <b>demanda, vendas e regras</b>",
+         "Fatores: <b>preço, design, posicionamento, logística</b>",
+         "Use <b>demonstração real</b>",
+         "Teste com <b>estoque controlado</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "As abas de Oportunidades de produtos são:",
+      "options": [
+       "Pedidos e devoluções de clientes",
+       "Cupons e frete grátis para clientes",
+       "Lojas parceiras e criadores",
+       "Produtos de alto potencial e Palavras-chave em alta"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Cada uma responde a uma pergunta diferente.",
+      "topic": "Oportunidades"
+     },
+     {
+      "q": "Produtos de alto potencial exigem:",
+      "options": [
+       "Estoque zerado",
+       "Marca de terceiros",
+       "Correspondência exata com o lead",
+       "Qualquer produto parecido"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Correspondência distante pode ser rejeitada.",
+      "topic": "Oportunidades"
+     },
+     {
+      "q": "Onde acompanhar aprovações e rejeições?",
+      "options": [
+       "Em Seus envios",
+       "No chat do cliente",
+       "Na conta do criador",
+       "Na página de Finanças"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Há abas de aprovados e rejeitados.",
+      "topic": "Oportunidades"
+     },
+     {
+      "q": "Antes de escolher um produto, deve-se checar:",
+      "options": [
+       "Se o concorrente já desistiu",
+       "Se tem embalagem colorida",
+       "Se ele não é proibido nem restrito",
+       "Se tem frete mais caro"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Conformidade vem primeiro.",
+      "topic": "Seleção"
+     },
+     {
+      "q": "Qual fator foi destacado nos casos de escova e mangueira?",
+      "options": [
+       "Desconto de 90% sobre o preço apenas",
+       "Exclusividade e luxo da marca apenas",
+       "Praticidade, preço acessível e demonstração real",
+       "Embalagem importada e sofisticada apenas"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Vídeos demonstrando o produto foram centrais.",
+      "topic": "Seleção"
+     }
+    ]
+   },
+   {
+    "title": "Crescer na plataforma",
+    "tagline": "Missões e selo",
+    "outcome": "Aproveitar recompensas, selo de qualidade e rotina de dados.",
+    "lessons": [
+     {
+      "title": "Centro de crescimento e recompensas",
+      "minutes": 4,
+      "goal": "Usar as missões do Centro de crescimento para aprender e ganhar benefícios.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎯",
+        "title": "Missões que viram resultado",
+        "text": "O Centro de crescimento guia o vendedor por tarefas de configuração e operação e entrega recompensas ao concluí-las."
+       },
+       {
+        "t": "p",
+        "title": "Como acessar",
+        "html": "No Seller Center, vá em <b>Crescimento > Oportunidades de crescimento</b>. Antes das Minhas missões, conclua as <b>missões de configuração</b>, que ajudam a chegar ao primeiro pedido. <b>Só o titular da conta participa</b>; subcontas não são elegíveis."
+       },
+       {
+        "t": "table",
+        "title": "Tipos de recompensa",
+        "caption": "Sujeitas a termos e condições.",
+        "head": [
+         "Recompensa",
+         "O que é"
+        ],
+        "rows": [
+         [
+          "Desconto na tarifa",
+          "Dedução na comissão cobrada nos pedidos concluídos"
+         ],
+         [
+          "Cupons da plataforma",
+          "Cupons criados e custeados pelo TikTok Shop para compradores"
+         ],
+         [
+          "Cupom de Promover",
+          "Desconto na ferramenta paga de impulsionar vídeos e LIVEs"
+         ],
+         [
+          "Créditos de anúncios",
+          "Crédito para promover produtos sem custo inicial"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Como resgatar",
+        "items": [
+         "Um <b>pop-up</b> avisa quando a recompensa cai na conta",
+         "Veja tudo em <b>Minhas recompensas</b>",
+         "Algumas se aplicam sozinhas; outras pedem <b>ativação manual</b>",
+         "O ícone <b>Como usar</b> explica cada tipo"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Missão removida perde o progresso",
+        "html": "Se uma missão sair do ar antes de você concluí-la, o progresso se perde e a recompensa não é concedida. Missões de vídeo ou LIVE atualizam no dia seguinte."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Cupom de Promover precisa de conta oficial",
+        "html": "Para receber o cupom de Promover, a loja precisa ter uma conta TikTok oficial vinculada."
+       },
+       {
+        "t": "quiz",
+        "q": "Quem pode participar de Minhas missões?",
+        "options": [
+         "Qualquer subconta da equipe",
+         "Somente clientes compradores",
+         "Somente criadores afiliados",
+         "Somente o titular da conta primária"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Subcontas não são elegíveis."
+       },
+       {
+        "t": "quiz",
+        "q": "Desconto na tarifa é uma recompensa que:",
+        "options": [
+         "Reduz a comissão dos pedidos concluídos",
+         "Troca a conta de anúncios da loja",
+         "Aumenta o frete pago pelo cliente",
+         "Cancela pedidos antigos já entregues"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "É aplicada automaticamente à tarifa."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Crescimento > Oportunidades de crescimento</b>",
+         "Primeiro as <b>missões de configuração</b>",
+         "Quatro recompensas: <b>tarifa, cupons, Promover, créditos</b>",
+         "Só o <b>titular</b> participa"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Loja Estrela e rotina de crescimento",
+      "minutes": 4,
+      "goal": "Conhecer o selo de qualidade e montar uma rotina semanal de dados.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⭐",
+        "title": "Selo de confiança que converte",
+        "text": "A Loja Estrela é o selo oficial para vendedores de alta qualidade sem marca oficial. Ele aumenta a confiança do cliente e ajuda a conversão."
+       },
+       {
+        "t": "table",
+        "title": "Critérios de elegibilidade",
+        "caption": "É preciso cumprir todos os requisitos.",
+        "head": [
+         "Requisito",
+         "Valor"
+        ],
+        "rows": [
+         [
+          "Tipo de vendedor",
+          "Sem o selo “Oficial”"
+         ],
+         [
+          "Volume (últimos 30 dias)",
+          "Mais de 9.000 pedidos ou mais de 90.000 de GMV (confira a moeda na tela)"
+         ],
+         [
+          "SPS",
+          "Pontuação válida e igual ou acima de 4,5"
+         ],
+         [
+          "Saúde da conta (AHR)",
+          "Acima de 150"
+         ],
+         [
+          "Envio no prazo (48 horas)",
+          "90% ou mais"
+         ],
+         [
+          "Resposta em 24 horas",
+          "95% ou mais"
+         ],
+         [
+          "Avaliações positivas",
+          "95% ou mais"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Ciclo do selo",
+        "items": [
+         "Avaliação unificada no <b>dia 5 de cada mês</b>",
+         "Selo vale do dia 5 do mês atual ao dia 5 do seguinte",
+         "Base: métricas do <b>último dia do ciclo anterior</b>",
+         "Elegíveis recebem automaticamente; não elegíveis perdem o selo"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Rotina semanal de dados",
+        "items": [
+         {
+          "title": "Segunda",
+          "html": "Visão geral: GMV, tráfego e conversão da semana."
+         },
+         {
+          "title": "Terça",
+          "html": "Produtos: funil, estoque e preço dos principais itens."
+         },
+         {
+          "title": "Quarta",
+          "html": "Conteúdo: vídeos, LIVEs e criadores que venderam."
+         },
+         {
+          "title": "Quinta",
+          "html": "Pós-compra: IM, avaliações negativas e envios."
+         },
+         {
+          "title": "Sexta",
+          "html": "Oportunidades e missões: decidir o que lançar e pedir."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Decisão com dados",
+        "html": "Um produto tem muitos cliques e poucos pedidos, e as avaliações negativas citam “não corresponde à descrição”. A ação é corrigir o anúncio antes de impulsionar o tráfego."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Novos vendedores",
+        "html": "A Academia lista benefícios iniciais, como 90 dias sem comissão e incentivos de frete (PIF). Confira as condições atuais no Seller Center."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Regras mudam",
+        "html": "Limites, metas e benefícios são atualizados. Sempre confirme os valores vigentes na tela do Seller Center e na Academia."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o SPS mínimo para a Loja Estrela?",
+        "options": [
+         "2,0 ou mais",
+         "3,0 apenas",
+         "Não há mínimo",
+         "4,5 ou mais"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Além do SPS, outros requisitos precisam ser cumpridos."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando o selo é reavaliado?",
+        "options": [
+         "Somente uma vez por ano",
+         "No dia 5 de cada mês",
+         "Nunca, o selo é vitalício",
+         "A cada hora do dia"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Quem não cumpre perde o selo e pode requalificar."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Loja Estrela: <b>SPS ≥ 4,5</b>, AHR > 150",
+         "Envio <b>90%</b>, resposta <b>95%</b>, avaliações <b>95%</b>",
+         "Reavaliação <b>todo dia 5</b>",
+         "Rotina: <b>visão geral → produtos → conteúdo → pós-compra</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Quem participa das Minhas missões?",
+      "options": [
+       "Todas as subcontas",
+       "Somente o titular da conta primária",
+       "Somente criadores",
+       "Somente clientes"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Subcontas não são elegíveis.",
+      "topic": "Crescimento"
+     },
+     {
+      "q": "Uma recompensa de desconto na tarifa:",
+      "options": [
+       "Troca a conta de anúncios da loja",
+       "Reduz a comissão dos pedidos concluídos",
+       "Aumenta o frete pago pelo cliente",
+       "Cancela pedidos já concluídos"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "É aplicada à tarifa de comissão.",
+      "topic": "Crescimento"
+     },
+     {
+      "q": "A Loja Estrela exige SPS de:",
+      "options": [
+       "2,0 ou mais",
+       "4,5 ou mais",
+       "Nenhum mínimo",
+       "3,0 apenas"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Além de outros requisitos.",
+      "topic": "Selo"
+     },
+     {
+      "q": "O selo da Loja Estrela é atualizado:",
+      "options": [
+       "A cada hora",
+       "No dia 5 de cada mês",
+       "Uma vez por ano",
+       "Nunca"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Quem deixa de cumprir perde o selo.",
+      "topic": "Selo"
+     },
+     {
+      "q": "Missão removida antes da conclusão:",
+      "options": [
+       "Paga em dobro",
+       "Fica salva para sempre",
+       "Perde o progresso e a recompensa",
+       "Vira cupom vitalício"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Aproveite as missões enquanto estão ativas.",
+      "topic": "Crescimento"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Onde fica a Visão geral dos dados?",
+    "options": [
+     "Finanças > Saque",
+     "Anúncios > Faturas",
+     "Pedidos > Etiquetas",
+     "Bússola de dados > Visão geral"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "É o painel principal de vendas e tráfego.",
+    "topic": "Visão geral"
+   },
+   {
+    "q": "As métricas de Vendas na visão geral incluem:",
+    "options": [
+     "Somente a quantidade de comentários",
+     "Somente a quantidade de curtidas",
+     "GMV, itens vendidos, compradores e reembolsos",
+     "Somente a quantidade de seguidores"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Tráfego é outro grupo.",
+    "topic": "Visão geral"
+   },
+   {
+    "q": "Onde ver o GMV de afiliados?",
+    "options": [
+     "Finanças > Faturas",
+     "Chat de IM",
+     "Centro de Afiliados > Análise",
+     "Pedidos > Etiquetas"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Também aparece no marketing da Visão geral.",
+    "topic": "Visão geral"
+   },
+   {
+    "q": "Cliques no produto substituíram:",
+    "options": [
+     "Os saques",
+     "As visualizações de página",
+     "Os cupons de frete",
+     "As faturas fiscais"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Mostra melhor a intenção de compra.",
+    "topic": "Funil"
+   },
+   {
+    "q": "A Taxa de adições ao carrinho divide:",
+    "options": [
+     "Adições ao carrinho pelos cliques no produto",
+     "Compras divididas pelos visitantes",
+     "Pedidos divididos pelos reembolsos",
+     "Curtidas divididas pelos vídeos"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Liga a ação de carrinho aos cliques.",
+    "topic": "Funil"
+   },
+   {
+    "q": "Qual canal conta como receita do cartão do produto?",
+    "options": [
+     "Os que não são LIVE nem vídeo",
+     "Somente cupons de chat",
+     "Somente vídeos curtos",
+     "Somente LIVE"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Pesquisa e aba Loja entram aqui.",
+    "topic": "Cartão"
+   },
+   {
+    "q": "Quantas páginas tem a loja na análise de página?",
+    "options": [
+     "Doze",
+     "Cinco",
+     "Duas",
+     "Uma"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Início, produto, categoria, campanha e perfil.",
+    "topic": "Loja"
+   },
+   {
+    "q": "Qual período a análise de avaliações negativas considera?",
+    "options": [
+     "Cinco anos",
+     "Últimos 30 dias",
+     "Só hoje",
+     "Última hora"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Separa produto, atendimento e outros.",
+    "topic": "Avaliações"
+   },
+   {
+    "q": "Quais dados a análise de IM mostra?",
+    "options": [
+     "Cupons aplicados e fretes de cada pedido",
+     "Faturas de anúncios e notas fiscais emitidas",
+     "Resposta em 24 horas, tempo de resposta e satisfação",
+     "Estoque disponível e preço de cada produto"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Mede o atendimento ao cliente.",
+    "topic": "IM"
+   },
+   {
+    "q": "Palavras-chave em alta devem ser usadas:",
+    "options": [
+     "De forma natural, quando descrevem o produto",
+     "Em produtos de outra categoria",
+     "Sem nenhuma relação com o item",
+     "Em todos os títulos sem critério"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Não induza o comprador ao erro.",
+    "topic": "Oportunidades"
+   },
+   {
+    "q": "Qual sinal indica uma boa oportunidade?",
+    "options": [
+     "Vendas em queda e muita concorrência",
+     "Nenhuma busca pelo termo no app",
+     "Vendas crescentes com poucos produtos disponíveis",
+     "Estoque inexistente no armazém"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Há demanda e menos concorrência.",
+    "topic": "Oportunidades"
+   },
+   {
+    "q": "Qual recompensa o Centro de crescimento NÃO lista?",
+    "options": [
+     "Reembolso de impostos federais",
+     "Desconto na tarifa",
+     "Créditos de anúncios",
+     "Cupons da plataforma"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "As quatro recompensas são tarifa, cupons, Promover e créditos.",
+    "topic": "Crescimento"
+   },
+   {
+    "q": "Para receber o cupom de Promover, a loja precisa:",
+    "options": [
+     "Fechar a loja",
+     "Desativar os anúncios",
+     "Ter uma conta TikTok oficial vinculada",
+     "Ter mais de mil seguidores"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Sem conta oficial, aparece um lembrete.",
+    "topic": "Crescimento"
+   },
+   {
+    "q": "A Loja Estrela exige taxa de envio no prazo de:",
+    "options": [
+     "Nenhum mínimo",
+     "90% ou mais",
+     "10% ou mais",
+     "50% apenas"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Prazo de até 48 horas.",
+    "topic": "Selo"
+   },
+   {
+    "q": "Loja Estrela exige AHR:",
+    "options": [
+     "Acima de 150",
+     "Sem valor definido",
+     "Abaixo de 50",
+     "Igual a zero"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Saúde da conta de governança.",
+    "topic": "Selo"
+   },
+   {
+    "q": "Ao notar muitas impressões e poucos cliques, deve-se:",
+    "options": [
+     "Parar de enviar pedidos",
+     "Aumentar o frete",
+     "Melhorar imagem e título do produto",
+     "Cancelar a loja"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O produto aparece, mas não atrai.",
+    "topic": "Funil"
+   }
+  ]
+ }
+}

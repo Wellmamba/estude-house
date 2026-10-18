@@ -1,0 +1,1534 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 12: anúncios e GMV Max",
+  "tag": "TikTok Shop",
+  "tagline": "Contas, GMV Max, LIVE Ads, vendas líquidas, ACA e pacotes promocionais.",
+  "subtitle": "Configuração de anúncios, GMV Max, LIVE GMV Max, otimização de vendas líquidas, criativos de afiliados e pacote promocional. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Anúncios da loja e GMV Max",
+    "tagline": "Base técnica",
+    "outcome": "Configurar contas, entender o GMV Max e ler métricas e atribuição.",
+    "lessons": [
+     {
+      "title": "Preparar a conta de anúncios",
+      "minutes": 4,
+      "goal": "Ligar a loja ao Ads Manager e organizar permissões antes de gastar um real.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧩",
+        "title": "Sem conta de anúncios, nada de GMV Max",
+        "text": "A publicidade do TikTok Shop passa por um conjunto de contas ligadas entre si. Quem organiza isso no começo evita bloqueios na hora de uma campanha."
+       },
+       {
+        "t": "flow",
+        "title": "As peças",
+        "caption": "Todas precisam estar vinculadas.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "🏪",
+          "title": "Seller Center",
+          "text": "Onde a loja é gerida."
+         },
+         {
+          "icon": "🏢",
+          "title": "Business Center",
+          "text": "Agrupa contas e permissões."
+         },
+         {
+          "icon": "📣",
+          "title": "Ads Manager",
+          "text": "Conta de anúncios e campanhas."
+         },
+         {
+          "icon": "🎵",
+          "title": "Contas TikTok",
+          "text": "Fontes de vídeo e de LIVE."
+         }
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Configuração inicial",
+        "items": [
+         {
+          "title": "Entrar como responsável",
+          "html": "Use o proprietário, o administrador principal ou o gerente de publicidade da loja."
+         },
+         {
+          "title": "Comprar anúncios",
+          "html": "Abra Marketing > Comprar anúncios."
+         },
+         {
+          "title": "Contas",
+          "html": "Crie ou conecte a conta de anúncios e o Business Center."
+         },
+         {
+          "title": "Vincular TikTok",
+          "html": "Conecte as contas TikTok que fornecerão vídeos e LIVEs."
+         },
+         {
+          "title": "Criar campanha",
+          "html": "No Ads Manager, escolha sempre o objetivo Vendas da loja (Shop Sales)."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Permissões",
+        "items": [
+         "Só <b>proprietário, administrador principal e gerente de publicidade</b> veem o menu Anúncios da loja",
+         "Para conectar um Business Center existente, é preciso ser <b>administrador dele</b>",
+         "Para criar anúncios, é preciso <b>permissão de publicidade</b>",
+         "Conta nova do Ads Manager fica <b>em revisão</b> por um tempo"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Autorize as contas TikTok",
+        "html": "Em Gerenciar conta, a seção Contas TikTok mostra botões como <b>Autorizar agora</b>, <b>Editar acesso</b> ou <b>Obter permissão</b>. Resolva todos antes de lançar: sem permissão completa, os vídeos não entram nos anúncios."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Ajuda quando travar",
+        "html": "Se a conta não conecta, o motivo mais comum é permissão. Para outros casos, abra um tíquete na Central de Ajuda no tópico Anúncios."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual objetivo escolher no Ads Manager?",
+        "options": [
+         "Visualizações",
+         "Alcance geral",
+         "Vendas da loja (Shop Sales)",
+         "Tráfego para site"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Esse é o objetivo ligado ao TikTok Shop."
+       },
+       {
+        "t": "quiz",
+        "q": "Quem consegue ver o menu Anúncios da loja de início?",
+        "options": [
+         "Qualquer cliente que entre na página da loja",
+         "Proprietário, administrador principal e gerente de publicidade",
+         "Somente os criadores afiliados que vendem",
+         "Todos os visitantes do aplicativo TikTok"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Depois de vinculadas as contas, outras pessoas com permissão também criam anúncios."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Seller Center + <b>Business Center</b> + <b>Ads Manager</b> + contas TikTok",
+         "Objetivo: <b>Shop Sales</b>",
+         "Resolva <b>autorizações</b> das contas TikTok",
+         "Permissão errada = <b>menu invisível</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "GMV Max: a super campanha",
+      "minutes": 4,
+      "goal": "Entender como o GMV Max automatiza criativos e amplia a entrega orgânica.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚀",
+        "title": "Automação de anúncios para vender mais",
+        "text": "O GMV Max otimiza o retorno total da loja no TikTok Shop com pouca operação do vendedor."
+       },
+       {
+        "t": "p",
+        "title": "O que é",
+        "html": "O GMV Max é uma solução de automação de publicidade que usa <b>todos os criativos disponíveis</b> em uma “super campanha” e também melhora a <b>entrega orgânica</b>, gerando GMV incremental. Todos os pedidos dos produtos promovidos, incluindo orgânicos e de afiliados, contam como GMV Max enquanto a campanha estiver ativa."
+       },
+       {
+        "t": "list",
+        "title": "De onde vêm os vídeos",
+        "items": [
+         "Conta oficial da loja",
+         "Conta comercial TikTok da loja",
+         "Contas TikTok disponíveis no Seller Center (autorizadas no Business Center)",
+         "Postagens <b>Spark Ads</b> na biblioteca da conta de anúncios principal",
+         "Vídeos de afiliados com <b>autorização de criativo</b>"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Atenção a fontes não automáticas",
+        "items": [
+         "Contas de marketing precisam ser <b>vinculadas à loja</b>",
+         "Spark Ads de outra conta de anúncios precisam ser carregados na <b>principal</b>",
+         "Vídeos sem link de produto exigem <b>reupar com um link único</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Rode na conta principal",
+        "html": "Execute o GMV Max na conta de anúncios mais usada para reaproveitar os Spark Ads já autorizados."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Pedido sem clique",
+        "html": "Um cliente nunca clicou no anúncio, mas comprou um produto promovido durante a campanha. Esse pedido é atribuído ao GMV Max, pois ele considera também o orgânico."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Vídeos com link ajudam",
+        "html": "Qualquer vídeo com âncora de produto pode ser criativo, mas só os autorizados para anúncios entram de fato."
+       },
+       {
+        "t": "quiz",
+        "q": "O que o GMV Max combina?",
+        "options": [
+         "Somente cupons de desconto",
+         "Somente banners estáticos de loja",
+         "Apenas e-mail marketing",
+         "Criativos disponíveis e entrega orgânica"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Ele atua na entrega paga e na orgânica."
+       },
+       {
+        "t": "quiz",
+        "q": "Quais contas são fontes automáticas de vídeo?",
+        "options": [
+         "Oficial, comercial e as autorizadas no Seller Center",
+         "Qualquer conta de terceiros sem vínculo",
+         "Contas de lojas concorrentes do mercado",
+         "Contas que não deram nenhuma permissão"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Contas de marketing precisam ser vinculadas."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "GMV Max = <b>super campanha automática</b>",
+         "Usa criativos e melhora o <b>orgânico</b>",
+         "Fontes: <b>oficial, comercial, autorizadas, Spark, afiliados</b>",
+         "Rode na <b>conta principal</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Metas, métricas e atribuição",
+      "minutes": 4,
+      "goal": "Ler custo, ROI e atribuição para decidir se a campanha está boa.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📊",
+        "title": "ROI é a bússola",
+        "text": "O ROI do GMV Max mostra quanto de receita bruta cada real de anúncio trouxe. Saber ler as janelas de atribuição evita comparações injustas."
+       },
+       {
+        "t": "table",
+        "title": "Métricas principais",
+        "caption": "Subsídios de envio não entram na receita.",
+        "head": [
+         "Métrica",
+         "O que significa"
+        ],
+        "rows": [
+         [
+          "Custo",
+          "Total gasto em anúncios"
+         ],
+         [
+          "Pedidos (SKU)",
+          "Pedidos concluídos na campanha"
+         ],
+         [
+          "Custo por pedido",
+          "Custo ÷ pedidos"
+         ],
+         [
+          "Receita bruta total",
+          "Valor pago pelo cliente mais subsídios de preço da plataforma"
+         ],
+         [
+          "ROI",
+          "Receita bruta total ÷ custo"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Cálculo de ROI",
+        "html": "Custo de R$ 500 e receita bruta de R$ 4.000: ROI = 4.000 ÷ 500 = <b>8</b>. Cada real investido trouxe R$ 8 de receita bruta."
+       },
+       {
+        "t": "table",
+        "title": "Janelas de atribuição",
+        "caption": "Resumo do guia de atribuição do GMV Max.",
+        "head": [
+         "Tipo",
+         "Janela",
+         "Orgânico?"
+        ],
+        "rows": [
+         [
+          "Anúncios personalizados",
+          "7 dias de clique e 1 dia de visualização, nível da loja",
+          "Não"
+         ],
+         [
+          "GMV Max do produto",
+          "Tempo real com campanha ativa, 1 dia de clique, nível do produto",
+          "Sim"
+         ],
+         [
+          "LIVE GMV Max",
+          "Tempo real com campanha ativa, nível da sala de LIVE",
+          "Sim"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Mesmo pedido, atribuição diferente",
+        "html": "O cliente clica no anúncio do produto A e 3 dias depois compra B na mesma loja. Conta para anúncios personalizados, mas <b>não</b> para o GMV Max."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não compare números de tipos diferentes",
+        "html": "GMV Max inclui orgânico; anúncios personalizados não. As comparações diretas enganam."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Olhe ROI e volume juntos",
+        "html": "ROI alto com poucos pedidos pode indicar meta apertada demais. Ajuste com cuidado e observe o gasto."
+       },
+       {
+        "t": "quiz",
+        "q": "Como se calcula o ROI?",
+        "options": [
+         "Pedidos ÷ cliques",
+         "Cupom × frete",
+         "Receita bruta total ÷ custo",
+         "Custo ÷ receita"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Receita bruta inclui subsídios de preço da plataforma."
+       },
+       {
+        "t": "quiz",
+        "q": "O GMV Max inclui pedidos orgânicos dos produtos promovidos?",
+        "options": [
+         "Só em dezembro",
+         "Só de afiliados",
+         "Sim, com a campanha ativa",
+         "Nunca"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A atribuição é feita em nível de produto."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "ROI = <b>receita bruta ÷ custo</b>",
+         "GMV Max inclui <b>orgânico</b>",
+         "Anúncios personalizados: <b>7 dias clique, 1 dia visualização</b>",
+         "Cuidado ao <b>comparar</b> tipos"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O objetivo da campanha no Ads Manager deve ser:",
+      "options": [
+       "Vendas da loja (Shop Sales)",
+       "Alcance geral",
+       "Visualizações",
+       "Tráfego para site"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Esse objetivo liga a campanha ao TikTok Shop.",
+      "topic": "Conta"
+     },
+     {
+      "q": "Quem vê o menu Anúncios da loja de início?",
+      "options": [
+       "Proprietário, administrador e gerente de publicidade",
+       "Todos os visitantes do aplicativo",
+       "Qualquer cliente que entre na loja",
+       "Somente os criadores afiliados"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Depois de vinculadas as contas, outras pessoas com permissão também criam anúncios.",
+      "topic": "Permissão"
+     },
+     {
+      "q": "O GMV Max usa:",
+      "options": [
+       "Somente e-mail marketing",
+       "Somente banners estáticos de loja",
+       "Criativos disponíveis e entrega orgânica",
+       "Somente cupons de desconto"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "É uma super campanha automatizada.",
+      "topic": "GMV Max"
+     },
+     {
+      "q": "ROI é:",
+      "options": [
+       "Receita bruta total ÷ custo",
+       "Custo ÷ receita",
+       "Pedidos ÷ cliques",
+       "Cupom × frete"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Mostra o retorno de cada real investido.",
+      "topic": "Métrica"
+     },
+     {
+      "q": "O GMV Max inclui orgânico dos produtos promovidos?",
+      "options": [
+       "Só em abril",
+       "Sim, com a campanha ativa",
+       "Nunca",
+       "Só de afiliados"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "A atribuição é por produto.",
+      "topic": "Atribuição"
+     }
+    ]
+   },
+   {
+    "title": "Formatos e variações",
+    "tagline": "LIVE, líquidas e ACA",
+    "outcome": "Usar LIVE GMV Max, vendas líquidas e criativos de afiliados.",
+    "lessons": [
+     {
+      "title": "LIVE GMV Max",
+      "minutes": 4,
+      "goal": "Impulsionar uma transmissão ao vivo com campanha automática.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔴",
+        "title": "Tráfego para a sala de LIVE",
+        "text": "O LIVE GMV Max otimiza o tráfego da sala para gerar a maior receita bruta durante a transmissão."
+       },
+       {
+        "t": "list",
+        "title": "Quando usar",
+        "items": [
+         "Você já investe em <b>transmissões ao vivo</b>",
+         "Quer aumentar o <b>GMV de LIVE</b>",
+         "Deseja manter um bom <b>ROI de LIVE</b>"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Criar no Seller Center",
+        "items": [
+         {
+          "title": "Comprar anúncios",
+          "html": "Marketing > Comprar anúncios."
+         },
+         {
+          "title": "Criar GMV Max",
+          "html": "Escolha a conta de anúncios principal."
+         },
+         {
+          "title": "Promover LIVE",
+          "html": "Selecione a conta TikTok com a LIVE."
+         },
+         {
+          "title": "Objetivo",
+          "html": "Receita bruta."
+         },
+         {
+          "title": "ROI e orçamento",
+          "html": "Informe a meta de ROI de LIVE e o orçamento diário."
+         },
+         {
+          "title": "Agenda e publicar",
+          "html": "Defina horários e publique."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Boas práticas",
+        "items": [
+         "Meta de ROI <b>baseada no histórico</b> de LIVE",
+         "Orçamento <b>2 a 3 vezes</b> maior que o de um anúncio normal de LIVE",
+         "Perfil com <b>LIVE forte</b> (cerca de US$ 1.000 de receita nos últimos 7 dias)",
+         "Não mude o ROI <b>mais de uma vez por dia</b>"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Como ler o gasto no primeiro dia",
+        "caption": "Gasto rápido costuma indicar bom desempenho.",
+        "head": [
+         "Situação",
+         "Ação sugerida"
+        ],
+        "rows": [
+         [
+          "Gasto muito lento",
+          "Reduzir a meta de ROI"
+         ],
+         [
+          "Gasto muito rápido",
+          "Subir orçamento ou ROI"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Ajuste no máximo uma vez por dia",
+        "html": "Mudanças frequentes de ROI atrapalham o aprendizado da campanha. Observe um dia inteiro antes de mexer de novo."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual orçamento a Academia recomenda para LIVE GMV Max?",
+        "options": [
+         "O mesmo valor de um anúncio de foto",
+         "2 a 3 vezes um anúncio normal de LIVE",
+         "Orçamento zero, sem gasto algum",
+         "Dez centavos por dia no máximo"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Isso garante entrega contínua."
+       },
+       {
+        "t": "quiz",
+        "q": "Com gasto muito lento no primeiro dia, o que fazer?",
+        "options": [
+         "Apagar a conta",
+         "Considerar reduzir a meta de ROI",
+         "Pausar para sempre",
+         "Dobrar o frete"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Uma meta menor libera a entrega."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "LIVE GMV Max otimiza <b>receita bruta da sala</b>",
+         "Orçamento <b>2 a 3 vezes</b> maior",
+         "ROI <b>realista</b>, sem mudar demais",
+         "Use perfil com <b>LIVE forte</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Otimização de vendas líquidas",
+      "minutes": 4,
+      "goal": "Entender o modelo em que a taxa só é cobrada quando o pedido é concluído.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "💡",
+        "title": "Pague só quando vender",
+        "text": "A otimização de vendas líquidas do GMV Max não pede saldo inicial: o custo sai da liquidação, por item de pedido concluído."
+       },
+       {
+        "t": "table",
+        "title": "Duas versões",
+        "caption": "Disponível só para vendedores selecionados, no Seller Center do computador.",
+        "head": [
+         "Vendas líquidas (novo)",
+         "Receita bruta (original)"
+        ],
+        "rows": [
+         [
+          "Sem custo inicial",
+          "Custo sai do saldo de anúncios"
+         ],
+         [
+          "Sem orçamento diário",
+          "Orçamento diário obrigatório"
+         ],
+         [
+          "Taxa por item só após concluir o pedido",
+          "Custo pelo gasto de mídia"
+         ],
+         [
+          "ROI cobrado conforme a meta",
+          "Proteção de ROI com créditos quando elegível"
+         ]
+        ]
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Taxa = (pagamento do usuário + desconto da plataforma) ÷ ROI da meta",
+        "sub": "Calculada por item de cada pedido concluído."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Conta simples",
+        "html": "Pagamento do usuário somado ao desconto da plataforma: R$ 200. Meta de ROI 20: taxa de 1/20 = <b>5%</b>, ou <b>R$ 10</b>. Com meta 50, a taxa seria 2% (R$ 4)."
+       },
+       {
+        "t": "list",
+        "title": "Regras úteis",
+        "items": [
+         "Pedidos <b>devolvidos ou reembolsados não são cobrados</b>",
+         "A taxa é <b>descontada na liquidação</b> do pedido",
+         "Vídeos de afiliados são promovidos automaticamente e sujeitos à taxa",
+         "Não vale para o app móvel; só Seller Center no PC"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Ajuste o ROI para reduzir a taxa",
+        "html": "Quanto maior a meta de ROI, menor a taxa por item. Reduzir a meta aumenta a taxa, mas pode liberar mais entrega."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando a taxa de vendas líquidas é cobrada?",
+        "options": [
+         "Depois que o pedido é concluído",
+         "No cadastro da loja",
+         "Antes do pedido",
+         "Todo dia, sem pedido"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Pedidos devolvidos ou reembolsados não são cobrados."
+       },
+       {
+        "t": "quiz",
+        "q": "Com meta de ROI 20, qual a taxa?",
+        "options": [
+         "0,2% da base",
+         "5% da base de cálculo",
+         "50% da base",
+         "20% da base"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "A taxa é 1/ROI, ou seja, 1/20 = 5%."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Sem <b>custo inicial</b> nem orçamento diário",
+         "Taxa = <b>base ÷ ROI</b>",
+         "Devolução ou reembolso: <b>sem cobrança</b>",
+         "Só para <b>selecionados</b>, no PC"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Criativos de afiliados para anúncios (ACA)",
+      "minutes": 4,
+      "goal": "Usar vídeos de criadores nos anúncios e remunerá-los pela venda.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎥",
+        "title": "O vídeo do criador vira anúncio",
+        "text": "Quando um criador afiliado autoriza, seus vídeos podem ser usados em anúncios da loja, e ele continua ganhando comissão."
+       },
+       {
+        "t": "p",
+        "title": "Como funciona",
+        "html": "Postagens de afiliados autorizadas entram automaticamente como criativos do GMV Max. O criador ganha comissão pelas vendas dos produtos vinculados no vídeo. O link do produto na postagem <b>não pode ser trocado</b> a menos que o criador permita mudança no código de vídeo."
+       },
+       {
+        "t": "table",
+        "title": "Duas autorizações",
+        "caption": "Ativar uma não altera a outra.",
+        "head": [
+         "Autorização de criativo de afiliado",
+         "Autorização por código de vídeo"
+        ],
+        "rows": [
+         [
+          "Vale para todas as postagens de afiliado do criador",
+          "Vale para uma postagem específica"
+         ],
+         [
+          "Ativada no Centro do criador do app",
+          "Ativada nas configurações da postagem"
+         ],
+         [
+          "Entra automaticamente no GMV Max",
+          "Vendedor adiciona o código no gerenciador de criativos"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Quando os anúncios são pausados",
+        "items": [
+         "O criador <b>desativa</b> a autorização",
+         "A <b>colaboração</b> de afiliados expira",
+         "A postagem é removida ou tem problema"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Comissão dos anúncios da loja",
+        "html": "É opcional definir uma <b>taxa de comissão específica</b> para pedidos vindos de anúncios com vídeos de criadores. Se desativada, vale a comissão padrão. A recomendação da plataforma usa a <b>média dos 30% melhores produtos</b> da categoria nos últimos 30 dias, considerando cliques de criadores e taxa de seleção."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Comissão de anúncio mais alta atrai criadores",
+        "html": "Uma comissão competitiva para pedidos de anúncios incentiva criadores a autorizarem seus vídeos."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Colaboração encerrada pausa anúncio",
+        "html": "Antes de encerrar uma colaboração, verifique se campanhas usam os vídeos do criador."
+       },
+       {
+        "t": "quiz",
+        "q": "O que acontece quando a colaboração de afiliado expira?",
+        "options": [
+         "Anúncios com esses criativos são pausados",
+         "Nada muda nos anúncios ativos",
+         "O criador passa a pagar a campanha",
+         "Os anúncios dobram a entrega"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A autorização depende da colaboração."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual referência a plataforma usa para recomendar a comissão?",
+        "options": [
+         "Um valor fixo de 1% para todos",
+         "A taxa praticada por outra loja",
+         "O pior produto da categoria inteira",
+         "Média dos 30% melhores produtos da categoria"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Considera os últimos 30 dias."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "ACA = vídeos de <b>afiliados</b> em anúncios",
+         "Duas autorizações: <b>criativo</b> e <b>código de vídeo</b>",
+         "Colaboração expirada = <b>anúncio pausado</b>",
+         "Comissão de anúncios é <b>opcional</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O orçamento recomendado do LIVE GMV Max é:",
+      "options": [
+       "Orçamento zero, sem gasto algum",
+       "2 a 3 vezes um anúncio normal de LIVE",
+       "O mesmo valor de um anúncio de foto",
+       "Dez centavos por dia no máximo"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Garante entrega contínua.",
+      "topic": "LIVE"
+     },
+     {
+      "q": "Na otimização de vendas líquidas, a taxa é cobrada:",
+      "options": [
+       "Antes do pedido",
+       "Depois do pedido concluído",
+       "Todo dia sem pedido",
+       "No cadastro da loja"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Devolução ou reembolso não paga.",
+      "topic": "Líquidas"
+     },
+     {
+      "q": "Com meta de ROI 20, a taxa é:",
+      "options": [
+       "5% da base",
+       "20% da base",
+       "50% da base",
+       "0,2% da base"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "A taxa é 1 ÷ ROI.",
+      "topic": "Líquidas"
+     },
+     {
+      "q": "Se a colaboração de afiliado expira, os anúncios:",
+      "options": [
+       "São pausados",
+       "Continuam sem nenhuma mudança",
+       "Dobram a entrega",
+       "Passam a ser totalmente gratuitos"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "A autorização depende da colaboração.",
+      "topic": "ACA"
+     },
+     {
+      "q": "A comissão dos anúncios da loja é:",
+      "options": [
+       "Obrigatória sempre",
+       "Opcional",
+       "Fixa em 100%",
+       "Proibida"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Se desativada, vale a comissão padrão.",
+      "topic": "ACA"
+     }
+    ]
+   },
+   {
+    "title": "Campanhas e rotina",
+    "tagline": "Pacote promocional e otimização",
+    "outcome": "Integrar campanhas, LIVE de loja única e rotina de ajuste.",
+    "lessons": [
+     {
+      "title": "Pacote promocional: campanha × GMV Max",
+      "minutes": 4,
+      "goal": "Entender por que algumas campanhas exigem GMV Max e como ele é criado.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📦",
+        "title": "Campanha com anúncio embutido",
+        "text": "Em campanhas da plataforma elegíveis, o GMV Max é requisito: sem ele, o produto perde subsídios e suporte de tráfego."
+       },
+       {
+        "t": "list",
+        "title": "Regras do pacote promocional",
+        "items": [
+         "A campanha mostra a etiqueta <b>GMV Max necessário</b>",
+         "Sem conta de anúncios, a inscrição fica <b>bloqueada</b>",
+         "Todos os custos dos anúncios criados automaticamente são do <b>vendedor</b>",
+         "Produtos em campanha da plataforma devem manter <b>GMV Max ativo</b>",
+         "Se desativar, o produto perde <b>subsídios</b> (cupons e descontos diretos) e <b>suporte de tráfego</b>"
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "Cronologia",
+        "caption": "Criação automática concluída em até 3 dias.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "📝",
+          "title": "Inscrever",
+          "text": "Envie os produtos e o preço da campanha."
+         },
+         {
+          "icon": "🛠️",
+          "title": "Criar o anúncio",
+          "text": "Faça você mesmo no Anúncios da loja."
+         },
+         {
+          "icon": "⏰",
+          "title": "7 dias antes",
+          "text": "Se você não criou, a plataforma cria."
+         },
+         {
+          "icon": "▶️",
+          "title": "Lançamento",
+          "text": "Os anúncios começam quando a campanha lança."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Tipo de anúncio criado automaticamente",
+        "caption": "Taxa aplicada ao pedido concluído.",
+        "head": [
+         "Situação",
+         "Tipo e cobrança"
+        ],
+        "rows": [
+         [
+          "Forma de pagamento de anúncios configurada",
+          "CMIO: lances automáticos por mil impressões otimizadas"
+         ],
+         [
+          "Sem forma de pagamento",
+          "CPV: cobrança por venda; taxa = 1 ÷ meta de ROI, aplicada ao valor do pedido concluído"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Edição",
+        "items": [
+         "ROI padrão de <b>50</b>, editável",
+         "Adicionar produtos",
+         "Ajustar orçamento e ROI",
+         "Campanhas automáticas têm etiqueta <b>Pacote promocional</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Crie você mesmo",
+        "html": "Se você mesmo criar o GMV Max antes da criação automática, escolhe produtos, ROI e orçamento em vez de aceitar o padrão."
+       },
+       {
+        "t": "quiz",
+        "q": "O que acontece com o produto se o GMV Max for desativado?",
+        "options": [
+         "Perde subsídios e suporte de tráfego",
+         "Ganha frete grátis automático",
+         "Dobra o estoque disponível",
+         "Sai da loja imediatamente"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Vale para campanhas da plataforma."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando a plataforma cria o GMV Max automaticamente?",
+        "options": [
+         "Um ano depois da inscrição",
+         "Nunca cria nada automaticamente",
+         "7 dias antes da campanha, se você não criou",
+         "Somente depois que a campanha termina"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A criação é concluída em até 3 dias."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Campanha com <b>GMV Max necessário</b>",
+         "Custos são do <b>vendedor</b>",
+         "Plataforma cria <b>7 dias antes</b> se faltar",
+         "Sem GMV Max = <b>sem subsídio e tráfego</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "LIVE de loja única e anúncios dedicados",
+      "minutes": 4,
+      "goal": "Conhecer a solução que combina criadores e anúncios em uma sala dedicada à sua loja.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏬",
+        "title": "Sala de LIVE só da sua loja",
+        "text": "O LIVE de loja única para anúncios ajuda a expandir o GMV de LIVE de criadores sem operar anúncio por criador."
+       },
+       {
+        "t": "list",
+        "title": "Para quem é",
+        "items": [
+         "Lojas com <b>grande parte do GMV vindo de LIVE</b>, especialmente de criadores",
+         "Quem tem dificuldade de <b>encontrar criadores</b> adequados",
+         "Quem tem <b>pouca experiência</b> ou tempo para otimizar anúncios"
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "Como funciona",
+        "caption": "Sala de loja única mostra só produtos da loja.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "📝",
+          "title": "Formulário",
+          "text": "A loja informa ROI alvo e orçamento."
+         },
+         {
+          "icon": "🤝",
+          "title": "Criador escolhe",
+          "text": "Ele vê as oportunidades e seleciona a loja."
+         },
+         {
+          "icon": "🤖",
+          "title": "Anúncio automático",
+          "text": "O sistema cria o anúncio de LIVE GMV Max."
+         },
+         {
+          "icon": "💵",
+          "title": "Liquidação",
+          "text": "Vendas via anúncios usam comissão de shop ads; orgânico usa a comissão padrão."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Vantagens",
+        "items": [
+         "Correspondência integrada entre loja e criadores",
+         "Criação e gestão dos anúncios para vários criadores",
+         "Dados nos módulos de anúncios e no Seller Center",
+         "Prioridade na exibição aos criadores quando o formulário é enviado antes"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Comissão de shop ads precisa ser configurada",
+        "html": "A liquidação do GMV vindo do anúncio depende da comissão de shop ads, que exige configuração separada."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Preencha com antecedência",
+        "html": "Se a loja envia o formulário cedo, os criadores a veem primeiro. Defina ROI e orçamento realistas."
+       },
+       {
+        "t": "quiz",
+        "q": "Em uma LIVE de loja única, a sala mostra:",
+        "options": [
+         "Somente vídeos curtos",
+         "Produtos de qualquer loja",
+         "Apenas produtos da loja",
+         "Só cupons"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Cada sessão apresenta uma única loja."
+       },
+       {
+        "t": "quiz",
+        "q": "O GMV de tráfego orgânico é liquidado com:",
+        "options": [
+         "Taxa fixa de R$ 1",
+         "Nenhuma comissão",
+         "Comissão em dobro",
+         "A comissão padrão"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O GMV de anúncios usa a comissão de shop ads."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "SSLA = <b>LIVE só da sua loja</b> com anúncio automático",
+         "Formulário: <b>ROI alvo e orçamento</b>",
+         "Comissão de <b>shop ads</b> separada",
+         "Criadores veem <b>prioritariamente</b> quem preencheu"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Rotina de otimização de anúncios",
+      "minutes": 4,
+      "goal": "Montar um ciclo semanal de revisão para gastar melhor e vender mais.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧪",
+        "title": "Anúncio bom é anúncio revisado",
+        "text": "Mesmo com automação, o vendedor decide produtos, ROI, orçamento, criativos e a margem."
+       },
+       {
+        "t": "steps",
+        "title": "Ciclo semanal",
+        "items": [
+         {
+          "title": "Margem",
+          "html": "Calcule o ROI mínimo que mantém lucro após taxas, frete e comissão."
+         },
+         {
+          "title": "Produtos",
+          "html": "Inclua os que têm estoque, boa avaliação e preço competitivo."
+         },
+         {
+          "title": "Criativos",
+          "html": "Garanta vídeos e autorizações em dia."
+         },
+         {
+          "title": "Meta",
+          "html": "Ajuste ROI e orçamento sem mudanças bruscas."
+         },
+         {
+          "title": "Resultado",
+          "html": "Compare ROI, pedidos e custo por pedido."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Antes de ligar",
+        "items": [
+         "SPS e AHR saudáveis",
+         "<b>Estoque</b> suficiente para o pico",
+         "Preço <b>competitivo</b> e avaliações boas",
+         "Produtos sem restrição de tráfego por qualidade"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Sinais para ajustar",
+        "items": [
+         "Gasto lento: reduzir meta de ROI",
+         "Gasto rápido com bom retorno: aumentar orçamento",
+         "ROI abaixo do lucro: subir meta ou rever o preço",
+         "Poucos criativos: ampliar vídeos e afiliados"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Decisão com números",
+        "html": "Produto de R$ 100 com margem de 30% após taxas: o anúncio não pode custar mais de R$ 30 por venda, ou seja, ROI mínimo de cerca de 3,3."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não gaste em produto que dá problema",
+        "html": "Anúncio em produto sem estoque, com avaliação ruim ou com violação gera cancelamento e derruba a conta."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Combine com promoções",
+        "html": "Cupom, desconto e kit elevam a conversão do tráfego pago. Simule o preço final antes."
+       },
+       {
+        "t": "quiz",
+        "q": "Como achar o ROI mínimo aceitável?",
+        "options": [
+         "Por sorteio",
+         "Pela margem do produto após taxas",
+         "Pelo número de seguidores",
+         "Pelo clima"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Custo de anúncio não pode passar da margem."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando aumentar o orçamento?",
+        "options": [
+         "Quando o ROI é negativo",
+         "Quando o gasto é rápido e o retorno é bom",
+         "Quando há violação",
+         "Quando o produto está sem estoque"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Gasto rápido costuma indicar bom desempenho."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Comece pela <b>margem</b>",
+         "Ajuste meta e orçamento com <b>cautela</b>",
+         "Revise <b>criativos e autorizações</b>",
+         "Só anuncie com <b>estoque e qualidade</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Em campanha com GMV Max necessário, se o GMV Max for desligado:",
+      "options": [
+       "O produto perde subsídios e tráfego",
+       "Duplica o estoque disponível",
+       "Sai da loja imediatamente",
+       "Ganha frete grátis automático"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Vale para campanhas da plataforma.",
+      "topic": "Pacote"
+     },
+     {
+      "q": "A plataforma cria o anúncio automático:",
+      "options": [
+       "Somente depois que a campanha termina",
+       "7 dias antes da campanha",
+       "Nunca cria nada automaticamente",
+       "Um ano depois da inscrição"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Se o vendedor não criou.",
+      "topic": "Pacote"
+     },
+     {
+      "q": "No CPV, a taxa é:",
+      "options": [
+       "ROI × 2",
+       "1 ÷ meta de ROI",
+       "100% fixo",
+       "Zero"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Aplicada ao valor do pedido concluído.",
+      "topic": "Pacote"
+     },
+     {
+      "q": "Na LIVE de loja única, o criador vê:",
+      "options": [
+       "Oportunidades dos formulários das lojas",
+       "Somente os cupons de cada loja",
+       "Apenas lojas que estão bloqueadas",
+       "Nada além do próprio perfil"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Quem preenche antes é priorizado.",
+      "topic": "SSLA"
+     },
+     {
+      "q": "O ROI mínimo vem:",
+      "options": [
+       "Da margem do produto",
+       "Do tamanho do vídeo",
+       "Do clima",
+       "De um sorteio"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Custo de anúncio não pode passar da margem.",
+      "topic": "Rotina"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Qual peça agrupa contas e permissões de anúncios?",
+    "options": [
+     "NF-e",
+     "Cupom de chat",
+     "Business Center",
+     "Caixa de ferramentas"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Ele liga Seller Center e Ads Manager.",
+    "topic": "Conta"
+   },
+   {
+    "q": "Quem conecta um Business Center existente?",
+    "options": [
+     "Qualquer visitante",
+     "O cliente",
+     "O entregador",
+     "Administrador dele"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Também é preciso permissão de publicidade.",
+    "topic": "Permissão"
+   },
+   {
+    "q": "Spark Ads de outra conta de anúncios entram no GMV Max?",
+    "options": [
+     "Sempre automaticamente",
+     "Só no sábado",
+     "Nunca",
+     "Só se carregados na principal"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Carregue os códigos na conta principal.",
+    "topic": "Criativos"
+   },
+   {
+    "q": "Contas de marketing devem ser:",
+    "options": [
+     "Mantidas em segredo",
+     "Trocadas por cupons",
+     "Vinculadas à loja no Seller Center",
+     "Apagadas"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Só assim viram fonte automática.",
+    "topic": "Criativos"
+   },
+   {
+    "q": "A janela de anúncios personalizados é:",
+    "options": [
+     "30 dias de clique sem visualização",
+     "7 dias de clique e 1 dia de visualização",
+     "Não existe nenhuma janela definida",
+     "Apenas 1 hora após o clique"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Atribuição em nível de loja.",
+    "topic": "Atribuição"
+   },
+   {
+    "q": "O GMV Max do produto atribui em nível de:",
+    "options": [
+     "Produto",
+     "País",
+     "Loja inteira sempre",
+     "Cliente"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "E inclui o orgânico.",
+    "topic": "Atribuição"
+   },
+   {
+    "q": "Receita bruta total inclui:",
+    "options": [
+     "Valor pago e subsídios de preço",
+     "Os subsídios de envio da plataforma",
+     "Somente o valor do frete",
+     "Nenhum valor monetário"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Subsídios de envio ficam de fora.",
+    "topic": "Métrica"
+   },
+   {
+    "q": "Custo por pedido é:",
+    "options": [
+     "Pedidos ÷ custo",
+     "Custo ÷ pedidos",
+     "Cupom ÷ frete",
+     "Custo × cliques"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Mede quanto cada pedido custou.",
+    "topic": "Métrica"
+   },
+   {
+    "q": "No LIVE GMV Max, o objetivo de otimização é:",
+    "options": [
+     "Seguidores",
+     "Receita bruta",
+     "Curtidas",
+     "Compartilhamentos"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "O ROI de LIVE mede GMV da sala ÷ gasto.",
+    "topic": "LIVE"
+   },
+   {
+    "q": "Qual perfil é considerado forte para LIVE GMV Max?",
+    "options": [
+     "Sem produtos",
+     "Com LIVE forte nos últimos 7 dias",
+     "Perfil novo sem LIVE",
+     "Sem seguidores"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Cerca de US$ 1.000 de receita bruta.",
+    "topic": "LIVE"
+   },
+   {
+    "q": "Vendas líquidas exigem saldo inicial?",
+    "options": [
+     "Sim, sempre",
+     "Não",
+     "Sim, R$ 1 mil",
+     "Sim, R$ 10 mil"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "A taxa sai da liquidação.",
+    "topic": "Líquidas"
+   },
+   {
+    "q": "Em vendas líquidas, a taxa de um pedido reembolsado:",
+    "options": [
+     "É cobrada em dobro",
+     "É cobrada do cliente",
+     "Não é cobrada",
+     "Vira multa"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O custo é devolvido.",
+    "topic": "Líquidas"
+   },
+   {
+    "q": "Autorização de criativo de afiliado vale para:",
+    "options": [
+     "Nenhuma postagem do criador",
+     "Somente as transmissões de LIVE",
+     "Apenas uma única postagem escolhida",
+     "Todas as postagens de afiliado do criador"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "A de código de vídeo vale para uma postagem.",
+    "topic": "ACA"
+   },
+   {
+    "q": "Campanha da plataforma com “GMV Max necessário” exige:",
+    "options": [
+     "NF-e emitida pelo cliente",
+     "Cupom de chat",
+     "Conta de anúncios configurada",
+     "Três lojas"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Sem conta de anúncios, a inscrição fica bloqueada.",
+    "topic": "Pacote"
+   },
+   {
+    "q": "CMIO é:",
+    "options": [
+     "Custo por mil impressões otimizado",
+     "Cadastro de Marca Individual",
+     "Cupom Mundial de Ofertas",
+     "Código Mínimo de Item"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "É o tipo criado com forma de pagamento configurada.",
+    "topic": "Pacote"
+   },
+   {
+    "q": "Antes de ligar anúncios, a loja deve garantir:",
+    "options": [
+     "Mais cancelamentos",
+     "Menos fotos",
+     "Preço escondido",
+     "Estoque e qualidade do produto"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Anúncio em produto com problema piora a conta.",
+    "topic": "Rotina"
+   }
+  ]
+ }
+}

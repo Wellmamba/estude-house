@@ -1,0 +1,1822 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 14: integrações com Shopify, ERP e parceiros",
+  "tag": "TikTok Shop",
+  "tagline": "TikTok for Shopify, pedidos integrados, App Store, ERP e agências parceiras.",
+  "subtitle": "Registro e sincronização do TikTok for Shopify, depósitos, pedidos integrados, fatura, avaliações, App Store, ERP e agências (TSP). Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Conectar a Shopify",
+    "tagline": "Preparar e sincronizar",
+    "outcome": "Registro, depósitos, produtos e configurações de sincronização.",
+    "lessons": [
+     {
+      "title": "Por que integrar: visão geral do TikTok for Shopify",
+      "minutes": 4,
+      "goal": "Entender o que o conector faz e o que ele não faz.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔌",
+        "title": "Vender no TikTok sem refazer a loja",
+        "text": "O aplicativo TikTok for Shopify conecta a loja Shopify ao TikTok Shop e sincroniza catálogo, estoque, envio e pedidos."
+       },
+       {
+        "t": "p",
+        "title": "O que é",
+        "html": "O <b>TikTok for Shopify</b> é um aplicativo conector criado pelo próprio TikTok. Quem já vende na Shopify gerencia o TikTok Shop como mais um canal de vendas, a partir do administrador da Shopify."
+       },
+       {
+        "t": "list",
+        "title": "Benefícios",
+        "items": [
+         "<b>Sincronizar e começar a vender</b> com poucos cliques",
+         "Chegar a novos clientes pela <b>descoberta orgânica</b> e por LIVEs",
+         "Gerir <b>estoque e pedidos</b> no administrador da Shopify"
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "Fluxo do vendedor",
+        "caption": "Quatro guias da Academia cobrem cada etapa.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "📝",
+          "title": "Registro",
+          "text": "Instalar o app e conectar a conta."
+         },
+         {
+          "icon": "📦",
+          "title": "Produtos",
+          "text": "Sincronizar o catálogo."
+         },
+         {
+          "icon": "🧾",
+          "title": "Pedidos",
+          "text": "Receber e atender os pedidos."
+         },
+         {
+          "icon": "⚙️",
+          "title": "Configurações",
+          "text": "Ajustar estoque, preço e envio."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Algumas coisas continuam no Seller Center",
+        "html": "Devoluções e reembolsos só podem ser iniciados na Central do vendedor. A etiqueta do Envio pelo TikTok também é criada lá."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Uma loja, uma conta",
+        "html": "Uma loja Shopify só se conecta a <b>uma</b> conta do TikTok Shop. Para outra conta, desconecte a atual ou crie outra loja Shopify."
+       },
+       {
+        "t": "quiz",
+        "q": "O TikTok for Shopify foi criado por:",
+        "options": [
+         "Um banco parceiro",
+         "Uma agência de anúncios",
+         "Uma transportadora",
+         "O próprio TikTok"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "É um conector oficial."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantas contas do TikTok Shop uma loja Shopify conecta?",
+        "options": [
+         "Até cinco ao mesmo tempo",
+         "Quantas quiser",
+         "Apenas uma",
+         "Nenhuma, só o app mobile"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Para outra conta é preciso desconectar."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Conector oficial <b>TikTok for Shopify</b>",
+         "Sincroniza <b>catálogo, estoque, envio e pedidos</b>",
+         "Uma loja = <b>uma conta</b> TikTok Shop",
+         "Devolução e reembolso: <b>Central do vendedor</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Registro e checklist antes de conectar",
+      "minutes": 4,
+      "goal": "Preparar a Shopify e a conta para a conexão não travar.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "✅",
+        "title": "Conectar com tudo em ordem",
+        "text": "A maioria dos problemas de conexão vem de dados da Shopify incompletos ou de apps incompatíveis."
+       },
+       {
+        "t": "steps",
+        "title": "Etapas de registro",
+        "items": [
+         {
+          "title": "Baixar o app",
+          "html": "Instale o TikTok for Shopify na Shopify App Store."
+         },
+         {
+          "title": "Configurar agora",
+          "html": "Entre no funil Comece a vender no TikTok."
+         },
+         {
+          "title": "Conectar conta",
+          "html": "Crie ou conecte a conta do TikTok Shop."
+         },
+         {
+          "title": "Perfil comercial",
+          "html": "Complete o perfil e aguarde alguns dias de análise."
+         },
+         {
+          "title": "Preparar para vender",
+          "html": "Configure envio e depósito e adicione produtos."
+         },
+         {
+          "title": "Vincular TikTok",
+          "html": "Ligue a conta oficial para LIVEs e vídeos de comércio eletrônico."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Checklist na Shopify",
+        "items": [
+         "Uma <b>localização comercial BR</b> é necessária",
+         "Todos os campos de localização preenchidos corretamente",
+         "Produtos com <b>atributos, tabela de tamanhos e certificação</b> quando a categoria pedir",
+         "<b>Peso e dimensões</b> de cada produto",
+         "Canal de vendas do TikTok habilitado na publicação do produto"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Status da conta no app",
+        "caption": "A barra de status mostra a ação sugerida.",
+        "head": [
+         "Status",
+         "O que fazer"
+        ],
+        "rows": [
+         [
+          "Configuração em andamento",
+          "Concluir informações da loja"
+         ],
+         [
+          "Análise de conta pendente",
+          "Aguardar e voltar depois"
+         ],
+         [
+          "Pronto",
+          "Gerenciar loja e vender"
+         ],
+         [
+          "Atualização necessária",
+          "Abrir Gerenciar configurações"
+         ],
+         [
+          "Suspenso",
+          "Ler a Academia do vendedor"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Quem já vende no TikTok Shop",
+        "html": "Conclua pedidos pendentes, devoluções e reembolsos <b>antes</b> de conectar. Pedidos antigos não sincronizam com a Shopify e só podem ser geridos na Central do vendedor."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Apps incompatíveis atrapalham",
+        "html": "Se você usa apps conectores de terceiros, confirme que são compatíveis ou desconecte-os antes de conectar o TikTok for Shopify. Caso contrário, o status dos pedidos pode falhar."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Só o titular conecta",
+        "html": "Subconta recebe erro ao tentar conectar. Use a conta principal do TikTok Shop."
+       },
+       {
+        "t": "quiz",
+        "q": "Quem consegue autorizar a conexão com a Shopify?",
+        "options": [
+         "O titular da conta principal",
+         "Somente o criador",
+         "Qualquer cliente",
+         "Qualquer subconta"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Subcontas recebem mensagem de erro."
+       },
+       {
+        "t": "quiz",
+        "q": "O que fazer com pedidos pendentes antes de conectar?",
+        "options": [
+         "Migrá-los em massa para a Shopify depois",
+         "Concluí-los, inclusive devoluções e reembolsos",
+         "Deixá-los pendentes para sempre na conta",
+         "Apagar a conta antiga do TikTok Shop"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Pedidos antigos não sincronizam."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Checklist: <b>localização BR</b> e dados dos produtos",
+         "Registro em <b>seis etapas</b>",
+         "Pedidos antigos <b>ficam na Central</b>",
+         "Desconecte <b>apps incompatíveis</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Depósitos e envio",
+      "minutes": 4,
+      "goal": "Configurar coleta, devolução e escolher quem envia.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏭",
+        "title": "Sem depósito, sem sincronização",
+        "text": "Antes de sincronizar produtos, o depósito de coleta e o de devolução precisam estar configurados e mapeados."
+       },
+       {
+        "t": "list",
+        "title": "Regras de depósito",
+        "items": [
+         "Máximo de <b>um endereço de coleta</b> e <b>um de devolução</b>",
+         "O Brasil opera com <b>depósito único</b>",
+         "Cada depósito escolhido não pode ser mapeado para vários endereços do TikTok",
+         "Vendedores existentes precisam <b>mapear</b> antes de sincronizar produtos",
+         "Mudanças em <b>Configurações da loja > Envio</b>"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Mapear o depósito",
+        "items": [
+         {
+          "title": "Configurar",
+          "html": "Clique em Configurar e depois em Editar."
+         },
+         {
+          "title": "Escolher",
+          "html": "Selecione o endereço da Shopify para coleta e devolução."
+         },
+         {
+          "title": "Salvar",
+          "html": "Confirme o mapeamento."
+         },
+         {
+          "title": "Sincronizar",
+          "html": "Siga para a sincronização dos produtos."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Duas opções de envio",
+        "caption": "O padrão para novos vendedores é Envio pelo TikTok.",
+        "head": [
+         "Envio pelo TikTok (padrão)",
+         "Envio pelo vendedor"
+        ],
+        "rows": [
+         [
+          "Etiqueta criada na Central do vendedor",
+          "Envio feito na Shopify ou em app de envio"
+         ],
+         [
+          "Dados do cliente mascarados na Shopify",
+          "Exige modelo de taxa de envio"
+         ],
+         [
+          "Status atualizado automaticamente",
+          "Rastreio válido e transportadora mapeada"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Limites do Envio pelo TikTok",
+        "html": "Produtos acima de 30 kg ou de 60×60×60 cm não podem usar essa opção."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Pedido mascarado com Envio pelo vendedor?",
+        "html": "Veja se o estoque do depósito do modelo de envio está zerado. Sem estoque, o pedido cai em Envio pela plataforma."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantos endereços de coleta cada vendedor pode definir?",
+        "options": [
+         "Quantos quiser",
+         "Dez de devolução",
+         "Um de coleta e um de devolução",
+         "Cinco de coleta"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O Brasil só aceita depósito único."
+       },
+       {
+        "t": "quiz",
+        "q": "Onde a etiqueta de Envio pelo TikTok deve ser criada?",
+        "options": [
+         "Na conta do cliente",
+         "Na Central do vendedor",
+         "Em qualquer app externo",
+         "No administrador da Shopify"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Não crie em apps de envio de terceiros."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Um depósito</b> de coleta e um de devolução",
+         "Mapear <b>antes</b> de sincronizar",
+         "Padrão: <b>Envio pelo TikTok</b>",
+         "Limite: <b>30 kg e 60×60×60 cm</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Sincronização de produtos",
+      "minutes": 4,
+      "goal": "Enviar o catálogo da Shopify para o TikTok Shop sem erro.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📦",
+        "title": "Nem tudo vem pronto da Shopify",
+        "text": "O TikTok Shop exige atributos que a Shopify muitas vezes não tem. A sincronização ajuda a completar o catálogo."
+       },
+       {
+        "t": "table",
+        "title": "Duas formas de sincronizar",
+        "caption": "O modelo em massa exige produtos na mesma categoria do TikTok Shop.",
+        "head": [
+         "Opção",
+         "Quando usar"
+        ],
+        "rows": [
+         [
+          "Editar e sincronizar cada produto",
+          "Produtos que precisam de atributos específicos"
+         ],
+         [
+          "Aplicar modelo de categoria em massa",
+          "Produtos da mesma categoria com atributos iguais"
+         ]
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Passo a passo",
+        "items": [
+         {
+          "title": "Filtrar",
+          "html": "Em Gerenciar e sincronizar produtos, busque por nome, marcação, fornecedor ou status."
+         },
+         {
+          "title": "Selecionar",
+          "html": "Marque os produtos."
+         },
+         {
+          "title": "Editar ou aplicar modelo",
+          "html": "Complete atributos e categoria."
+         },
+         {
+          "title": "Salvar e sincronizar",
+          "html": "Inicie o processo."
+         },
+         {
+          "title": "Conferir",
+          "html": "Veja o status nas abas Todos, Ação necessária e Sincronizado."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Status dos produtos",
+        "caption": "Depois de sincronizado: analisando, live, inativo ou excluído.",
+        "head": [
+         "Status",
+         "Significado"
+        ],
+        "rows": [
+         [
+          "Live",
+          "Disponível no TikTok Shop"
+         ],
+         [
+          "Não sincronizado",
+          "Informações incompletas; edite ou aplique modelo"
+         ],
+         [
+          "Falha na sincronização",
+          "Passe o mouse no erro, corrija e tente de novo"
+         ],
+         [
+          "Falha na análise (GNE)",
+          "Corrija o produto e sincronize"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Limites e dicas",
+        "items": [
+         "Até <b>300 SKUs</b> por vendedor, com preços de <b>R$ 0,10 a R$ 10.000</b> (confira a regra atual)",
+         "Use <b>português</b> nos anúncios",
+         "O <b>GTIN/UPC</b> não sincroniza sozinho; informe manualmente",
+         "Estoque de SKU precisa ficar entre <b>0 e 999.999</b>, sem valores negativos"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Produto criado só no Seller Center",
+        "html": "Se você cria produtos direto na Central do vendedor, eles podem não existir na Shopify. Depois, pedidos desse produto falham. Use a ferramenta de mapeamento de produtos."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Mudar a categoria",
+        "html": "Em Editar > Informações adicionais do produto, clique em Alterar para usar outro modelo ou em Criar para fazer um novo."
+       },
+       {
+        "t": "quiz",
+        "q": "O modelo de categoria serve para:",
+        "options": [
+         "Cancelar todos os pedidos que estão em aberto",
+         "Emitir nota fiscal de cada pedido da loja",
+         "Mudar o nome da loja no aplicativo da Shopify",
+         "Preencher atributos em massa para produtos da mesma categoria"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Evita preencher produto por produto."
+       },
+       {
+        "t": "quiz",
+        "q": "Falha na sincronização do produto: o que fazer?",
+        "options": [
+         "Esperar o erro sumir sem fazer nada",
+         "Apagar a conta do TikTok Shop",
+         "Trocar de loja Shopify por conta própria",
+         "Ver o motivo, corrigir os dados e sincronizar de novo"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O motivo aparece ao passar o mouse sobre o erro."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Duas formas: <b>editar</b> ou <b>modelo em massa</b>",
+         "Status: <b>Live, Não sincronizado, Falha</b>",
+         "GTIN <b>manual</b>; estoque <b>0 a 999.999</b>",
+         "Use <b>mapeamento</b> se criou no Seller Center"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Configurações de sincronização: informações, estoque e preço",
+      "minutes": 4,
+      "goal": "Decidir o que a Shopify atualiza no TikTok e o que fica separado.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎛️",
+        "title": "Três chaves de sincronização",
+        "text": "Informações do produto, estoque e preço podem ficar ligados ou desligados. Todas começam ativadas."
+       },
+       {
+        "t": "table",
+        "title": "As três opções",
+        "caption": "As configurações valem para todos os produtos, não para uma lista selecionada.",
+        "head": [
+         "Opção",
+         "Ativada",
+         "Desativada"
+        ],
+        "rows": [
+         [
+          "Informações do produto",
+          "Título, descrição e imagens da Shopify refletem no TikTok",
+          "Você edita na Shopify sem mexer no TikTok"
+         ],
+         [
+          "Estoque",
+          "Mudanças de estoque sincronizam",
+          "Estoque do TikTok fica separado, útil em grandes promoções"
+         ],
+         [
+          "Preço",
+          "Mudanças de preço sincronizam",
+          "Preço exclusivo do TikTok Shop"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Tudo desligado = nada sincroniza",
+        "html": "Se as configurações de sincronização estiverem desativadas, informações, estoque e preço deixam de ser sincronizados."
+       },
+       {
+        "t": "list",
+        "title": "Ferramentas extras",
+        "items": [
+         "<b>Limite de falta de estoque</b>: abaixo dele, o produto vira sem estoque",
+         "Edição de preços em massa: aumento ou redução <b>fixa ou em porcentagem</b>",
+         "Se o título editado não aparece, confira se a sincronização de informações está ativada"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Estoque reservado",
+        "html": "Para uma grande promoção, você desliga a sincronização de estoque e reserva 200 unidades só para o TikTok Shop. A venda na Shopify não consome esse estoque."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Preço exclusivo",
+        "html": "Desativar a sincronização de preço permite ofertas exclusivas no TikTok Shop sem mexer no preço da Shopify."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a situação inicial das três opções de sincronização?",
+        "options": [
+         "Todas ativadas",
+         "Só preço ativado",
+         "Só estoque ativado",
+         "Todas desativadas"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Podem ser desligadas em Configurações da loja."
+       },
+       {
+        "t": "quiz",
+        "q": "Para um preço só do TikTok Shop, você:",
+        "options": [
+         "Desativa a sincronização de preço",
+         "Apaga o produto",
+         "Troca de depósito",
+         "Desativa o título"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Assim o preço do TikTok fica independente."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Três chaves: <b>informações, estoque, preço</b>",
+         "Valem para <b>todos</b> os produtos",
+         "Desligar separa <b>TikTok × Shopify</b>",
+         "Defina o <b>limite de falta de estoque</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O TikTok for Shopify permite conectar uma loja Shopify a:",
+      "options": [
+       "Qualquer número de contas",
+       "Uma conta do TikTok Shop",
+       "Nenhuma conta",
+       "Cinco contas ao mesmo tempo"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Para outra conta, desconecte a atual.",
+      "topic": "Registro"
+     },
+     {
+      "q": "Quem autoriza a conexão com a Shopify?",
+      "options": [
+       "O titular da conta principal",
+       "O transportador",
+       "Qualquer cliente",
+       "Qualquer subconta"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Subcontas recebem erro.",
+      "topic": "Registro"
+     },
+     {
+      "q": "O Brasil aceita quantos depósitos?",
+      "options": [
+       "Um de coleta e um de devolução",
+       "Quantos quiser",
+       "Cinco de devolução",
+       "Dez de coleta"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Depósito único.",
+      "topic": "Depósito"
+     },
+     {
+      "q": "Uma forma de sincronizar vários produtos iguais é:",
+      "options": [
+       "Aplicar modelo de categoria",
+       "Mudar o nome da loja",
+       "Apagar e recriar tudo",
+       "Cancelar pedidos"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Evita edição produto a produto.",
+      "topic": "Produtos"
+     },
+     {
+      "q": "Desativar a sincronização de preço permite:",
+      "options": [
+       "Preço exclusivo no TikTok Shop",
+       "Trocar a categoria",
+       "Deletar o produto",
+       "Cancelar o depósito"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O preço do TikTok fica independente.",
+      "topic": "Configurações"
+     }
+    ]
+   },
+   {
+    "title": "Operar pedidos integrados",
+    "tagline": "Pedidos, erros e pós-venda",
+    "outcome": "Cancelamentos, erros, fatura, devolução e avaliações.",
+    "lessons": [
+     {
+      "title": "Pedidos, estoque e cancelamentos",
+      "minutes": 4,
+      "goal": "Entender como o pedido nasce na Shopify e quem pode cancelar.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧾",
+        "title": "Do TikTok para a Shopify",
+        "text": "Quando um pedido é criado no TikTok Shop, o app confere o estoque na Shopify antes de criar o pedido lá."
+       },
+       {
+        "t": "list",
+        "title": "Criação do pedido",
+        "items": [
+         "Estoque disponível (ou verificação desativada): o pedido aparece na Shopify, com canal <b>TikTok</b>",
+         "Sem estoque ou produto inexistente na Shopify: o pedido <b>não é criado</b>",
+         "Pedidos feitos <b>antes</b> de instalar o app não aparecem na lista de status"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Quem pode cancelar",
+        "caption": "Cliente não cancela após o status Pronto para enviar (RTS).",
+        "head": [
+         "Origem",
+         "Condições"
+        ],
+        "rows": [
+         [
+          "TikTok",
+          "Fraude do cliente ou pedido fora do SLA de envio"
+         ],
+         [
+          "Cliente",
+          "Sem aprovação se o pedido ainda não está em “Aguardando coleta” (Envio pelo TikTok) ou na primeira hora de espera (Envio pelo vendedor)"
+         ],
+         [
+          "Vendedor",
+          "Pela Central do vendedor ou pelo administrador da Shopify"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Período de espera",
+        "html": "Pedidos novos chegam à Shopify como <b>Em espera</b> e só viram <b>Não enviado</b> depois de uma hora. Esse intervalo existe porque o cliente pode cancelar em até 1 hora sem aprovação."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "ShipStation ignora o status Em espera",
+        "html": "Esse app pode enviar pedidos ainda em espera, e o status deixa de atualizar no TikTok Shop. Desative regras automáticas para pedidos TikTok, envie manualmente e só despache quando estiver Não enviado."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Etiquetas na Shopify",
+        "html": "A coluna Tags do administrador de pedidos avisa quando há mudança de status que pede sua atenção."
+       },
+       {
+        "t": "quiz",
+        "q": "Quanto tempo de espera os pedidos têm antes de poder ser enviados?",
+        "options": [
+         "Cerca de 1 hora",
+         "Cerca de 30 dias corridos",
+         "Cerca de 7 dias corridos",
+         "Cerca de 24 horas inteiras"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "É o período em que o cliente cancela sem aprovação."
+       },
+       {
+        "t": "quiz",
+        "q": "Pedido TikTok sem estoque na Shopify:",
+        "options": [
+         "É criado com estoque negativo",
+         "Não é criado na Shopify",
+         "É guardado para o mês seguinte",
+         "É enviado de graça"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O app cancela o pedido do TikTok em alguns casos."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "App <b>confere o estoque</b> antes de criar",
+         "Cancelamento: <b>TikTok, cliente ou vendedor</b>",
+         "<b>Em espera</b> por 1 hora",
+         "Cuidado com <b>ShipStation</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Erros de pedido e alertas",
+      "minutes": 4,
+      "goal": "Reconhecer os erros mais comuns e saber a ação certa.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚨",
+        "title": "A lista de status é seu painel de alertas",
+        "text": "A guia Lista de status dos pedidos marca erros com ícone de erro e pendências com ícone de alerta."
+       },
+       {
+        "t": "table",
+        "title": "Erros frequentes",
+        "caption": "A descrição do erro traz um link para corrigir.",
+        "head": [
+         "Erro",
+         "Ação"
+        ],
+        "rows": [
+         [
+          "Estoque esgotado na Shopify (TikTok tinha estoque)",
+          "Atualizar o estoque na Shopify e sincronizar"
+         ],
+         [
+          "Rastreio inválido ou ausente",
+          "Informar rastreio aceito pelo TikTok Shop"
+         ],
+         [
+          "Transportadora não aceita ou sem mapeamento",
+          "Conferir o mapeamento em Configurações de envio"
+         ],
+         [
+          "Rastreio repetido em outro pedido",
+          "Usar um número único"
+         ],
+         [
+          "Produto não existe na Shopify",
+          "Mapear o produto no app"
+         ],
+         [
+          "Cancelamento ou envio não sincronizou",
+          "Repetir a ação na Central do vendedor"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Alertas pendentes",
+        "items": [
+         "Solicitação de <b>cancelamento</b> do cliente",
+         "Solicitação de <b>devolução</b>",
+         "Solicitação de <b>reembolso</b>",
+         "Pedidos que precisam de <b>ID de rastreio</b> ou de etiqueta"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Cancelamento pela plataforma",
+        "html": "Se o TikTok Shop cancelou por violação do SLA de envio, a loja pode receber avaliação negativa. Corrija o prazo de envio."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Estoque fora de sincronia",
+        "html": "O TikTok mostra 5 unidades e a Shopify mostra 0. O cliente compra, o app tenta criar o pedido na Shopify e falha. O pedido do TikTok é cancelado em nome do vendedor."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Pesquise rápido",
+        "html": "A barra de pesquisa aceita ID de pedido da Shopify e ID de produto do TikTok Shop."
+       },
+       {
+        "t": "quiz",
+        "q": "Pedido pendente de cancelamento deve ser resolvido:",
+        "options": [
+         "Em nenhum lugar",
+         "No e-mail do cliente",
+         "Na conta do transportador",
+         "Na Central do vendedor"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Lá o vendedor aprova ou rejeita."
+       },
+       {
+        "t": "quiz",
+        "q": "Transportadora não mapeada leva a:",
+        "options": [
+         "Aumento automático do estoque da loja",
+         "Frete grátis para todos os clientes",
+         "Falha no envio até mapear a transportadora",
+         "Nota fiscal emitida de forma automática"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Confira o mapeamento em Configurações de envio."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Erro = <b>ícone de erro</b>; pendência = <b>alerta</b>",
+         "Estoque fora de sincronia <b>cancela</b> o pedido",
+         "Rastreio e transportadora: <b>mapear</b>",
+         "Pendências vão para a <b>Central</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Fatura, devolução e reembolso na integração",
+      "minutes": 4,
+      "goal": "Cumprir as regras fiscais e de pós-venda dentro do fluxo integrado.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📑",
+        "title": "Fatura antes da etiqueta",
+        "text": "O vendedor empresarial precisa gerar a fatura com os dados do cliente e carregá-la na Central do vendedor antes de criar a etiqueta."
+       },
+       {
+        "t": "steps",
+        "title": "Fatura",
+        "items": [
+         {
+          "title": "Dados do cliente",
+          "html": "Veja nome no CPF, CPF, nome e endereço nos detalhes do pedido."
+         },
+         {
+          "title": "Gerar",
+          "html": "Emita a fatura em um sistema autorizado."
+         },
+         {
+          "title": "Carregar",
+          "html": "Faça o upload na página do pedido na Central do vendedor."
+         },
+         {
+          "title": "Conferir",
+          "html": "O status passa a “1 fatura”; se inválida, aparece Fatura inválida."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Status e filtros",
+        "caption": "O app leva direto da lista para o upload.",
+        "head": [
+         "Item",
+         "Significado"
+        ],
+        "rows": [
+         [
+          "Sem fatura",
+          "Pedido aguardando upload"
+         ],
+         [
+          "1 fatura",
+          "Fatura carregada e válida"
+         ],
+         [
+          "Fatura inválida",
+          "Falha na validação"
+         ],
+         [
+          "Filtro A ser carregada",
+          "Pedidos sem fatura"
+         ],
+         [
+          "Filtro Carregada",
+          "Pedidos com fatura"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Devolução e reembolso",
+        "items": [
+         "São iniciados <b>somente na Central do vendedor</b>",
+         "Devolução ou reembolso feito na Shopify <b>não</b> reflete no TikTok Shop",
+         "Se o vendedor aprova, o status atualiza na Shopify e o cliente é reembolsado",
+         "Se rejeita, o cliente pode abrir <b>contestação</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Reembolso na Shopify não vale",
+        "html": "Mesmo que a Shopify ofereça a função de reembolso, o status não é refletido no TikTok Shop."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Combos virtuais",
+        "html": "O app é compatível com combos virtuais, mas eles precisam ser criados no TikTok Shop. Os pedidos chegam à Shopify com a observação “Combos virtuais”."
+       },
+       {
+        "t": "quiz",
+        "q": "Onde a devolução ou o reembolso deve ser iniciado?",
+        "options": [
+         "Na Central do vendedor",
+         "No app do cliente",
+         "No administrador da Shopify",
+         "Na conta do transportador"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Só assim o status é refletido."
+       },
+       {
+        "t": "quiz",
+        "q": "A fatura deve ser carregada:",
+        "options": [
+         "Nunca",
+         "Somente se o cliente pedir",
+         "Um mês depois da entrega",
+         "Antes da geração da etiqueta de envio"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "É exigência fiscal para vendedores empresariais."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Fatura <b>antes</b> da etiqueta",
+         "Status: <b>Sem fatura, 1 fatura, inválida</b>",
+         "Devolução e reembolso: <b>só na Central</b>",
+         "Rejeição pode virar <b>contestação</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Avaliações da Shopify no TikTok Shop",
+      "minutes": 4,
+      "goal": "Importar avaliações verificadas para dar confiança aos novos compradores.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⭐",
+        "title": "Avaliações que você já tem",
+        "text": "Em março de 2026 a Academia anunciou uma sincronização única de avaliações da Shopify para os produtos do TikTok Shop."
+       },
+       {
+        "t": "list",
+        "title": "Como funciona",
+        "items": [
+         "Um <b>banner</b> na Shopify avisa os vendedores elegíveis",
+         "Por padrão o vendedor <b>participa</b>, mas pode recusar em até <b>7 dias</b>",
+         "Só avaliações de <b>compras verificadas</b> são importadas",
+         "Produtos com até 100 avaliações: <b>todas</b>; acima disso: <b>últimos 2 meses</b>",
+         "Entram <b>só textos</b>, sem fotos ou vídeos",
+         "Há <b>moderação</b> manual e as aprovadas são marcadas como de sites externos"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Exemplos",
+        "caption": "A correspondência usa o ID externo do produto.",
+        "head": [
+         "Avaliação",
+         "Resultado"
+        ],
+        "rows": [
+         [
+          "Compra verificada, texto",
+          "Sincroniza"
+         ],
+         [
+          "Compra verificada com foto ou vídeo",
+          "Sincroniza só o texto"
+         ],
+         [
+          "Compra não verificada",
+          "Não sincroniza"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Importação única e de lançamento restrito",
+        "html": "A Academia descreve o recurso como importação única, testada inicialmente com grandes vendedores Shopify no Brasil. Verifique se sua loja é elegível."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Qualidade importa",
+        "html": "Avaliações falsas ou fora dos critérios podem ser descartadas na moderação."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Exemplo",
+        "html": "Um produto tem 80 avaliações na Shopify, 70 de compras verificadas. As 70 viram candidatas à importação, só em texto, e passam pela moderação antes de aparecer."
+       },
+       {
+        "t": "quiz",
+        "q": "Quais avaliações são importadas?",
+        "options": [
+         "Somente as de 1 estrela",
+         "Apenas as de compras verificadas",
+         "Somente as com vídeo",
+         "Todas, inclusive não verificadas"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Fotos e vídeos não vão junto."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o prazo para recusar a sincronização?",
+        "options": [
+         "7 dias após o banner",
+         "6 meses",
+         "Não há como recusar",
+         "24 horas"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Sem ação, a sincronização ocorre."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Importação <b>única</b> de avaliações",
+         "Só <b>compras verificadas</b>",
+         "<b>Recusar em 7 dias</b> se quiser",
+         "Só <b>texto</b>, com moderação"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Pedidos novos ficam em espera por:",
+      "options": [
+       "Trinta dias",
+       "Cerca de uma hora",
+       "Sete dias",
+       "Vinte e quatro horas"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "É o período de arrependimento.",
+      "topic": "Pedidos"
+     },
+     {
+      "q": "Pedido TikTok sem estoque na Shopify:",
+      "options": [
+       "Entra com estoque negativo",
+       "Fica salvo para o mês seguinte",
+       "É enviado gratuitamente",
+       "Não é criado na Shopify"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O app avisa na lista de status.",
+      "topic": "Pedidos"
+     },
+     {
+      "q": "Rastreio duplicado pede:",
+      "options": [
+       "Um número de rastreio único",
+       "Um novo depósito",
+       "Menos produtos",
+       "Outra moeda"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Cada rastreio vale para um pedido.",
+      "topic": "Erros"
+     },
+     {
+      "q": "Devolução e reembolso são iniciados:",
+      "options": [
+       "Na conta do cliente",
+       "No administrador da Shopify",
+       "Somente na Central do vendedor",
+       "No app do transportador"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Na Shopify não refletem no TikTok.",
+      "topic": "Pós-venda"
+     },
+     {
+      "q": "A importação de avaliações traz:",
+      "options": [
+       "Textos de compras verificadas",
+       "Somente notas de uma estrela",
+       "Todas as avaliações falsas",
+       "Vídeos de qualquer cliente"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Fotos e vídeos não são importados.",
+      "topic": "Avaliações"
+     }
+    ]
+   },
+   {
+    "title": "Aplicativos e parceiros",
+    "tagline": "App Store, ERP e TSP",
+    "outcome": "Instalar apps e contratar agências com segurança.",
+    "lessons": [
+     {
+      "title": "App Store e ERPs",
+      "minutes": 4,
+      "goal": "Instalar aplicativos e usar ERP para ganhar escala.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧩",
+        "title": "Ferramentas prontas para operar",
+        "text": "A App Store do TikTok Shop reúne integrações, conectores, gestão multicanal, envio e processamento, entre outras soluções."
+       },
+       {
+        "t": "p",
+        "title": "Para que serve",
+        "html": "Segundo a Academia, a App Store ajuda a conectar a loja existente ao TikTok Shop, sincronizar produtos e estoque de outros canais, processar pedidos em tempo real e gerenciar vendas e operações multicanal em um só lugar. Um vídeo da Academia mostra como ERPs sincronizam estoque, emitem NF-e em lote e agilizam pedidos."
+       },
+       {
+        "t": "steps",
+        "title": "Instalar um aplicativo",
+        "items": [
+         {
+          "title": "Abrir",
+          "html": "No Seller Center, vá em Crescimento > App Store."
+         },
+         {
+          "title": "Pesquisar",
+          "html": "Use categorias, filtros e a barra de busca."
+         },
+         {
+          "title": "Ver detalhes",
+          "html": "Confira benefícios, compatibilidade, FAQ e contato do desenvolvedor."
+         },
+         {
+          "title": "Instalar agora",
+          "html": "Preencha duração, e-mail e telefone."
+         },
+         {
+          "title": "Autorizar",
+          "html": "Revise as permissões e clique em Confirmar para autorizar."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Gerenciar",
+        "items": [
+         "<b>Meus aplicativos e incidentes</b> lista tudo o que foi instalado",
+         "<b>Renovar</b> estende a autorização (some se for ilimitada)",
+         "<b>Cancelar</b> revoga o acesso e o desenvolvedor perde dados e gestão",
+         "A duração <b>Ilimitada</b> evita expiração"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Revise as permissões",
+        "html": "Antes de autorizar, leia quais permissões de gerenciamento e análise o desenvolvedor receberá."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Troca de conector",
+        "html": "Ao trocar app de terceiros pelo TikTok for Shopify, revogue o antigo em Meus aplicativos e incidentes."
+       },
+       {
+        "t": "quiz",
+        "q": "Onde abrir a App Store?",
+        "options": [
+         "Finanças > Saque de valores liberados",
+         "Pedidos > Etiquetas de envio",
+         "Seller Center > Crescimento > App Store",
+         "Anúncios > Faturas da conta de anúncios"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Lá você pesquisa e instala aplicativos."
+       },
+       {
+        "t": "quiz",
+        "q": "O que acontece ao cancelar um aplicativo?",
+        "options": [
+         "O app ganha ainda mais permissões",
+         "Nada muda para o desenvolvedor",
+         "A loja inteira é excluída",
+         "O desenvolvedor perde acesso aos dados e à gestão"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "A autorização é revogada."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Crescimento > App Store</b>",
+         "Instalar → <b>revisar permissões</b> → autorizar",
+         "<b>Renovar</b> ou <b>cancelar</b> em Meus aplicativos",
+         "ERPs ajudam com <b>estoque e NF-e</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Agências e serviços (TSP)",
+      "minutes": 4,
+      "goal": "Contratar um parceiro oficial e controlar a autorização.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🤝",
+        "title": "Especialistas para ganhar tempo",
+        "text": "O TSP (Parceiro do TikTok Shop) é um especialista terceirizado que ajuda a abrir a operação, vender e gerenciar conteúdo."
+       },
+       {
+        "t": "steps",
+        "title": "Contratar um serviço",
+        "items": [
+         {
+          "title": "Procurar",
+          "html": "Seller Center > Aplicativos e serviços > Agências e serviços."
+         },
+         {
+          "title": "Ver detalhes",
+          "html": "Clique em Saiba mais no serviço."
+         },
+         {
+          "title": "Solicitar",
+          "html": "Preencha o formulário de consulta."
+         },
+         {
+          "title": "Conversar",
+          "html": "O parceiro aceita e conversa com você."
+         },
+         {
+          "title": "Autorizar",
+          "html": "Use o link de autorização enviado pelo parceiro."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Campos do formulário",
+        "caption": "Você pode selecionar até 50 serviços por vez.",
+        "head": [
+         "Campo",
+         "Obrigatório?"
+        ],
+        "rows": [
+         [
+          "Nome e e-mail de contato",
+          "Sim"
+         ],
+         [
+          "Tamanho da empresa e moeda",
+          "Sim"
+         ],
+         [
+          "GMV mensal médio no TikTok Shop",
+          "Sim"
+         ],
+         [
+          "Orçamento mensal para o TSP",
+          "Sim"
+         ],
+         [
+          "Categoria de produto principal",
+          "Sim"
+         ],
+         [
+          "Localização, GMV de outros canais, produto campeão",
+          "Não"
+         ]
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Status da solicitação",
+        "caption": "Acompanhe em Minha solicitação.",
+        "head": [
+         "Status",
+         "Significado"
+        ],
+        "rows": [
+         [
+          "Em análise pelo parceiro",
+          "O parceiro está avaliando"
+         ],
+         [
+          "Aceita pelo parceiro",
+          "Ele aceitou"
+         ],
+         [
+          "Conectada",
+          "Você concedeu autorização"
+         ],
+         [
+          "Encerrada",
+          "A atribuição terminou"
+         ],
+         [
+          "Rejeitada",
+          "O parceiro recusou"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Autorização",
+        "items": [
+         "Pode durar <b>até um ano</b>",
+         "Renovação <b>só pelo link</b> enviado pelo TSP",
+         "Em Meus serviços aparecem os que expiram nos <b>próximos 15 dias</b>",
+         "Cancelar impede o parceiro de acessar seus dados",
+         "Serviço <b>público</b> (listado) × <b>personalizado</b> (só com link)",
+         "Parceiro removido por violação aparece como <b>Encerrada</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Desvincular conta TikTok",
+        "html": "Se você desvincular uma conta TikTok autorizada para um serviço, a autorização dela deixa de valer a partir desse momento."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o prazo máximo de autorização de um serviço TSP?",
+        "options": [
+         "Sempre vitalício",
+         "Até um ano",
+         "Somente um dia",
+         "Dez anos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "A renovação é feita pelo link do parceiro."
+       },
+       {
+        "t": "quiz",
+        "q": "Como renovar a autorização de um TSP?",
+        "options": [
+         "Por um novo link de autorização do parceiro",
+         "Não existe nenhuma forma de renovar",
+         "Pelo chat de atendimento do cliente",
+         "Pelo saldo disponível da conta"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Em Meus serviços aparecem os que vão expirar."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Caminho: <b>Aplicativos e serviços > Agências e serviços</b>",
+         "Autorização por <b>link do TSP</b>, até <b>um ano</b>",
+         "Renovar <b>só pelo link</b>",
+         "Cancelar <b>corta o acesso</b> aos dados"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "A App Store do TikTok Shop fica em:",
+      "options": [
+       "Crescimento > App Store",
+       "Anúncios > Faturas da conta de anúncios",
+       "Finanças > Saque de valores liberados",
+       "Pedidos > Etiquetas de envio"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "No Seller Center.",
+      "topic": "App Store"
+     },
+     {
+      "q": "A duração Ilimitada de um aplicativo:",
+      "options": [
+       "Cobra uma multa",
+       "Cancela o app",
+       "Evita expiração da autorização",
+       "Apaga a loja"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O botão Renovar some.",
+      "topic": "App Store"
+     },
+     {
+      "q": "Cancelar um aplicativo faz com que:",
+      "options": [
+       "O app ganhe mais permissões",
+       "A loja seja excluída",
+       "O estoque dobre",
+       "O desenvolvedor perca o acesso aos dados"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "A autorização é revogada.",
+      "topic": "App Store"
+     },
+     {
+      "q": "A autorização de um TSP pode durar:",
+      "options": [
+       "Um dia",
+       "Dez anos",
+       "Para sempre",
+       "Até um ano"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Renovação pelo link do parceiro.",
+      "topic": "TSP"
+     },
+     {
+      "q": "Qual serviço só aparece com link do parceiro?",
+      "options": [
+       "O serviço público",
+       "O serviço de anúncios",
+       "O serviço de frete",
+       "O serviço personalizado"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O público fica listado na Loja de serviços.",
+      "topic": "TSP"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "O que o TikTok for Shopify sincroniza?",
+    "options": [
+     "Somente fotos",
+     "Somente cupons",
+     "Somente avaliações",
+     "Catálogo, estoque, envio e pedidos"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "É um conector oficial do TikTok.",
+    "topic": "Visão geral"
+   },
+   {
+    "q": "Antes de conectar, quem já vende deve:",
+    "options": [
+     "Concluir pedidos pendentes e devoluções",
+     "Excluir todos os produtos do catálogo",
+     "Mudar o CNPJ cadastrado na loja",
+     "Cancelar a conta do TikTok Shop"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Pedidos antigos não sincronizam.",
+    "topic": "Registro"
+   },
+   {
+    "q": "Apps conectores incompatíveis devem ser:",
+    "options": [
+     "Ignorados",
+     "Desconectados antes da conexão",
+     "Mantidos e duplicados",
+     "Instalados em dobro"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Podem quebrar o status dos pedidos.",
+    "topic": "Registro"
+   },
+   {
+    "q": "Qual limite o Envio pelo TikTok impõe?",
+    "options": [
+     "100 kg",
+     "1 kg",
+     "30 kg ou 60×60×60 cm",
+     "Nenhum limite"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Acima disso a opção não é permitida.",
+    "topic": "Envio"
+   },
+   {
+    "q": "O GTIN/UPC é sincronizado automaticamente?",
+    "options": [
+     "Sim, sempre",
+     "Só em campanhas",
+     "Não, é informado manualmente",
+     "Só às sextas"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Informe no app para cada produto.",
+    "topic": "Produtos"
+   },
+   {
+    "q": "Estoque de SKU válido fica entre:",
+    "options": [
+     "0 e 999.999",
+     "Sem limite",
+     "1 e 100",
+     "−10 e 10"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Estoque negativo gera erro.",
+    "topic": "Produtos"
+   },
+   {
+    "q": "Quando o produto vira sem estoque automaticamente?",
+    "options": [
+     "Quando recebe um novo vídeo",
+     "Nunca, só manualmente",
+     "Quando o produto muda de cor",
+     "Quando cai abaixo do limite configurado"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "É o limite de falta de estoque.",
+    "topic": "Configurações"
+   },
+   {
+    "q": "Se todas as sincronizações estiverem desligadas:",
+    "options": [
+     "Só o preço sincroniza",
+     "Só o título sincroniza",
+     "Nada é sincronizado com o TikTok Shop",
+     "Tudo sincroniza dobrado"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Informações, estoque e preço deixam de sincronizar.",
+    "topic": "Configurações"
+   },
+   {
+    "q": "Cliente cancela sem aprovação quando:",
+    "options": [
+     "Depois que o pedido já foi entregue",
+     "Depois que o pedido está em RTS",
+     "No Envio pelo TikTok, antes de Aguardando coleta",
+     "Depois que o pedido já foi enviado"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Depois de RTS ou envio não cancela.",
+    "topic": "Pedidos"
+   },
+   {
+    "q": "ShipStation exige cuidado porque:",
+    "options": [
+     "Apaga o estoque da Shopify",
+     "Não respeita o status Em espera da Shopify",
+     "Cobra uma taxa mais cara por envio",
+     "Troca o depósito sem avisar"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Pode enviar antes da hora e falhar a atualização.",
+    "topic": "Pedidos"
+   },
+   {
+    "q": "Cancelamento por violação de SLA pode causar:",
+    "options": [
+     "Avaliação negativa para a loja",
+     "Cupom grátis",
+     "Mais estoque",
+     "Bônus de frete"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Corrija o prazo de envio.",
+    "topic": "Erros"
+   },
+   {
+    "q": "A fatura do cliente é carregada:",
+    "options": [
+     "Nunca precisa ser carregada",
+     "Na Central do vendedor, antes da etiqueta",
+     "No e-mail pessoal do cliente",
+     "Na conta da transportadora"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "É exigência fiscal para empresas.",
+    "topic": "Fatura"
+   },
+   {
+    "q": "Importação de avaliações da Shopify:",
+    "options": [
+     "Acontece automaticamente todos os dias",
+     "Importa também os vídeos dos clientes",
+     "Não pode ser recusada de forma alguma",
+     "É uma sincronização única, recusável em 7 dias"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Só compras verificadas, apenas texto.",
+    "topic": "Avaliações"
+   },
+   {
+    "q": "Para instalar um app na App Store:",
+    "options": [
+     "Trocar de loja Shopify antes",
+     "Pagar uma multa de instalação",
+     "Excluir todo o estoque da loja",
+     "Revisar permissões e confirmar a autorização"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "As permissões de gestão e análise são mostradas antes.",
+    "topic": "App Store"
+   },
+   {
+    "q": "Uma agência TSP deve ser contratada via:",
+    "options": [
+     "Finanças > Saque de valores liberados",
+     "Aplicativos e serviços > Agências e serviços",
+     "Anúncios > Faturas da conta de anúncios",
+     "Pedidos > Etiquetas de envio"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Lá você solicita e acompanha.",
+    "topic": "TSP"
+   },
+   {
+    "q": "Para renovar a autorização de um TSP, é preciso:",
+    "options": [
+     "Pedir ao cliente",
+     "Pagar o saldo negativo",
+     "Um link de autorização do parceiro",
+     "Reiniciar a loja"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Só por esse link.",
+    "topic": "TSP"
+   }
+  ]
+ }
+}

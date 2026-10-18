@@ -1,0 +1,1376 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 11: afiliados e criadores",
+  "tag": "TikTok Shop",
+  "tagline": "Colaboração, comissão, amostras, tráfego externo e parceiros.",
+  "subtitle": "Colaboração aberta e direcionada, comissão, amostras, tráfego externo, agências e rotina de gestão de afiliados. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026; os vídeos dos cursos não foram assistidos, só seus resumos escritos).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Fundamentos do afiliado",
+    "tagline": "Colaborações e comissão",
+    "outcome": "Entender os tipos de colaboração, comissão e como encontrar criadores.",
+    "lessons": [
+     {
+      "title": "Afiliados: o que é e como começar",
+      "minutes": 4,
+      "goal": "Entender o modelo de comissão com criadores e escolher entre colaboração aberta e direcionada.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🤝",
+        "title": "Criadores vendem por você",
+        "text": "No TikTok Shop Affiliate, criadores promovem os seus produtos em vídeos e LIVEs e recebem comissão sobre cada venda. Você paga só pelo resultado."
+       },
+       {
+        "t": "p",
+        "title": "O modelo",
+        "html": "Marketing de afiliados é uma relação baseada em <b>comissão</b> entre vendedor e criador. O vendedor escolhe os produtos afiliados e a taxa, o criador adiciona à vitrine, produz conteúdo e a comissão é deduzida de cada venda e paga a ele automaticamente. Quem chega por um criador de confiança muitas vezes ainda não conhecia a sua loja."
+       },
+       {
+        "t": "table",
+        "title": "Dois tipos de colaboração",
+        "caption": "Menu Afiliados na Central do vendedor.",
+        "head": [
+         "Tipo",
+         "Como funciona",
+         "Quando usar"
+        ],
+        "rows": [
+         [
+          "Aberta",
+          "Produtos visíveis a todos os criadores no Marketplace",
+          "Quem está começando e quer descobrir quem vende"
+         ],
+         [
+          "Direcionada",
+          "Convite a criadores específicos, com comissão definida",
+          "Quem já tem parcerias ou conhece o criador ideal"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Sugestão da Academia",
+        "html": "Quem é novo no programa começa pela colaboração aberta, descobre quem seleciona os produtos e, depois, convida os melhores por colaboração direcionada."
+       },
+       {
+        "t": "list",
+        "title": "Condições para estar no programa",
+        "items": [
+         "Atender continuamente aos <b>critérios de qualificação</b>",
+         "Produto desqualificado se tiver <b>avaliações baixas</b>, <b>muitas devoluções por culpa do vendedor</b>, <b>reclamações</b> ou <b>violação de PI</b>",
+         "Loja desqualificada se o <b>SPS</b> ficar abaixo do padrão",
+         "Loja desqualificada: novas colaborações bloqueadas e as existentes <b>deixam de gerar pedidos</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Burlar o sistema tem custo",
+        "html": "Manipular dados ou processos pode gerar pontos de violação e até suspensão da conta."
+       },
+       {
+        "t": "steps",
+        "title": "Primeiros passos",
+        "items": [
+         {
+          "title": "Central de afiliados",
+          "html": "Entre em Afiliados na Central do vendedor."
+         },
+         {
+          "title": "Escolha a colaboração",
+          "html": "Aberta ou direcionada."
+         },
+         {
+          "title": "Adicione produtos",
+          "html": "Confira o estoque antes."
+         },
+         {
+          "title": "Defina a comissão",
+          "html": "Use a sugestão da plataforma como guia."
+         }
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "Qual colaboração deixa os produtos visíveis a todos os criadores?",
+        "options": [
+         "Convite enviado por e-mail",
+         "Colaboração direcionada",
+         "Campanha de LIVE",
+         "Colaboração aberta"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Eles aparecem no Marketplace de produtos."
+       },
+       {
+        "t": "quiz",
+        "q": "O que acontece se a loja é desqualificada do programa?",
+        "options": [
+         "Colaborações atuais deixam de gerar pedidos",
+         "Ganha comissão em dobro",
+         "Nada muda em nenhuma colaboração",
+         "Recebe créditos extras de anúncios"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Acontece quando o SPS fica abaixo do padrão."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Afiliado = <b>comissão por venda</b> de criadores",
+         "Aberta: <b>Marketplace</b>; direcionada: <b>convite</b>",
+         "Comece pela <b>aberta</b>",
+         "Mantenha <b>SPS e qualidade</b> para continuar elegível"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Colaboração aberta e comissão",
+      "minutes": 4,
+      "goal": "Configurar produtos, aprovação de criadores e a taxa de comissão com estratégia.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧾",
+        "title": "A comissão decide quem escolhe seu produto",
+        "text": "Comissão baixa afasta criadores; alta demais come a margem. O ponto certo vem de dados."
+       },
+       {
+        "t": "list",
+        "title": "Como funciona a colaboração aberta",
+        "items": [
+         "Você adiciona <b>alguns ou todos</b> os produtos à rede",
+         "Criadores escolhem no Marketplace e colocam na <b>vitrine</b>",
+         "A comissão sai de cada venda e vai ao criador",
+         "Edição individual ou em <b>lote</b>"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Opt-in automático",
+        "html": "É um atalho de um clique para inscrever o catálogo. Produtos futuros entram automaticamente, com comissão aproximada da <b>média sugerida da categoria</b>. Ex.: faixa sugerida de 10% a 15% resulta em cerca de <b>13%</b>. A aprovação de criadores <b>não</b> vem ligada nos produtos novos: ative você mesmo ou em lote."
+       },
+       {
+        "t": "p",
+        "title": "Comissão predeterminada por categoria",
+        "html": "Desde <b>23/09/2026</b>, a taxa predeterminada para criadores em colaboração aberta foi ajustada por subcategoria. Muitas ficam em <b>8%</b>; algumas, como nutrição e bem-estar, em <b>12%</b>; cartas colecionáveis em <b>1%</b>. Consulte a tabela da Academia para a sua subcategoria."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Reduzir comissão só vale depois de 30 dias",
+        "html": "A diminuição da taxa vale para <b>novos criadores</b> de imediato, mas para quem já promovia o produto só depois de <b>30 dias</b>. Aumentar vale imediatamente."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Redução de 15% para 12%",
+        "html": "Criador antigo mantém 15% por 30 dias e passa a 12% depois. Criador que adiciona o produto após a mudança já recebe 12%."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Comece pela sugestão da plataforma",
+        "html": "A taxa sugerida mostra o que a categoria costuma pagar e aumenta a chance de ser escolhido. Ajuste depois pelos resultados."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando uma redução de comissão atinge criadores antigos?",
+        "options": [
+         "No mesmo segundo",
+         "Nunca",
+         "Depois de 30 dias",
+         "Depois de 1 ano"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Novos criadores já usam a nova taxa."
+       },
+       {
+        "t": "quiz",
+        "q": "No opt-in automático, a comissão inicial segue:",
+        "options": [
+         "A média sugerida da categoria",
+         "Sempre zero por cento fixo",
+         "Sempre cinquenta por cento",
+         "O preço do produto vendido"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Você pode alterar a taxa livremente."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Aberta: <b>Marketplace</b> + comissão por venda",
+         "Opt-in: comissão da <b>média sugerida</b>",
+         "Redução vale em <b>30 dias</b> para antigos",
+         "Ative a <b>aprovação de criadores</b> nos produtos novos"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Colaboração direcionada e como achar criadores",
+      "minutes": 4,
+      "goal": "Usar filtros e dados para convidar os criadores certos.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔍",
+        "title": "Não escolha pelo número de seguidores",
+        "text": "Seguidores não pagam conta. A Academia mostra como filtrar criadores por resultado, público e frequência de publicação."
+       },
+       {
+        "t": "list",
+        "title": "Filtros da página Encontrar criadores",
+        "items": [
+         "<b>Categoria</b> em que gerou receita (30 dias) ou adicionou à vitrine (90 dias)",
+         "<b>Seguidores</b>, faixa etária e gênero",
+         "<b>Taxa média de comissão</b> praticada",
+         "<b>Tipo de conteúdo:</b> vídeo curto ou LIVE",
+         "<b>GMV</b>, unidades vendidas e média de visualizações",
+         "<b>Taxa de engajamento</b>",
+         "<b>Colaborações com marcas</b> recentes"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Taxa estimada de publicação",
+        "caption": "Mostra a chance de o criador postar depois da amostra.",
+        "head": [
+         "Faixa",
+         "Leitura"
+        ],
+        "rows": [
+         [
+          "0 a 40%",
+          "Baixa: publica pouco após receber amostra"
+         ],
+         [
+          "40 a 80%",
+          "Boa: publica com regularidade"
+         ],
+         [
+          "80 a 100%",
+          "Melhor: quase sempre publica"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Selos úteis",
+        "items": [
+         "<b>Rápido crescimento:</b> maior alta em transações e receita nos últimos 30 dias",
+         "<b>Criador Spotlight:</b> alto potencial recomendado pela plataforma"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Criar um convite direcionado",
+        "items": [
+         {
+          "title": "Escolha criadores",
+          "html": "Pelo nome ou ID, ou pela página Encontrar criadores."
+         },
+         {
+          "title": "Selecione produtos",
+          "html": "Confira o estoque."
+         },
+         {
+          "title": "Defina a comissão",
+          "html": "Use as orientações recomendadas."
+         },
+         {
+          "title": "Amostras",
+          "html": "Ative amostra grátis e escolha aprovação manual ou automática."
+         },
+         {
+          "title": "Finalize",
+          "html": "Dê um nome ao convite, defina a validade e o contato."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Veja quem já vendeu perto de você",
+        "html": "O filtro de colaborações com marcas mostra criadores que já venderam para concorrentes, um bom sinal de interesse na categoria."
+       },
+       {
+        "t": "quiz",
+        "q": "O que indica a taxa estimada de publicação?",
+        "options": [
+         "Cor do perfil do criador",
+         "Frequência de postagem após a amostra",
+         "Quantidade de seguidores",
+         "Preço da comissão"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Quanto maior, mais provável a postagem."
+       },
+       {
+        "t": "quiz",
+        "q": "O selo “Rápido crescimento” aponta criadores com:",
+        "options": [
+         "Mais seguidores falsos que reais",
+         "Menos vídeos que antes",
+         "Nenhuma venda no período",
+         "Maior alta de transações recente"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Considera os últimos 30 dias."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Filtre por <b>resultado</b>, não só seguidores",
+         "Veja a <b>taxa estimada de publicação</b>",
+         "Convite: <b>criador, produto, comissão, amostra</b>",
+         "Use selos <b>Rápido crescimento e Spotlight</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Qual colaboração exibe produtos a todos os criadores?",
+      "options": [
+       "Direcionada",
+       "Privada",
+       "Interna",
+       "Aberta"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Eles aparecem no Marketplace.",
+      "topic": "Colaboração"
+     },
+     {
+      "q": "Reduções de comissão atingem criadores antigos em:",
+      "options": [
+       "30 segundos",
+       "Nunca",
+       "30 dias",
+       "1 ano"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Novos já recebem a nova taxa.",
+      "topic": "Comissão"
+     },
+     {
+      "q": "O opt-in automático usa comissão baseada em:",
+      "options": [
+       "Média sugerida da categoria",
+       "Número de seguidores",
+       "Zero fixo",
+       "Preço do concorrente"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Você pode ajustar livremente.",
+      "topic": "Comissão"
+     },
+     {
+      "q": "A taxa estimada de publicação mostra:",
+      "options": [
+       "Preço do frete",
+       "Chance de postar após a amostra",
+       "Idade do criador",
+       "Cor do vídeo"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Faixas de 0–40, 40–80 e 80–100%.",
+      "topic": "Criadores"
+     },
+     {
+      "q": "Qual motivo pode desqualificar a loja do afiliado?",
+      "options": [
+       "SPS abaixo do padrão",
+       "Ter muitas fotos",
+       "Vender em promoção",
+       "Ter um cupom"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "As colaborações deixam de gerar pedidos.",
+      "topic": "Qualificação"
+     }
+    ]
+   },
+   {
+    "title": "Amostras e análise",
+    "tagline": "Investir com controle",
+    "outcome": "Gerir amostras grátis, reembolsáveis, lembretes e análise de resultado.",
+    "lessons": [
+     {
+      "title": "Amostras grátis",
+      "minutes": 4,
+      "goal": "Oferecer amostras com critério para criadores que realmente publicam.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎁",
+        "title": "Amostra é investimento, não brinde",
+        "text": "Enviar produto a criadores aumenta a eficácia do conteúdo, mas amostra sem critério vira prejuízo."
+       },
+       {
+        "t": "p",
+        "title": "Como funciona",
+        "html": "Amostras grátis funcionam na colaboração <b>aberta</b> e na <b>direcionada</b>. Na aberta, você ativa <b>Oferecer amostras grátis</b> em cada produto. Os criadores solicitam e você vê os pedidos em <b>Solicitação de amostra</b> no Marketing de afiliados."
+       },
+       {
+        "t": "list",
+        "title": "Configurações",
+        "items": [
+         "<b>Quantidade</b> de amostras disponíveis",
+         "<b>Período de solicitação:</b> indefinido ou com datas",
+         "<b>Limites</b> por criador: categoria, seguidores, GMV de 30 dias e média de visualizações por vídeo",
+         "Aprovação <b>manual</b> ou <b>automática</b>"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Automação de aprovação",
+        "items": [
+         "Critérios como GMV de 30 dias e <b>taxa estimada de postagem</b>",
+         "<b>Cota da loja</b> entre 1 e 100 amostras",
+         "Limites de <b>preço</b> do produto",
+         "Aprovação segue a ordem de criação até acabar a cota"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Mais funcionalidades",
+        "items": [
+         "<b>Múltiplos SKUs:</b> o criador pede cada variação e faz conteúdo único para cada uma",
+         "Etiqueta <b>Repeat</b> para solicitações recorrentes",
+         "<b>Combinar pedidos de amostra:</b> agrupa pedidos do mesmo criador e armazém; amostras aprovadas em até 5 minutos viram um só pacote"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Adição automática sem limites",
+        "html": "Ao ativar “adicionar novos produtos automaticamente”, produtos existentes ficam sem requisito algum: todos os criadores podem solicitar. Ajuste os limites antes de enviar."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Aprove variações de alto impacto",
+        "html": "Priorize os tons e tamanhos mais populares para cobrir o conteúdo que mais converte."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a faixa da cota da loja na aprovação automática?",
+        "options": [
+         "Entre 100 e 10.000",
+         "Entre 1 e 5 amostras",
+         "Não existe cota nenhuma",
+         "Entre 1 e 100"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Quando a cota termina, as aprovações automáticas param."
+       },
+       {
+        "t": "quiz",
+        "q": "O que faz “combinar pedidos de amostra”?",
+        "options": [
+         "Agrupa amostras do mesmo criador e armazém",
+         "Troca o criador escolhido",
+         "Cancela todas as amostras",
+         "Soma o preço das amostras"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Economiza no envio e usa um só ID de rastreio."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Amostra grátis: <b>aberta e direcionada</b>",
+         "Defina <b>limites</b> de criador",
+         "Automação com <b>cota 1 a 100</b>",
+         "<b>Combine pedidos</b> para economizar frete"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Amostra reembolsável, lembretes e análise",
+      "minutes": 4,
+      "goal": "Ligar o custo da amostra ao resultado e cobrar publicação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📈",
+        "title": "Pague pelo resultado",
+        "text": "Amostras reembolsáveis e lembretes em massa ajudam a transformar produto enviado em conteúdo publicado."
+       },
+       {
+        "t": "list",
+        "title": "Amostras reembolsáveis",
+        "items": [
+         "O criador <b>compra</b> o produto pelo preço cheio",
+         "Se o conteúdo gerar o <b>número de vendas</b> definido, ele recebe o <b>reembolso</b>",
+         "Desde 15/07/2025 o reembolso depende de <b>vendas</b>, não só de publicar",
+         "Você escolhe o limite de vendas, com teto de <b>3 pedidos</b>",
+         "Se houver amostra grátis e reembolsável, a etiqueta mostrada é <b>Amostra Grátis</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Quanto menor o limite, mais fácil",
+        "html": "Limites baixos funcionam para produtos novos ou público novo. Produtos consolidados aguentam limites mais altos."
+       },
+       {
+        "t": "steps",
+        "title": "Lembretes em massa",
+        "items": [
+         {
+          "title": "5 dias",
+          "html": "Criador recebeu a amostra e não publicou nada."
+         },
+         {
+          "title": "Enviar lembrete",
+          "html": "Selecione vários pedidos de uma vez."
+         },
+         {
+          "title": "Prazo",
+          "html": "O criador recebe aviso antes do limite de 14 dias para publicar."
+         }
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Análise de amostras",
+        "html": "O painel mostra amostras enviadas, GMV das amostras, <b>COGS estimado</b> e custo de envio. Você pode ajustar a margem do COGS para um <b>ROI</b> mais próximo da realidade e ver o funil, da solicitação à venda, de amostras grátis e reembolsáveis. Filtre por produto e criador para achar seus melhores parceiros."
+       },
+       {
+        "t": "p",
+        "title": "Análise de afiliados",
+        "html": "A Central de afiliados tem Análise de produto, colaboração, criador e vídeo, com GMV, estimativa de comissão, criadores que venderam, itens e reembolsos. A aba Desempenho reúne o resumo e permite dividir por tipo de colaboração, tipo de conteúdo e categoria."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Decidindo com o painel",
+        "html": "Amostras enviadas: 40. Postaram: 12. Venderam: 5. Se o custo por amostra for alto, restrinja os limites de aprovação."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando o criador de amostra reembolsável recebe o dinheiro de volta?",
+        "options": [
+         "Depois de 1 ano inteiro",
+         "Nunca, em nenhum caso",
+         "Quando gerar o número de vendas definido",
+         "Sempre, ao postar o vídeo"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O reembolso é por desempenho de vendas."
+       },
+       {
+        "t": "quiz",
+        "q": "A partir de quantos dias sem publicar se pode enviar o lembrete?",
+        "options": [
+         "Nunca pode ser enviado",
+         "5 dias após receber a amostra",
+         "Depois de 1 hora",
+         "Depois de 1 ano"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Criadores têm até 14 dias para publicar, conforme as regras."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Reembolsável: <b>vendas</b> definem o reembolso",
+         "Lembrete após <b>5 dias</b> sem postagem",
+         "Painel de amostras: <b>COGS e ROI</b>",
+         "Análise de afiliados por <b>produto, criador e vídeo</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "A cota da loja na aprovação automática vai de:",
+      "options": [
+       "1 a 100",
+       "Sem cota",
+       "1.000 a 5.000",
+       "1 a 3"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Acabando a cota, a aprovação automática para.",
+      "topic": "Amostra"
+     },
+     {
+      "q": "Amostra reembolsável devolve o valor quando:",
+      "options": [
+       "A loja pede",
+       "O criador posta qualquer coisa",
+       "As vendas definidas são atingidas",
+       "O cliente cancela"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O reembolso é por desempenho.",
+      "topic": "Reembolsável"
+     },
+     {
+      "q": "O limite de pedidos na amostra reembolsável é de até:",
+      "options": [
+       "3 pedidos",
+       "300 pedidos",
+       "30 pedidos",
+       "Sem limite"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Defina conforme preço e margem.",
+      "topic": "Reembolsável"
+     },
+     {
+      "q": "O lembrete em massa pode ser enviado após:",
+      "options": [
+       "5 dias sem publicação",
+       "5 minutos",
+       "5 anos",
+       "5 meses"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O criador tem até 14 dias.",
+      "topic": "Lembrete"
+     },
+     {
+      "q": "O painel de amostras ajuda a medir:",
+      "options": [
+       "Idade do cliente",
+       "COGS e ROI",
+       "Cor do produto",
+       "Nome da loja"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Dá para ajustar o COGS.",
+      "topic": "Análise"
+     }
+    ]
+   },
+   {
+    "title": "Escalar com parceiros",
+    "tagline": "Tráfego, agências e gestão",
+    "outcome": "Usar programas de tráfego, parceiros e uma rotina de gestão.",
+    "lessons": [
+     {
+      "title": "Programas de tráfego",
+      "minutes": 4,
+      "goal": "Aproveitar links de afiliados fora do TikTok e campanhas da plataforma.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🌐",
+        "title": "Alcance além do app",
+        "text": "Os programas de tráfego espalham seus produtos por links de afiliados em sites, redes sociais e campanhas da plataforma."
+       },
+       {
+        "t": "p",
+        "title": "Programa de tráfego externo (ETP)",
+        "html": "Criadores e parceiros promovem seus produtos por <b>links de afiliados</b> fora do TikTok: redes sociais, sites e apps. Ao fechar a compra, o promotor recebe a comissão, <b>após o pedido ser totalmente concluído</b>. Por padrão, a taxa segue a sua <b>colaboração aberta</b>; para criadores de colaboração direcionada, vale a configuração deles."
+       },
+       {
+        "t": "list",
+        "title": "Participação no ETP",
+        "items": [
+         "É automática se houver ao menos <b>um produto</b> em colaboração aberta ou direcionada",
+         "Dá para <b>sair a qualquer momento</b>",
+         "Sair do ETP não tira você do programa de afiliados",
+         "Pedidos feitos antes da saída ainda geram comissão"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Dois programas de tráfego",
+        "caption": "Ambos usam a taxa da colaboração aberta por padrão.",
+        "head": [
+         "Programa",
+         "Quem promove"
+        ],
+        "rows": [
+         [
+          "Tráfego externo (ETP)",
+          "Criadores e parceiros fora do TikTok"
+         ],
+         [
+          "Tráfego de campanhas da plataforma",
+          "Campanhas da plataforma, como indicações e bônus"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Como acompanhar",
+        "items": [
+         "Central do vendedor > Afiliados > <b>Pedidos de afiliados</b>",
+         "Filtro “Tipo de conteúdo” = <b>Canal de tráfego externo</b>",
+         "Dados do ETP mostram quais produtos têm maior contribuição"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Use os dados do ETP",
+        "html": "Produtos com contribuição crescente merecem comissão competitiva e amostras para criadores. O tráfego externo traz clientes que não estão no app."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Margem primeiro",
+        "html": "Como a taxa segue a colaboração aberta, uma comissão alta demais pesa em todos os canais. Calcule a margem antes de subir."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando o promotor externo recebe a comissão?",
+        "options": [
+         "Antes mesmo do pagamento",
+         "No momento do clique",
+         "Nunca, em nenhum caso",
+         "Quando o pedido é totalmente concluído"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Pedidos cancelados ou devolvidos não geram comissão."
+       },
+       {
+        "t": "quiz",
+        "q": "Sair do ETP remove a loja do programa de afiliados?",
+        "options": [
+         "Sim, sai de tudo no app",
+         "Sim, e não volta mais",
+         "Não, só do tráfego externo",
+         "Apaga todos os produtos"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Os criadores no app continuam promovendo."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "ETP: <b>links de afiliados fora do app</b>",
+         "Entrada <b>automática</b> com produto afiliado",
+         "Comissão após <b>pedido concluído</b>",
+         "Acompanhe em <b>Pedidos de afiliados</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Agências, parceiros e campanhas de afiliados",
+      "minutes": 4,
+      "goal": "Escalar com parceiros e escolher entre agência e criador independente.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏢",
+        "title": "Escalar exige alavanca",
+        "text": "Para crescer além do que você consegue operar, vale trabalhar com parceiros que conectam criadores aos seus produtos."
+       },
+       {
+        "t": "p",
+        "title": "Parceiros afiliados do TikTok Shop (TAP)",
+        "html": "São agências de terceiros que fazem a ponte entre vendedor e criadores. Em campanhas <b>iniciadas pela agência</b>, você registra produtos; em campanhas <b>iniciadas pelo vendedor</b>, você abre uma campanha, define comissão e preferências de criador, e os parceiros se inscrevem."
+       },
+       {
+        "t": "steps",
+        "title": "Entrar em campanha de agência",
+        "items": [
+         {
+          "title": "Campanha de parceiros",
+          "html": "Em Central de afiliados."
+         },
+         {
+          "title": "Aba Agência",
+          "html": "Veja nome, período, requisitos de comissão e contato."
+         },
+         {
+          "title": "Registrar produtos",
+          "html": "Selecione os produtos."
+         },
+         {
+          "title": "Comissão e amostras",
+          "html": "Defina a taxa total para parceiros e criadores e a quantidade de amostras."
+         },
+         {
+          "title": "Enviar",
+          "html": "Aguarde a análise do parceiro."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Amostras são aprovadas automaticamente",
+        "html": "Em campanhas de agência, as amostras que o parceiro solicitar são aprovadas automaticamente até a quantidade definida. Defina o número com cuidado."
+       },
+       {
+        "t": "p",
+        "title": "Agências e serviços (TSP)",
+        "html": "Em Aplicativos e serviços > Agências e serviços você encontra especialistas que ajudam a iniciar a operação, vender e gerenciar conteúdo. Envie uma solicitação com dados do negócio e escolha um parceiro conhecido ou peça uma indicação da plataforma."
+       },
+       {
+        "t": "list",
+        "title": "O que o curso de estratégias destaca",
+        "items": [
+         "<b>Três formas</b> de vender com afiliados, mesmo sem fazer LIVE",
+         "Escolher criadores que <b>convertem</b>, indo além da comissão",
+         "Agência ou criador independente: pesar prós e contras",
+         "Modelos de parceria como <b>CPS</b> e <b>CPM</b>"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Ferramentas extras para criadores",
+        "caption": "Ajudam a fechar parcerias quando a comissão é baixa.",
+        "head": [
+         "Ferramenta",
+         "Uso"
+        ],
+        "rows": [
+         [
+          "Cupom exclusivo do criador",
+          "Desconto para seguidores de um criador"
+         ],
+         [
+          "Oferta relâmpago LIVE do criador",
+          "Preço exclusivo na LIVE do criador"
+         ],
+         [
+          "Recompensa da LIVE do criador",
+          "Prêmio durante a transmissão"
+         ]
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "O que é um parceiro afiliado (TAP)?",
+        "options": [
+         "Agência que conecta vendedor e criador",
+         "Um banco parceiro da loja",
+         "Um fornecedor de frete",
+         "Um cliente final da loja"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Atua como ponte da colaboração."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual cuidado vale ao registrar produto em campanha de agência?",
+        "options": [
+         "Definir bem a quantidade de amostras",
+         "Apagar o produto da loja",
+         "Ocultar o estoque real",
+         "Cobrar o criador pelo envio"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "As amostras solicitadas serão aprovadas automaticamente."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "TAP = <b>agência</b> entre vendedor e criador",
+         "Campanhas: <b>da agência</b> ou <b>do vendedor</b>",
+         "Cuidado com <b>amostras automáticas</b>",
+         "Ferramentas de criador <b>ajudam a fechar parceria</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Gestão contínua de afiliados",
+      "minutes": 4,
+      "goal": "Montar uma rotina de qualidade, comunicação e análise de ROI.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔧",
+        "title": "Afiliado é rotina, não evento",
+        "text": "O programa só rende se a loja acompanha criadores, produtos e custos toda semana."
+       },
+       {
+        "t": "steps",
+        "title": "Rotina semanal",
+        "items": [
+         {
+          "title": "Dados",
+          "html": "Abra a Análise de afiliados e veja GMV, estimativa de comissão e reembolsos."
+         },
+         {
+          "title": "Criadores",
+          "html": "Identifique quem vendeu e quem só recebeu amostra."
+         },
+         {
+          "title": "Mensagens",
+          "html": "Responda aos criadores e lembre quem não postou."
+         },
+         {
+          "title": "Produtos",
+          "html": "Ajuste comissão e amostras dos mais promissores."
+         },
+         {
+          "title": "Estoque",
+          "html": "Reponha o que vendeu bem."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Comunicação com criadores",
+        "items": [
+         "Central de afiliados > <b>Mensagens do criador</b>",
+         "Dá para favoritar, arquivar e bloquear contas",
+         "No perfil, veja categorias, seguidores, média de visualizações e de espectadores de LIVE",
+         "Você pode enviar produtos disponíveis a partir do perfil"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Sinais de alerta",
+        "items": [
+         "Reembolsos altos nos produtos afiliados",
+         "Criadores com amostra e nenhuma publicação",
+         "Avaliações baixas no produto",
+         "Comissão que corrói a margem"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Cortando custo ruim",
+        "html": "Uma amostra de R$ 80 foi enviada para cada um de 10 criadores. Só 2 postaram e vendeu pouco. Para o próximo lote, exija GMV mínimo de 30 dias e taxa estimada de postagem alta."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Mantenha a comissão estável",
+        "html": "Mudanças frequentes geram feedback negativo dos criadores. Por isso a redução é atrasada em 30 dias."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Qualidade protege o programa",
+        "html": "Produto com avaliação baixa ou muitas devoluções pode ser desqualificado do afiliado."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual ação ajuda a economizar com amostras?",
+        "options": [
+         "Enviar para todos os criadores",
+         "Pagar frete mais caro",
+         "Exigir GMV mínimo e taxa de postagem alta",
+         "Nunca medir o resultado"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Critérios reduzem desperdício."
+       },
+       {
+        "t": "quiz",
+        "q": "O que fazer com criadores que receberam e não postaram?",
+        "options": [
+         "Subir o preço do produto",
+         "Enviar um lembrete após 5 dias",
+         "Ignorar eles sempre",
+         "Apagar a loja inteira"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O lembrete em massa ajuda a cobrar publicação."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Rotina <b>semanal</b> de dados, criadores e estoque",
+         "<b>Mensagens</b> mantêm parceria viva",
+         "Corte custo ruim com <b>critérios</b>",
+         "<b>Qualidade</b> mantém o produto no programa"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O ETP promove produtos por:",
+      "options": [
+       "Telefonemas aos clientes",
+       "Cartas impressas enviadas",
+       "Boletos bancários",
+       "Links de afiliados fora do TikTok"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Redes sociais, sites e apps.",
+      "topic": "ETP"
+     },
+     {
+      "q": "Sair do ETP:",
+      "options": [
+       "Apaga todos os produtos",
+       "Bloqueia a conta da loja",
+       "Cancela todos os pedidos",
+       "Não tira a loja do programa"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Só encerra o tráfego externo.",
+      "topic": "ETP"
+     },
+     {
+      "q": "O TAP é:",
+      "options": [
+       "Um cartão de crédito",
+       "Uma agência afiliada",
+       "Um tipo de frete",
+       "Um cupom"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Conecta vendedores e criadores.",
+      "topic": "Parceiros"
+     },
+     {
+      "q": "Em campanha de agência, as amostras solicitadas:",
+      "options": [
+       "Nunca são enviadas",
+       "São aprovadas automaticamente",
+       "São cobradas do criador",
+       "Sempre pagam imposto"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Defina o número com cuidado.",
+      "topic": "Parceiros"
+     },
+     {
+      "q": "A rotina de afiliados deve ser:",
+      "options": [
+       "Semanal e baseada em dados",
+       "Anual e aleatória",
+       "Evitada",
+       "Só em campanhas"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Dados guiam comissão e amostras.",
+      "topic": "Gestão"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Afiliado paga o criador por:",
+    "options": [
+     "Cartão de visita",
+     "Comissão sobre cada venda",
+     "Multa",
+     "Salário fixo"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "A comissão é deduzida da venda.",
+    "topic": "Conceito"
+   },
+   {
+    "q": "Quem deve começar pela colaboração aberta?",
+    "options": [
+     "Quem é novo no programa",
+     "Ninguém",
+     "Quem não tem produto",
+     "Quem já tem 100 parceiros"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Descobre quem vende o produto.",
+    "topic": "Colaboração"
+   },
+   {
+    "q": "A colaboração direcionada funciona por:",
+    "options": [
+     "Cupom de desconto",
+     "Convite a criadores específicos",
+     "Sorteio entre os criadores",
+     "Vitrine pública aberta"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Os criadores recebem na caixa de entrada.",
+    "topic": "Colaboração"
+   },
+   {
+    "q": "Em 23/09/2026 houve ajuste na:",
+    "options": [
+     "Moeda usada no app",
+     "Comissão predeterminada",
+     "Tamanho do vídeo curto",
+     "Cor do app do vendedor"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Muitas ficam em 8%.",
+    "topic": "Comissão"
+   },
+   {
+    "q": "Redução de comissão vale de imediato para:",
+    "options": [
+     "Só os antigos",
+     "Novos criadores",
+     "Ninguém",
+     "Só a loja"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Antigos recebem a taxa antiga por 30 dias.",
+    "topic": "Comissão"
+   },
+   {
+    "q": "No opt-in, a aprovação de criadores nos produtos novos vem:",
+    "options": [
+     "Bloqueada para sempre",
+     "Ligada sempre",
+     "Desligada",
+     "Paga"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "É preciso ativá-la.",
+    "topic": "Comissão"
+   },
+   {
+    "q": "O selo Rápido crescimento considera:",
+    "options": [
+     "O próximo mês",
+     "Os últimos 30 anos",
+     "A semana passada de outra loja",
+     "Os últimos 30 dias"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Maior alta em transações.",
+    "topic": "Criadores"
+   },
+   {
+    "q": "Qual NÃO é uma configuração de amostra grátis?",
+    "options": [
+     "Limite de seguidores",
+     "Cor do perfil do criador",
+     "Quantidade de amostras",
+     "Período de solicitação"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "As demais são configurações reais.",
+    "topic": "Amostra"
+   },
+   {
+    "q": "A cota da loja de aprovação automática é de:",
+    "options": [
+     "Sem cota",
+     "101 a 200",
+     "1 a 2",
+     "1 a 100"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "O sistema aprova até acabar.",
+    "topic": "Amostra"
+   },
+   {
+    "q": "Pedidos combinados de amostra agrupam:",
+    "options": [
+     "Criadores diferentes",
+     "Lojas diferentes",
+     "Mesmo criador e mesmo armazém",
+     "Países diferentes"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Economizam frete.",
+    "topic": "Amostra"
+   },
+   {
+    "q": "Amostra reembolsável tem teto de vendas de:",
+    "options": [
+     "300 pedidos",
+     "3 mil pedidos",
+     "Nenhum",
+     "3 pedidos"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "O criador recebe se atingir o limite.",
+    "topic": "Reembolsável"
+   },
+   {
+    "q": "Lembrete em massa é para criadores que:",
+    "options": [
+     "Receberam amostra e não postaram",
+     "Já postaram",
+     "Cancelaram a conta",
+     "Nunca existiram"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Pode ser enviado após 5 dias.",
+    "topic": "Lembrete"
+   },
+   {
+    "q": "O ETP é ativado automaticamente quando há:",
+    "options": [
+     "Cupom ativo",
+     "Mais de mil produtos",
+     "Ao menos um produto em colaboração",
+     "Zero produtos"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Dá para sair quando quiser.",
+    "topic": "ETP"
+   },
+   {
+    "q": "Onde acompanhar pedidos do ETP?",
+    "options": [
+     "Finanças > Faturas",
+     "Afiliados > Pedidos de afiliados",
+     "Produtos > Rascunhos",
+     "Chat > Modelos"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Use o filtro de tipo de conteúdo.",
+    "topic": "ETP"
+   },
+   {
+    "q": "Quem é o TAP?",
+    "options": [
+     "Taxa de imposto",
+     "Tipo de frete",
+     "Teste de produto",
+     "Parceiro afiliado do TikTok Shop"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Atua como agência.",
+    "topic": "Parceiros"
+   },
+   {
+    "q": "Qual prática protege o programa de afiliados?",
+    "options": [
+     "Burlar os dados",
+     "Manter SPS e qualidade dos produtos",
+     "Copiar criadores",
+     "Ocultar reclamações"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Produto e loja podem ser desqualificados.",
+    "topic": "Qualidade"
+   }
+  ]
+ }
+}

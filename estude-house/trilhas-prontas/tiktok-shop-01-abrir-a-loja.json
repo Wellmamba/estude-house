@@ -1,0 +1,1744 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 1: abrir e configurar a loja",
+  "tag": "TikTok Shop",
+  "tagline": "Do CNPJ ao primeiro dia de vendas, sem rejeição e sem susto.",
+  "subtitle": "Cadastro, documentos, período probatório, contas do TikTok e equipe. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Quem pode vender e como se cadastrar",
+    "tagline": "Documento certo, aprovação rápida",
+    "outcome": "Dizer quem pode abrir loja, reunir os documentos e escolher um nome aprovado.",
+    "lessons": [
+     {
+      "title": "Quem pode abrir uma loja",
+      "minutes": 4,
+      "goal": "Saber quem pode vender no TikTok Shop Brasil e o que é preciso antes de começar.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🛍️",
+        "title": "Antes do primeiro produto",
+        "text": "Abrir uma loja no TikTok Shop tem regras claras de quem pode vender. Quem erra aqui perde dias esperando uma aprovação que não vem."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Hoje, só <b>CNPJ</b> vende no TikTok Shop Brasil",
+        "sub": "Pessoa física sem empresa ainda não entra. A regra vale na data desta trilha; confira na Academia se mudou."
+       },
+       {
+        "t": "list",
+        "title": "Requisitos para o representante",
+        "items": [
+         "Ter <b>18 anos ou mais</b>",
+         "Ter documento de identidade válido emitido pelo governo brasileiro",
+         "Não estar ligado a órgão do governo, partido político ou político",
+         "Ter a empresa aberta, com CNPJ ativo"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Tipos de empresa aceitos",
+        "caption": "Todas vendem como vendedor comercial.",
+        "head": [
+         "Sigla",
+         "O que é"
+        ],
+        "rows": [
+         [
+          "MEI",
+          "Microempreendedor Individual"
+         ],
+         [
+          "EI",
+          "Empresário Individual"
+         ],
+         [
+          "SLU",
+          "Sociedade Limitada Unipessoal"
+         ],
+         [
+          "EIRELI",
+          "Empresa Individual de Responsabilidade Limitada"
+         ],
+         [
+          "LTDA",
+          "Sociedade Limitada"
+         ],
+         [
+          "S/A",
+          "Sociedade Anônima"
+         ],
+         [
+          "ONG",
+          "Organização Não Governamental"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Cadastro",
+        "term": "Representante legal",
+        "means": "A pessoa de verdade responsável pela empresa. É o rosto e os documentos dela que o TikTok Shop confere no cadastro.",
+        "ex": "No MEI, o representante é o próprio dono. Numa LTDA, é o sócio-administrador."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Sem aprovação, sem produto",
+        "html": "A conta precisa ser <b>aprovada</b> antes de qualquer produto ser publicado. Dá para ir preparando a loja enquanto espera, mas nada vai ao ar antes."
+       },
+       {
+        "t": "list",
+        "title": "Quantas lojas uma empresa pode ter",
+        "items": [
+         "O vendedor corporativo pode registrar até <b>5 contas de vendedor</b>",
+         "Cada telefone ou e-mail só serve para <b>um</b> cadastro",
+         "A conta é verificada para operar <b>só no Brasil</b>: entre no Seller Center do Brasil"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "MEI também pode",
+        "html": "Muito seller pequeno acha que MEI não serve. Serve. O que importa é ter o CNPJ ativo e os documentos em dia. O curso da Academia sobre como abrir MEI mostra que o cadastro é gratuito no Portal do Empreendedor."
+       },
+       {
+        "t": "quiz",
+        "q": "Um cliente seu vende como pessoa física, sem CNPJ. O que acontece se ele tentar abrir loja hoje?",
+        "options": [
+         "Abre se tiver mais de 1.000 seguidores",
+         "Abre normalmente, só com CPF",
+         "Não consegue: o cadastro exige CNPJ",
+         "Abre, mas com limite de 10 pedidos"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Hoje só empresas com CNPJ podem vender no TikTok Shop Brasil. O caminho é abrir um MEI antes."
+       },
+       {
+        "t": "say",
+        "title": "Diga assim",
+        "html": "“Pra vender no TikTok Shop você precisa de CNPJ. Se ainda não tem, o MEI é o caminho mais rápido e dá conta de começar.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Só <b>CNPJ</b> vende (MEI, EI, SLU, EIRELI, LTDA, S/A e ONG)",
+         "Representante com <b>18+</b> e documento brasileiro válido",
+         "Até <b>5 contas</b> de vendedor por empresa",
+         "Sem aprovação da conta, <b>nenhum produto</b> vai ao ar"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Documentos sem erro",
+      "minutes": 4,
+      "goal": "Reunir e conferir os documentos para o cadastro ser aprovado de primeira.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📄",
+        "title": "Cadastro rejeitado dói",
+        "text": "Quase toda rejeição vem de dado que não bate com o documento. Conferir antes leva 10 minutos e economiza dias."
+       },
+       {
+        "t": "list",
+        "title": "O que o TikTok Shop pede",
+        "items": [
+         "<b>Documento com foto</b> do representante legal (CNH, RG, passaporte ou RNE/CRNM)",
+         "<b>CPF</b> do representante, se não aparecer no documento",
+         "<b>Duas selfies</b>: uma do rosto e outra segurando o documento",
+         "<b>Documento da empresa</b> (Cartão CNPJ ou equivalente)",
+         "Dados da empresa, <b>conta bancária</b> e informações fiscais",
+         "<b>Endereço residencial</b> do representante (comprovante é opcional no formulário, mas pode ser pedido)"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Qualidade do arquivo",
+        "html": "Documentos <b>coloridos, em alta resolução, legíveis e dentro da validade</b>. O TikTok Shop pode pedir documentação extra se tiver dúvida."
+       },
+       {
+        "t": "table",
+        "title": "Documento da empresa por tipo",
+        "caption": "O Cartão CNPJ serve para qualquer tipo de empresa.",
+        "head": [
+         "Tipo",
+         "Aceita"
+        ],
+        "rows": [
+         [
+          "Todos",
+          "Cartão CNPJ"
+         ],
+         [
+          "MEI",
+          "Cartão CNPJ ou CCMEI"
+         ],
+         [
+          "EI",
+          "Cartão CNPJ ou Certificado de Empresário Individual"
+         ],
+         [
+          "SLU, EIRELI, LTDA",
+          "Cartão CNPJ, Contrato Social (com alterações ou consolidado) ou Certidão de Inteiro Teor"
+         ],
+         [
+          "S/A",
+          "Cartão CNPJ, Estatuto Social ou Ata de Assembleia/Conselho"
+         ],
+         [
+          "ONG",
+          "Cartão CNPJ, Estatuto Social ou Ata de Constituição"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Documento",
+        "term": "CCMEI",
+        "means": "Certificado da Condição de Microempreendedor Individual. É o documento que o MEI recebe ao se formalizar.",
+        "ex": "O MEI que perdeu o Cartão CNPJ pode usar o CCMEI no cadastro."
+       },
+       {
+        "t": "steps",
+        "title": "Os dados da empresa têm que bater com o Cartão CNPJ",
+        "items": [
+         {
+          "title": "Nome empresarial",
+          "html": "Use a razão social <b>exatamente</b> como está no Cartão CNPJ."
+         },
+         {
+          "title": "Número do CNPJ",
+          "html": "São 14 dígitos: 8 da base, 4 da filial (0001 costuma ser a matriz) e 2 verificadores."
+         },
+         {
+          "title": "Data de abertura",
+          "html": "É a data em que a Receita emitiu o CNPJ."
+         },
+         {
+          "title": "Endereço comercial",
+          "html": "O endereço cadastrado na Receita, o mesmo do Cartão CNPJ. O endereço onde você opera de fato entra em outra etapa."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Endereço errado derruba o cadastro",
+        "html": "Se o endereço comercial ou o residencial vier errado, o cadastro é <b>rejeitado</b>. O endereço residencial serve para verificar a identidade do representante legal."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Erro comum",
+         "tone": "bad",
+         "items": [
+          "Escrever o nome fantasia no lugar da razão social",
+          "Foto do documento cortada, com reflexo ou com filtro",
+          "Documento vencido",
+          "Endereço antigo, de antes de uma mudança"
+         ]
+        },
+        "right": {
+         "title": "Jeito certo",
+         "tone": "good",
+         "items": [
+          "Copiar a razão social do Cartão CNPJ",
+          "Foto inteira, nítida e colorida",
+          "Documento dentro da validade",
+          "Endereço igual ao da Receita e ao comprovante"
+         ]
+        }
+       },
+       {
+        "t": "quiz",
+        "q": "O nome da empresa no formulário precisa ser:",
+        "options": [
+         "A razão social do Cartão CNPJ",
+         "O nome que vai aparecer na vitrine da loja",
+         "O nome fantasia mais conhecido da marca",
+         "O @ do TikTok da empresa na rede"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O nome empresarial (razão social) tem que coincidir exatamente com o comprovante de inscrição do CNPJ."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Checklist de 2 minutos",
+        "html": "Antes de enviar, abra o Cartão CNPJ ao lado do formulário e compare campo a campo: razão social, CNPJ, abertura e endereço. É a revisão que mais evita rejeição."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Documento do representante, selfies, documento da empresa, banco e endereço",
+         "Arquivos <b>coloridos, legíveis e válidos</b>",
+         "Razão social, CNPJ, abertura e endereço <b>iguais ao Cartão CNPJ</b>",
+         "Dado errado = cadastro <b>rejeitado</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Do cadastro à aprovação",
+      "minutes": 4,
+      "goal": "Seguir o passo a passo do registro e escolher um nome de loja que passe.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚪",
+        "title": "Do cadastro ao “pode vender”",
+        "text": "O registro tem 4 etapas e leva poucos dias. O que você faz durante a espera adianta a operação."
+       },
+       {
+        "t": "flow",
+        "title": "O caminho do cadastro",
+        "caption": "",
+        "loop": false,
+        "items": [
+         {
+          "icon": "1",
+          "title": "Criar a conta",
+          "text": "Pelo Seller Center do Brasil, com conta do TikTok (QR code) ou com telefone ou e-mail."
+         },
+         {
+          "icon": "2",
+          "title": "Dados da empresa",
+          "text": "Tipo de negócio, empresa e representante."
+         },
+         {
+          "icon": "3",
+          "title": "Dados da loja",
+          "text": "Nome da loja e contatos seguros."
+         },
+         {
+          "icon": "4",
+          "title": "Análise",
+          "text": "O TikTok Shop confere tudo e responde no Seller Center e por e-mail."
+         }
+        ]
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "A análise costuma levar de <b>2 a 6 dias</b>",
+        "sub": "O resultado aparece no Seller Center e no e-mail cadastrado."
+       },
+       {
+        "t": "list",
+        "title": "O que fazer enquanto espera",
+        "items": [
+         "Preencher as <b>informações de envio</b>",
+         "Cadastrar os <b>primeiros produtos</b> (eles só vão ao ar depois da aprovação)",
+         "<b>Vincular</b> a conta do TikTok da marca",
+         "Seguir a <b>página de início do vendedor</b>, que sugere os próximos passos"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Nome da loja",
+        "html": "Até <b>40 caracteres</b>. Sem linguagem imprópria. <b>Não pode</b> ter “TikTok” nem nome de outras plataformas (como Mercado Livre ou Amazon)."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Nome que dá problema",
+         "tone": "bad",
+         "items": [
+          "“Oficial” ou “Marca” sem ser dono da marca",
+          "Nome de famoso ou de obra conhecida sem autorização",
+          "“Loja Amazon Express”",
+          "Termos ofensivos, políticos ou sexuais"
+         ]
+        },
+        "right": {
+         "title": "Nome que passa",
+         "tone": "good",
+         "items": [
+          "Curto, fácil de lembrar e que combina com o que você vende",
+          "Pode ser o mesmo @ do TikTok da marca",
+          "Sem significado estranho em outros idiomas",
+          "“Oficial” só com autorização do dono da marca"
+         ]
+        }
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Dá para mudar depois",
+        "html": "O nome da loja pode ser alterado mais tarde. Mas atenção: ele é espelhado na conta oficial do TikTok (veremos na aula 6). Mudar o nome mexe nas duas coisas."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual destes nomes de loja seria barrado?",
+        "options": [
+         "Amazon Casa Express",
+         "Recanto da Cozinha",
+         "Toca do Pet",
+         "Casa & Cia Utilidades"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Nomes de outras plataformas (Amazon, Mercado Livre, etc.) e a palavra TikTok não podem aparecer no nome da loja."
+       },
+       {
+        "t": "quiz",
+        "q": "O que você pode fazer enquanto a análise do cadastro está pendente?",
+        "options": [
+         "Deixar envio, produtos e conta do TikTok prontos",
+         "Nada: é preciso esperar a aprovação sair antes",
+         "Publicar produtos e já começar a vender",
+         "Pedir o primeiro saque do saldo da loja"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Dá para preparar a loja durante a análise. Os produtos só vão ao ar depois da aprovação."
+       },
+       {
+        "t": "say",
+        "title": "Diga assim",
+        "html": "“O cadastro leva de 2 a 6 dias. Enquanto isso, a gente já deixa envio e produtos prontos pra ir ao ar assim que aprovar.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Passos: criar conta, dados da empresa, dados da loja, análise",
+         "Análise de <b>2 a 6 dias</b>",
+         "Nome da loja: até <b>40 caracteres</b>, sem “TikTok” nem outras plataformas",
+         "Aproveite a espera para <b>preparar a loja</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Qual destas empresas NÃO pode se cadastrar hoje como vendedor no TikTok Shop Brasil?",
+      "options": [
+       "Uma organização sem fins lucrativos (ONG)",
+       "Uma pessoa física sem CNPJ",
+       "Um Microempreendedor (MEI)",
+       "Uma sociedade limitada (LTDA)"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Hoje só vendedores com CNPJ podem se cadastrar.",
+      "topic": "Cadastro"
+     },
+     {
+      "q": "O que acontece se o endereço comercial no cadastro estiver errado?",
+      "options": [
+       "Só o frete fica mais caro",
+       "O cadastro é rejeitado",
+       "A loja abre com limite menor",
+       "O TikTok corrige sozinho"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Endereço incorreto, comercial ou residencial, leva à rejeição.",
+      "topic": "Cadastro"
+     },
+     {
+      "q": "Em quanto tempo o TikTok Shop costuma analisar o cadastro?",
+      "options": [
+       "De 2 a 6 dias",
+       "Na hora",
+       "Só depois do primeiro pedido",
+       "De 30 a 45 dias"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "A análise costuma levar de 2 a 6 dias.",
+      "topic": "Cadastro"
+     },
+     {
+      "q": "Qual destes nomes de loja é aceito?",
+      "options": [
+       "TikTok Plantas",
+       "Loja Oficial Nike Plantas",
+       "Cantinho das Plantas",
+       "Plantas Mercado Livre"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O nome não pode ter TikTok, nomes de outras plataformas, nem “oficial” de marca sem autorização.",
+      "topic": "Nome da loja"
+     },
+     {
+      "q": "Quantas contas de vendedor uma empresa pode registrar?",
+      "options": [
+       "Até 5",
+       "Sem limite",
+       "Só 1",
+       "Até 2"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O vendedor corporativo pode registrar até cinco contas de vendedor.",
+      "topic": "Cadastro"
+     }
+    ]
+   },
+   {
+    "title": "Período probatório: crescer por níveis",
+    "tagline": "Limites no começo, liberdade depois",
+    "outcome": "Explicar os níveis da loja nova e o que falta para subir.",
+    "lessons": [
+     {
+      "title": "Os 4 níveis do período probatório",
+      "minutes": 4,
+      "goal": "Entender o que são os níveis de loja nova e o que cada um libera.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🪜",
+        "title": "Toda loja nova começa devagar",
+        "text": "Nos primeiros dias, o TikTok Shop limita pedidos e anúncios por dia. É o período probatório. Não é castigo."
+       },
+       {
+        "t": "jargon",
+        "tag": "Loja nova",
+        "term": "Período probatório",
+        "means": "Fase em que a loja nova vende com limites e vai subindo de nível conforme comprova bom desempenho.",
+        "ex": "Uma loja Iniciante recebe até 50 pedidos por dia. Se vender bem e entregar no prazo, sobe."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Não é <b>punição</b>",
+        "sub": "É uma etapa padrão para toda loja nova criar histórico de envio, qualidade e atendimento."
+       },
+       {
+        "t": "table",
+        "title": "O que cada nível libera",
+        "caption": "Valores do guia da Academia (abril/2026). Podem mudar.",
+        "head": [
+         "Nível",
+         "Pedidos por dia",
+         "Anúncios ativos"
+        ],
+        "rows": [
+         [
+          "Iniciante",
+          "50",
+          "1.000"
+         ],
+         [
+          "Padrão",
+          "100",
+          "2.000"
+         ],
+         [
+          "Premium",
+          "200",
+          "3.000"
+         ],
+         [
+          "Profissional",
+          "Sem limite",
+          "Sem limite (cota de 1.000 novos anúncios por dia)"
+         ]
+        ]
+       },
+       {
+        "t": "chart",
+        "kind": "bar",
+        "title": "Pedidos por dia por nível (limite)",
+        "unit": "",
+        "caption": "No Profissional o limite deixa de existir.",
+        "data": [
+         {
+          "label": "Iniciante",
+          "value": 50
+         },
+         {
+          "label": "Padrão",
+          "value": 100
+         },
+         {
+          "label": "Premium",
+          "value": 200
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Contas do TikTok por nível",
+        "items": [
+         "<b>Vendedor individual:</b> 1 conta oficial",
+         "<b>Vendedor empresarial:</b> 1 conta oficial e até 4 contas de marketing",
+         "O Profissional mantém 1 oficial e 4 de marketing"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Sem prazo fixo",
+        "html": "Não existe duração definida. A loja sai do período probatório <b>sozinha</b> quando cumpre os critérios. Sobe de nível automaticamente, sem pedir."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Onde acompanhar",
+        "html": "O nível atual aparece na <b>Página inicial</b> da Central do Vendedor. Clicando nele, o vendedor vê o que falta para o próximo nível. Existe também a página “Período probatório”."
+       },
+       {
+        "t": "quiz",
+        "q": "Uma loja Premium pode receber quantos pedidos por dia?",
+        "options": [
+         "Até 100 pedidos por dia",
+         "Sem limite nenhum",
+         "Até 200",
+         "Até 50 pedidos por dia"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Iniciante 50, Padrão 100, Premium 200 e Profissional sem limite."
+       },
+       {
+        "t": "quiz",
+        "q": "Como uma loja nova sai do período probatório?",
+        "options": [
+         "Sozinha, ao cumprir os critérios",
+         "Pagando uma taxa de upgrade de nível",
+         "Depois de exatamente 90 dias na loja",
+         "Pedindo ao suporte por ticket aberto"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A evolução é automática e não tem duração definida. Cumpriu os critérios, passou."
+       },
+       {
+        "t": "say",
+        "title": "Diga assim",
+        "html": "“Esse limite de pedidos não é bloqueio, é a escadinha de toda loja nova. Quanto mais você entrega certo, mais rápido ele some.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Iniciante 50, Padrão 100, Premium 200, Profissional sem limite",
+         "Anúncios ativos: 1.000, 2.000, 3.000 e ilimitado",
+         "Período probatório <b>não é punição</b>",
+         "Subida <b>automática</b>, sem prazo fixo"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Como subir de nível",
+      "minutes": 4,
+      "goal": "Saber os critérios para subir de nível e usar os benefícios de novo vendedor.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚀",
+        "title": "O que a loja precisa mostrar",
+        "text": "Para subir, a loja prova três coisas: vende e entrega, não infringe regras e atende bem."
+       },
+       {
+        "t": "table",
+        "title": "Critérios por nível",
+        "caption": "Fonte: guia de período probatório da Academia.",
+        "head": [
+         "Critério",
+         "Padrão",
+         "Premium",
+         "Profissional"
+        ],
+        "rows": [
+         [
+          "Dias na plataforma",
+          "30+",
+          "30+",
+          "30+"
+         ],
+         [
+          "Anúncios ativos",
+          "10+",
+          "-",
+          "-"
+         ],
+         [
+          "Questionário de novos vendedores",
+          "Aprovado",
+          "-",
+          "-"
+         ],
+         [
+          "Pedidos entregues",
+          "-",
+          "50+",
+          "100+"
+         ],
+         [
+          "Compradores únicos",
+          "-",
+          "10+",
+          "20+"
+         ],
+         [
+          "Violações (30 dias)",
+          "Menos de 4",
+          "Menos de 4",
+          "Menos de 4"
+         ],
+         [
+          "Pontuação da loja (60 dias)",
+          "3,0+",
+          "3,5+",
+          "3,5+"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "SPS",
+        "term": "Pontuação de desempenho da loja",
+        "means": "Nota de 0 a 5 que resume a experiência do cliente com a loja. Aparece na página da loja e conta para subir de nível.",
+        "ex": "Uma loja com nota 3,2 cumpre o Padrão, mas ainda não cumpre o Premium."
+       },
+       {
+        "t": "list",
+        "title": "Atenção ao que conta",
+        "items": [
+         "Só pedidos <b>concluídos</b> entram na conta; cancelados antes da entrega não contam",
+         "<b>Violações</b> são descumprimentos de política (falsificação, propriedade intelectual, produto proibido)",
+         "O <b>questionário</b> de novos vendedores fica em Integridade da conta > Central de treinamento"
+        ]
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Não precisa passar por <b>todos</b> os níveis em sequência",
+        "sub": "Se a loja já cumpre os critérios de um nível mais alto, pode saltar."
+       },
+       {
+        "t": "flow",
+        "title": "Roteiro prático para a loja subir",
+        "caption": "",
+        "loop": false,
+        "items": [
+         {
+          "icon": "1",
+          "title": "Anúncios",
+          "text": "Chegar a pelo menos 10 produtos ativos"
+         },
+         {
+          "icon": "2",
+          "title": "Questionário",
+          "text": "Fazer e passar no treinamento de novos vendedores"
+         },
+         {
+          "icon": "3",
+          "title": "Entrega",
+          "text": "Enviar no prazo e acumular pedidos entregues"
+         },
+         {
+          "icon": "4",
+          "title": "Qualidade",
+          "text": "Manter violações baixas e pontuação alta"
+         }
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Benefícios de novo vendedor",
+        "html": "Os cursos da Academia para iniciantes citam benefícios como <b>90 dias sem comissão</b> e incentivos de frete, além de cupons, stickers e apoio em LIVE. As condições mudam por campanha, então confira o que está valendo na Central do Vendedor antes de prometer ao cliente."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não prometa sem conferir",
+        "html": "Benefício de novo vendedor tem regra e prazo. Passe ao cliente o que está na Central do Vendedor naquela semana, não o que viu em uma aula antiga."
+       },
+       {
+        "t": "quiz",
+        "q": "Uma loja só tem 6 anúncios ativos e quer subir para Padrão. O que falta, entre outras coisas?",
+        "options": [
+         "Chegar a 100 pedidos já entregues",
+         "Chegar a 10 anúncios ativos",
+         "Pagar uma taxa para mudar de nível",
+         "Ter 20 compradores únicos diferentes"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Para o Padrão: 30 dias, 10 anúncios ativos, questionário aprovado, menos de 4 violações e pontuação 3,0+."
+       },
+       {
+        "t": "quiz",
+        "q": "Quais pedidos contam para os critérios de nível?",
+        "options": [
+         "Os cancelados após o envio",
+         "Só os pagos por Pix",
+         "Todos os recebidos",
+         "Os concluídos com sucesso"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Pedidos cancelados antes da entrega não são contabilizados."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Padrão: 30 dias, 10 anúncios, questionário, SPS 3,0+",
+         "Premium: 50 entregues, 10 compradores, SPS 3,5+",
+         "Profissional: 100 entregues, 20 compradores, SPS 3,5+",
+         "Violações nos últimos 30 dias: <b>menos de 4</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Qual o limite de pedidos por dia no nível Padrão?",
+      "options": [
+       "50",
+       "Sem limite",
+       "200",
+       "100"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Iniciante 50, Padrão 100, Premium 200.",
+      "topic": "Níveis"
+     },
+     {
+      "q": "O período probatório é uma penalidade?",
+      "options": [
+       "Sim, aplicada a quem violou regras",
+       "Não, é uma fase padrão para toda loja nova",
+       "Sim, mas só para MEI",
+       "Só quando a loja tem nota baixa"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "O guia diz que o período não é medida de violação nem de fiscalização.",
+      "topic": "Níveis"
+     },
+     {
+      "q": "Quais critérios o Premium exige, além do tempo na plataforma?",
+      "options": [
+       "10 anúncios ativos e questionário aprovado",
+       "100 pedidos entregues e 20 compradores únicos",
+       "Só ter menos de 4 violações em 30 dias",
+       "50 entregues, 10 compradores e SPS 3,5+"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O Premium pede 50 entregues, 10 compradores únicos, menos de 4 violações e pontuação 3,5 ou mais.",
+      "topic": "Níveis"
+     },
+     {
+      "q": "Como a loja pode acompanhar o nível atual?",
+      "options": [
+       "Por e-mail enviado todo mês",
+       "No app do TikTok pessoal da marca",
+       "Na Página inicial do Seller Center",
+       "Só abrindo ticket com o suporte"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O status aparece na Página inicial e na página Período probatório.",
+      "topic": "Níveis"
+     }
+    ]
+   },
+   {
+    "title": "Contas do TikTok ligadas à loja",
+    "tagline": "Oficial, marketing e organização",
+    "outcome": "Diferenciar conta oficial e de marketing e explicar a exigência de organização.",
+    "lessons": [
+     {
+      "title": "Conta oficial: a cara da loja",
+      "minutes": 4,
+      "goal": "Entender o que é a conta oficial, suas regras e a exigência de Conta de Organização.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏷️",
+        "title": "Sua loja tem um rosto",
+        "text": "A conta oficial é o perfil do TikTok que representa a loja. Quem acessa o perfil vê a vitrine e confia mais."
+       },
+       {
+        "t": "jargon",
+        "tag": "Vitrine",
+        "term": "Conta oficial",
+        "means": "A conta do TikTok vinculada à loja como a identidade pública dela. Mostra a aba Loja com o catálogo no perfil.",
+        "ex": "Perfil @minhaloja com a aba Loja mostrando todos os produtos do Seller Center."
+       },
+       {
+        "t": "list",
+        "title": "Para que serve",
+        "items": [
+         "Mostra a <b>página Loja</b> no perfil, com os produtos sincronizados",
+         "Dá <b>confiança</b> ao cliente e ajuda a conversão",
+         "Reúne <b>seguidores</b> da loja e ajuda a recompra",
+         "Permite a <b>decoração da loja</b> (design da vitrine)"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Regras da conta oficial",
+        "html": "<b>Uma</b> conta oficial por loja. O nome dela deve ser <b>igual ao nome da loja</b>, então mudar um muda o outro. Só pode ser desvinculada <b>48 horas</b> depois de vinculada. A região tem que ser a mesma da loja."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Mexer no nome tem efeito em cadeia",
+        "html": "Se o cliente trocar o nome da loja, o nome da conta oficial muda junto. Combine isso antes, principalmente se a marca já tem seguidores."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Conta oficial precisa ser <b>Conta de Organização</b>",
+        "sub": "Exigência que vale para o TikTok Shop a partir de 1º de julho de 2026."
+       },
+       {
+        "t": "jargon",
+        "tag": "Conta",
+        "term": "Conta de Organização",
+        "means": "Tipo de conta do TikTok feito para empresas. Pertence à empresa como ativo e foi pensado para ser operado por equipe.",
+        "ex": "Em vez de o dono usar o perfil pessoal, a empresa tem um perfil de organização com a equipe gerenciando."
+       },
+       {
+        "t": "p",
+        "title": "Atualizar ou criar nova?",
+        "html": "O TikTok recomenda <b>atualizar</b> a conta pessoal existente em vez de criar outra, porque assim a marca <b>mantém seguidores e conteúdo</b>. A atualização muda o login da conta para código por e-mail ou telefone. Por isso, antes é preciso ter e-mail ou telefone ligado ao Seller Center."
+       },
+       {
+        "t": "quiz",
+        "q": "A loja quer trocar o nome. O que muda junto?",
+        "options": [
+         "Nada além do nome da loja",
+         "O nome da conta oficial vinculada",
+         "O nível do período probatório",
+         "O CNPJ cadastrado"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O nome da conta oficial e o nome da loja precisam ser iguais, então a alteração é replicada."
+       },
+       {
+        "t": "quiz",
+        "q": "Por que o TikTok recomenda atualizar a conta pessoal para Conta de Organização, em vez de criar uma nova?",
+        "options": [
+         "Porque a nova não pode vender",
+         "Para manter seguidores e conteúdo",
+         "Porque criar nova é proibido",
+         "Porque a atualização zera o limite de pedidos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Atualizando, a marca mantém seguidores e conteúdo."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Conta oficial = identidade pública da loja, <b>1 por loja</b>",
+         "Nome igual ao da loja",
+         "Desvincular só depois de <b>48 h</b>",
+         "Exigência de <b>Conta de Organização</b> desde 1º/jul/2026"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Contas de marketing e isenção de verificação",
+      "minutes": 4,
+      "goal": "Usar contas de marketing para ampliar tráfego e saber quando a verificação é dispensada.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📣",
+        "title": "Mais de um perfil vendendo",
+        "text": "Além da conta oficial, a loja pode ligar contas de marketing. Elas multiplicam fontes de tráfego e de conteúdo."
+       },
+       {
+        "t": "jargon",
+        "tag": "Conta",
+        "term": "Conta de marketing",
+        "means": "Outra conta do TikTok vinculada à loja que não é a oficial. Posta vídeos e faz LIVE com produtos da loja.",
+        "ex": "Um perfil de dicas de cozinha ligado à loja de utensílios, com foco diferente do perfil oficial."
+       },
+       {
+        "t": "table",
+        "title": "Oficial x marketing",
+        "caption": "Uma mesma conta não pode ser oficial e de marketing da mesma loja.",
+        "head": [
+         "Ponto",
+         "Conta oficial",
+         "Conta de marketing"
+        ],
+        "rows": [
+         [
+          "Quantas por loja",
+          "1",
+          "Até 4"
+         ],
+         [
+          "Onde aparecem os produtos",
+          "Aba Loja com catálogo completo",
+          "Vitrine com produtos adicionados manualmente"
+         ],
+         [
+          "Nome",
+          "Igual ao da loja",
+          "Livre"
+         ],
+         [
+          "Desvincular",
+          "Após 48 h",
+          "Após 24 h"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Limites da conta de marketing",
+        "html": "Pode ser vinculada <b>10 vezes em 180 dias</b>, então não fique trocando. Precisa ter passado na verificação de identidade e estar na mesma região da loja."
+       },
+       {
+        "t": "steps",
+        "title": "Como vincular uma conta de marketing",
+        "items": [
+         {
+          "title": "No Seller Center",
+          "html": "Minha conta > Contas de TikTok vinculadas > Conta de marketing > Vincular nova conta."
+         },
+         {
+          "title": "Informar o @",
+          "html": "Digite o nome de usuário e confirme a conta."
+         },
+         {
+          "title": "Enviar convite",
+          "html": "O sistema valida os critérios e manda o convite para o app do TikTok."
+         },
+         {
+          "title": "Aceitar no app",
+          "html": "Na conta que será vinculada: Caixa de entrada > Monetização > nova solicitação > Aceitar."
+         }
+        ]
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Conta <b>isenta de verificação</b>",
+        "sub": "Se cumprir 3 critérios, dá para postar vídeo com link e fazer LIVE sem passar por verificação extra."
+       },
+       {
+        "t": "list",
+        "title": "Os 3 critérios de isenção",
+        "items": [
+         "<b>18 anos ou mais</b>",
+         "Região da conta: <b>Brasil</b>",
+         "Status normal e <b>sem histórico de violações</b>"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Como conferir no TikTok",
+        "html": "Idade e região: Configurações e privacidade > Conta > Informações da conta. Violações: Configurações e privacidade > Suporte > Central de segurança. A conta de marketing vinculada fica isenta do requisito de seguidores e da verificação PKYC."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantas contas de marketing uma loja pode vincular?",
+        "options": [
+         "Até 10",
+         "Ilimitadas",
+         "Só 1",
+         "Até 4"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Uma conta oficial e até quatro contas de marketing por loja."
+       },
+       {
+        "t": "quiz",
+        "q": "Uma conta tem histórico de violações no TikTok. O que isso muda?",
+        "options": [
+         "Ela perde a isenção de verificação",
+         "Ela é banida da loja",
+         "Nada, a isenção é automática",
+         "Ela passa a poder ter 2 oficiais"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A isenção exige 18+, região Brasil e status normal sem histórico de violações."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Oficial: 1 por loja. Marketing: até <b>4</b>",
+         "Desvincular: oficial 48 h, marketing 24 h",
+         "Vinculação de marketing: <b>10 vezes em 180 dias</b>",
+         "Isenção: <b>18+, Brasil e sem violações</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Quantas contas oficiais uma loja pode ter?",
+      "options": [
+       "Uma",
+       "Quantas quiser",
+       "Duas",
+       "Até 4"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Cada loja só pode ser vinculada a uma conta oficial.",
+      "topic": "Contas"
+     },
+     {
+      "q": "Depois de vincular, em quanto tempo a conta de marketing pode ser desvinculada?",
+      "options": [
+       "Nunca",
+       "48 horas",
+       "24 horas",
+       "7 dias"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Marketing: 24 h. Oficial: 48 h.",
+      "topic": "Contas"
+     },
+     {
+      "q": "O que a atualização da conta pessoal para Conta de Organização preserva?",
+      "options": [
+       "Nada, o perfil é zerado",
+       "Só os cupons",
+       "Seguidores e conteúdo",
+       "Só os pedidos"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Atualizar em vez de criar conta nova mantém seguidores e conteúdo.",
+      "topic": "Contas"
+     },
+     {
+      "q": "Qual NÃO é critério para a isenção de verificação?",
+      "options": [
+       "Conta com região Brasil",
+       "Ter mais de 10 mil seguidores",
+       "Sem histórico de violações",
+       "Ter 18 anos ou mais"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Os três critérios são idade, região e histórico limpo.",
+      "topic": "Contas"
+     }
+    ]
+   },
+   {
+    "title": "Equipe, segurança e rotina",
+    "tagline": "Acesso certo e conta protegida",
+    "outcome": "Configurar acessos da equipe e agir bem em verificação, férias e uso do app.",
+    "lessons": [
+     {
+      "title": "Equipe na loja: usuários e funções",
+      "minutes": 4,
+      "goal": "Dar o acesso certo a cada pessoa da equipe sem compartilhar senha.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "👥",
+        "title": "Ninguém precisa da sua senha",
+        "text": "O Seller Center tem funções prontas. Cada pessoa da equipe vê só o que precisa."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Quem convida",
+        "html": "Só o <b>proprietário da loja</b> adiciona usuários. Fica em Minha conta > Configurações de conta > Gerenciamento de usuário."
+       },
+       {
+        "t": "steps",
+        "title": "Como adicionar alguém",
+        "items": [
+         {
+          "title": "Adicionar usuário",
+          "html": "Escolha uma ou mais funções e informe o e-mail da pessoa."
+         },
+         {
+          "title": "E-mail único",
+          "html": "Cada e-mail só pode ser usado por uma loja."
+         },
+         {
+          "title": "Convite",
+          "html": "A pessoa tem <b>120 horas</b> para ativar a conta pelo link do e-mail."
+         },
+         {
+          "title": "Acompanhar",
+          "html": "O status aparece em Usuário Convidado; depois vira Usuário Adicionado."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "As 8 funções prontas",
+        "caption": "Todas veem as páginas gerais: Página inicial, Integridade da loja, Academia, Bússola de dados e mensagens.",
+        "head": [
+         "Função",
+         "Edita"
+        ],
+        "rows": [
+         [
+          "Administrador principal",
+          "Quase tudo, menos dados sensíveis da conta"
+         ],
+         [
+          "Gerente de afiliados",
+          "Marketing de afiliados"
+         ],
+         [
+          "Especialista financeiro",
+          "Finanças (contas, pagamentos, faturas)"
+         ],
+         [
+          "Gerente de publicidade",
+          "Anúncios"
+         ],
+         [
+          "Especialista em marketing",
+          "Promoções"
+         ],
+         [
+          "Atendimento ao cliente",
+          "Chat (IM); só vê produtos, pedidos e envio"
+         ],
+         [
+          "Envio de pedidos",
+          "Pedidos e envio"
+         ],
+         [
+          "Gerenciamento de produtos",
+          "Produtos"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Fica só com o proprietário",
+        "items": [
+         "Informações da conta e <b>Modo Férias</b>",
+         "Informações sobre impostos e <b>contas bancárias</b>",
+         "Preferência de comunicação e Modo Delegação",
+         "Gerenciamento de usuários e contas do TikTok vinculadas"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Combine funções",
+        "html": "Uma pessoa pode ter mais de uma função. Um analista de marketplace que cuida de produto e promoção recebe as duas, sem virar administrador."
+       },
+       {
+        "t": "p",
+        "title": "Equipe na conta de organização",
+        "html": "Quem gerencia a conta de organização (oficial) é outro acesso. O Administrador Principal da loja cria ou vincula subcontas com a função de <b>Gerente de Afiliados</b> ou <b>Administrador Principal</b>. Ao revogar, a sessão dessa subconta na conta de organização é encerrada na hora, e ninguém precisa compartilhar senha."
+       },
+       {
+        "t": "quiz",
+        "q": "O convidado não ativou a conta e já passaram 6 dias. O que acontece?",
+        "options": [
+         "A conta é criada com função de administrador",
+         "O proprietário perde o acesso ao Seller Center",
+         "O convite expirou: convide de novo",
+         "Ele entra automaticamente na loja assim mesmo"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O convite vale 120 horas (5 dias). Depois disso, convide novamente."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual função cuida do chat com clientes e só pode visualizar pedidos?",
+        "options": [
+         "Especialista financeiro da loja",
+         "Atendimento ao cliente",
+         "Especialista em envio de pedidos",
+         "Gerente de publicidade da loja"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O atendimento ao cliente edita o IM e apenas visualiza produtos, pedidos e envio."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Só o <b>proprietário</b> convida usuários",
+         "8 funções prontas, combináveis",
+         "Convite vale <b>120 h</b>",
+         "Finanças sensíveis e contas vinculadas ficam <b>só com o proprietário</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Segurança, verificação e rotina",
+      "minutes": 4,
+      "goal": "Proteger a conta, responder a uma verificação de identidade e usar Modo Férias e o app com segurança.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔐",
+        "title": "Conta segura, loja no ar",
+        "text": "Quase todo susto de conta travada começa com um dado de acesso fraco ou uma verificação ignorada."
+       },
+       {
+        "t": "list",
+        "title": "Segurança da conta",
+        "items": [
+         "Ligue a <b>verificação em duas etapas</b> em Informações da conta",
+         "Revise os <b>dispositivos confiáveis</b> de tempos em tempos",
+         "Mantenha e-mail e telefone <b>atualizados</b>",
+         "Dê acesso por <b>função</b>, não por senha compartilhada"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Verificação de identidade",
+        "html": "O TikTok Shop pode pedir a verificação quando vê <b>risco</b> na loja, como aumento de avaliações negativas ou violações. É preciso usar os <b>mesmos dados do cadastro</b>. A tarefa aparece como “Verificar agora” no Seller Center."
+       },
+       {
+        "t": "table",
+        "title": "O que o TikTok Shop exige na verificação",
+        "caption": "Óculos de grau são permitidos.",
+        "head": [
+         "Item",
+         "Requisito"
+        ],
+        "rows": [
+         [
+          "Quem aparece",
+          "O representante legal do cadastro"
+         ],
+         [
+          "Documentos",
+          "CNH, RG, RNE/CRNM ou passaporte, frente e verso"
+         ],
+         [
+          "Imagens",
+          "Coloridas, completas e nítidas, JPG ou JPEG, até 10 MB"
+         ],
+         [
+          "Vídeo",
+          "Rosto totalmente visível, sem óculos escuros ou chapéu"
+         ],
+         [
+          "Evitar",
+          "Foto inclinada, cortada, com filtro ou captura de tela"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Verificação ignorada vira problema",
+        "html": "Quando o TikTok Shop manda verificação, ela entra como tarefa. Ignorar pode travar funções. Responda logo, com o representante legal em frente à câmera."
+       },
+       {
+        "t": "p",
+        "title": "Modo Férias",
+        "html": "Ativar o Modo Férias <b>zera o estoque</b> e mostra os produtos como esgotados. Os compradores não conseguem fazer pedidos, e as métricas são avaliadas com regras diferentes. Leva cerca de <b>1 hora</b> para ligar ou desligar."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Pedidos antigos continuam valendo",
+        "html": "O Modo Férias <b>não</b> vale para pedidos já feitos. Eles precisam ser enviados no prazo. Pedidos de pós-venda não tratados em <b>48 horas</b> são aprovados automaticamente."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Deixe resposta automática",
+        "html": "Em férias, ative a mensagem automática avisando o período e quando você volta a responder. Mensagem sem resposta vira avaliação ruim."
+       },
+       {
+        "t": "p",
+        "title": "App do vendedor",
+        "html": "O aplicativo <b>Central do Vendedor TikTok Shop</b> (iOS e Android; não está em aparelhos Huawei) permite publicar produtos, ajustar preço e estoque, falar com clientes e processar pedidos. Algumas tarefas complexas ainda só funcionam na versão web."
+       },
+       {
+        "t": "quiz",
+        "q": "Uma loja ativa o Modo Férias com pedidos ainda por enviar. O que acontece com esses pedidos?",
+        "options": [
+         "Seguem com o prazo de envio normal",
+         "São cancelados sem nenhuma penalidade",
+         "São enviados pela própria plataforma",
+         "Ficam suspensos até o fim das férias"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O Modo Férias não vale para pedidos já feitos. Enviar fora do prazo afeta as métricas."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual destes é um bom motivo para o TikTok Shop pedir verificação de identidade?",
+        "options": [
+         "O logo da loja está desatualizado",
+         "Avaliações negativas ou violações em alta",
+         "A loja vendeu pouco no mês passado",
+         "A equipe usa o app no celular com frequência"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "A verificação aparece quando há risco na loja, como avaliações negativas ou violações de política."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Ative a <b>verificação em duas etapas</b>",
+         "Verificação de identidade: mesmos dados do cadastro, vídeo claro",
+         "Modo Férias zera estoque e <b>não</b> vale para pedidos já feitos",
+         "App: iOS e Android, algumas tarefas só na web"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Quem pode adicionar usuários ao Seller Center?",
+      "options": [
+       "O especialista financeiro",
+       "O proprietário da loja",
+       "O suporte do TikTok",
+       "Qualquer administrador principal"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Somente o proprietário da loja adiciona usuários.",
+      "topic": "Equipe"
+     },
+     {
+      "q": "Em Modo Férias, o que acontece com pedidos já feitos?",
+      "options": [
+       "Valem e seguem o prazo de envio",
+       "São cancelados pela plataforma",
+       "O TikTok envia por você mesmo",
+       "Ficam pausados até a volta"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O Modo Férias não se aplica aos pedidos já feitos.",
+      "topic": "Rotina"
+     },
+     {
+      "q": "Qual função só edita Finanças e as páginas gerais?",
+      "options": [
+       "Especialista financeiro",
+       "Atendimento ao cliente",
+       "Especialista em marketing",
+       "Gerente de afiliados"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O especialista financeiro edita contas, pagamentos e faturas.",
+      "topic": "Equipe"
+     },
+     {
+      "q": "Qual boa prática de segurança aparece em Informações da conta?",
+      "options": [
+       "Ligar a verificação em duas etapas",
+       "Compartilhar a senha com a equipe",
+       "Desligar os dispositivos confiáveis",
+       "Usar o mesmo e-mail em 3 lojas"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "A verificação em duas etapas exige senha mais um código.",
+      "topic": "Segurança"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Qual a primeira exigência para um negócio vender no TikTok Shop Brasil?",
+    "options": [
+     "Ter loja física",
+     "Ter nota fiscal eletrônica de 3 meses",
+     "Ter 10 mil seguidores",
+     "Ter CNPJ ativo"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Hoje só CNPJ pode se cadastrar.",
+    "topic": "Cadastro"
+   },
+   {
+    "q": "A razão social enviada no cadastro deve:",
+    "options": [
+     "Ser o nome fantasia",
+     "Ser em inglês",
+     "Coincidir com o Cartão CNPJ",
+     "Ser igual ao @ do TikTok"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O nome empresarial deve coincidir exatamente com o comprovante do CNPJ.",
+    "topic": "Cadastro"
+   },
+   {
+    "q": "Qual o limite diário de pedidos de uma loja Iniciante?",
+    "options": [
+     "500",
+     "50",
+     "10",
+     "100"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Iniciante 50, com até 1.000 anúncios ativos.",
+    "topic": "Níveis"
+   },
+   {
+    "q": "O que é o período probatório?",
+    "options": [
+     "Uma punição aplicada por violação",
+     "Um plano pago de assinatura da loja",
+     "Fase de limites de toda loja nova",
+     "Uma exigência que vale só para o MEI"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "É padrão para lojas recém-integradas e não é penalidade.",
+    "topic": "Níveis"
+   },
+   {
+    "q": "Quantas violações nos últimos 30 dias são aceitas para subir de nível?",
+    "options": [
+     "Menos de 4",
+     "Qualquer número",
+     "Até 10",
+     "Nenhuma"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "O critério é menos de 4 violações.",
+    "topic": "Níveis"
+   },
+   {
+    "q": "Em qual caso a conta do TikTok fica isenta de verificação ao ser vinculada?",
+    "options": [
+     "Só contas com assinatura paga ativa",
+     "Qualquer conta recém-criada na loja",
+     "Só contas com selo de verificado azul",
+     "18+, Brasil e sem violações"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "São os três critérios do guia.",
+    "topic": "Contas"
+   },
+   {
+    "q": "O que muda quando o nome da loja é alterado?",
+    "options": [
+     "Nada, os dois nomes são independentes",
+     "A conta oficial muda de nome junto",
+     "O CNPJ cadastrado precisa ser refeito",
+     "A loja volta para o nível Iniciante"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Nome da loja e da conta oficial precisam ser iguais.",
+    "topic": "Contas"
+   },
+   {
+    "q": "Quantas contas de marketing podem ser vinculadas?",
+    "options": [
+     "Nenhuma",
+     "10",
+     "Até 4",
+     "1"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Uma oficial e até quatro de marketing.",
+    "topic": "Contas"
+   },
+   {
+    "q": "A partir de quando a conta oficial precisa ser Conta de Organização?",
+    "options": [
+     "Desde 2020",
+     "1º de janeiro de 2027",
+     "1º de julho de 2026",
+     "Nunca"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A exigência vale para o TikTok Shop a partir de 1º de julho de 2026.",
+    "topic": "Contas"
+   },
+   {
+    "q": "Quanto tempo o convidado tem para ativar a conta de usuário?",
+    "options": [
+     "Não expira",
+     "120 horas",
+     "30 dias",
+     "24 horas"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "O convite vale 120 horas.",
+    "topic": "Equipe"
+   },
+   {
+    "q": "Qual função cuida só do chat com cliente e vê pedidos sem editar?",
+    "options": [
+     "Atendimento ao cliente",
+     "Administrador principal da loja",
+     "Especialista financeiro da loja",
+     "Gerente de publicidade da loja"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Edita o IM e apenas visualiza produtos, pedidos e envio.",
+    "topic": "Equipe"
+   },
+   {
+    "q": "No Modo Férias, o que acontece com o estoque?",
+    "options": [
+     "Zera e mostra produtos esgotados",
+     "É transferido para outra loja do grupo",
+     "É dobrado até o fim das férias",
+     "Continua à venda normalmente"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Os consumidores não conseguem comprar.",
+    "topic": "Rotina"
+   },
+   {
+    "q": "Um pedido de pós-venda fica sem resposta por 48 horas. O que acontece?",
+    "options": [
+     "Aprovado automaticamente",
+     "Vira uma disputa com o comprador",
+     "É recusado pelo sistema",
+     "Fica pendente por tempo indeterminado"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "O pós-venda não tratado em 48 h é aprovado automaticamente.",
+    "topic": "Rotina"
+   },
+   {
+    "q": "Qual arquivo é aceito na verificação de identidade?",
+    "options": [
+     "Foto do documento cortada nas bordas",
+     "Foto com filtro de beleza ligado",
+     "Print da tela do celular do dono",
+     "JPG colorido, nítido e até 10 MB"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Imagens inclinadas, cortadas, com filtro ou captura de tela são recusadas.",
+    "topic": "Segurança"
+   },
+   {
+    "q": "Por quanto tempo costuma levar a análise do cadastro?",
+    "options": [
+     "Imediata",
+     "Exatamente 24 horas",
+     "De 2 a 6 dias",
+     "Mais de 60 dias"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A análise costuma levar de 2 a 6 dias.",
+    "topic": "Cadastro"
+   }
+  ]
+ }
+}

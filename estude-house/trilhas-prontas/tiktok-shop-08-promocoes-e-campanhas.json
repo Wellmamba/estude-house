@@ -1,0 +1,1703 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 8: promoções e campanhas",
+  "tag": "TikTok Shop",
+  "tagline": "Descontos, cupons, combos, frete e campanhas da plataforma.",
+  "subtitle": "Ferramentas de promoção do vendedor, ordem de cálculo, campanhas, megacampanhas e análise de resultados. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Descontos e cupons",
+    "tagline": "Ferramentas da loja",
+    "outcome": "Dominar a ordem de cálculo, o desconto no produto, o código e os cupons.",
+    "lessons": [
+     {
+      "title": "Panorama das promoções e a ordem do desconto",
+      "minutes": 4,
+      "goal": "Conhecer as ferramentas do vendedor e entender qual desconto vale quando há várias ativas.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎯",
+        "title": "Muitos descontos, um preço final",
+        "text": "Se três promoções estão ativas no mesmo produto, o cliente não paga a soma delas. O TikTok Shop aplica uma ordem fixa, e quem a conhece evita prejuízo."
+       },
+       {
+        "t": "table",
+        "title": "Ferramentas do vendedor (guia Promoções)",
+        "caption": "Quase tudo é financiado pelo vendedor.",
+        "head": [
+         "Ferramenta",
+         "Para que serve"
+        ],
+        "rows": [
+         [
+          "Desconto no produto",
+          "Baixar o preço de um item"
+         ],
+         [
+          "Oferta relâmpago",
+          "Desconto por tempo curto"
+         ],
+         [
+          "Compre mais e economize mais",
+          "Subir a quantidade por pedido"
+         ],
+         [
+          "Kit promocional",
+          "Vender 2 a 3 produtos juntos"
+         ],
+         [
+          "Presentes com compra",
+          "Dar brinde sem baixar o preço"
+         ],
+         [
+          "Cupons e código promocional",
+          "Atrair, converter e fidelizar"
+         ],
+         [
+          "Desconto na taxa de envio",
+          "Frete grátis ou parcial"
+         ]
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "Sequência de cálculo",
+        "caption": "Os números diferentes se combinam de cima para baixo.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "1️⃣",
+          "title": "Item da loja",
+          "text": "Preço da campanha, relâmpago, kit ou desconto no produto."
+         },
+         {
+          "icon": "2️⃣",
+          "title": "Item da plataforma",
+          "text": "Subsídio cofinanciado ou da plataforma."
+         },
+         {
+          "icon": "3️⃣",
+          "title": "Vários itens da loja",
+          "text": "Cupom do vendedor e Compre mais, juntos."
+         },
+         {
+          "icon": "4️⃣",
+          "title": "Vários itens da plataforma",
+          "text": "Cupom da plataforma e cupom cofinanciado."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Dentro do mesmo grupo vale uma só",
+        "html": "No grupo 1, só <b>uma</b> promoção entra em vigor, pela ordem de prioridade: preço da campanha, depois relâmpago de LIVE, relâmpago comum, kit e por último o desconto no produto."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Cupom e Compre mais juntos",
+        "html": "Dois itens somam R$ 80 depois dos descontos de item. Cupom “gaste R$ 80, ganhe R$ 10” e Compre mais “2 itens, 10%” (R$ 8) se combinam: <b>R$ 80 − 10 − 8 = R$ 62</b>."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Subsídio cofinanciado",
+        "html": "Preço de R$ 100 e preço de campanha de R$ 80 (desconto de R$ 20 seu). Com contribuição 1:1, a plataforma soma R$ 20 e o cliente vê <b>R$ 60</b>. Com 2:1, soma R$ 10 e o cliente vê <b>R$ 70</b>."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Cupons do vendedor não se somam",
+        "html": "Cupom comum, cupom de LIVE e cupom de novo cliente <b>não acumulam</b> entre si no mesmo pedido: vale o de maior desconto. Só um cupom do vendedor por pedido."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Simule antes de ligar",
+        "html": "Antes de ativar duas ferramentas, calcule o preço final empilhando na ordem. Se a margem sumir, desligue uma."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantos cupons do vendedor valem no mesmo pedido?",
+        "options": [
+         "Todos somados",
+         "Dois, escolhidos pela loja",
+         "Nenhum, só da plataforma",
+         "Um só, o de maior desconto"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Cupom comum, de LIVE e de novo cliente não acumulam."
+       },
+       {
+        "t": "quiz",
+        "q": "No grupo 1, qual tem prioridade mais alta?",
+        "options": [
+         "Cupom de chat",
+         "Preço da campanha",
+         "Desconto no produto",
+         "Kit promocional"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O desconto no produto é o de menor prioridade do grupo."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Quatro grupos de cálculo, <b>de cima para baixo</b>",
+         "No mesmo grupo, <b>uma só</b> vale ou combinam conforme a regra",
+         "Cupom do vendedor + Compre mais <b>combinam</b>",
+         "<b>Simule</b> o preço final antes de ativar"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Desconto no produto e código promocional",
+      "minutes": 4,
+      "goal": "Configurar o desconto básico do catálogo e criar códigos para divulgar fora do app.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏷️",
+        "title": "O básico que mantém o preço competitivo",
+        "text": "O desconto no produto é a ferramenta mais simples. O código promocional leva clientes de fora do TikTok até a sua loja e ainda mostra de onde vieram."
+       },
+       {
+        "t": "list",
+        "title": "Desconto no produto: regras",
+        "items": [
+         "Tipo <b>percentual</b> (20%) ou <b>preço fixo</b>",
+         "Duração <b>maior que 10 minutos</b> e <b>menor que 30 dias</b>",
+         "Promoções ativas acima de 30 dias são <b>encerradas</b>; relance depois",
+         "Nível do produto (todas as variações) ou <b>nível da variação</b>",
+         "Limite de compra total e por comprador"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Criar o desconto",
+        "items": [
+         {
+          "title": "Promoções",
+          "html": "Entre na guia Promoções da Central do vendedor."
+         },
+         {
+          "title": "Tipo e período",
+          "html": "Defina percentual ou fixo e as datas."
+         },
+         {
+          "title": "Produtos",
+          "html": "Escolha na tela ou carregue uma lista em Excel."
+         },
+         {
+          "title": "Limites",
+          "html": "Configure compra total e por comprador, individual ou em massa."
+         },
+         {
+          "title": "Publicar",
+          "html": "Confirme e acompanhe em Gerenciar promoções."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Preço competitivo o ano todo",
+        "html": "A Academia sugere manter o desconto ativo nos produtos para preservar a competitividade. Se mesmo assim não vende, o problema pode estar em foto, descrição ou avaliações."
+       },
+       {
+        "t": "p",
+        "title": "Código promocional",
+        "html": "É um desconto financiado pelo vendedor, entregue por <b>código</b>. Serve para tráfego externo: WhatsApp, Instagram, e-mail, eventos e também LIVE e vídeos. Como cada código fica atribuído a uma campanha sua, você vê qual canal trouxe mais pedidos."
+       },
+       {
+        "t": "list",
+        "title": "Regras do código",
+        "items": [
+         "Você cria de <b>2 a 8</b> letras (A–Z) ou números",
+         "O código pode ter até 12 caracteres contando o prefixo padrão",
+         "Ou o sistema <b>gera</b> um para você",
+         "Duração <b>maior que 10 minutos e menor que 365 dias</b>",
+         "Precisa ser <b>único</b> entre os códigos próximos e em andamento no país"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Código recusado",
+        "html": "O envio falha se o código tiver menos de 2 ou mais de 8 caracteres, violar as diretrizes de texto ou já existir em outra loja."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a duração máxima do desconto no produto?",
+        "options": [
+         "Sem limite algum",
+         "Menos de 365 dias",
+         "Menos de 24 horas",
+         "Menos de 30 dias"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Promoções ativas acima de 30 dias são encerradas."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantos caracteres tem um código promocional criado por você?",
+        "options": [
+         "Exatamente 1",
+         "De 20 a 80",
+         "Mais de 100",
+         "De 2 a 8"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Letras de A a Z ou números."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Desconto no produto: <b>% ou preço fixo</b>, até <b>30 dias</b>",
+         "Código: <b>2 a 8</b> caracteres, até <b>365 dias</b>",
+         "Código serve para <b>canais externos</b> e rastreio",
+         "Código precisa ser <b>único</b> no país"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Cupons do vendedor",
+      "minutes": 4,
+      "goal": "Escolher o cupom certo para novo cliente, cliente recorrente, criador, chat e avaliação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎟️",
+        "title": "Cada cupom tem um público",
+        "text": "Em vez de dar o mesmo desconto para todo mundo, você escolhe quem recebe. Assim o investimento vai para quem tem mais chance de comprar."
+       },
+       {
+        "t": "table",
+        "title": "Tipos de cupom",
+        "caption": "Todos financiados pelo vendedor.",
+        "head": [
+         "Cupom",
+         "Quem usa",
+         "Onde aparece"
+        ],
+        "rows": [
+         [
+          "Novo cliente",
+          "Quem nunca pediu na loja",
+          "Páginas do produto e finalização"
+         ],
+         [
+          "Cliente recorrente",
+          "Quem já comprou antes",
+          "Para clientes elegíveis"
+         ],
+         [
+          "Exclusivo do criador",
+          "Espectadores de um criador",
+          "LIVE, vídeo e vitrine do criador"
+         ],
+         [
+          "Cupom do chat",
+          "Cliente específico",
+          "Só dentro do chat de atendimento"
+         ],
+         [
+          "Cupom de avaliação",
+          "Quem avalia com qualidade",
+          "Emitido após a avaliação"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Campos comuns",
+        "items": [
+         "<b>Tipo:</b> valor fixo ou percentual",
+         "<b>Gasto mínimo</b> para o desconto valer",
+         "<b>Desconto máximo por pedido</b> (em %, ele deve ser ≥ % × gasto mínimo)",
+         "<b>Quantidade resgatável</b> (não é a quantidade usada de fato)",
+         "<b>Resgates por cliente</b>",
+         "Loja inteira ou produtos específicos"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Conta do desconto máximo",
+        "html": "Cupom de 50% com gasto mínimo de R$ 10: o desconto máximo por pedido precisa ser <b>R$ 5 ou mais</b>."
+       },
+       {
+        "t": "p",
+        "title": "Pontos de atenção",
+        "html": "No <b>novo cliente</b>, quem devolveu um pedido já conta como cliente: não é novo. Só pode haver um cupom de novo cliente no mesmo período. No <b>exclusivo do criador</b>, escolha um criador do mesmo país, não vinculado à sua conta oficial, e avise-o: ele não recebe notificação."
+       },
+       {
+        "t": "steps",
+        "title": "Cupom de avaliação",
+        "items": [
+         {
+          "title": "Defina a janela",
+          "html": "Período de resgate de 10 min a 365 dias; validade padrão de 60 dias."
+         },
+         {
+          "title": "Escolha produtos",
+          "html": "Até 2.000 produtos ativos."
+         },
+         {
+          "title": "Critério",
+          "html": "Avaliação com pelo menos 30 caracteres e 1 foto ou vídeo."
+         },
+         {
+          "title": "Desconto",
+          "html": "Sem limite de desconto máximo, para a recompensa ser atraente."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não compre avaliação positiva",
+        "html": "O cupom premia <b>avaliação de qualidade</b>, não nota alta. Pedir avaliação positiva em troca de recompensa viola a política de avaliações."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Chat como ferramenta de venda",
+        "html": "Cliente em dúvida no chat? O agente envia o cupom do chat com um clique, e ele só aparece para aquela conversa."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual cupom só aparece dentro do chat de atendimento?",
+        "options": [
+         "Cupom de recorrência",
+         "Cupom de novo cliente",
+         "Cupom do chat",
+         "Código promocional"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Ele não aparece na página do produto nem na finalização."
+       },
+       {
+        "t": "quiz",
+        "q": "O que faz o cupom de avaliação ser emitido?",
+        "options": [
+         "Avaliação com texto e mídia",
+         "Qualquer nota 5 estrelas",
+         "Compra acima de R$ 1.000",
+         "Cadastro em campanha"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Pelo menos 30 caracteres e uma foto ou vídeo."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Cupom certo para o <b>público certo</b>",
+         "Desconto máximo ≥ <b>% × gasto mínimo</b>",
+         "Criador <b>não é notificado</b>: avise",
+         "Avaliação: <b>qualidade</b>, nunca nota comprada"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Quantos cupons do vendedor valem no mesmo pedido?",
+      "options": [
+       "Todos somados",
+       "Nenhum",
+       "Sempre dois",
+       "Apenas um, o melhor"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Cupom comum, de LIVE e de novo cliente não acumulam.",
+      "topic": "Cálculo"
+     },
+     {
+      "q": "Qual a duração máxima do desconto no produto?",
+      "options": [
+       "Menos de 1 hora",
+       "Dois anos",
+       "Sem limite",
+       "Menos de 30 dias"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Promoções acima de 30 dias são encerradas.",
+      "topic": "Desconto"
+     },
+     {
+      "q": "Quantos caracteres tem o código criado pelo vendedor?",
+      "options": [
+       "De 2 a 8",
+       "Exatamente 100",
+       "Apenas 1",
+       "De 30 a 80"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Letras de A a Z ou números.",
+      "topic": "Código"
+     },
+     {
+      "q": "O cupom de novo cliente vale para quem:",
+      "options": [
+       "Comprou 10 vezes",
+       "Acabou de pedir",
+       "É afiliado",
+       "Nunca fez pedido na loja"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Devolver um pedido conta como pedido feito.",
+      "topic": "Cupom"
+     },
+     {
+      "q": "O cupom de avaliação premia:",
+      "options": [
+       "Nota 5 sem comentário",
+       "Avaliação com texto e mídia",
+       "Qualquer clique",
+       "Compra no outro app"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Mínimo de 30 caracteres e 1 foto ou vídeo.",
+      "topic": "Avaliação"
+     }
+    ]
+   },
+   {
+    "title": "Aumentar o ticket e fidelizar",
+    "tagline": "Combos, brindes e frete",
+    "outcome": "Usar Compre mais, kit, brinde, frete e assinatura com margem.",
+    "lessons": [
+     {
+      "title": "Compre mais e kit promocional",
+      "minutes": 4,
+      "goal": "Aumentar o valor do pedido com descontos por quantidade e combos.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🛍️",
+        "title": "Subir o ticket médio",
+        "text": "Vender mais por cliente custa menos que atrair um cliente novo. Compre mais e economize mais e kits fazem exatamente isso."
+       },
+       {
+        "t": "list",
+        "title": "Compre mais e economize mais (CMEM)",
+        "items": [
+         "Desconto baseado em <b>quantidade de itens</b>",
+         "Até <b>2 níveis</b>; o nível 2 pede mais itens e % maior",
+         "Duração de 10 minutos a 365 dias",
+         "Pode limitar <b>um uso por cliente</b>",
+         "Pode ter <b>orçamento</b>: se esgotar, a promoção é desativada",
+         "Loja inteira ou produtos específicos"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Aplique à loja toda",
+        "html": "Com a promoção em toda a loja o cliente mistura produtos livremente e chega mais fácil ao mínimo. Em produtos específicos, escolha itens complementares ou de variações."
+       },
+       {
+        "t": "list",
+        "title": "Kit promocional",
+        "items": [
+         "Combo de <b>2 a 3 produtos</b>",
+         "Desconto em <b>percentual</b> ou <b>preço fixo</b>",
+         "O preço do kit precisa ser <b>menor que o original</b>",
+         "Você cria o combo ou usa um combo existente",
+         "Limite de compra por cliente"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Kit de R$ 12",
+        "html": "Produto A de R$ 10 e B de R$ 5. Para fixar o kit em R$ 12, ofereça A a R$ 8 e B a R$ 4: <b>8 + 4 = 12</b>."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Compre mais (CMEM)",
+         "tone": "bad",
+         "items": [
+          "Mesmo produto ou mix da loja",
+          "Desconto cresce com a quantidade",
+          "Até 2 níveis",
+          "Bom para itens de consumo repetido"
+         ]
+        },
+        "right": {
+         "title": "Kit promocional",
+         "tone": "good",
+         "items": [
+          "Combo fechado de 2 a 3 itens",
+          "Preço do combo definido por você",
+          "Bom para itens complementares",
+          "Ajuda a lançar produto novo ao lado de um campeão"
+         ]
+        }
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Combine o que já vende junto",
+        "html": "Use o histórico para ver o que seus clientes compram no mesmo pedido e monte os combos a partir disso."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantos níveis o Compre mais permite?",
+        "options": [
+         "Até dois",
+         "Até vinte",
+         "Somente um fixo",
+         "Nenhum nível"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O nível 2 precisa ter mais itens e desconto maior."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantos produtos cabem em um kit?",
+        "options": [
+         "De 10 a 30",
+         "De 2 a 3",
+         "Só 1",
+         "Mais de 100"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Com desconto percentual ou preço fixo."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "CMEM: <b>até 2 níveis</b>, orçamento opcional",
+         "Kit: <b>2 a 3 produtos</b>, preço abaixo do original",
+         "Os dois <b>aumentam o ticket médio</b>",
+         "Monte combos a partir do <b>histórico de compras</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Presentes com compra",
+      "minutes": 4,
+      "goal": "Oferecer brindes que estimulam a compra sem baixar o preço do produto.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎁",
+        "title": "Valor percebido sem mexer no preço",
+        "text": "“Compre X itens e ganhe um brinde” funciona para marcas que não podem dar desconto e para lançar produtos novos."
+       },
+       {
+        "t": "list",
+        "title": "Quando usar",
+        "items": [
+         "Marcas com <b>proteção de preço</b>",
+         "Lançamento de <b>produto novo</b>",
+         "Recompensar quem gasta mais (<b>upselling</b>)"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Exemplos de brinde bom",
+        "items": [
+         "Beleza e consumo: uma <b>máscara facial</b>",
+         "Casa: uma <b>fronha</b>",
+         "Moda: <b>acessórios para o cabelo</b>",
+         "Eletrônicos: uma <b>capa de celular</b>"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Dois tipos de brinde",
+        "caption": "Brindes à venda baixam o estoque total ao serem resgatados.",
+        "head": [
+         "Tipo",
+         "Como funciona"
+        ],
+        "rows": [
+         [
+          "Item à venda",
+          "Também pode ser comprado sozinho; o estoque é o mesmo do produto"
+         ],
+         [
+          "Item fora de venda",
+          "Só existe como brinde; não aparece em busca, loja ou recomendação"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Regras importantes",
+        "items": [
+         "Alguns itens caros não podem ser brinde: <b>ouro, laptops, computadores, celulares, TVs</b>",
+         "Todos os produtos e brindes da promoção precisam estar no <b>mesmo depósito</b>",
+         "Itens em <b>pré-venda</b> não participam",
+         "Para pagamento na entrega, ative a opção antes de incluir o item"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Brinde também gasta estoque",
+        "html": "Se o brinde é um produto à venda, cada resgate reduz o estoque dele. Acompanhe para não vender o que não tem."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Brinde barato e útil",
+        "html": "O melhor brinde é útil, relevante para o cliente e econômico para a loja. Teste um item de baixo custo antes de ampliar."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual produto é um bom exemplo de brinde permitido?",
+        "options": [
+         "Celular novo",
+         "Fronha ou acessório simples",
+         "Televisão",
+         "Joia de ouro"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Televisores, celulares e ouro estão entre as categorias restritas."
+       },
+       {
+        "t": "quiz",
+        "q": "O que vale para depósitos na promoção?",
+        "options": [
+         "Depósito é irrelevante",
+         "Cada item em um estado",
+         "Só o brinde precisa de depósito",
+         "Todos os itens no mesmo depósito"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Se forem diferentes, a promoção não é criada."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Compre X, ganhe Y</b>: valor sem baixar preço",
+         "Brinde <b>à venda</b> divide o estoque",
+         "Itens caros <b>não</b> podem ser brinde",
+         "Mesmo <b>depósito</b> para todos"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Frete na promoção",
+      "minutes": 4,
+      "goal": "Subsidiar o frete com cuidado e entender a taxa do Programa de Taxa de Envio.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚚",
+        "title": "Frete grátis converte, mas custa",
+        "text": "O rótulo de frete grátis chama atenção. Só vale se o custo estiver sob controle, porque quem paga é a loja."
+       },
+       {
+        "t": "list",
+        "title": "Desconto na taxa de envio: condições",
+        "items": [
+         "Saldo da loja <b>positivo</b>",
+         "Conta fora do <b>período probatório</b>"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "O que configurar",
+        "items": [
+         "<b>Período:</b> indefinido ou específico",
+         "<b>Métodos:</b> só envio padrão (e econômico) ou todos",
+         "<b>Área:</b> todo o país ou áreas específicas",
+         "<b>Tipo:</b> frete grátis ou desconto parcial",
+         "<b>Critérios:</b> gasto mínimo e/ou quantidade mínima de itens",
+         "Loja inteira ou produtos específicos"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Gasto mínimo um pouco acima do ticket",
+        "html": "Defina o mínimo ligeiramente acima do valor médio por pedido. O cliente coloca mais um item para ganhar o frete."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Frete maior que o pedido",
+        "html": "Se o frete subsidiado passar do valor do pedido, a liquidação fica <b>negativa</b>. Calcule com peso e dimensões reais do pacote."
+       },
+       {
+        "t": "p",
+        "title": "Programa de Taxa de Envio",
+        "html": "Quem participa paga <b>6% do preço de venda</b> dos produtos entregues com sucesso, antes de subsídios, para oferecer frete grátis ou baixo ao cliente. A taxa de serviço tem <b>teto de R$ 50 por produto</b>. Se o produto não foi enviado e o cliente cancela, não há cobrança."
+       },
+       {
+        "t": "list",
+        "title": "Quando a taxa não volta",
+        "items": [
+         "Cliente pede devolução ou reembolso: o cupom de frete retorna ao cliente",
+         "A <b>taxa de serviço do programa não é reembolsada</b> à loja",
+         "Se a culpa é do vendedor (item errado, fora da descrição), o frete é cobrado dele"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Taxa do programa",
+        "html": "Produto de R$ 100 entregue: 6% = <b>R$ 6,00</b>. Produto de R$ 1.200 entregue: 6% seria R$ 72, mas o teto trava em <b>R$ 50</b>."
+       },
+       {
+        "t": "quiz",
+        "q": "Quanto o Programa de Taxa de Envio cobra do preço de venda?",
+        "options": [
+         "6%, teto de R$ 50 por produto",
+         "60% do preço, sem qualquer teto",
+         "6% do frete real cobrado",
+         "0,6% fixo por pedido enviado"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A cobrança vale para produtos entregues."
+       },
+       {
+        "t": "quiz",
+        "q": "O que pode acontecer se o frete grátis cobrir mais que o pedido?",
+        "options": [
+         "Bônus da plataforma",
+         "Saldo negativo na liquidação",
+         "Aumento do SPS",
+         "Cupom automático"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O custo logístico acima do valor pago sai do extrato da loja."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Frete grátis exige <b>saldo positivo</b>",
+         "Gasto mínimo <b>acima do ticket médio</b>",
+         "Programa: <b>6%</b>, teto <b>R$ 50</b> por produto",
+         "Taxa do programa <b>não volta</b> em devolução"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Assinatura e compras recorrentes",
+      "minutes": 4,
+      "goal": "Usar o Programa de Assinatura para vender produtos de reposição.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔁",
+        "title": "Receita previsível",
+        "text": "Quem compra shampoo ou ração todo mês é a clientela dos sonhos. A assinatura cria pedidos automáticos com desconto exclusivo."
+       },
+       {
+        "t": "p",
+        "title": "O que é",
+        "html": "O cliente assina um produto, escolhe a <b>frequência</b> e a <b>quantidade</b>, e a plataforma processa os pedidos recorrentes sem nova ação dele. O recurso é para categorias elegíveis de giro rápido, como saúde, beleza, alimentos, itens para pets e casa."
+       },
+       {
+        "t": "list",
+        "title": "Condições",
+        "items": [
+         "Hoje só lojas inscritas no <b>Programa de Taxa de Envio (SFP)</b>",
+         "Disponível em categorias elegíveis",
+         "Para outras categorias, fale com o gerente de contas"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "O que você configura",
+        "caption": "Ativação em Produto > Gerenciar produto.",
+        "head": [
+         "Item",
+         "Opções"
+        ],
+        "rows": [
+         [
+          "Desconto regular",
+          "5%, 10%, 15% ou 20% (pedidos após o primeiro)"
+         ],
+         [
+          "Desconto do primeiro pedido",
+          "De 5% a 90%, igual ou maior que o regular"
+         ],
+         [
+          "Frequência",
+          "1 a 8 semanas ou 3 a 6 meses"
+         ]
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Ativar",
+        "items": [
+         {
+          "title": "Produtos",
+          "html": "Abra Produto > Gerenciar produto."
+         },
+         {
+          "title": "Menu",
+          "html": "Escolha o produto e abra a opção de assinatura."
+         },
+         {
+          "title": "Descontos",
+          "html": "Defina regular, primeiro pedido e frequência."
+         },
+         {
+          "title": "Confirmar",
+          "html": "O produto passa a mostrar a opção Programa de Assinatura."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Desconto de entrada",
+        "html": "Desconto regular de 10% e primeiro pedido de 25%: o cliente entra com um bônus de boas-vindas e depois paga 10% menos a cada reposição."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Produto que acaba",
+        "html": "Indique assinatura só em itens consumíveis. Em produto durável a assinatura não faz sentido."
+       },
+       {
+        "t": "quiz",
+        "q": "Quem pode ativar o Programa de Assinatura hoje?",
+        "options": [
+         "Qualquer loja nova",
+         "Só lojas sem produtos",
+         "Lojas inscritas no SFP",
+         "Somente criadores"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Assim os assinantes têm os descontos de frete do programa."
+       },
+       {
+        "t": "quiz",
+        "q": "O desconto do primeiro pedido deve ser:",
+        "options": [
+         "Proibido",
+         "Sempre menor",
+         "Igual ou maior que o regular",
+         "Fixo em 1%"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Faixa de 5% a 90%."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Assinatura: <b>pedidos automáticos</b> com desconto",
+         "Exige <b>SFP</b> e categoria elegível",
+         "Regular <b>5–20%</b>; primeiro pedido <b>5–90%</b>",
+         "Ideal para <b>itens de reposição</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Quantos níveis o Compre mais permite?",
+      "options": [
+       "Somente cem",
+       "Nenhum",
+       "Até vinte",
+       "Até dois"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O nível 2 tem mais itens e desconto maior.",
+      "topic": "CMEM"
+     },
+     {
+      "q": "Quantos produtos cabem em um kit promocional?",
+      "options": [
+       "De 20 a 30",
+       "Só 1",
+       "Mais de 50",
+       "De 2 a 3"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Com desconto percentual ou fixo.",
+      "topic": "Kit"
+     },
+     {
+      "q": "Qual item é restrito como brinde?",
+      "options": [
+       "Máscara facial",
+       "Capa de celular",
+       "Fronha",
+       "Celular"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Celulares, laptops, TVs e ouro estão restritos.",
+      "topic": "Brinde"
+     },
+     {
+      "q": "O Programa de Taxa de Envio cobra:",
+      "options": [
+       "1% do pedido, sem teto",
+       "R$ 500 fixos por pedido",
+       "6% do preço, teto de R$ 50",
+       "60% do valor do frete"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "A cobrança é sobre produtos entregues.",
+      "topic": "Frete"
+     },
+     {
+      "q": "Para ativar assinatura, a loja precisa estar no:",
+      "options": [
+       "Ads de loja",
+       "Programa de afiliados",
+       "Cursos de LIVE",
+       "Programa de Taxa de Envio (SFP)"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Assim os assinantes têm desconto de frete.",
+      "topic": "Assinatura"
+     }
+    ]
+   },
+   {
+    "title": "Campanhas e megacampanhas",
+    "tagline": "Participar e medir",
+    "outcome": "Entender benefícios, preços, inscrição e preparação para o pico.",
+    "lessons": [
+     {
+      "title": "Campanhas: o que são e quais benefícios",
+      "minutes": 4,
+      "goal": "Entender os tipos de campanha, os benefícios e os critérios para participar.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚀",
+        "title": "Tráfego que a plataforma empurra",
+        "text": "Campanhas são eventos da plataforma. Em troca de preço competitivo, o produto ganha visibilidade e, às vezes, subsídio."
+       },
+       {
+        "t": "table",
+        "title": "Tipos de campanha",
+        "caption": "Para campanha de conteúdo, primeiro cadastre uma de produto.",
+        "head": [
+         "Tipo",
+         "O que é"
+        ],
+        "rows": [
+         [
+          "Produto",
+          "Você cadastra itens específicos"
+         ],
+         [
+          "Loja",
+          "A loja inteira participa, com tráfego prioritário"
+         ],
+         [
+          "LIVE e vídeo curto",
+          "Sessões de LIVE ou desafios com selo da campanha"
+         ],
+         [
+          "Cofinanciada",
+          "Plataforma e vendedor dividem o desconto"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Benefícios comuns",
+        "items": [
+         "<b>Visibilidade:</b> banners, selo, página da campanha, hashtag",
+         "<b>Incentivo ao produto:</b> subsídio e cupons (total ou parcial da plataforma)",
+         "<b>Promoção de tráfego</b> gratuita",
+         "<b>Aumento da comissão do criador</b> (ex.: 5% + 5% = 10%, sem afetar o seu valor)",
+         "<b>Créditos de anúncios</b> em GMV Max ou anúncios de loja",
+         "<b>Cupom de amostra</b> para criadores"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Quem pode participar",
+        "items": [
+         "<b>SPS de 3,0 ou mais</b> (regra desde abril de 2026)",
+         "Quem ainda não tem SPS: LDR e SFCR dentro do esperado",
+         "AHR acima de 150 ou sem medidas temporárias",
+         "Produtos em dia com a política de anúncios, PI e itens errados/defeituosos"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "SFCR em campanha pesa dobrado",
+        "html": "Duas violações seguidas de SFCR em campanhas colocam a loja em <b>período de cancelamento obrigatório</b> na campanha seguinte."
+       },
+       {
+        "t": "p",
+        "title": "Preço limite da campanha",
+        "html": "Cada campanha define um <b>preço limite</b>: o seu preço precisa ser <b>menor ou igual</b> a ele. A referência pode ser um percentual abaixo do preço de varejo, o preço com desconto do vendedor, o <b>menor preço histórico</b> (30, 60, 90 ou 180 dias) ou a comparação com outras plataformas. O <b>preço recomendado</b> é opcional, mas quanto maior o desconto, mais suporte você tende a receber."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Quase tudo é confirmado na tela",
+        "html": "Os critérios mudam por campanha. Clique em “Revisar todos os critérios” na página da campanha antes de se inscrever."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual SPS mínimo é pedido para participar de campanhas?",
+        "options": [
+         "0,3",
+         "1,0",
+         "3,0 ou mais",
+         "Qualquer valor"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Vale desde abril de 2026."
+       },
+       {
+        "t": "quiz",
+        "q": "O preço da campanha precisa ser:",
+        "options": [
+         "Igual ao do concorrente",
+         "Fixo em R$ 1",
+         "Maior que o limite",
+         "Menor ou igual ao preço limite"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O limite é o preço mínimo exigido pela campanha."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Campanhas: <b>produto, loja, LIVE/vídeo e cofinanciada</b>",
+         "Benefícios: <b>visibilidade, subsídio, tráfego, comissão extra</b>",
+         "Exige <b>SPS ≥ 3,0</b> e AHR saudável",
+         "Preço da campanha ≤ <b>preço limite</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Formas de inscrição e automação",
+      "minutes": 4,
+      "goal": "Escolher entre as seis formas de cadastro e economizar tempo com recursos automáticos.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⚙️",
+        "title": "Cadastrar produto por produto não escala",
+        "text": "Quem tem catálogo grande precisa de atalhos. Há seis formas de se inscrever e recursos que entram em campanhas futuras sozinhos."
+       },
+       {
+        "t": "table",
+        "title": "As seis formas",
+        "caption": "Painel em Campanhas na Central do vendedor.",
+        "head": [
+         "Forma",
+         "Quando usar"
+        ],
+        "rows": [
+         [
+          "Cadastro online",
+          "Poucos produtos"
+         ],
+         [
+          "Cadastro online em massa",
+          "Um subconjunto do catálogo"
+         ],
+         [
+          "Carregar arquivo",
+          "Muitos produtos, via Excel"
+         ],
+         [
+          "Autocadastro",
+          "Define um preço mínimo e o sistema cadastra"
+         ],
+         [
+          "Um clique",
+          "Todas as subcampanhas de uma campanha principal"
+         ],
+         [
+          "Por operações",
+          "A plataforma cadastra e você confirma"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Autocadastro e preço mínimo",
+        "items": [
+         "Você escolhe o menor preço que aceita",
+         "Se a campanha exigir menos que isso, <b>o produto não entra</b>",
+         "Também dá para definir preços por nível de campanha (SS, S)"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Cadastro em um clique",
+        "items": [
+         "Só para <b>campanhas de produto</b>",
+         "Todas as subcampanhas disponíveis vêm marcadas",
+         "Algumas subcampanhas são <b>obrigatórias</b>",
+         "Estratégia: todos os elegíveis ou uma lista escolhida"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Cadastro por operações",
+        "html": "Quando a equipe cadastra produtos por você, abra o <b>Módulo de tarefas</b> na página inicial: <b>Convites</b>, <b>Confirme seu registro</b> e <b>Reabastecimento de estoque</b>. Você pode <b>aceitar</b> ou <b>diminuir</b> o preço proposto, mas <b>não aumentar</b>."
+       },
+       {
+        "t": "p",
+        "title": "Campanhas contínuas de longo prazo",
+        "html": "Você inscreve os produtos <b>uma vez</b> e eles são avaliados automaticamente para futuras campanhas elegíveis, como megacampanhas e ofertas semanais. Há um painel único para preço, estoque e status, e alertas quando algo exige ação."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Depois de inscrito, mexer custa",
+        "html": "Você <b>não pode</b> adicionar nem excluir variações de um produto cadastrado. Para isso, remova o produto da campanha. O preço da campanha também aparece no lugar de relâmpago e desconto no produto."
+       },
+       {
+        "t": "quiz",
+        "q": "No cadastro por operações, o que o vendedor pode fazer com o preço proposto?",
+        "options": [
+         "Nada, nem recusar",
+         "Dobrar",
+         "Aumentar livremente",
+         "Aceitar ou diminuir"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O vendedor não pode aumentar o preço."
+       },
+       {
+        "t": "quiz",
+        "q": "O que o autocadastro usa como referência?",
+        "options": [
+         "O preço de outro vendedor",
+         "O estoque de outro produto",
+         "A nota do cliente",
+         "Um preço mínimo definido pelo vendedor"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Se a campanha exigir menos, o produto não é cadastrado."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Seis formas</b> de inscrição",
+         "<b>Autocadastro</b> respeita seu preço mínimo",
+         "Operações: <b>aceitar ou reduzir</b>, nunca aumentar",
+         "Contínuas: <b>inscreva uma vez</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Megacampanhas, painel e análise",
+      "minutes": 4,
+      "goal": "Preparar a loja para o pico e medir o resultado das promoções.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔥",
+        "title": "O pico exige operação pronta",
+        "text": "Megacampanhas trazem volume. Quem não prepara estoque, embalagem e atendimento vê cancelamento e atraso destruírem a nota."
+       },
+       {
+        "t": "list",
+        "title": "Critérios de acesso (Brasil)",
+        "items": [
+         "<b>SPS ≥ 3</b> e <b>AHR > 150</b> (ou sem medidas temporárias)",
+         "Sem SPS: SFCR e LDR até 15% ou menos de 10 pedidos afetados",
+         "Loja sinalizada por outros riscos pode ser bloqueada",
+         "Produto precisa seguir qualidade, segurança e PI e ficar à venda durante a campanha"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Preparação",
+        "items": [
+         {
+          "title": "Saúde da conta",
+          "html": "Acompanhe SPS, AHR, SFCR e LDR todo dia."
+         },
+         {
+          "title": "Anúncios",
+          "html": "Título, fotos e SKUs refletindo o produto real."
+         },
+         {
+          "title": "Estoque",
+          "html": "Reponha os campeões e reserve o que prometeu."
+         },
+         {
+          "title": "Embalagem",
+          "html": "Proteja os frágeis e confira itens para evitar erros de separação."
+         },
+         {
+          "title": "Equipe",
+          "html": "Treine para atender mais chats no pico."
+         }
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Painel de campanhas",
+        "html": "Depois que você participa de uma megacampanha, ganha acesso ao painel: dados em tempo real do GMV, produtos e conteúdo, com visões <b>Hoje</b>, <b>Diária</b> e <b>Período da campanha</b>, meta que você define e <b>alertas</b> de violação de conteúdo e risco de falta de estoque. Dá para comparar o dia com outro dia dos últimos seis meses."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Diferença % = (GMV do dia − GMV de comparação) ÷ GMV de comparação × 100",
+        "sub": "Como o painel compara um dia da campanha com um dia comum."
+       },
+       {
+        "t": "p",
+        "title": "Análise das promoções",
+        "html": "No Seller Center, em <b>Análise > Marketing > Ferramentas promocionais</b>, veja GMV, pedidos e compradores de cada ferramenta e compare as táticas. Para cupons há métricas próprias de resgate e uso. Descubra o melhor horário e a melhor duração para cada tipo."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Reponha estoque antes de a campanha começar",
+        "html": "Campeões sem estoque travam no pico. O módulo de tarefas já sugere reabastecer."
+       },
+       {
+        "t": "quiz",
+        "q": "O que o painel de campanhas oferece?",
+        "options": [
+         "Nada além do chat",
+         "Dados em tempo real e alertas",
+         "Só o extrato do mês anterior",
+         "Apenas a fatura do mês"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Há visões Hoje, Diária e Período."
+       },
+       {
+        "t": "quiz",
+        "q": "Onde analisar o desempenho de cada ferramenta de promoção?",
+        "options": [
+         "Produtos > Rascunhos salvos",
+         "Finanças > Faturas da loja",
+         "Pedidos > Cancelados hoje",
+         "Análise > Marketing > Promoções"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Mostra GMV, pedidos e compradores por ferramenta."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Acesso: <b>SPS ≥ 3</b> e <b>AHR > 150</b>",
+         "Prepare <b>estoque, embalagem e atendimento</b>",
+         "Painel: <b>tempo real, meta e alertas</b>",
+         "<b>Meça</b> cada ferramenta e repita o que funciona"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Qual SPS mínimo para campanhas?",
+      "options": [
+       "0,5",
+       "1,0",
+       "3,0 ou mais",
+       "Nenhum"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Regra válida desde abril de 2026.",
+      "topic": "Elegibilidade"
+     },
+     {
+      "q": "O preço da campanha deve ser:",
+      "options": [
+       "Livre",
+       "Maior que o limite",
+       "Menor ou igual ao preço limite",
+       "Sempre R$ 1"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O limite é o preço mínimo exigido.",
+      "topic": "Preço"
+     },
+     {
+      "q": "No cadastro por operações, o vendedor pode:",
+      "options": [
+       "Ignorar sempre",
+       "Excluir o SKU",
+       "Aceitar ou diminuir o preço",
+       "Aumentar o preço"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Não é possível aumentar o preço.",
+      "topic": "Inscrição"
+     },
+     {
+      "q": "As campanhas contínuas de longo prazo permitem:",
+      "options": [
+       "Sair sem nenhum aviso",
+       "Inscrever uma vez e participar",
+       "Pular a conferência de estoque",
+       "Cadastrar toda semana"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Há calendário e painel de produtos.",
+      "topic": "Contínuas"
+     },
+     {
+      "q": "O painel de campanhas traz alertas de:",
+      "options": [
+       "Conteúdo e falta de estoque",
+       "Previsão do clima",
+       "Troca de moeda do dia",
+       "Aniversário do cliente"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Também mostra dados em tempo real.",
+      "topic": "Painel"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "No grupo 1, qual preço tem prioridade mais alta?",
+    "options": [
+     "Kit",
+     "Preço da campanha",
+     "Cupom do chat",
+     "Desconto no produto"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Só uma promoção do grupo vale.",
+    "topic": "Cálculo"
+   },
+   {
+    "q": "Cupom do vendedor e Compre mais:",
+    "options": [
+     "Só valem na LIVE",
+     "Nunca se combinam",
+     "Podem se combinar",
+     "Cancelam um ao outro"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Estão no mesmo grupo de múltiplos itens da loja.",
+    "topic": "Cálculo"
+   },
+   {
+    "q": "O cupom do chat aparece:",
+    "options": [
+     "Na home",
+     "Na página do concorrente",
+     "Só no chat de atendimento",
+     "Nos anúncios"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O agente envia ao cliente.",
+    "topic": "Cupom"
+   },
+   {
+    "q": "Cupom de 50% com gasto mínimo R$ 10 exige desconto máximo de:",
+    "options": [
+     "R$ 0,50",
+     "R$ 5 ou mais",
+     "R$ 3",
+     "R$ 1"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Máximo ≥ percentual × gasto mínimo.",
+    "topic": "Cupom"
+   },
+   {
+    "q": "O cupom exclusivo do criador envia notificação ao criador?",
+    "options": [
+     "Só se pagar",
+     "Sim, por SMS",
+     "Não, avise por fora",
+     "Sim, automaticamente"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O criador não recebe aviso da ferramenta.",
+    "topic": "Cupom"
+   },
+   {
+    "q": "Qual a duração máxima de um código promocional?",
+    "options": [
+     "Menos de 10 minutos",
+     "Menos de 30 dias",
+     "Menos de 365 dias",
+     "Ilimitada"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Mais de 10 minutos e menos de 365 dias.",
+    "topic": "Código"
+   },
+   {
+    "q": "Um kit promocional exige que o preço seja:",
+    "options": [
+     "Menor que o original",
+     "Maior que o original",
+     "Igual ao do atacado",
+     "Zero"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Com 2 a 3 produtos.",
+    "topic": "Kit"
+   },
+   {
+    "q": "Brindes à venda:",
+    "options": [
+     "Nunca baixam estoque",
+     "Dividem o estoque do produto",
+     "Aparecem só no chat",
+     "Têm estoque próprio"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "O resgate baixa o estoque total.",
+    "topic": "Brinde"
+   },
+   {
+    "q": "Para desconto no frete, a loja precisa de saldo:",
+    "options": [
+     "Em dólar",
+     "Positivo",
+     "Zerado sempre",
+     "Negativo"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "E ter passado o período probatório.",
+    "topic": "Frete"
+   },
+   {
+    "q": "A taxa do Programa de Taxa de Envio tem teto de:",
+    "options": [
+     "R$ 50 por produto",
+     "R$ 5",
+     "R$ 500",
+     "R$ 5 mil"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Seis por cento do preço de venda.",
+    "topic": "Frete"
+   },
+   {
+    "q": "A taxa do programa volta em devolução?",
+    "options": [
+     "Não é reembolsada ao vendedor",
+     "Sim, em dobro",
+     "Sim, integral",
+     "Vira cupom"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "O cupom de frete volta ao cliente.",
+    "topic": "Frete"
+   },
+   {
+    "q": "O desconto regular da assinatura pode ser:",
+    "options": [
+     "50% fixos",
+     "5%, 10%, 15% ou 20%",
+     "1%, 2% ou 3%",
+     "Livre de 0 a 100%"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "O primeiro pedido vai de 5% a 90%.",
+    "topic": "Assinatura"
+   },
+   {
+    "q": "Qual benefício de campanha eleva a comissão do criador?",
+    "options": [
+     "Banner",
+     "Selo de campanha",
+     "Cupom de amostra",
+     "Aumento da comissão do criador"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "A plataforma soma uma parte, sem afetar seu valor.",
+    "topic": "Benefício"
+   },
+   {
+    "q": "Duas violações seguidas de SFCR em campanhas levam a:",
+    "options": [
+     "Mais cupons grátis",
+     "Isenção de todas as taxas",
+     "Cancelamento obrigatório na seguinte",
+     "Prêmio de bom vendedor"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A loja fica fora da campanha seguinte.",
+    "topic": "Elegibilidade"
+   },
+   {
+    "q": "Um produto já cadastrado em campanha pode:",
+    "options": [
+     "Mudar de CNPJ",
+     "Trocar de loja",
+     "Ganhar variações livremente",
+     "Não ganhar nem perder variações"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Para alterar variações, remova o produto da campanha.",
+    "topic": "Inscrição"
+   },
+   {
+    "q": "Onde ver o desempenho por ferramenta de promoção?",
+    "options": [
+     "Análise > Marketing > Promoções",
+     "Produtos > Rascunhos salvos",
+     "Chat > Modelos de resposta",
+     "Finanças > Saque do mês"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Mostra GMV, pedidos e compradores.",
+    "topic": "Análise"
+   }
+  ]
+ }
+}

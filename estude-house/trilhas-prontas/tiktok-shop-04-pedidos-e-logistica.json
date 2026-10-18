@@ -1,0 +1,1799 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 4: pedidos e logística",
+  "tag": "TikTok Shop",
+  "tagline": "Prazos, métricas, envio, embalagem e frete sem surpresa.",
+  "subtitle": "Status de pedidos, SLA, LDR, Envio pela plataforma e pelo vendedor, NF-e, embalagem, prova de envio, peso cubado e problemas de logística. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Fluxo, prazos e métricas",
+    "tagline": "O relógio do pedido",
+    "outcome": "Ler a tela de pedidos, cumprir prazos e acompanhar métricas.",
+    "lessons": [
+     {
+      "title": "O caminho do pedido na Central do vendedor",
+      "minutes": 4,
+      "goal": "Entender os status do pedido e organizar a rotina na tela Gerenciar pedidos.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📦",
+        "title": "Pedido pago, relógio correndo",
+        "text": "Assim que o cliente paga, começam os prazos. Quem entende os status e a tela de pedidos não perde venda nem reputação."
+       },
+       {
+        "t": "steps",
+        "title": "Onde fica",
+        "items": [
+         {
+          "title": "Abra a Central do vendedor",
+          "html": "Faça login no Seller Center."
+         },
+         {
+          "title": "Pedidos",
+          "html": "Entre no menu de pedidos."
+         },
+         {
+          "title": "Gerenciar pedidos",
+          "html": "É a tela central da operação."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Abas de status",
+        "caption": "Há também a aba Ação necessária.",
+        "head": [
+         "Aba",
+         "O que mostra"
+        ],
+        "rows": [
+         [
+          "Pendente",
+          "Pedido pago ou no período flexível de 1 hora; o cliente ainda pode cancelar"
+         ],
+         [
+          "Para enviar",
+          "Pedidos prontos para preparar e despachar"
+         ],
+         [
+          "Enviado",
+          "Coletados e em trânsito"
+         ],
+         [
+          "Concluído",
+          "Entregues há mais de 30 dias; sem mais ações"
+         ],
+         [
+          "Cancelado",
+          "Pedidos cancelados por qualquer motivo"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Pedidos",
+        "term": "Ação necessária",
+        "means": "Aba que reúne o que exige resposta da loja, como cancelamento solicitado e pedido de devolução ou reembolso.",
+        "ex": "Cliente pediu devolução: o pedido aparece aqui para você decidir."
+       },
+       {
+        "t": "list",
+        "title": "Busca e filtros que economizam tempo",
+        "items": [
+         "Uma barra só para ID do pedido, rastreio, ID de produto e SKU",
+         "Busca de até <b>100 IDs</b> de uma vez, separados por vírgula",
+         "Visualização em <b>lista</b> ou em <b>cartão</b>",
+         "Exportação de pedidos filtrados"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Notas e bandeiras coloridas",
+        "html": "Cada pedido aceita nota e bandeira colorida. Dá para filtrar pela cor e a nota pode sair na lista de separação, o que ajuda quando o time é grande."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Cancelar por falha do vendedor pesa",
+        "html": "A loja pode cancelar um pedido antes do status Enviado, mas só o pedido <b>inteiro</b>. Se o motivo for falha do vendedor, como item sem estoque ou preço errado, o cancelamento entra na métrica <b>SFCR</b>."
+       },
+       {
+        "t": "quiz",
+        "q": "Em qual aba ficam os pedidos prontos para preparar e despachar?",
+        "options": [
+         "Concluído",
+         "Para enviar",
+         "Pendente",
+         "Cancelado"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "A aba Para enviar reúne os pedidos que aguardam preparação e envio."
+       },
+       {
+        "t": "quiz",
+        "q": "A loja pode cancelar apenas parte de um pedido?",
+        "options": [
+         "Sim, por item",
+         "Sim, depois de enviado",
+         "Sim, por SKU",
+         "Não, só o pedido inteiro"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O cancelamento parcial não está disponível."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Gerenciar pedidos</b> é a tela central",
+         "Pendente tem janela flexível de <b>1 hora</b>",
+         "<b>Ação necessária</b> reúne cancelamentos e devoluções",
+         "Cancelar por falta de estoque conta no <b>SFCR</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Prazos de envio (SLA)",
+      "minutes": 4,
+      "goal": "Saber quanto tempo a loja tem para embalar, despachar e evitar o cancelamento automático.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⏱️",
+        "title": "Dia útil, 23:59:59",
+        "text": "A plataforma conta prazo em dias úteis e fecha às 23:59:59 no horário de Brasília. Quem tem rotina de corte nunca perde."
+       },
+       {
+        "t": "jargon",
+        "tag": "Prazos",
+        "term": "SLA",
+        "means": "Acordo de nível de serviço: o prazo máximo, em dias úteis, para o pedido chegar a cada etapa do envio.",
+        "ex": "Embalar em um dia e despachar em até dois."
+       },
+       {
+        "t": "table",
+        "title": "Prazos para vendedores no Brasil",
+        "caption": "Vale para Envio pela plataforma e Envio pelo vendedor.",
+        "head": [
+         "Etapa",
+         "Prazo"
+        ],
+        "rows": [
+         [
+          "Pronto para envio (RTS), recomendado",
+          "Até 1 dia útil após o pedido"
+         ],
+         [
+          "Em trânsito (despacho)",
+          "Até 2 dias úteis após o pedido"
+         ],
+         [
+          "Cancelamento automático",
+          "Pedido sem status Enviado após 6 dias úteis"
+         ]
+        ]
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "<b>2 dias úteis</b> para despachar",
+        "sub": "Embalar, etiquetar e o pacote já estar com a transportadora."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Horário limite",
+        "html": "Todos os SLAs fecham às <b>23:59:59 (UTC-3)</b> do dia útil aplicável. Dia útil é qualquer dia que não seja sábado, domingo ou feriado público no Brasil."
+       },
+       {
+        "t": "list",
+        "title": "Feriados no cálculo",
+        "items": [
+         "Feriados nacionais não contam como dia útil",
+         "Feriados estaduais valem para quem tem <b>armazém</b> no estado",
+         "O prazo é ajustado automaticamente",
+         "Vale ficar atento ao calendário antes de campanhas"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Como a plataforma sabe que o pacote saiu",
+        "html": "O carimbo de despacho é o horário em que a transportadora coleta o pacote. Se só existir o primeiro escaneamento em trânsito, a plataforma desconta 12 horas úteis para estimar a coleta."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Pedido de segunda-feira",
+        "html": "Pedido pago na segunda-feira: o ideal é deixar o pacote pronto até terça e <b>entregue à transportadora até quarta às 23:59:59</b>. Se o pedido ficar sem envio até a segunda-feira seguinte, o cancelamento automático entra."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o prazo máximo de despacho no Brasil?",
+        "options": [
+         "Algumas horas",
+         "30 dias",
+         "5 dias corridos",
+         "2 dias úteis"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O SLA de despacho (trânsito) é de dois dias úteis a partir do pedido."
+       },
+       {
+        "t": "quiz",
+        "q": "O que acontece com um pedido que passa de 6 dias úteis sem ser enviado?",
+        "options": [
+         "Passa a ser coletado pelo TikTok",
+         "É cancelado automaticamente",
+         "Vira venda do dia seguinte sem custo",
+         "Sai grátis para o cliente final"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O cancelamento automático ocorre após seis dias úteis sem status Enviado."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "RTS em <b>1 dia útil</b>; despacho em <b>2 dias úteis</b>",
+         "Cancelamento automático após <b>6 dias úteis</b>",
+         "Prazo fecha às <b>23:59:59</b> de Brasília",
+         "Feriado estadual conta pelo estado do <b>armazém</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Métricas de logística",
+      "minutes": 4,
+      "goal": "Conhecer LDR, FDR, SFCR e VTR e as metas que a loja precisa manter.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📈",
+        "title": "Quatro números mandam na operação",
+        "text": "A plataforma mede a logística da loja por quatro taxas. Entendê-las é o primeiro passo para evitar limites de venda."
+       },
+       {
+        "t": "table",
+        "title": "Metas das métricas",
+        "caption": "Metas descritas na política de logística.",
+        "head": [
+         "Métrica",
+         "O que mede",
+         "Meta"
+        ],
+        "rows": [
+         [
+          "LDR",
+          "Pedidos despachados com atraso",
+          "4% ou menos"
+         ],
+         [
+          "FDR",
+          "Pedidos despachados em 1 dia útil",
+          "90% ou mais"
+         ],
+         [
+          "SFCR",
+          "Cancelamentos por falha do vendedor",
+          "2,5% ou menos"
+         ],
+         [
+          "VTR",
+          "Pedidos com rastreio válido",
+          "95% ou mais"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Métrica",
+        "term": "LDR",
+        "means": "Taxa de envio atrasado. Percentual de pedidos que não chegaram ao status Em trânsito dentro de 2 dias úteis, somando os despachados com atraso e os que continuam sem envio.",
+        "ex": "Cem pedidos, 3 atrasados: LDR de 3%."
+       },
+       {
+        "t": "jargon",
+        "tag": "Métrica",
+        "term": "FDR",
+        "means": "Taxa de envio rápido. Percentual de pedidos que chegaram ao status Em trânsito em até 1 dia útil. Quanto mais alta, melhor.",
+        "ex": "Despachar na véspera aumenta o FDR."
+       },
+       {
+        "t": "jargon",
+        "tag": "Métrica",
+        "term": "SFCR",
+        "means": "Taxa de cancelamento por falha do vendedor. Cancelamentos antes do envio causados pela loja, sobre o total de pedidos pagos.",
+        "ex": "Estoque zerado e pedido cancelado entram aqui."
+       },
+       {
+        "t": "jargon",
+        "tag": "Métrica",
+        "term": "VTR",
+        "means": "Taxa de rastreamento válido. Mostra quantos pedidos tinham código de rastreio verificável, com transportadora e serviço corretos.",
+        "ex": "Rastreio inventado ou repetido derruba o VTR."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Quando as metas não são cumpridas",
+        "html": "A plataforma pode aplicar <b>limite de volume de pedidos (OVL)</b>, <b>restrições de campanha</b> e <b>dedução do saldo de liquidação</b>. Violações repetidas levam a medidas mais fortes. Dedução não paga em 30 dias pode gerar OVL ou congelar repasses."
+       },
+       {
+        "t": "p",
+        "title": "A página de desempenho do envio",
+        "html": "Em <b>Pedidos > Desempenho do processo de envio</b> a loja vê o tempo médio de cada etapa (processamento, coleta, trânsito), as métricas LDR e SFCR e a comparação com o setor. Verde é melhora e vermelho é piora em relação ao período anterior."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a meta de LDR?",
+        "options": [
+         "40% ou menos",
+         "4% ou menos",
+         "Qualquer valor",
+         "90% ou mais"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Todos os vendedores devem manter LDR igual ou menor que 4%."
+       },
+       {
+        "t": "quiz",
+        "q": "A FDR deve ser:",
+        "options": [
+         "Alta, de 90% ou mais",
+         "Abaixo de 5%",
+         "Entre 20% e 30%",
+         "Igual a zero"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Quanto maior a taxa de envio rápido, melhor; a meta é 90% ou mais."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>LDR ≤ 4%</b>, <b>FDR ≥ 90%</b>",
+         "<b>SFCR ≤ 2,5%</b>, <b>VTR ≥ 95%</b>",
+         "Fora da meta: OVL, restrição de campanha e dedução",
+         "Acompanhe em <b>Desempenho do processo de envio</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Qual o SLA de despacho no Brasil?",
+      "options": [
+       "30 minutos",
+       "10 dias corridos",
+       "2 dias úteis",
+       "6 meses"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O despacho deve ocorrer em até dois dias úteis.",
+      "topic": "SLA"
+     },
+     {
+      "q": "O cancelamento automático acontece após:",
+      "options": [
+       "1 hora",
+       "6 dias úteis sem envio",
+       "2 minutos",
+       "1 ano"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Pedidos sem status Enviado em seis dias úteis são cancelados.",
+      "topic": "SLA"
+     },
+     {
+      "q": "Qual a meta de SFCR?",
+      "options": [
+       "Igual a 100%",
+       "25% ou mais",
+       "2,5% ou menos",
+       "50% ou mais"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "A taxa de cancelamento por falha do vendedor deve ser baixa.",
+      "topic": "Métricas"
+     },
+     {
+      "q": "Para que serve a aba Ação necessária?",
+      "options": [
+       "Esconder pedidos novos",
+       "Cadastrar produtos",
+       "Reunir o que pede resposta da loja",
+       "Mostrar só concluídos"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Ela destaca cancelamentos e devoluções solicitados.",
+      "topic": "Pedidos"
+     },
+     {
+      "q": "Qual a janela de cancelamento flexível do cliente?",
+      "options": [
+       "Sem janela",
+       "30 dias",
+       "1 ano",
+       "1 hora"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Pedidos pagos ficam Pendentes durante 1 hora e depois vão para Para enviar.",
+      "topic": "Pedidos"
+     }
+    ]
+   },
+   {
+    "title": "Como enviar",
+    "tagline": "Plataforma, vendedor e pré-envio",
+    "outcome": "Escolher a forma de envio e configurar a operação.",
+    "lessons": [
+     {
+      "title": "Envio pela plataforma ou pelo vendedor",
+      "minutes": 4,
+      "goal": "Comparar as duas formas de enviar e saber o que cada uma exige.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚚",
+        "title": "Quem leva o pacote?",
+        "text": "No TikTok Shop há dois tipos de envio. Cada um muda quem escolhe a transportadora, quem presta atendimento e quem arca com o risco."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Envio pela plataforma",
+         "tone": "bad",
+         "items": [
+          "Padrão para <b>novos vendedores</b>",
+          "A transportadora é <b>atribuída pelo TikTok</b>",
+          "Etiqueta e rastreio gerados pela plataforma",
+          "Atendimento de problemas de logística é do TikTok",
+          "Há <b>compensação</b> para a loja em problemas logísticos"
+         ]
+        },
+        "right": {
+         "title": "Envio pelo vendedor",
+         "tone": "good",
+         "items": [
+          "Disponível para <b>vendedores selecionados</b>",
+          "A loja escolhe a transportadora",
+          "A loja envia o código de rastreio",
+          "O atendimento é da própria loja",
+          "<b>Sem compensação</b> por problemas de logística"
+         ]
+        }
+       },
+       {
+        "t": "list",
+        "title": "Transportadoras da plataforma no Brasil",
+        "items": [
+         "<b>J&T</b>, <b>Correios</b> e <b>iMile</b>",
+         "Cada loja recebe <b>uma</b> transportadora, vista depois do primeiro pedido",
+         "Total Express e Jadlog aparecem como pontos de entrega",
+         "Entrega em todo o Brasil"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Coleta ou drop-off",
+        "html": "Todo novo vendedor começa no <b>ponto de coleta (drop-off)</b>, disponível no país inteiro. O serviço de <b>coleta no endereço</b> é para alguns vendedores da região Sudeste, conforme o volume diário dos últimos 15 dias. A coleta é feita de segunda a sexta, das 9h às 18h, e aos sábados, das 9h às 14h."
+       },
+       {
+        "t": "list",
+        "title": "Logística reversa",
+        "items": [
+         "A devolução da plataforma é feita pelas <b>agências dos Correios</b>",
+         "O endereço de devolução vem das configurações da conta",
+         "O endereço de coleta é passado à transportadora com pelo menos 2 dias úteis"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Envio pelo vendedor = risco da loja",
+        "html": "Quem escolhe enviar por conta própria é o único responsável por qualquer problema de logística e não tem direito à compensação do vendedor. A loja também cuida do atendimento ao cliente."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual destas é uma característica do Envio pela plataforma?",
+        "options": [
+         "A transportadora é atribuída pelo TikTok",
+         "O vendedor gera o rastreio sozinho",
+         "O vendedor escolhe qualquer transportadora",
+         "Não existe compensação por problemas"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Na opção padrão a plataforma designa a transportadora e gera etiqueta e rastreio."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a regra para uma loja nova?",
+        "options": [
+         "Pode escolher entre 14 transportadoras",
+         "Fica sem envio por 30 dias",
+         "Começa no Envio pelo vendedor",
+         "Começa no Envio pela plataforma"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O Envio pela plataforma é a configuração padrão para novos vendedores."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Padrão: <b>Envio pela plataforma</b> (J&T, Correios, iMile)",
+         "<b>Envio pelo vendedor</b> é só para selecionados e sem compensação",
+         "Começa em <b>drop-off</b>; coleta no endereço depende do volume",
+         "Logística reversa pelos <b>Correios</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Processar pedido enviado pela plataforma",
+      "minutes": 4,
+      "goal": "Fazer o passo a passo com nota fiscal, etiqueta e coleta.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧾",
+        "title": "Sem nota fiscal, o pacote não sai",
+        "text": "Vendedores com CNPJ precisam enviar nota fiscal eletrônica de cada pedido, imprimi-la e colá-la no pacote. Esse passo faz parte do envio."
+       },
+       {
+        "t": "flow",
+        "title": "Do pedido à coleta",
+        "caption": "Fluxo resumido.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "1️⃣",
+          "title": "Pedidos Para enviar",
+          "text": "Veja os pedidos com nota em “Upload pendente”."
+         },
+         {
+          "icon": "2️⃣",
+          "title": "Carregar a nota",
+          "text": "Suba o XML da NF-e, por pedido ou em lote."
+         },
+         {
+          "icon": "3️⃣",
+          "title": "Conferir",
+          "text": "Revise: depois de organizar o envio, a nota não pode ser alterada."
+         },
+         {
+          "icon": "4️⃣",
+          "title": "Providenciar envio",
+          "text": "A etiqueta é gerada e o pedido vai para a transportadora."
+         },
+         {
+          "icon": "5️⃣",
+          "title": "Imprimir e colar",
+          "text": "Etiqueta e DANFE no pacote, e pacote pronto."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Mesmo CNPJ",
+        "html": "Os <b>oito primeiros dígitos</b> do CNPJ da nota fiscal precisam ser iguais aos do CNPJ do cadastro. Nota emitida em outra raiz de CNPJ não passa."
+       },
+       {
+        "t": "list",
+        "title": "Erros comuns no envio da nota",
+        "items": [
+         "ID do pacote ou do pedido ausente ou inválido",
+         "Chave da nota repetida (“Fatura já enviada”)",
+         "Pedido ou pacote duplicado no arquivo",
+         "Escolha de manter a fatura antiga que era inválida"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Quando a mensagem de erro aparece",
+        "html": "Leia o motivo no pop-up e corrija o dado indicado. Se for “tente de novo mais tarde”, espere alguns instantes. Não envie a mesma nota duas vezes."
+       },
+       {
+        "t": "jargon",
+        "tag": "Fiscal",
+        "term": "DANFE",
+        "means": "Versão impressa da nota fiscal eletrônica que acompanha a mercadoria no transporte.",
+        "ex": "A folha colada no pacote ao lado da etiqueta."
+       },
+       {
+        "t": "p",
+        "title": "Ação padrão na primeira vez",
+        "html": "No primeiro pedido, você escolhe se a ação padrão é <b>“Providenciar envio”</b> ou <b>“Providenciar envio e imprimir”</b>. A segunda já imprime etiquetas e documentos na hora; você pode mudar depois em Configurações de envio."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Sem ERP, é manual",
+        "html": "Quem não tem ERP integrado emite a NF-e num emissor próprio, que gera o XML, fala com a SEFAZ e imprime a DANFE. O contador pode ajudar nas dúvidas fiscais."
+       },
+       {
+        "t": "quiz",
+        "q": "O que precisa ser igual entre a nota fiscal e o cadastro?",
+        "options": [
+         "Os 8 primeiros dígitos do CNPJ",
+         "A cor da embalagem",
+         "O nome do entregador",
+         "O telefone da loja"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A raiz do CNPJ da nota deve coincidir com a do cadastro no TikTok Shop."
+       },
+       {
+        "t": "quiz",
+        "q": "O que fazer antes de organizar o envio?",
+        "options": [
+         "Apagar o pedido para refazer",
+         "Conferir a nota, porque depois não dá para alterar",
+         "Pedir ao cliente para corrigir",
+         "Editar a nota à vontade depois"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Após a etapa de envio a nota fiscal não pode ser modificada."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Vendedor empresa envia <b>NF-e de todos os pedidos</b>",
+         "Raiz do <b>CNPJ</b> igual ao cadastro",
+         "Conferir a nota <b>antes</b> de providenciar o envio",
+         "Imprimir etiqueta e DANFE e colar no pacote"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Processar pedido enviado pelo vendedor",
+      "minutes": 4,
+      "goal": "Cuidar de rastreio, prazos e planilhas quando a loja envia por conta própria.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔎",
+        "title": "O rastreio é a prova",
+        "text": "Quando a loja envia por conta própria, o código de rastreio é o que prova que o pacote saiu. Erro nele vira atraso e cancelamento."
+       },
+       {
+        "t": "steps",
+        "title": "Fluxo em massa",
+        "items": [
+         {
+          "title": "Exportar",
+          "html": "Exporte os pedidos Para enviar (até 200 mil por vez)."
+         },
+         {
+          "title": "Preparar com o transportador",
+          "html": "Use ID do pedido, SKU, quantidade e endereço do arquivo."
+         },
+         {
+          "title": "Carregar rastreio",
+          "html": "Baixe o modelo, preencha e carregue na tela de pedidos."
+         },
+         {
+          "title": "Enviar pacote",
+          "html": "Confirme transportadora e serviço, e clique em Enviar pacote."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Dados obrigatórios do rastreio",
+        "items": [
+         "<b>ID de rastreamento</b>",
+         "<b>Prestador do envio</b> (transportadora)",
+         "<b>Serviço de envio</b>",
+         "Tudo igual ao que está na etiqueta do pacote"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Janela de 72 horas",
+        "html": "Se a loja perceber que digitou um rastreio errado, só pode editá-lo nas próximas <b>72 horas</b>. O sistema detecta rastreios inválidos, duplicados ou sem dados de logística."
+       },
+       {
+        "t": "table",
+        "title": "Alertas de rastreio",
+        "caption": "Aparecem 24 horas depois do carregamento.",
+        "head": [
+         "Alerta",
+         "O que fazer"
+        ],
+        "rows": [
+         [
+          "Dados de rastreamento não encontrados",
+          "Confira o formato do código e o site da transportadora; edite o ID"
+         ],
+         [
+          "Incompatibilidade do fornecedor",
+          "Revise a transportadora informada e a sugerida"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Rastreio falso derruba a loja",
+        "html": "Rastreio inventado, repetido ou sem dados reais vai ser detectado e pode gerar medidas contra a conta. Ele também prejudica a métrica <b>VTR</b>."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Entregue ao LSP dentro do prazo",
+        "html": "O pacote precisa estar com a transportadora antes do fim do prazo de despacho. Depois da entrega, confirme que o pedido aparece em <b>Enviado</b> com status Em trânsito. Se ainda estiver em Aguardando coleta, a transportadora pode não ter processado."
+       },
+       {
+        "t": "quiz",
+        "q": "Por quanto tempo a loja pode editar um rastreio?",
+        "options": [
+         "30 dias",
+         "Para sempre",
+         "72 horas",
+         "5 minutos"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Há uma janela de 72 horas para corrigir erros."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual métrica cai com rastreio inválido?",
+        "options": [
+         "NRR",
+         "VTR",
+         "AHR",
+         "FDR"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "A taxa de rastreamento válido mede códigos precisos e verificáveis."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Rastreio, transportadora e serviço <b>iguais à etiqueta</b>",
+         "Correção só em <b>72 horas</b>",
+         "Rastreio falso: medidas na conta e <b>VTR</b> menor",
+         "Confirme se o pedido virou <b>Em trânsito</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Pré-envio: depósitos, etiquetas e coleta",
+      "minutes": 4,
+      "goal": "Configurar endereços, formatos de documentos e vários depósitos.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏭",
+        "title": "Configurou uma vez, ganhou semanas",
+        "text": "Endereço certo, formato de etiqueta e ação padrão evitam erros todos os dias."
+       },
+       {
+        "t": "steps",
+        "title": "Cadastrar o depósito",
+        "items": [
+         {
+          "title": "Minha conta",
+          "html": "Entre em Configurações da conta."
+         },
+         {
+          "title": "Configurações do depósito",
+          "html": "Clique em adicionar depósito."
+         },
+         {
+          "title": "Preencha",
+          "html": "Nome, contato, telefone e endereço."
+         },
+         {
+          "title": "Regiões de envio",
+          "html": "Marque as áreas atendidas e salve."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Endereço de coleta e devolução",
+        "html": "O endereço é passado à transportadora e à logística reversa. Dados errados atrasam coleta e devolução. A edição é permitida, mas <b>não dá para excluir</b> um endereço de depósito."
+       },
+       {
+        "t": "table",
+        "title": "Formatos de documentos",
+        "caption": "A escolha fica em Pedidos > Configurações de envio.",
+        "head": [
+         "Documento",
+         "Tamanhos"
+        ],
+        "rows": [
+         [
+          "Etiqueta de envio",
+          "A6 ou A5"
+         ],
+         [
+          "Lista de romaneio",
+          "A6 ou A5"
+         ],
+         [
+          "Lista de separação",
+          "A4"
+         ],
+         [
+          "Nota fiscal",
+          "A6 ou A5"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Armazém",
+        "term": "MWH",
+        "means": "Vários depósitos. Recurso para alguns vendedores que gerencia até 100 depósitos e pode reduzir frete e prazo, enviando do depósito mais próximo do comprador.",
+        "ex": "Dois armazéns: um em SP, outro em PE."
+       },
+       {
+        "t": "list",
+        "title": "O que o MWH permite",
+        "items": [
+         "Definir <b>região de envio</b> de cada depósito",
+         "Escolher o <b>depósito padrão</b> para o que não estiver no mais próximo",
+         "Ativar <b>Modo Férias</b> por depósito, zerando o estoque no período",
+         "Editar o estoque por depósito no produto"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Respostas automáticas de envio",
+        "html": "Em <b>Pedidos > Configurações de pós-venda</b>, a loja liga respostas automáticas sobre programação de envio no chat. Dá para criar regras por dia da semana e por data personalizada, como feriados, informando o prazo de processamento."
+       },
+       {
+        "t": "quiz",
+        "q": "O que o MWH permite fazer?",
+        "options": [
+         "Mudar de CNPJ sem aviso",
+         "Gerenciar vários depósitos e regiões",
+         "Escolher a transportadora padrão",
+         "Excluir qualquer pedido pago"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "É a ferramenta de gestão de vários depósitos, para alguns vendedores."
+       },
+       {
+        "t": "quiz",
+        "q": "Pode-se excluir um endereço de depósito?",
+        "options": [
+         "Não, só editar",
+         "Sim, mas só por e-mail",
+         "Sim, a qualquer hora",
+         "Sim, só aos sábados"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A exclusão não é permitida no momento."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Cadastre <b>depósito, contato e regiões</b> corretamente",
+         "Defina o <b>formato</b> de etiquetas e documentos",
+         "MWH: até <b>100 depósitos</b>, só para alguns",
+         "Respostas automáticas informam <b>prazo de envio</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O Envio pelo vendedor oferece:",
+      "options": [
+       "Atendimento do TikTok",
+       "Entrega gratuita sempre",
+       "Escolha da transportadora, sem compensação",
+       "Compensação automática"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "A loja escolhe a transportadora, assume o risco e o atendimento.",
+      "topic": "Envio"
+     },
+     {
+      "q": "A NF-e deve ter o mesmo:",
+      "options": [
+       "Os 8 primeiros dígitos do CNPJ",
+       "Número do pedido do cliente",
+       "Nome do cliente que comprou",
+       "Telefone do contador da loja"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "A raiz do CNPJ deve ser igual.",
+      "topic": "NF-e"
+     },
+     {
+      "q": "A janela para editar rastreio é de:",
+      "options": [
+       "1 ano",
+       "15 minutos",
+       "72 horas",
+       "10 dias"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "O sistema libera uma única janela de correção.",
+      "topic": "Rastreio"
+     },
+     {
+      "q": "O MWH permite até quantos depósitos?",
+      "options": [
+       "100",
+       "2",
+       "5",
+       "1.000"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O recurso gerencia até 100 depósitos para alguns vendedores.",
+      "topic": "Depósitos"
+     },
+     {
+      "q": "Qual o método padrão de entrega ao ponto de coleta?",
+      "options": [
+       "Drop-off",
+       "Coleta no endereço sempre",
+       "Retirada pelo cliente",
+       "Entrega por drone"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Novos vendedores começam no drop-off.",
+      "topic": "Coleta"
+     }
+    ]
+   },
+   {
+    "title": "Pacote, custo e problemas",
+    "tagline": "Embalar, provar e resolver",
+    "outcome": "Evitar dano, entender o frete e tratar ocorrências.",
+    "lessons": [
+     {
+      "title": "Embalagem que chega inteira",
+      "minutes": 4,
+      "goal": "Escolher materiais e fechamento certos para cada tipo de produto.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎁",
+        "title": "Dano na estrada vira reembolso",
+        "text": "Embalar mal é um dos erros mais caros. A plataforma não se responsabiliza por produtos mal embalados."
+       },
+       {
+        "t": "table",
+        "title": "Materiais e nomes",
+        "caption": "Resumo dos materiais citados no guia.",
+        "head": [
+         "Material",
+         "Uso"
+        ],
+        "rows": [
+         [
+          "Caixa de papelão",
+          "Proteção externa"
+         ],
+         [
+          "Plástico-bolha",
+          "Proteção interna de itens frágeis"
+         ],
+         [
+          "Almofadas de ar",
+          "Enchimento do espaço vazio"
+         ],
+         [
+          "Fita adesiva",
+          "Fechamento em cruz"
+         ],
+         [
+          "Saco à prova d'água",
+          "Itens não quebráveis, como roupas"
+         ]
+        ]
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Itens não quebráveis",
+         "tone": "bad",
+         "items": [
+          "Roupas e tecidos domésticos",
+          "Saco ou caixa à prova d'água do tamanho certo",
+          "Sem exigência de enchimento"
+         ]
+        },
+        "right": {
+         "title": "Itens frágeis",
+         "tone": "good",
+         "items": [
+          "Vidro, cerâmica e eletrônicos",
+          "Caixa resistente do tamanho certo",
+          "Plástico-bolha em duas ou mais camadas e etiqueta de frágil"
+         ]
+        }
+       },
+       {
+        "t": "list",
+        "title": "Derramáveis",
+        "items": [
+         "Perfumes, cremes e pós",
+         "Prender a tampa com fita ou lacre",
+         "Embrulhar em duas camadas de plástico-bolha",
+         "Saco impermeável por fora"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Fechamento em cruz",
+        "html": "A caixa deve ser fechada com fita em formato de <b>cruz</b>, alisada em toda a superfície. A fita passa <b>80 mm</b> da borda e o vão entre as abas não passa de <b>5 mm</b>."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "O que NÃO pode ir no pacote",
+        "html": "Mensagem pedindo avaliação positiva, promessa de benefício em troca de devolução, panfletos, adesivos, etiqueta de preço e <b>qualquer produto que o cliente não pediu</b>."
+       },
+       {
+        "t": "list",
+        "title": "Etiqueta de envio",
+        "items": [
+         "Nome e endereço completo, com CEP",
+         "Número do pedido",
+         "Endereço de devolução",
+         "Sem link, QR code ou contato de outra plataforma"
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "Qual é a forma correta de fechar a caixa?",
+        "options": [
+         "Só um pedaço no meio",
+         "Fita em formato de cruz, alisada",
+         "Sem nenhuma fita",
+         "Com grampo de metal"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "A fita em cruz sela as abas e evita a abertura no transporte."
+       },
+       {
+        "t": "quiz",
+        "q": "O que não deve acompanhar o pedido?",
+        "options": [
+         "O produto comprado",
+         "A nota fiscal",
+         "A etiqueta de envio",
+         "Panfleto de outro produto"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Material promocional não solicitado e produtos extras são proibidos."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Embalagem adequada para <b>cada categoria</b>",
+         "Frágil: bolha, enchimento e <b>etiqueta</b>",
+         "Fita em <b>cruz</b>, 80 mm, vão até 5 mm",
+         "Nada de brinde, panfleto ou pedido de avaliação"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Prova de envio: proteja a loja",
+      "minutes": 4,
+      "goal": "Registrar a embalagem para vencer disputas de caixa vazia ou item errado.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🎥",
+        "title": "Vídeo ganha disputa",
+        "text": "Quando o cliente diz “caixa vazia” ou “item errado”, quem tem prova recebe uma decisão mais justa."
+       },
+       {
+        "t": "list",
+        "title": "Como gravar",
+        "items": [
+         "Vídeo <b>contínuo</b>, sem pausa, corte ou edição",
+         "Mostrar o item por vários ângulos",
+         "Em eletrônicos, mostrar <b>número de série</b> ou IMEI",
+         "Mostrar acessórios, manuais e proteção entrando na caixa"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Fechamento e etiqueta",
+        "items": [
+         {
+          "title": "Lacrar",
+          "html": "Feche a caixa e, se possível, use lacre inviolável."
+         },
+         {
+          "title": "Etiquetar",
+          "html": "Cole a etiqueta e aproxime a câmera."
+         },
+         {
+          "title": "Mostrar dados",
+          "html": "Nome, endereço, código de rastreio e ID do pedido legíveis."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Privacidade",
+        "html": "Evite mostrar CPF ou CNPJ completo do destinatário. Se aparecer sem querer, não compartilhe a prova publicamente, para respeitar a LGPD."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Comprovante de postagem",
+        "html": "Ao entregar no balcão, peça e guarde o <b>comprovante oficial de postagem</b> e fotografe como parte da prova. Vendedor pessoa física sem nota deve mostrar a Declaração de Conteúdo na caixa."
+       },
+       {
+        "t": "list",
+        "title": "Guarda e resposta",
+        "items": [
+         "Guardar vídeos e fotos por pelo menos <b>30 a 45 dias</b>",
+         "Responder à disputa no prazo informado, por exemplo 48 horas",
+         "Contar o prazo em horário de Brasília (UTC-3)"
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "O que torna uma prova de embalagem fraca?",
+        "options": [
+         "Etiqueta mostrando o rastreio",
+         "Comprovante de postagem anexo",
+         "Vídeo contínuo e claro",
+         "Vídeo cortado ou editado"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O vídeo deve ser uma tomada única, sem cortes."
+       },
+       {
+        "t": "quiz",
+        "q": "Por quanto tempo guardar as provas?",
+        "options": [
+         "De 30 a 45 dias após o envio",
+         "Apenas 1 hora",
+         "Só até o fim do dia",
+         "Nenhum dia"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A recomendação é manter as evidências por pelo menos 30 a 45 dias."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Vídeo <b>contínuo e sem edição</b>",
+         "Mostrar <b>etiqueta, rastreio e produto</b>",
+         "Guardar <b>30 a 45 dias</b> e o comprovante de postagem",
+         "Cuidado com CPF/CNPJ na imagem (<b>LGPD</b>)"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Taxa de envio e peso cubado",
+      "minutes": 4,
+      "goal": "Entender como o frete é calculado para não ter surpresa na liquidação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⚖️",
+        "title": "O peso que vale não é só o da balança",
+        "text": "O frete é calculado pelo maior de quatro pesos. Pacote grande e leve custa caro."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Peso cobrado = o <b>maior</b> entre 4 medidas",
+        "sub": "Declarado, cubado declarado, medido e cubado medido."
+       },
+       {
+        "t": "jargon",
+        "tag": "Frete",
+        "term": "Peso cubado",
+        "means": "Peso volumétrico: mostra quanto espaço o pacote ocupa. Fórmula: comprimento × largura × altura (cm) ÷ 6.000.",
+        "ex": "Caixa de 15 × 15 × 130 cm dá 4,88 kg, mesmo que a vara pese 4 kg."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Embalagem maior, frete maior",
+        "html": "Um copo de vidro de 0,5 kg, em caixa 20 × 20 × 25, vira peso cubado de 1,33 kg. Um relógio de 0,3 kg numa caixa grande demais chega ao mesmo valor. Use a <b>menor caixa segura</b>."
+       },
+       {
+        "t": "list",
+        "title": "Quando a taxa é cobrada",
+        "items": [
+         "Do vendedor, quando o pedido vira <b>Entregue</b>",
+         "Pode mudar se a transportadora medir outro peso",
+         "Envio interestadual pode gerar <b>ICMS DIFAL</b>",
+         "A taxa real aparece na tela de detalhes da liquidação"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Cadastre peso e dimensões com a embalagem",
+        "html": "O peso e as medidas informados no produto devem incluir <b>caixa e proteção</b>. Divergência vira custo extra para a loja."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Limites de pacote",
+        "html": "Pacote acima do limite de tamanho ou peso pode ser recusado ou gerar taxa extra. Para acima de 40 kg há sobretaxa por quilo. Os limites valem para o pacote <b>embalado</b>."
+       },
+       {
+        "t": "p",
+        "title": "Taxa de envio mais baixa",
+        "html": "A partir de 12/10/2026, a plataforma reduziu as taxas básicas do Envio pela plataforma. No exemplo de um pacote de 300 g de SP para o PR, o valor mínimo caiu de R$ 7,10 para R$ 4,90. Confira a tabela atual na Academia."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual fórmula calcula o peso cubado?",
+        "options": [
+         "Peso do cliente ÷ 100",
+         "Peso do produto × preço",
+         "Comprimento × largura × altura ÷ 6.000",
+         "Altura + largura ÷ 2"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O peso cubado usa as dimensões em centímetros divididas por 6.000."
+       },
+       {
+        "t": "quiz",
+        "q": "Quando a taxa de envio é descontada da loja?",
+        "options": [
+         "Quando o pedido é criado",
+         "Todo dia 1º",
+         "Quando o cliente paga",
+         "Quando o pedido é entregue"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O desconto acontece depois da entrega ao cliente."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Frete usa o <b>maior</b> entre 4 pesos",
+         "Peso cubado = C × L × A ÷ <b>6.000</b>",
+         "Taxa descontada na <b>entrega</b>",
+         "Caixa grande demais = <b>frete maior</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Dividir, combinar e resolver problemas",
+      "minutes": 4,
+      "goal": "Organizar pacotes e tratar extravio, devolução à origem e falha de entrega.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧩",
+        "title": "Nem todo pedido é um pacote",
+        "text": "Um pedido pode virar vários pacotes, e vários pedidos podem virar um. Saber quando usar economiza frete e evita reclamação."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Dividir pedido",
+         "tone": "bad",
+         "items": [
+          "Pedido com 2 ou mais SKUs",
+          "Você escolhe “Mover para novo pacote”",
+          "Só até o status Aguardando coleta",
+          "Custos extras são da loja"
+         ]
+        },
+        "right": {
+         "title": "Combinar pedidos",
+         "tone": "good",
+         "items": [
+          "Mesmo destinatário",
+          "A Central recomenda a combinação",
+          "Economiza frete",
+          "Cliente vê uma remessa consolidada"
+         ]
+        }
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Respeite os limites",
+        "html": "Pacote combinado precisa respeitar tamanho, peso e valor do serviço escolhido. Caso contrário, a transportadora pode recusar o pacote."
+       },
+       {
+        "t": "table",
+        "title": "Problemas de logística",
+        "caption": "Na tela Gerenciar pedidos, filtre os pedidos com problema.",
+        "head": [
+         "Situação",
+         "O que fazer"
+        ],
+        "rows": [
+         [
+          "Falha ao enviar o pacote",
+          "Avisar o cliente e sugerir cancelar por problema no endereço"
+         ],
+         [
+          "Etiqueta rejeitada",
+          "Seguir a orientação da plataforma e gerar de novo"
+         ],
+         [
+          "Devolvido à transportadora",
+          "Contatar o cliente para reembolso"
+         ],
+         [
+          "Pacote extraviado ou danificado",
+          "Pedido é cancelado em 48 horas e a plataforma compensa a perda"
+         ],
+         [
+          "Reembolso não chegou em 5 dias úteis",
+          "Abrir chamado para investigação"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Quando o pacote volta para você",
+        "items": [
+         "Avise o cliente que o pedido foi cancelado e reembolsado",
+         "Se não recebeu em 20 dias, peça compensação com um chamado",
+         "Se o status de entrega estiver errado, abra chamado"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Atraso reclamado pelo cliente",
+        "html": "Atualize o prazo estimado e sugira que ele aguarde. Se ele abriu uma solicitação pós-venda, convide-o a cancelar a solicitação se o pacote estiver chegando."
+       },
+       {
+        "t": "quiz",
+        "q": "Pedido dividido pode ser editado até quando?",
+        "options": [
+         "Até o status Aguardando coleta",
+         "Nunca",
+         "Só no dia da compra",
+         "Depois da entrega"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A divisão pode ser alterada antes do pacote ir para coleta."
+       },
+       {
+        "t": "quiz",
+        "q": "Pacote extraviado: o que ocorre?",
+        "options": [
+         "O pacote é vendido em leilão",
+         "O pedido é cancelado e há compensação",
+         "O cliente paga o frete de novo",
+         "A loja é banida"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O cancelamento sai em 48 horas, com reembolso e compensação à loja."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Dividir</b> vale para pedido com 2+ SKUs",
+         "<b>Combinar</b> exige mesmo destinatário",
+         "Extravio e dano: cancelamento em <b>48 horas</b>",
+         "Reembolso atrasado: chamado após <b>5 dias úteis</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Como fechar a caixa corretamente?",
+      "options": [
+       "Fita em cruz e alisada",
+       "Sem fita",
+       "Com cola quente",
+       "Com fita só no meio"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Fechamento em cruz reduz abertura no transporte.",
+      "topic": "Embalagem"
+     },
+     {
+      "q": "Qual o tempo de guarda recomendado da prova de envio?",
+      "options": [
+       "1 dia",
+       "10 segundos",
+       "De 30 a 45 dias",
+       "Nenhum"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Serve para disputas posteriores.",
+      "topic": "Prova"
+     },
+     {
+      "q": "Peso cubado é calculado com:",
+      "options": [
+       "Peso × 6.000",
+       "Altura apenas",
+       "Preço ÷ 2",
+       "C × L × A ÷ 6.000"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Fórmula usada pelas transportadoras.",
+      "topic": "Frete"
+     },
+     {
+      "q": "A taxa de envio é cobrada quando:",
+      "options": [
+       "O pedido é entregue",
+       "A loja cadastra o produto",
+       "O cliente adiciona ao carrinho",
+       "O pedido é criado"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Só depois da entrega.",
+      "topic": "Frete"
+     },
+     {
+      "q": "Em quantos dias úteis abrir chamado se o reembolso não chegou?",
+      "options": [
+       "1",
+       "90",
+       "60",
+       "5"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Após 5 dias úteis, abre-se chamado para investigação.",
+      "topic": "Problemas"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Qual o prazo recomendado para marcar Pronto para envio?",
+    "options": [
+     "Sem prazo",
+     "45 dias",
+     "20 dias",
+     "Até 1 dia útil"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "O RTS recomendado é de um dia útil.",
+    "topic": "SLA"
+   },
+   {
+    "q": "O horário limite do SLA é:",
+    "options": [
+     "12:00",
+     "Sem horário",
+     "06:00",
+     "23:59:59 de Brasília"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Todos os SLAs fecham em UTC-3.",
+    "topic": "SLA"
+   },
+   {
+    "q": "Qual métrica mede envio fora do prazo?",
+    "options": [
+     "LDR",
+     "GMV",
+     "NRR",
+     "AHR"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "A taxa de envio atrasado deve ficar em 4% ou menos.",
+    "topic": "Métricas"
+   },
+   {
+    "q": "Qual a meta de FDR?",
+    "options": [
+     "Zero",
+     "10% ou menos",
+     "90% ou mais",
+     "Sem meta"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A meta de envio rápido é alta.",
+    "topic": "Métricas"
+   },
+   {
+    "q": "A meta de VTR é:",
+    "options": [
+     "5% ou menos",
+     "Zero",
+     "95% ou mais",
+     "50%"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Rastreio válido é exigido.",
+    "topic": "Métricas"
+   },
+   {
+    "q": "Qual transportadora do Envio pela plataforma?",
+    "options": [
+     "Apenas retirada na loja",
+     "Qualquer escolhida pela loja",
+     "Somente drones",
+     "J&T, Correios ou iMile"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "A plataforma atribui uma transportadora a cada loja.",
+    "topic": "Envio"
+   },
+   {
+    "q": "No Envio pelo vendedor, a loja:",
+    "options": [
+     "Recebe compensação em tudo",
+     "Não precisa de rastreio",
+     "Deixa tudo ao TikTok",
+     "Cuida do atendimento e não tem compensação"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "O risco é da loja.",
+    "topic": "Envio"
+   },
+   {
+    "q": "Onde a loja cuida do rastreio em massa?",
+    "options": [
+     "No chat de afiliados",
+     "Em Finanças",
+     "Gerenciar pedidos > Carregar",
+     "Na aba de campanhas"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O carregamento usa um modelo de planilha.",
+    "topic": "Rastreio"
+   },
+   {
+    "q": "Nota fiscal depois de organizar o envio:",
+    "options": [
+     "É apagada",
+     "Vira rascunho",
+     "Pode ser trocada sempre",
+     "Não pode ser alterada"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Revise antes de continuar.",
+    "topic": "NF-e"
+   },
+   {
+    "q": "Como embalar um item de vidro?",
+    "options": [
+     "Saco plástico solto na caixa",
+     "Bolha em duas camadas e etiqueta frágil",
+     "Sem enchimento nenhum dentro",
+     "Só um pedaço de fita no meio"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Frágeis exigem proteção reforçada.",
+    "topic": "Embalagem"
+   },
+   {
+    "q": "O que não incluir no pacote?",
+    "options": [
+     "A nota fiscal do pedido",
+     "A etiqueta de envio dele",
+     "O produto que foi pedido",
+     "Panfletos e pedidos de avaliação"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Material promocional é proibido.",
+    "topic": "Embalagem"
+   },
+   {
+    "q": "Qual a melhor prova para disputa de caixa vazia?",
+    "options": [
+     "Print do preço",
+     "Vídeo contínuo da embalagem",
+     "Nenhuma",
+     "Foto do produto na vitrine"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "O vídeo é a evidência principal.",
+    "topic": "Prova"
+   },
+   {
+    "q": "O peso cobrado no frete é:",
+    "options": [
+     "Sempre o cubado",
+     "Sempre o da balança",
+     "O preço do produto",
+     "O maior entre os 4 pesos"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Considera declarado, cubado, medido e cubado medido.",
+    "topic": "Frete"
+   },
+   {
+    "q": "Embalagem muito grande para um item pequeno:",
+    "options": [
+     "Não muda nada",
+     "Aumenta o frete",
+     "Gera desconto",
+     "Reduz o frete"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "O peso cubado cresce.",
+    "topic": "Frete"
+   },
+   {
+    "q": "Quando um pacote é extraviado:",
+    "options": [
+     "Cancela e a plataforma compensa a loja",
+     "Nada acontece com o pedido",
+     "A loja é banida da plataforma",
+     "O cliente paga duas vezes o frete"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Cancelamento em 48 horas.",
+    "topic": "Problemas"
+   },
+   {
+    "q": "Para dividir um pedido ele precisa ter:",
+    "options": [
+     "Um só item",
+     "Cupom aplicado",
+     "2 ou mais SKUs",
+     "Frete grátis"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A divisão só vale para pedidos com mais de um SKU.",
+    "topic": "Pacotes"
+   }
+  ]
+ }
+}

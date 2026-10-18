@@ -1,0 +1,1633 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 2: catálogo e produtos",
+  "tag": "TikTok Shop",
+  "tagline": "Anúncio bem feito, catálogo organizado e estoque sob controle.",
+  "subtitle": "Imagens, títulos, categorias, variações, estoque, qualificação e oportunidades. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Anúncio que vende",
+    "tagline": "Mídia, título, categoria e marca",
+    "outcome": "Montar um anúncio completo e dentro das regras.",
+    "lessons": [
+     {
+      "title": "Imagens, vídeo e descrição",
+      "minutes": 4,
+      "goal": "Montar a parte visual e o texto do anúncio dentro dos padrões do TikTok Shop.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📸",
+        "title": "O anúncio é a vitrine",
+        "text": "No TikTok Shop o cliente vê a imagem antes de ler qualquer coisa. Foto fraca esconde produto bom."
+       },
+       {
+        "t": "list",
+        "title": "Imagens: o mínimo para um bom anúncio",
+        "items": [
+         "<b>Pelo menos 5 imagens</b> por produto, de ângulos diferentes",
+         "Até <b>9 imagens</b>, no formato quadrado (1:1)",
+         "Tamanho mínimo de <b>600 x 600 pixels</b>",
+         "Primeira imagem: <b>visão frontal clara</b> do produto"
+        ]
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Evite na primeira imagem",
+         "tone": "bad",
+         "items": [
+          "Texto, selo, marca d'água ou gráfico de promoção",
+          "Imagem em preto e branco ou com desfoque",
+          "Renderização digital no lugar do produto real",
+          "Qualquer QR code ou link para fora do TikTok Shop"
+         ]
+        },
+        "right": {
+         "title": "Prefira",
+         "tone": "good",
+         "items": [
+          "Fundo limpo e produto inteiro em destaque",
+          "Imagens extras mostrando detalhes, uso e acessórios",
+          "Cores fiéis ao produto que o cliente recebe",
+          "Ângulos diferentes, sem repetir a mesma foto"
+         ]
+        }
+       },
+       {
+        "t": "p",
+        "title": "Vídeo do produto",
+        "html": "Cada página aceita <b>um vídeo</b>. Os formatos sugeridos são 1:1, 9:16 ou 16:9. Os guias da Academia citam limites de tamanho diferentes (5 MB e 20 MB), então confira o limite que aparece na tela de publicação antes de gravar."
+       },
+       {
+        "t": "jargon",
+        "tag": "Seller Center",
+        "term": "Editor de imagem",
+        "means": "Ferramenta dentro do Seller Center que remove o fundo, troca a cor de fundo e ajusta a proporção da foto.",
+        "ex": "Foto tirada na bancada do cliente pode ficar com fundo branco em 3 cliques."
+       },
+       {
+        "t": "list",
+        "title": "Descrição: o que entra",
+        "items": [
+         "Pelo menos <b>500 caracteres</b> com recursos, usos e características",
+         "Medidas, instruções de cuidado e <b>garantia</b>",
+         "Um diferencial por parágrafo, com menos de <b>250 caracteres</b> cada",
+         "Até <b>30 imagens</b> de apoio, como tabela de medidas"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Fora da descrição",
+        "html": "Não coloque e-mail, site, telefone, outros produtos ou links que levem o cliente para <b>fora</b> do TikTok Shop. A plataforma não consegue monitorar o que acontece fora dela, e isso gera violação."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Antes e depois",
+        "html": "Antes: “Garrafa térmica linda, a mais vendida!!!”. Depois: “Garrafa térmica de aço inox 500 ml, mantém bebida quente por 12 horas, tampa rosqueável com trava e boca larga para gelo.”"
+       },
+       {
+        "t": "quiz",
+        "q": "Qual imagem NÃO pode ser a primeira do anúncio?",
+        "options": [
+         "Foto frontal em fundo branco",
+         "Foto com selo grande de “50% OFF”",
+         "Foto sem filtro e com cores reais",
+         "Foto do produto inteiro, bem iluminada"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "A primeira imagem não pode ter texto, gráficos de marketing ou promoção."
+       },
+       {
+        "t": "say",
+        "title": "Diga assim",
+        "html": "“Cinco fotos no mínimo, a primeira limpinha e de frente. Promoção a gente faz com cupom, não escrevendo em cima da foto.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Mínimo <b>5 imagens</b>, até 9, 1:1, 600 x 600 px",
+         "Primeira foto sem texto nem selo",
+         "Descrição com <b>500+ caracteres</b> e sem links externos",
+         "Um vídeo por produto"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Título e categoria",
+      "minutes": 4,
+      "goal": "Escrever títulos que aparecem na busca e escolher a categoria certa.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔎",
+        "title": "Quem acha, compra",
+        "text": "O cliente encontra o produto pelo título e pela categoria. Os dois também protegem a loja de violação."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Título de <b>25 a 200 caracteres</b>",
+        "sub": "Claro, completo e sem enfeite de marketing."
+       },
+       {
+        "t": "table",
+        "title": "Regras de título",
+        "caption": "",
+        "head": [
+         "Faça",
+         "Evite"
+        ],
+        "rows": [
+         [
+          "Marca, tipo de produto e principais características",
+          "Nome ou site da loja"
+         ],
+         [
+          "Tamanho e quantidade quando existir",
+          "“TikTok” e nomes de outras plataformas"
+         ],
+         [
+          "Numerais (“2” em vez de “dois”)",
+          "TUDO EM MAIÚSCULAS"
+         ],
+         [
+          "Medidas abreviadas (cm, kg, oz)",
+          "Símbolos e caracteres especiais"
+         ],
+         [
+          "Quantidade de kits clara: “Caixa c/ 10”",
+          "“Mais vendido”, “frete grátis”, “20% off”"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Título bom e ruim",
+        "html": "Ruim: “PROMOÇÃO!!! Tênis TOP mais vendido frete grátis”. Bom: “Tênis Running Masculino Amortecimento em Malha Respirável Preto Tam 42”."
+       },
+       {
+        "t": "p",
+        "title": "A fórmula que ajuda a categoria",
+        "html": "O guia de categorização sugere montar o título assim: <b>conteúdo + marca + escopo de aplicação + tipo do produto + função principal</b>. É o que o sistema usa para sugerir a categoria certa de forma automática."
+       },
+       {
+        "t": "steps",
+        "title": "Como escolher a categoria",
+        "items": [
+         {
+          "title": "Aceitar a sugestão",
+          "html": "Comece pela categoria sugerida no Seller Center."
+         },
+         {
+          "title": "Ir do amplo ao específico",
+          "html": "Escolha a categoria geral e desça até a subcategoria mais precisa."
+         },
+         {
+          "title": "Pensar como o cliente",
+          "html": "Em que lugar ele esperaria encontrar esse produto?"
+         },
+         {
+          "title": "Preencher atributos",
+          "html": "Cor, tamanho e marca ajudam o produto a aparecer nos filtros."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Categoria errada vira violação",
+        "html": "Anunciar uma polo de menino em Moda masculina, em vez de Moda infantil, gera aviso de “Categoria incorreta” e afeta a integridade da loja. Nunca teste várias categorias para ver qual rende mais."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Categoria errada",
+         "tone": "bad",
+         "items": [
+          "Geladeira em “Eletrodomésticos” em vez de “Eletrodomésticos grandes”",
+          "Brinquedo de gato em “Animais pequenos”",
+          "Trocar de categoria só para ganhar exposição"
+         ]
+        },
+        "right": {
+         "title": "Categoria certa",
+         "tone": "good",
+         "items": [
+          "Subcategoria que o cliente realmente navega",
+          "Brinquedo de gato em “Produtos para cães e gatos”",
+          "Conferir anúncios de concorrentes quando houver dúvida"
+         ]
+        }
+       },
+       {
+        "t": "quiz",
+        "q": "Qual título está dentro das boas práticas?",
+        "options": [
+         "Mochila Escolar Infantil Impermeável com 3 Compartimentos Azul",
+         "Mochila infantil melhor preço compre no TikTok",
+         "Mochila ★ Loja Mochilas Brasil ★ mais vendida",
+         "MOCHILA INFANTIL TOP!!! FRETE GRÁTIS"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Título claro, com atributos reais, sem caixa alta, símbolos nem promoções."
+       },
+       {
+        "t": "quiz",
+        "q": "Um cliente recebe aviso de “Categoria incorreta”. Qual a correção?",
+        "options": [
+         "Excluir a loja e abrir outra",
+         "Trocar a imagem principal",
+         "Esperar a plataforma ajustar sozinha",
+         "Anunciar de novo na categoria mais precisa"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "A correção é republicar o produto na categoria mais precisa."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Título de <b>25 a 200 caracteres</b>, sem caixa alta nem promoção",
+         "Fórmula: conteúdo + marca + escopo + tipo + função",
+         "Categoria <b>precisa</b> evita violação e melhora a busca",
+         "Nunca mude de categoria só para testar exposição"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Marca, idioma, preço e o que evitar",
+      "minutes": 4,
+      "goal": "Respeitar as regras de marca, idioma e preço para o anúncio ser aprovado.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⚖️",
+        "title": "Detalhes que derrubam anúncio",
+        "text": "Marca escrita errada, texto em outro idioma ou preço exagerado são motivos comuns de recusa."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Marca",
+        "html": "O nome da marca deve ser <b>igual</b> ao do site oficial, do registro ou da embalagem, com a mesma letra maiúscula e caracteres especiais. Depois de <b>aprovado, o nome da marca não pode ser alterado</b>."
+       },
+       {
+        "t": "list",
+        "title": "Idioma do anúncio",
+        "items": [
+         "Título, descrição e atributos em <b>português</b>",
+         "Cores, tamanhos e sabores comuns do SKU também em português",
+         "Tabelas de medida em português ou formato universal (cm, kg, P, M, G)",
+         "<b>Pode</b> manter em outro idioma: marcas registradas, nomes de modelo, títulos de filmes e músicas, estampas de roupa e lista de ingredientes de beleza"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Anúncio em outro idioma",
+        "html": "Novos anúncios que fogem da regra de idioma podem ser <b>recusados</b> na análise, e anúncios existentes podem ser <b>limitados temporariamente</b> até serem atualizados."
+       },
+       {
+        "t": "list",
+        "title": "Preço: práticas que geram violação",
+        "items": [
+         "Preço enganoso ou muito acima dos valores recentes",
+         "Cobrar mais por unidade em pacotes de várias unidades do que no item unitário",
+         "Taxa de envio absurda",
+         "Aumento abusivo em bens essenciais durante crises e emergências"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "O que mais evitar no anúncio",
+        "items": [
+         "QR code ou link que leve para fora do TikTok Shop",
+         "Citar outras plataformas ou usar “TikTok” sem autorização",
+         "Expressões vazias como “mais vendido” ou “item em alta”",
+         "Imagens ou vídeos com conteúdo sexual, violento ou discriminatório"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Se o anúncio for removido por engano",
+        "html": "Os sistemas às vezes bloqueiam produtos permitidos por informação incompleta ou por classificarem o item como proibido. Nesse caso, abra um <b>ticket na página Integridade da loja</b> para recorrer. Um produto legal no Brasil ainda pode ser restrito pelas políticas do TikTok Shop."
+       },
+       {
+        "t": "quiz",
+        "q": "Um produto em inglês, com título “Premium Quality Shirt for Men” e descrição só em inglês. O que provavelmente acontece?",
+        "options": [
+         "É aprovado sem problemas",
+         "Ganha mais alcance internacional",
+         "Só o frete fica mais caro",
+         "Pode ser recusado por violar a regra de idioma"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Título, descrição e atributos precisam estar em português."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual das opções PODE ficar em outro idioma?",
+        "options": [
+         "Toda a descrição do produto",
+         "As cores do SKU",
+         "O nome do modelo do produto, como “iPhone”",
+         "O título completo do anúncio"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Marcas, nomes de modelo e alguns termos de design podem permanecer no idioma original."
+       },
+       {
+        "t": "say",
+        "title": "Diga assim",
+        "html": "“Marca eu escrevo igual à embalagem, porque depois de aprovada não dá mais pra mudar. O resto do anúncio vai em português.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Marca igual à oficial; aprovada, <b>não muda</b>",
+         "Anúncio em <b>português</b>, exceto marcas, modelos e ingredientes",
+         "Preço justo, sem abuso nem cobrança maior por unidade",
+         "Removido por engano? <b>Ticket em Integridade da loja</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Quantas imagens são recomendadas, no mínimo, por produto?",
+      "options": [
+       "20",
+       "5",
+       "1",
+       "2"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "O guia recomenda pelo menos cinco imagens de ângulos diferentes.",
+      "topic": "Mídia"
+     },
+     {
+      "q": "Qual o tamanho do título de produto recomendado?",
+      "options": [
+       "Qualquer tamanho",
+       "Até 10 caracteres",
+       "De 25 a 200 caracteres",
+       "De 300 a 500 caracteres"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Títulos de 25 a 200 caracteres, claros e descritivos.",
+      "topic": "Título"
+     },
+     {
+      "q": "Depois de aprovado, o nome da marca no anúncio:",
+      "options": [
+       "Não pode ser alterado",
+       "Pode ser trocado quando quiser",
+       "Só muda com cupom",
+       "Muda sozinho"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O nome da marca aprovado não pode mais ser alterado.",
+      "topic": "Marca"
+     },
+     {
+      "q": "Qual elemento é permitido na primeira imagem?",
+      "options": [
+       "Marca d'água de outra loja",
+       "Selo de promoção",
+       "Produto inteiro em fundo limpo",
+       "QR code da loja"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "A primeira imagem não leva texto, gráficos ou marcas d'água.",
+      "topic": "Mídia"
+     },
+     {
+      "q": "Como o TikTok Shop trata anúncios com texto todo em inglês?",
+      "options": [
+       "São impulsionados pela plataforma",
+       "Recusa ou limite até atualizar",
+       "São promovidos a destaque na busca",
+       "Nada acontece com o anúncio"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "O anúncio precisa estar em português.",
+      "topic": "Idioma"
+     }
+    ]
+   },
+   {
+    "title": "Variações, kits e ajustes",
+    "tagline": "Estrutura do catálogo",
+    "outcome": "Estruturar variações, kits e dados técnicos corretamente.",
+    "lessons": [
+     {
+      "title": "Variações, kits e códigos de produto",
+      "minutes": 4,
+      "goal": "Organizar variações, kits do fabricante e GTIN sem criar anúncios duplicados.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧩",
+        "title": "Uma página, várias opções",
+        "text": "Cor, tamanho e sabor viram variações dentro de uma única página. Isso evita anúncio duplicado e facilita a comparação."
+       },
+       {
+        "t": "list",
+        "title": "Como a variação funciona",
+        "items": [
+         "<b>Produto âncora:</b> o principal, que une todas as variações",
+         "<b>Variações:</b> o que o cliente realmente escolhe (SKU)",
+         "<b>Estilos de variação:</b> cor, tamanho, forma, aroma, sabor",
+         "Até <b>100 opções (SKUs)</b> por produto"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Cada variação é única",
+        "html": "Variações enganosas ou duplicadas viram violação. Cada uma precisa representar uma opção <b>real e diferente</b> do mesmo produto."
+       },
+       {
+        "t": "jargon",
+        "tag": "Estoque",
+        "term": "SKU",
+        "means": "Cada combinação vendável do produto. Camiseta preta tamanho M é um SKU, branca tamanho G é outro.",
+        "ex": "Uma camiseta com 3 cores e 4 tamanhos tem 12 SKUs."
+       },
+       {
+        "t": "jargon",
+        "tag": "Código",
+        "term": "GTIN / EAN",
+        "means": "O número do código de barras do produto. É a identidade do produto no comércio global (EAN costuma ter 13 dígitos).",
+        "ex": "O código impresso embaixo das barras na caixa do produto."
+       },
+       {
+        "t": "list",
+        "title": "Regras do código identificador",
+        "items": [
+         "No cadastro de hoje o campo é <b>opcional</b>",
+         "Enviado, o código <b>não pode mais ser alterado</b>",
+         "Cada variação precisa de um código <b>único</b>",
+         "Tamanhos: ISBN 13, UPC 12, EAN 8, 13 ou 14 e GTIN 14, só números (ISBN aceita X)",
+         "Se o SKU for um kit, dá para informar até <b>10 códigos</b> separados por vírgula"
+        ]
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Kit do fabricante",
+         "tone": "bad",
+         "items": [
+          "Já vem embalado de fábrica",
+          "Tem <b>GTIN/EAN próprio</b> do conjunto",
+          "Pode ser listado como um produto"
+         ]
+        },
+        "right": {
+         "title": "Combo virtual",
+         "tone": "good",
+         "items": [
+          "Junta produtos que já estão à venda",
+          "Não precisa pré-embalar o estoque",
+          "Criado dentro do Seller Center por você"
+         ]
+        }
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não misture produtos independentes",
+        "html": "Não junte produtos sem relação em um único anúncio. Só entram kits e múltiplos pacotes montados pelo <b>fabricante</b>. Cada produto tem <b>uma</b> listagem; duplicar anúncio é violação."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual destes é um uso correto de variação?",
+        "options": [
+         "A mesma camiseta anunciada 3 vezes",
+         "Variações com fotos de outro produto",
+         "Uma camiseta em 3 cores e 4 tamanhos na mesma página",
+         "Três produtos diferentes numa mesma página"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A variação junta opções reais do mesmo produto em uma página."
+       },
+       {
+        "t": "quiz",
+        "q": "O vendedor informou um GTIN errado em uma variação. E agora?",
+        "options": [
+         "O código enviado não pode ser alterado depois",
+         "Pode editar à vontade a qualquer hora",
+         "O sistema corrige sozinho",
+         "O campo se renova a cada semana"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Depois de enviado, o código identificador não pode mais ser modificado."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Variação: âncora + opções + estilos, até <b>100 SKUs</b>",
+         "Nada de variação duplicada ou enganosa",
+         "GTIN opcional hoje, mas <b>imutável</b> depois de enviado",
+         "Só kit <b>do fabricante</b> com GTIN próprio; o resto é combo virtual"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Combo virtual, peso, tabela de tamanhos e limite de compra",
+      "minutes": 4,
+      "goal": "Usar os recursos de ajuste fino do cadastro: combos, peso por SKU, medidas e limites.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📦",
+        "title": "Os ajustes que mudam o frete e a conversão",
+        "text": "Peso certo, tabela de medidas e limites bem pensados reduzem devolução, frete errado e fraude."
+       },
+       {
+        "t": "jargon",
+        "tag": "Promoção",
+        "term": "Combo virtual",
+        "means": "Junta produtos já à venda num novo pacote, sem pré-embalar no armazém. O estoque do combo é ligado ao dos itens.",
+        "ex": "Produto A + Produto B viram o Produto C, e o estoque desce de A e de B."
+       },
+       {
+        "t": "table",
+        "title": "Regras do combo virtual",
+        "caption": "Benefícios: aumenta o valor médio por pedido e ajuda a liquidar estoque parado.",
+        "head": [
+         "Ponto",
+         "Regra"
+        ],
+        "rows": [
+         [
+          "Quantos SKUs",
+          "De 2 a 25"
+         ],
+         [
+          "Quem pode entrar",
+          "Produtos regulares com status Ativo; sem presente, pré-venda ou outro combo"
+         ],
+         [
+          "Armazém",
+          "Todos os SKUs do combo saem do <b>mesmo armazém</b>"
+         ],
+         [
+          "Preço",
+          "O combo não pode custar mais do que a soma dos itens"
+         ],
+         [
+          "Categoria",
+          "Herdada do produto principal e não muda"
+         ]
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Peso e dimensões",
+        "html": "O peso permitido do pacote vai de <b>1 a 30 kg</b> e conta o peso do produto mais a embalagem. Em produtos com <b>2 ou mais SKUs</b>, dá para informar peso e dimensões <b>por SKU</b>, e o frete mostrado ao cliente muda conforme a variação escolhida. É preciso marcar a opção manualmente."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "SKU e combo não andam juntos",
+        "html": "Ligar peso por SKU deixa a opção de combo desativada, e produtos de combo virtual continuam usando peso no nível do produto."
+       },
+       {
+        "t": "list",
+        "title": "Tabela de tamanhos obrigatória",
+        "items": [
+         "Vale para <b>calçados</b> (a partir de 16/03/2026) e para moda feminina e masculina, esportes, moda infantil e bebê (a partir de 15/04/2026)",
+         "Dá para usar o <b>modelo da plataforma</b> ou enviar <b>imagem própria</b>",
+         "Há inspeção aleatória: tamanho incorreto gera penalidade pela Política de Qualidade do Produto"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Ajuda a vender e a evitar devolução",
+        "html": "A plataforma incentiva acrescentar dados de prova, como altura, peso e tamanho recomendado de modelos. Tamanho certo reduz devolução por “não serviu”."
+       },
+       {
+        "t": "list",
+        "title": "Limite de compra do cliente",
+        "items": [
+         "<b>Limite máximo:</b> quantidade de um mesmo SKU por pedido",
+         "<b>Limite total:</b> quantidade de um mesmo SKU somando todos os pedidos do cliente",
+         "Ajuda a evitar compradores que esgotam o estoque de itens de alto valor",
+         "Fica em Informações de vendas > Definir quantidade de compra do usuário"
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "Qual destes produtos pode entrar num combo virtual?",
+        "options": [
+         "Dois produtos de armazéns diferentes",
+         "Um produto em pré-venda e um ativo",
+         "Um combo virtual que já exista na loja",
+         "Dois produtos ativos do mesmo armazém"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Só produtos regulares, ativos e do mesmo armazém."
+       },
+       {
+        "t": "quiz",
+        "q": "O preço do combo virtual pode ser:",
+        "options": [
+         "No máximo a soma dos preços dos itens",
+         "Qualquer valor que o vendedor queira",
+         "Sempre exatamente 50% do total",
+         "O dobro da soma dos preços dos itens"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O preço do combo não pode ser superior à soma dos produtos individuais."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Combo virtual: <b>2 a 25 SKUs</b>, mesmo armazém, preço até a soma",
+         "Pacote de <b>1 a 30 kg</b> (produto + embalagem)",
+         "Tabela de tamanhos obrigatória em calçados, moda e bebê",
+         "Limite de compra evita esgotar estoque de alto valor"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Quantos SKUs um produto pode ter?",
+      "options": [
+       "Até 10",
+       "Até 100",
+       "Até 1.000",
+       "Até 3"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "É possível configurar até 100 opções (SKUs) por produto.",
+      "topic": "Variações"
+     },
+     {
+      "q": "O que é permitido como kit em uma listagem?",
+      "options": [
+       "Produtos soltos misturados pelo vendedor",
+       "Qualquer combinação sem GTIN",
+       "Dois anúncios iguais",
+       "Kit montado pelo fabricante, com GTIN próprio"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Só kits e múltiplos pacotes do fabricante.",
+      "topic": "Kits"
+     },
+     {
+      "q": "Qual o intervalo de SKUs de um combo virtual?",
+      "options": [
+       "De 1 a 2",
+       "Sem limite",
+       "De 10 a 100",
+       "De 2 a 25"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O combo virtual aceita de 2 a 25 SKUs.",
+      "topic": "Combo"
+     },
+     {
+      "q": "O que a tabela de tamanhos obrigatória exige?",
+      "options": [
+       "Medidas preenchidas antes de publicar",
+       "Apenas um vídeo de prova do produto",
+       "Que o produto seja de fabricação importada",
+       "Nada, a tabela é sempre opcional"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Em categorias como calçados e moda, a tabela é obrigatória.",
+      "topic": "Tamanhos"
+     }
+    ]
+   },
+   {
+    "title": "Escala e estoque",
+    "tagline": "Subir rápido e não faltar produto",
+    "outcome": "Escolher a forma de subir produtos e controlar estoque.",
+    "lessons": [
+     {
+      "title": "Cadastrar em escala: Seller Center, lote e URL",
+      "minutes": 4,
+      "goal": "Escolher o jeito mais rápido de subir muitos produtos sem perder qualidade.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⚡",
+        "title": "Subir produto sem passar o dia nisso",
+        "text": "Dá para criar um produto de cada vez, em lote ou importar de outro marketplace. Cada caminho tem seu lugar."
+       },
+       {
+        "t": "flow",
+        "title": "Adicionar um produto na Central do Vendedor",
+        "caption": "",
+        "loop": false,
+        "items": [
+         {
+          "icon": "1",
+          "title": "Informações básicas",
+          "text": "Nome, categoria e marca"
+         },
+         {
+          "icon": "2",
+          "title": "Mídia",
+          "text": "Imagens, vídeo e descrição"
+         },
+         {
+          "icon": "3",
+          "title": "Informações de vendas",
+          "text": "Variações, preço, estoque e SKU"
+         },
+         {
+          "icon": "4",
+          "title": "Envio",
+          "text": "Peso e dimensões; frete estimado ao cliente"
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Salvar ou publicar",
+        "items": [
+         "<b>Salvar rascunho:</b> guarda tudo, sem enviar para análise",
+         "<b>Publicar:</b> envia para análise; o produto fica ativo logo após a aprovação",
+         "Ao lado, uma <b>prévia</b> mostra a aparência na página, na LIVE e na busca"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Números úteis",
+        "items": [
+         "Uploads individuais ou em lote, <b>até 1.000 produtos</b>",
+         "Até <b>100 SKUs</b> por produto",
+         "Imagem: 1:1, mínimo 600 x 600 px e até 5 MB"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Anúncio em lote",
+        "items": [
+         {
+          "title": "Baixar o modelo",
+          "html": "Escolha a categoria dos produtos e baixe a planilha."
+         },
+         {
+          "title": "Preencher",
+          "html": "Siga as colunas do modelo, sem mudar o cabeçalho."
+         },
+         {
+          "title": "Enviar",
+          "html": "Anunciar em lote, e acompanhar o resultado dos itens recusados."
+         }
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Atalho",
+        "term": "Anunciar com URL",
+        "means": "Recurso que cria um rascunho a partir do link de um produto seu em outro marketplace.",
+        "ex": "Cole o link do Mercado Livre ou da Amazon e o sistema importa título, descrição e fotos."
+       },
+       {
+        "t": "list",
+        "title": "Como funciona o Anunciar com URL",
+        "items": [
+         "Disponível no computador, em Produtos > Gerenciar produtos",
+         "Compatível principalmente com links do <b>Mercado Livre</b> e da <b>Amazon</b>",
+         "Só <b>produto individual</b>, não a loja inteira",
+         "Marca sem autorização? Não importa. Peça a autorização antes",
+         "Revise e edite: nem tudo é importado (imagens, por exemplo)"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "ERP para escala",
+        "html": "Os cursos da Academia mostram que sistemas ERP sincronizam estoque, emitem NF-e em lote e permitem uploads em massa. Quem tem muitos SKUs ganha tempo conectando um ERP pelo App Store do Seller Center (veja a trilha de integrações)."
+       },
+       {
+        "t": "quiz",
+        "q": "Um cliente quer trazer 200 produtos do Mercado Livre. Qual caminho economiza mais tempo?",
+        "options": [
+         "Subir todos na mesma categoria qualquer",
+         "Anunciar com URL ou em lote e revisar",
+         "Cadastrar um a um e sem revisar nada",
+         "Esperar a plataforma importar a loja inteira"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "A importação por URL (produto a produto) e o lote reduzem muito o trabalho, e a revisão evita erro."
+       },
+       {
+        "t": "quiz",
+        "q": "O que acontece ao clicar em “Salvar como rascunho”?",
+        "options": [
+         "Fica guardado, sem ir para análise",
+         "Vai direto ao ar para os clientes",
+         "É excluído depois de 24 horas",
+         "Entra automaticamente em uma campanha"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Rascunho guarda a edição; só “Publicar” envia para análise."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "4 blocos: básico, mídia, vendas e envio",
+         "Rascunho salva; <b>Publicar</b> vai para análise",
+         "Lote: até <b>1.000</b> produtos; até <b>100 SKUs</b> por produto",
+         "Anunciar com URL: ML e Amazon, <b>com autorização de marca</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Estoque: painel, alertas e reposição",
+      "minutes": 4,
+      "goal": "Ler o painel de estoque e criar alertas antes de faltar produto.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📊",
+        "title": "Produto esgotado é venda perdida",
+        "text": "O painel de estoque do TikTok Shop já prevê quanto você vai vender e quanto precisa repor."
+       },
+       {
+        "t": "p",
+        "title": "Onde fica",
+        "html": "Em <b>Produtos > Gerenciar estoque</b>, na aba <b>Painel de estoque</b>. Os produtos aparecem divididos em três situações: <b>estoque suficiente</b>, <b>pouco estoque</b> (igual ou abaixo do alerta) e <b>sem estoque</b> (zero)."
+       },
+       {
+        "t": "table",
+        "title": "As colunas que importam",
+        "caption": "",
+        "head": [
+         "Coluna",
+         "O que mostra"
+        ],
+        "rows": [
+         [
+          "Disponível",
+          "Estoque livre para venda, sem reserva"
+         ],
+         [
+          "Bloqueado",
+          "Reservado para criadores ou campanhas"
+         ],
+         [
+          "Reservado",
+          "Já comprado, ainda no armazém"
+         ],
+         [
+          "Vendas (30 dias)",
+          "Unidades vendidas no período"
+         ],
+         [
+          "Previsão de vendas",
+          "Estimativa dos próximos 30 dias, com base em loja, LIVE e vídeo"
+         ],
+         [
+          "Dias de suprimento",
+          "Quantos dias o estoque disponível dura no ritmo atual"
+         ]
+        ]
+       },
+       {
+        "t": "conta",
+        "title": "Reposição sugerida",
+        "rows": [
+         [
+          "Previsão de vendas (30 dias)",
+          "300",
+          ""
+         ],
+         [
+          "Estoque disponível hoje",
+          "120",
+          "neg"
+         ]
+        ],
+        "total": [
+         "Quantidade sugerida para repor",
+         "180"
+        ],
+        "note": "Regra do painel: previsão do período menos o estoque disponível."
+       },
+       {
+        "t": "steps",
+        "title": "Criar um alerta",
+        "items": [
+         {
+          "title": "Escolher o SKU",
+          "html": "Comece pelos mais vendidos."
+         },
+         {
+          "title": "Definir o gatilho",
+          "html": "Por quantidade mínima ou por dias de suprimento."
+         },
+         {
+          "title": "Ativar",
+          "html": "Quando o estoque chegar no limite, a notificação avisa."
+         },
+         {
+          "title": "Repor",
+          "html": "Use a sugestão do painel para planejar a compra."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Estoque reservado para campanha e criador",
+        "html": "Estoque “bloqueado” para campanha ou criador não conta como disponível. Se você reservar demais, sobra pouco para a venda normal."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Dá para ajustar na hora",
+        "html": "Em cada SKU há um atalho de edição rápida. Se o ERP já faz a sincronização, evite mexer à mão para não gerar divergência."
+       },
+       {
+        "t": "quiz",
+        "q": "O painel mostra “Dias de suprimento = 3” para um SKU campeão. O que fazer?",
+        "options": [
+         "Planejar reposição, o estoque dura 3 dias",
+         "Diminuir o preço para vender mais rápido",
+         "Nada a fazer, 3 dias é um prazo suficiente",
+         "Excluir o SKU do catálogo da loja"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Dias de suprimento mede quanto o estoque disponível dura no ritmo atual de vendas."
+       },
+       {
+        "t": "quiz",
+        "q": "Estoque “Bloqueado” significa:",
+        "options": [
+         "Produto proibido pela plataforma",
+         "Estoque perdido no transporte",
+         "Produto com defeito de fábrica",
+         "Reservado para criadores ou campanhas"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Bloqueado é o estoque reservado, por exemplo, para campanha ou criador."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Painel em <b>Produtos > Gerenciar estoque</b>",
+         "Três situações: suficiente, pouco e sem estoque",
+         "Reposição = previsão − disponível",
+         "Crie alertas para os <b>mais vendidos</b> primeiro"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Até quantos produtos dá para subir em lote?",
+      "options": [
+       "Até 1.000",
+       "Sem lote",
+       "Até 50",
+       "Até 10"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O Seller Center aceita uploads em massa de até 1.000 produtos.",
+      "topic": "Lote"
+     },
+     {
+      "q": "Anunciar com URL funciona principalmente com links de:",
+      "options": [
+       "Só da Shopee",
+       "Mercado Livre e Amazon",
+       "Só do Instagram",
+       "Qualquer site"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Hoje é compatível principalmente com URLs do Mercado Livre e da Amazon.",
+      "topic": "Importação"
+     },
+     {
+      "q": "Reposição sugerida no painel é calculada como:",
+      "options": [
+       "O dobro do estoque que há hoje",
+       "Número de visitas à página da loja",
+       "Previsão de vendas menos o disponível",
+       "Soma de todos os pedidos já feitos"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Previsão de vendas × período menos a quantidade disponível.",
+      "topic": "Estoque"
+     },
+     {
+      "q": "Para que serve “Dias de suprimento”?",
+      "options": [
+       "Quantos dias o estoque dura hoje",
+       "Quantos dias a loja existe na plataforma",
+       "Dias até a liberação do pagamento",
+       "Dias que o frete leva para chegar"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "É o tempo que o estoque disponível atende ao volume de pedidos.",
+      "topic": "Estoque"
+     }
+    ]
+   },
+   {
+    "title": "Qualificação e inteligência de produto",
+    "tagline": "Categorias de risco e avaliações",
+    "outcome": "Pedir qualificação, tratar avaliações e achar oportunidades.",
+    "lessons": [
+     {
+      "title": "Categorias restritas e “Somente por convite”",
+      "minutes": 4,
+      "goal": "Saber quais categorias exigem qualificação e como pedir.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🛡️",
+        "title": "Nem todo produto entra livre",
+        "text": "Alguns produtos mexem com saúde, segurança e fraude. Eles exigem qualificação antes de ir ao ar."
+       },
+       {
+        "t": "jargon",
+        "tag": "Qualificação",
+        "term": "Qualificação de categoria",
+        "means": "Aprovação prévia do TikTok Shop para anunciar certas categorias reguladas ou de alto risco.",
+        "ex": "Antes de vender suplementos, a loja envia documentos e espera aprovação."
+       },
+       {
+        "t": "list",
+        "title": "Exemplos de categorias “Somente por convite”",
+        "items": [
+         "Alimentos e bebidas",
+         "Suplementos alimentares",
+         "Joias de alto valor",
+         "Outras de alto risco, como pet (alimentos), bebê e maternidade, carro e moto"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Requisitos para se qualificar",
+        "html": "Ter <b>AHR acima de 150</b> (classificação de integridade, em pontos), <b>SPS acima de 4</b> e obter a qualificação da categoria. Se a conta tiver lojas associadas, elas também precisam atender."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Dá para perder a qualificação",
+        "html": "Quem fica com <b>AHR de 150 ou menos</b>, ou <b>SPS de 4 ou menos</b>, pode perder a qualificação. Mesmo com boas notas, o TikTok Shop pode retirar por risco de conformidade ou segurança. Quando as métricas voltam, é possível solicitar de novo."
+       },
+       {
+        "t": "steps",
+        "title": "Como solicitar (no computador)",
+        "items": [
+         {
+          "title": "Centro de qualificação",
+          "html": "Minha conta > Configurações da conta > Centro de qualificação."
+         },
+         {
+          "title": "Adicionar autorização",
+          "html": "Qualificação de categoria > Adicionar autorização da categoria."
+         },
+         {
+          "title": "Enviar documentos",
+          "html": "Documentação autêntica e igual aos dados digitados; registro falso gera penalidade."
+         },
+         {
+          "title": "Aguardar",
+          "html": "O resultado chega no Seller Center e por e-mail. Se for rejeitada, revise o motivo e reenvie."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Anunciar sem aprovação",
+        "html": "Colocar produto de categoria “Somente por convite” no ar sem aprovação pode gerar <b>medidas disciplinares</b> na conta."
+       },
+       {
+        "t": "quiz",
+        "q": "Uma loja com AHR 140 quer vender suplementos. Qual o principal obstáculo?",
+        "options": [
+         "Falta de CNPJ ativo na empresa",
+         "O nome da loja ser muito comprido",
+         "AHR abaixo do mínimo de 150",
+         "Falta de um vídeo na descrição do anúncio"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O requisito pede AHR acima de 150 e SPS acima de 4."
+       },
+       {
+        "t": "quiz",
+        "q": "Onde se solicita a qualificação de categoria?",
+        "options": [
+         "Por e-mail para o criador de conteúdo",
+         "Na aba Promoções do Seller Center",
+         "No Centro de qualificação, no desktop",
+         "No app do TikTok, no celular da marca"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Fica em Minha conta > Configurações da conta > Centro de qualificação, disponível só no desktop."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Categorias de risco exigem <b>qualificação</b> prévia",
+         "Requisitos: <b>AHR > 150</b> e <b>SPS > 4</b>",
+         "Perdeu a nota, pode perder a qualificação",
+         "Pedido sempre pelo <b>Centro de qualificação</b> no computador"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Avaliações e oportunidades de produto",
+      "minutes": 4,
+      "goal": "Usar as avaliações e as tendências para melhorar e ampliar o catálogo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⭐",
+        "title": "O catálogo conversa com o cliente",
+        "text": "Avaliações mostram o que corrigir. Oportunidades mostram o que vender em seguida."
+       },
+       {
+        "t": "p",
+        "title": "Avaliação do produto",
+        "html": "Em <b>Produtos > Avaliação do produto</b>, a loja vê o feed de avaliações, acompanha a <b>taxa de avaliação negativa (NRR)</b> dos últimos 7 e 30 dias e responde às avaliações negativas e neutras. Avaliação negativa é de <b>1 ou 2 estrelas</b>."
+       },
+       {
+        "t": "steps",
+        "title": "Como lidar com uma avaliação ruim",
+        "items": [
+         {
+          "title": "Encontrar o pedido",
+          "html": "Abra a avaliação e clique em Informações do cliente."
+         },
+         {
+          "title": "Conversar",
+          "html": "Procure entender o problema e propor uma solução."
+         },
+         {
+          "title": "Responder",
+          "html": "Responda publicamente na avaliação, com calma."
+         },
+         {
+          "title": "Pedir revisão",
+          "html": "Combinada a solução, o cliente pode editar a avaliação."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Edição de avaliação conta",
+        "html": "O recurso de editar avaliação usado pelo cliente pode mudar a avaliação geral da loja. Resolver bem o problema pode reverter uma nota ruim."
+       },
+       {
+        "t": "jargon",
+        "tag": "Tendências",
+        "term": "Oportunidades de produtos",
+        "means": "Recurso que mostra o que está em alta no TikTok: produtos de alto potencial e palavras-chave em alta.",
+        "ex": "Palavra-chave que subiu esta semana e combina com um item do seu catálogo."
+       },
+       {
+        "t": "table",
+        "title": "Dois tipos de oportunidade",
+        "caption": "",
+        "head": [
+         "Tipo",
+         "Para que serve"
+        ],
+        "rows": [
+         [
+          "Produtos de alto potencial",
+          "Produtos com demanda forte e pouca oferta no TikTok Shop"
+         ],
+         [
+          "Palavras-chave em alta",
+          "Termos muito buscados, úteis para título, descrição e ideias de vídeo"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Como usar",
+        "items": [
+         "Ver se já existe algo parecido no catálogo",
+         "Alinhar título e descrição às palavras em alta",
+         "Pensar em conteúdo e LIVE com esse produto",
+         "Decidir o que adquirir ou promover"
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "Uma avaliação de 2 estrelas conta como:",
+        "options": [
+         "Não conta",
+         "Positiva",
+         "Neutra",
+         "Avaliação negativa"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Avaliações de 1 ou 2 estrelas são consideradas negativas e entram na NRR."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual seria um bom uso de “Palavras-chave em alta”?",
+        "options": [
+         "Copiar o catálogo de um concorrente",
+         "Aumentar o preço de tudo",
+         "Pedir reembolso de pedidos",
+         "Ajustar títulos e descrições e inspirar vídeos"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "As palavras em alta ajudam o SEO e a criação de conteúdo."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Avaliações 1 e 2 estrelas contam na <b>NRR</b>",
+         "Responda avaliações negativas, conversando com o cliente",
+         "Oportunidades: <b>produtos de alto potencial</b> e <b>palavras em alta</b>",
+         "Catálogo é vivo: ajuste a cada semana"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Qual AHR é exigido para se qualificar em categorias de alto risco?",
+      "options": [
+       "Acima de 10",
+       "Acima de 150",
+       "Qualquer",
+       "Exatamente 100"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "AHR acima de 150 e SPS acima de 4.",
+      "topic": "Qualificação"
+     },
+     {
+      "q": "Onde pedir qualificação de categoria?",
+      "options": [
+       "No chat com o cliente do pedido",
+       "Na página de campanhas da loja",
+       "No app de vídeo do TikTok no celular",
+       "Centro de qualificação, no computador"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Minha conta > Configurações da conta > Centro de qualificação.",
+      "topic": "Qualificação"
+     },
+     {
+      "q": "Avaliações de quantas estrelas entram na NRR?",
+      "options": [
+       "4 e 5",
+       "Só 3",
+       "Só 5",
+       "1 e 2"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Avaliações de 1 ou 2 estrelas são negativas.",
+      "topic": "Avaliações"
+     },
+     {
+      "q": "Palavras-chave em alta servem para:",
+      "options": [
+       "Melhorar títulos, textos e ideias de vídeo",
+       "Desativar anúncios que vendem pouco",
+       "Reduzir a comissão da plataforma",
+       "Mudar o CNPJ cadastrado da loja"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Ajudam SEO e inspiração de conteúdo.",
+      "topic": "Oportunidades"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Qual o formato recomendado das imagens do produto?",
+    "options": [
+     "Só preto e branco",
+     "Qualquer, até 10 px",
+     "Só vertical 9:16",
+     "Quadradas (1:1), mínimo 600 x 600 px"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Até 9 imagens quadradas, mínimo de 600 x 600 px.",
+    "topic": "Mídia"
+   },
+   {
+    "q": "Um bom título para o TikTok Shop deve:",
+    "options": [
+     "Ter só a palavra “promoção!!!” repetida",
+     "Ter marca, tipo, característica e medidas",
+     "Estar todo escrito em caixa alta",
+     "Ter o nome da loja e o link do site"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Título descritivo e sem marketing.",
+    "topic": "Título"
+   },
+   {
+    "q": "Anunciar um produto de menino na categoria errada gera:",
+    "options": [
+     "Venda dobrada",
+     "Nada",
+     "Aviso de “Categoria incorreta”",
+     "Prêmio de visibilidade"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Categoria errada é violação e afeta a integridade da loja.",
+    "topic": "Categoria"
+   },
+   {
+    "q": "O que não pode aparecer no anúncio?",
+    "options": [
+     "Informação de garantia",
+     "Instruções de cuidado",
+     "Medidas do produto",
+     "QR code ou link para fora do TikTok Shop"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Redirecionar o cliente para fora é proibido.",
+    "topic": "Regras"
+   },
+   {
+    "q": "Qual o tamanho mínimo recomendado da descrição?",
+    "options": [
+     "20",
+     "50",
+     "500 caracteres",
+     "100"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Descrições com pelo menos 500 caracteres.",
+    "topic": "Descrição"
+   },
+   {
+    "q": "Qual idioma deve ser usado no anúncio?",
+    "options": [
+     "Português",
+     "Inglês",
+     "Mandarim",
+     "Qualquer"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Título, descrição e atributos em português.",
+    "topic": "Idioma"
+   },
+   {
+    "q": "Produto âncora é:",
+    "options": [
+     "Um produto devolvido com defeito",
+     "O mais barato da categoria inteira",
+     "O mais vendido de toda a plataforma",
+     "O principal, que une as variações"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Une todas as variações em uma página.",
+    "topic": "Variações"
+   },
+   {
+    "q": "Código GTIN enviado:",
+    "options": [
+     "Pode ser apagado",
+     "É sempre obrigatório",
+     "Muda todo mês",
+     "Não pode mais ser alterado"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Depois de enviado não pode ser modificado; hoje o campo é opcional.",
+    "topic": "Códigos"
+   },
+   {
+    "q": "Combo virtual:",
+    "options": [
+     "Exige um GTIN próprio para o conjunto",
+     "Pode misturar itens de armazéns diferentes",
+     "Só vale para fabricantes de produto",
+     "Junta produtos sem pré-embalar"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "O estoque do combo é ligado ao dos itens, no mesmo armazém.",
+    "topic": "Combo"
+   },
+   {
+    "q": "Qual o peso permitido do pacote?",
+    "options": [
+     "De 100 kg a 500 kg",
+     "Qualquer peso",
+     "De 1 a 30 kg",
+     "De 1 g a 10 g"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Peso do pacote mais embalagem, de 1 a 30 kg.",
+    "topic": "Envio"
+   },
+   {
+    "q": "Limite total de compra do cliente é:",
+    "options": [
+     "O valor máximo em reais de cada pedido",
+     "O número total de produtos da loja",
+     "Quantidade de um SKU em todos os pedidos",
+     "O valor máximo do frete cobrado"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Limita compras acumuladas por SKU.",
+    "topic": "Limites"
+   },
+   {
+    "q": "Quantos produtos dá para subir em um lote?",
+    "options": [
+     "10",
+     "100.000",
+     "20",
+     "Até 1.000"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Uploads em massa de até 1.000 produtos.",
+    "topic": "Lote"
+   },
+   {
+    "q": "A reposição sugerida do painel de estoque usa:",
+    "options": [
+     "O nome da marca de cada produto",
+     "O dobro do preço de cada produto",
+     "Previsão de vendas menos o disponível",
+     "O número de avaliações recebidas"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "É calculada a partir da previsão de vendas.",
+    "topic": "Estoque"
+   },
+   {
+    "q": "Qual requisito de métrica para vender categoria de alto risco?",
+    "options": [
+     "AHR > 150 e SPS > 4",
+     "Sem requisito",
+     "AHR > 5",
+     "SPS < 1"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Requisitos do guia de qualificação de categoria.",
+    "topic": "Qualificação"
+   },
+   {
+    "q": "Avaliação negativa é:",
+    "options": [
+     "De 5 estrelas",
+     "Sem comentário",
+     "De cliente novo",
+     "De 1 ou 2 estrelas"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Entram na taxa de avaliação negativa (NRR).",
+    "topic": "Avaliações"
+   }
+  ]
+ }
+}

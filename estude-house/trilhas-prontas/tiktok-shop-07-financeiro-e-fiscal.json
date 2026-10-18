@@ -1,0 +1,1572 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 7: financeiro e fiscal",
+  "tag": "TikTok Shop",
+  "tagline": "Liquidação, taxas, saldo e notas fiscais sem surpresa.",
+  "subtitle": "Pagamentos, prazos de liquidação, comissão, extratos, saldo negativo, NF-e, faturas e notas de logística. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Receber e entender o caixa",
+    "tagline": "Do pedido ao banco",
+    "outcome": "Entender prazos, contas e extratos.",
+    "lessons": [
+     {
+      "title": "O mapa do dinheiro",
+      "minutes": 4,
+      "goal": "Entender as quatro caixas do painel de finanças e por onde o dinheiro passa.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "💰",
+        "title": "Vendeu não é igual a recebeu",
+        "text": "Entre o cliente pagar e o dinheiro cair na conta existe um caminho com prazos, taxas e ajustes. Quem conhece o mapa não leva susto."
+       },
+       {
+        "t": "steps",
+        "title": "Onde fica",
+        "items": [
+         {
+          "title": "Central do vendedor",
+          "html": "Abra o Seller Center."
+         },
+         {
+          "title": "Finanças",
+          "html": "Entre no menu financeiro."
+         },
+         {
+          "title": "Visão geral e Demonstrações",
+          "html": "Veja o resumo e o detalhe de cada liquidação."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "As quatro seções da visão geral",
+        "caption": "Resumo do guia de demonstração financeira.",
+        "head": [
+         "Seção",
+         "O que mostra"
+        ],
+        "rows": [
+         [
+          "Receita líquida",
+          "Valor ganho no período selecionado"
+         ],
+         [
+          "Pagamentos",
+          "Valor já pago com sucesso à sua conta"
+         ],
+         [
+          "Em processamento",
+          "Receita aguardando o fim do ciclo de pagamento"
+         ],
+         [
+          "Em espera",
+          "Valores retidos por verificação, disputa ou conta"
+         ]
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "Da compra ao banco",
+        "caption": "O tempo de cada etapa varia por tipo de pagamento.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "🛒",
+          "title": "Cliente paga",
+          "text": "O pedido entra na plataforma."
+         },
+         {
+          "icon": "📦",
+          "title": "Pedido entregue",
+          "text": "Começa a contar o período de liquidação."
+         },
+         {
+          "icon": "✅",
+          "title": "Pedido concluído",
+          "text": "O valor é liquidado para o saldo da loja."
+         },
+         {
+          "icon": "🏦",
+          "title": "Pagamento",
+          "text": "A plataforma transfere para a conta ou Pix."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Status do extrato",
+        "items": [
+         "<b>Pendente:</b> ainda não liquidado no saldo",
+         "<b>Em processamento:</b> pagamento em curso no banco",
+         "<b>Pago:</b> valor creditado",
+         "<b>Falha:</b> pagamento não concluído; peça ajuda na Central"
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Finanças",
+        "term": "Extrato",
+        "means": "Documento financeiro que lista os pedidos e ajustes incluídos em uma liquidação. Mostra receita, taxas, frete e ajustes.",
+        "ex": "O pagamento de R$ 800 mostra os 12 pedidos que o formaram."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Concilie com frequência",
+        "html": "Baixe os relatórios dos extratos e compare com o seu sistema. Quem confere toda semana acha o erro quando ainda é pequeno."
+       },
+       {
+        "t": "quiz",
+        "q": "O que mostra a seção “Em espera”?",
+        "options": [
+         "Valores já creditados no banco",
+         "Taxas que serão devolvidas",
+         "Pedidos novos do dia",
+         "Valores retidos por verificação ou disputa"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Em espera são valores temporariamente retidos por verificações pendentes ou contestações."
+       },
+       {
+        "t": "quiz",
+        "q": "Em qual status o dinheiro já está na conta do vendedor?",
+        "options": [
+         "Pendente",
+         "Falha",
+         "Em processamento",
+         "Pago"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Pago significa creditado na conta bancária."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Finanças: <b>receita líquida, pagamentos, processamento e espera</b>",
+         "O caminho: cliente paga, entrega, <b>conclusão</b>, pagamento",
+         "Extrato com status <b>pendente, processando, pago, falha</b>",
+         "Concilie os relatórios com regularidade"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Prazos de liquidação",
+      "minutes": 4,
+      "goal": "Saber quando o dinheiro é liberado e como chegar ao pagamento mais rápido.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⏳",
+        "title": "Quanto antes liberar, melhor o caixa",
+        "text": "O prazo de liquidação conta da entrega do pedido. Há três níveis, e a loja sobe ou desce conforme o desempenho."
+       },
+       {
+        "t": "table",
+        "title": "Os três níveis",
+        "caption": "Avaliação refeita no começo de cada mês.",
+        "head": [
+         "Tipo",
+         "Prazo da entrega",
+         "Para quem"
+        ],
+        "rows": [
+         [
+          "Padrão",
+          "7 dias",
+          "Todo vendedor novo"
+         ],
+         [
+          "Expresso",
+          "3 dias",
+          "Lojas com bom desempenho"
+         ],
+         [
+          "Adiado",
+          "31 dias",
+          "Loja sob verificação de segurança"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Prazo",
+        "term": "T+6, +1",
+        "means": "Formato do prazo padrão: 6 dias corridos após a entrega até o pedido ser considerado concluído, mais 1 dia até o fundo ser liberado para a Central.",
+        "ex": "Entrega no dia 1 libera o valor no dia 8... a contagem é de 7 dias corridos."
+       },
+       {
+        "t": "list",
+        "title": "Requisitos do pagamento expresso",
+        "items": [
+         "Sem <b>medidas corretivas por marco</b>",
+         "<b>SPS acima de 3,5</b>",
+         "Sem pendências de venda a receber",
+         "Sem outros comportamentos de risco"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "O prazo pode piorar",
+        "html": "Lojas com baixo desempenho ou risco podem ter o período <b>estendido a qualquer momento</b>. Manter SPS e AHR saudáveis protege o caixa."
+       },
+       {
+        "t": "p",
+        "title": "Do saldo ao banco",
+        "html": "Depois da liquidação, a plataforma inicia a transferência: em geral <b>3 dias úteis</b> para conta bancária e cerca de <b>1 dia útil</b> para Pix. Para saber a data estimada de cada pedido, olhe Finanças > Em espera, coluna “Tempo estimado para liquidação”."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o prazo de liquidação padrão?",
+        "options": [
+         "7 dias após a entrega",
+         "31 dias",
+         "1 hora",
+         "1 ano"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O pagamento expresso é de 3 dias e o adiado, de 31."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual condição ajuda a conseguir o pagamento expresso?",
+        "options": [
+         "Ter mais de 100 produtos",
+         "SPS acima de 3,5",
+         "Anunciar em outras plataformas",
+         "CNPJ em outro estado"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Além disso, a loja não pode ter medidas por marco."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>7 dias</b> padrão, <b>3</b> expresso, <b>31</b> adiado",
+         "Avaliação <b>mensal</b> do tipo de liquidação",
+         "Expresso: <b>SPS > 3,5</b> e sem marcos",
+         "Pix em ~1 dia útil; banco em ~3 dias úteis"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Receber: conta, Pix e cronograma",
+      "minutes": 4,
+      "goal": "Cadastrar o destino do dinheiro e escolher a frequência de pagamentos.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏦",
+        "title": "Conta certa, dinheiro certo",
+        "text": "Sem conta de recebimento válida, o saldo fica parado. Configure no começo e confira de vez em quando."
+       },
+       {
+        "t": "steps",
+        "title": "Vincular a conta",
+        "items": [
+         {
+          "title": "Minha conta",
+          "html": "Entre em Configurações da conta."
+         },
+         {
+          "title": "Contas bancárias",
+          "html": "Clique em vincular conta para liquidação."
+         },
+         {
+          "title": "Verifique a identidade",
+          "html": "Confirme que é o titular."
+         },
+         {
+          "title": "Escolha o tipo",
+          "html": "Conta bancária ou conta Pix, e preencha os dados."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Limites e regras",
+        "items": [
+         "Até <b>5 contas</b> de recebimento",
+         "Hoje <b>não</b> é possível vincular conta bancária <b>fora do Brasil</b>",
+         "Pagamento mínimo de <b>R$ 0,01</b>",
+         "Pagamento máximo de <b>R$ 1.000.000,00</b>"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Status de pagamento",
+        "items": [
+         "<b>Pagos:</b> creditados na conta",
+         "<b>Em processamento:</b> de 1 a 3 dias úteis",
+         "<b>Falha:</b> pagamento não concluído, procure a Central de ajuda"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Cronograma de pagamentos",
+        "html": "Algumas lojas podem escolher quando receber: <b>todo dia</b>, <b>todo dia útil</b>, <b>toda semana</b> ou <b>todo mês</b>. O recurso está em teste, só no site da Central, e a liquidação continua obedecendo a política. A <b>receita líquida</b> é o que já foi liquidado e aguarda o pagamento no seu cronograma."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Receita líquida que diminui",
+        "html": "Receita líquida de R$ 1.000 no dia 1. No dia 2, aparece R$ 200 porque entrou um extrato negativo de R$ 800 (por reembolsos e taxas). Isso é abatimento do saldo negativo, e não sumiço de dinheiro."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Confira antes de mudar",
+        "html": "Mudou o cronograma de diário para semanal numa quarta? O pagamento pendente espera até o próximo dia escolhido."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantas contas de recebimento a loja pode cadastrar?",
+        "options": [
+         "Apenas uma",
+         "Nenhuma",
+         "Dez mil",
+         "Até cinco"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O limite é de cinco contas válidas."
+       },
+       {
+        "t": "quiz",
+        "q": "A loja pode receber em conta de banco estrangeiro?",
+        "options": [
+         "Sim, qualquer país",
+         "Não, por enquanto",
+         "Sim, só nos EUA",
+         "Sim, só às quartas"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Hoje só contas brasileiras são aceitas."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Vincule <b>conta ou Pix</b> em Minha conta",
+         "<b>5 contas</b>, apenas <b>brasileiras</b>",
+         "Limites por pagamento: <b>R$ 0,01 a R$ 1 milhão</b>",
+         "Cronograma: diário, dia útil, semanal ou mensal"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Qual o prazo de liquidação padrão?",
+      "options": [
+       "7 dias após a entrega",
+       "1 dia antes",
+       "31 dias antes",
+       "Sem prazo"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Expresso é de 3 dias e adiado, de 31.",
+      "topic": "Liquidação"
+     },
+     {
+      "q": "Quantas contas de recebimento são permitidas?",
+      "options": [
+       "1",
+       "500",
+       "5",
+       "50"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Todas devem ser brasileiras.",
+      "topic": "Conta"
+     },
+     {
+      "q": "A seção “Em espera” mostra:",
+      "options": [
+       "Cupons",
+       "Pedidos futuros",
+       "Valores retidos por verificação",
+       "Valores que o banco devolveu"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Pode haver disputa ou verificação.",
+      "topic": "Finanças"
+     },
+     {
+      "q": "Qual a exigência de SPS para o pagamento expresso?",
+      "options": [
+       "Abaixo de 1",
+       "Acima de 0,1",
+       "Qualquer",
+       "Acima de 3,5"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Também sem medidas por marco.",
+      "topic": "Liquidação"
+     },
+     {
+      "q": "Pix costuma creditar em:",
+      "options": [
+       "Cerca de 1 dia útil",
+       "Cerca de 1 hora",
+       "Cerca de 6 meses",
+       "Cerca de 1 ano"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Banco leva cerca de 3 dias úteis.",
+      "topic": "Pagamento"
+     }
+    ]
+   },
+   {
+    "title": "Taxas, extrato e saldo",
+    "tagline": "Margem e controle",
+    "outcome": "Calcular taxas, ler extratos e evitar saldo negativo.",
+    "lessons": [
+     {
+      "title": "Comissão e taxas da plataforma",
+      "minutes": 4,
+      "goal": "Calcular quanto fica de cada venda depois da comissão e da taxa por item.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧮",
+        "title": "Margem se faz antes de vender",
+        "text": "Comissão e taxa por item mudam conforme o preço. Preço mal pensado come o lucro."
+       },
+       {
+        "t": "table",
+        "title": "Regras vigentes desde 15/07/2026",
+        "caption": "Antes, era 6% e R$ 4,00 para todos.",
+        "head": [
+         "Preço após desconto do vendedor",
+         "Comissão",
+         "Taxa por item"
+        ],
+        "rows": [
+         [
+          "Abaixo de R$ 50,00",
+          "10%",
+          "R$ 4,00"
+         ],
+         [
+          "R$ 50,00 ou mais",
+          "6%",
+          "R$ 6,00"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Base de cálculo",
+        "html": "As taxas usam o <b>preço do item depois do desconto do vendedor</b>. O desconto da plataforma não entra na conta."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Camisa e calça",
+        "html": "Camisa de R$ 45 sem desconto: 10% = R$ 4,50 mais R$ 4,00 = <b>R$ 8,50</b>. Calça de R$ 85 com desconto de R$ 10 (R$ 75): 6% = R$ 4,50 mais R$ 6,00 = <b>R$ 10,50</b>."
+       },
+       {
+        "t": "list",
+        "title": "Outros custos do pedido",
+        "items": [
+         "<b>Taxa de envio</b> do Envio pela plataforma",
+         "<b>ICMS DIFAL</b> em venda interestadual",
+         "Serviço do <b>Programa de taxa de envio</b>: 6% do preço, limitado a R$ 50 por produto (quem participa)",
+         "Comissão de afiliados, quando houver colaboração"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Incentivo para lojas novas",
+        "html": "Novos vendedores que completam a missão do vendedor e resgatam a recompensa podem ter <b>comissão de 0% por 60 dias</b>, até <b>R$ 17.000</b> em redução. A missão precisa ser concluída antes de expirar, em Crescimento > Oportunidades de crescimento."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Calcule o preço mínimo",
+        "html": "Some custo do produto, embalagem, frete, comissão, taxa por item e impostos. Só depois defina a promoção. Descontos abaixo de R$ 50 pesam mais."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a comissão para um item de R$ 40 após desconto?",
+        "options": [
+         "10%",
+         "30%",
+         "0% para sempre",
+         "6%"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Itens abaixo de R$ 50 pagam 10% e R$ 4,00 por item."
+       },
+       {
+        "t": "quiz",
+        "q": "A taxa por item vendido para um produto de R$ 80 é de:",
+        "options": [
+         "R$ 6,00",
+         "R$ 0,06",
+         "R$ 600,00",
+         "R$ 80,00"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A partir de R$ 50, a taxa por item é de R$ 6,00."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "< R$ 50: <b>10% + R$ 4,00</b>",
+         "≥ R$ 50: <b>6% + R$ 6,00</b>",
+         "Cálculo sobre o preço <b>após desconto do vendedor</b>",
+         "Loja nova: <b>0% por 60 dias</b>, até R$ 17 mil"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Ler o extrato e a conta do pedido",
+      "minutes": 4,
+      "goal": "Entender a fórmula da liquidação e investigar valores diferentes do esperado.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔍",
+        "title": "Por que recebi menos?",
+        "text": "Quase sempre a resposta está no extrato. Saber lê-lo transforma dúvida em ação."
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Valor a liquidar = <b>vendas − envio − taxas + ajustes</b>",
+        "sub": "Esta é a conta de cada demonstração."
+       },
+       {
+        "t": "table",
+        "title": "Composição",
+        "caption": "Veja por demonstração ou por pedido.",
+        "head": [
+         "Parte",
+         "O que é"
+        ],
+        "rows": [
+         [
+          "Vendas líquidas",
+          "Receita do pedido liquidada"
+         ],
+         [
+          "Envio",
+          "Taxa de envio paga pela loja"
+         ],
+         [
+          "Taxas",
+          "Comissão, taxa por item e outras"
+         ],
+         [
+          "Ajustes",
+          "Subsídios da plataforma e penalidades de violação"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Quando o valor do pedido fica negativo",
+        "items": [
+         "A taxa de envio real pode ser maior que a paga pelo cliente",
+         "Reembolsos e taxas somam mais que a receita",
+         "Cupons e descontos da plataforma são calculados primeiro",
+         "A diferença vai para o <b>saldo</b>"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Por que um pedido ainda não foi liquidado",
+        "items": [
+         "Ainda dentro do período de liquidação",
+         "Há <b>devolução ou reembolso</b> em aberto",
+         "A loja está sob restrição de pagamento"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Frete maior que o pago",
+        "html": "O cliente paga R$ 15,60 de frete, mas a transportadora mede um peso maior e o frete real vira R$ 30,90. A diferença sai do extrato do pedido. A solução está em cadastrar <b>peso e dimensões</b> corretos."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Use os filtros",
+        "html": "Em Demonstrações há filtros por data, ID do extrato, ID do pagamento e status. Em “Ver por pedidos” dá para seguir cada pedido até o ajuste que o afetou."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual é a fórmula do valor a liquidar?",
+        "options": [
+         "Vendas líquidas − envio − taxas + ajustes",
+         "Taxas − vendas",
+         "Vendas líquidas + envio + taxas",
+         "Vendas × frete ÷ taxas"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A fórmula inclui ajustes como subsídios ou penalidades."
+       },
+       {
+        "t": "quiz",
+        "q": "Um pedido não foi liquidado. Qual motivo é possível?",
+        "options": [
+         "O produto é bonito",
+         "Há devolução ou reembolso em aberto",
+         "O cliente gostou",
+         "O CNPJ tem 14 dígitos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Solicitações em aberto seguram a liquidação."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Vendas − envio − taxas + ajustes</b>",
+         "Frete real pode pesar mais que o pago pelo cliente",
+         "Devolução aberta <b>segura</b> a liquidação",
+         "Filtre por pedido, extrato e pagamento"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Saldo negativo",
+      "minutes": 4,
+      "goal": "Evitar, entender e quitar saldo negativo antes que ele trave a conta.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📉",
+        "title": "Quando as despesas passam da receita",
+        "text": "Saldo negativo é comum em lojas que têm muito reembolso ou frete caro. Ignorá-lo trava saque e promoções."
+       },
+       {
+        "t": "list",
+        "title": "Como ele nasce",
+        "items": [
+         "Reembolsos acima da receita do período",
+         "Taxas de envio ou outras taxas maiores que o ganho",
+         "Ajustes e penalidades descontados do saldo"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Medidas pelo tamanho do problema",
+        "caption": "As restrições valem até o saldo voltar a ser positivo.",
+        "head": [
+         "Situação",
+         "Medida"
+        ],
+        "rows": [
+         [
+          "Saldo negativo pequeno",
+          "Aviso de risco; sem recurso"
+         ],
+         [
+          "Saldo negativo relevante",
+          "Saque congelado e proibição de novas atividades de auto-promoção"
+         ],
+         [
+          "Saldo grave ou fraude",
+          "Pode levar ao fechamento da loja e dedução de fundos"
+         ]
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Pagar por Pix",
+        "items": [
+         {
+          "title": "Banner",
+          "html": "Clique em Pagar saldo negativo em Finanças."
+         },
+         {
+          "title": "Detalhes",
+          "html": "Veja os extratos que formam o valor."
+         },
+         {
+          "title": "Valor",
+          "html": "Pague o total ou parte do valor."
+         },
+         {
+          "title": "Pix",
+          "html": "Conclua o pagamento em até 30 minutos."
+         },
+         {
+          "title": "Confirmação",
+          "html": "O banner pode levar até 4 horas para sumir."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Como evitar",
+        "items": [
+         "Faça <b>análise de lucro</b> com frequência",
+         "Cadastre <b>peso e dimensões</b> certos",
+         "Reduza reembolsos com boa descrição e embalagem",
+         "Evite descontos que deixam o pedido no vermelho"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "O saldo se compensa sozinho",
+        "html": "Vendas futuras abatem o saldo negativo, e o pagamento volta a sair quando o valor passa do mínimo. Mas a restrição de saque continua até o saldo ser positivo."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual método de pagamento é aceito para quitar saldo negativo?",
+        "options": [
+         "Cheque",
+         "Pix",
+         "Cartão de crédito",
+         "Dinheiro vivo"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O pagamento do saldo negativo no Seller Center é feito por Pix."
+       },
+       {
+        "t": "quiz",
+        "q": "O que ocorre com um saldo negativo relevante?",
+        "options": [
+         "O frete fica grátis",
+         "A conta é premiada",
+         "O saque é congelado",
+         "A comissão cai a zero"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A loja não saca nem cria novas atividades de auto-promoção."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Saldo negativo vem de <b>despesas > receita</b>",
+         "Medidas: aviso, <b>congelamento de saque</b>, fechamento",
+         "Quitar por <b>Pix</b> no banner de finanças",
+         "Evite com <b>peso correto</b>, menos reembolso e margem"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Item abaixo de R$ 50 paga comissão de:",
+      "options": [
+       "1%",
+       "10%",
+       "0% sempre",
+       "60%"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Mais R$ 4,00 por item.",
+      "topic": "Taxas"
+     },
+     {
+      "q": "Item de R$ 50 ou mais paga taxa por item de:",
+      "options": [
+       "R$ 600",
+       "R$ 6,00",
+       "R$ 0,06",
+       "R$ 60.000"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Com comissão de 6%.",
+      "topic": "Taxas"
+     },
+     {
+      "q": "Fórmula do valor a liquidar:",
+      "options": [
+       "Vendas − envio − taxas + ajustes",
+       "Vendas + frete",
+       "Frete × ajustes",
+       "Taxas ÷ vendas"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Fórmula de cada demonstração.",
+      "topic": "Extrato"
+     },
+     {
+      "q": "Saldo negativo é quitado por:",
+      "options": [
+       "Cheque",
+       "Pix",
+       "Boleto antigo",
+       "Cartão físico"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Também compensa com vendas futuras.",
+      "topic": "Saldo"
+     },
+     {
+      "q": "O que o saldo negativo relevante provoca?",
+      "options": [
+       "Congelamento de saque",
+       "Frete grátis",
+       "Bônus",
+       "Cupom"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Até o saldo ficar positivo.",
+      "topic": "Saldo"
+     }
+    ]
+   },
+   {
+    "title": "Notas fiscais",
+    "tagline": "NF-e, dados e faturas",
+    "outcome": "Configurar emissão e baixar notas da plataforma.",
+    "lessons": [
+     {
+      "title": "NF-e: o que é e como começar",
+      "minutes": 4,
+      "goal": "Entender a nota fiscal eletrônica e a configuração do emissor do TikTok Shop.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧾",
+        "title": "Sem nota, sem transporte",
+        "text": "A NF-e acompanha a mercadoria e é exigida nos canais de envio (exceto Correios). Vendedor com CNPJ precisa dela em todo pedido."
+       },
+       {
+        "t": "list",
+        "title": "Requisitos para emitir",
+        "items": [
+         "<b>CNPJ</b> com 14 dígitos",
+         "<b>Inscrição Estadual</b> (emitida pela SEFAZ)",
+         "<b>Certificado digital</b> A1 ou A3",
+         "Um <b>emissor de NF-e</b> ou ERP que gere XML e fale com a SEFAZ"
+        ]
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Emissor do TikTok Shop",
+         "tone": "bad",
+         "items": [
+          "Disponível hoje para <b>MEI</b> e <b>Simples Nacional</b>",
+          "Para quem não emite nota por conta",
+          "Usa o mesmo CNPJ do cadastro",
+          "Configuração em Minha conta > Impostos"
+         ]
+        },
+        "right": {
+         "title": "ERP próprio",
+         "tone": "good",
+         "items": [
+          "Serve para qualquer regime",
+          "A loja sobe a nota em Gerenciar pedidos",
+          "Os 8 primeiros dígitos do CNPJ batem com o cadastro",
+          "Cada ERP tem sua rotina"
+         ]
+        }
+       },
+       {
+        "t": "list",
+        "title": "O que preencher no emissor",
+        "items": [
+         "Inscrição Estadual",
+         "Regime tributário",
+         "Alíquota aproximada",
+         "<b>Série única</b> da NF-e, que não pode ser usada em outra plataforma",
+         "Certificado digital <b>A1</b> (.pfx ou .p12) e senha",
+         "Se inclui ou não o frete pago pelo comprador"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Dado errado, nota recusada",
+        "html": "Informações fiscais incorretas fazem a emissão falhar. Use uma série própria para o TikTok Shop, para não conflitar com números já usados."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Dúvida fiscal? Fale com o contador",
+        "html": "A Academia deixa claro que as orientações não substituem a consultoria fiscal. Pergunte ao contador qual CFOP e CST usar."
+       },
+       {
+        "t": "quiz",
+        "q": "Quem pode usar o emissor de NF-e do TikTok Shop hoje?",
+        "options": [
+         "Qualquer regime",
+         "MEI e Simples Nacional",
+         "Somente grandes empresas",
+         "Pessoas físicas sem CNPJ"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O recurso é para esses dois regimes."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual tipo de certificado digital o emissor pede?",
+        "options": [
+         "Foto do CNPJ",
+         "Tipo A1, arquivo .pfx ou .p12",
+         "Documento impresso",
+         "Cartão físico qualquer"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O certificado A1 é instalado no computador."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "NF-e acompanha a mercadoria; exigida fora dos <b>Correios</b>",
+         "Emissor do TikTok: <b>MEI e Simples</b>",
+         "Precisa de <b>IE</b>, <b>certificado A1</b> e <b>série única</b>",
+         "Dúvida fiscal: <b>contador</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Dados fiscais do produto e erros comuns",
+      "minutes": 4,
+      "goal": "Cadastrar os campos fiscais de cada produto e resolver os erros mais frequentes.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏷️",
+        "title": "Sem dado fiscal, a nota não sai",
+        "text": "Cada produto precisa de informações para a nota. Falta de um campo gera erro na emissão."
+       },
+       {
+        "t": "list",
+        "title": "Campos obrigatórios por produto",
+        "items": [
+         "<b>NCM:</b> nomenclatura que identifica a mercadoria",
+         "<b>Natureza da operação:</b> venda ou bônus",
+         "<b>CFOP:</b> código da operação (mesmo estado ou outro)",
+         "<b>Origem</b>, <b>CSOSN</b>, <b>unidade de medida</b>",
+         "<b>CST de PIS e COFINS</b>, com dois dígitos"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Campos opcionais",
+        "items": [
+         "Alíquota fiscal aproximada",
+         "CEST (substituição tributária)",
+         "EX TIPI e RECOPI",
+         "Dados adicionais do produto"
+        ]
+       },
+       {
+        "t": "steps",
+        "title": "Edição em massa",
+        "items": [
+         {
+          "title": "Selecionar",
+          "html": "Escolha os produtos em Ação em massa > Edição em massa."
+         },
+         {
+          "title": "Gerar modelo",
+          "html": "Escolha informações fiscais e baixe a planilha."
+         },
+         {
+          "title": "Preencher",
+          "html": "Complete os campos; para venda e bônus, use 1/venda,2/bônus."
+         },
+         {
+          "title": "Carregar",
+          "html": "Envie o arquivo e veja o status."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Erros frequentes",
+        "caption": "Procure o código do erro no artigo da Academia.",
+        "head": [
+         "Erro",
+         "Causa e correção"
+        ],
+        "rows": [
+         [
+          "Série inválida",
+          "Série com valor fora do intervalo permitido; corrija em Informações fiscais"
+         ],
+         [
+          "CST PIS/COFINS inválido",
+          "Código ausente ou errado no produto"
+         ],
+         [
+          "CFOP inválido ou ausente",
+          "Quatro dígitos, de acordo com a operação"
+         ],
+         [
+          "CNPJ inválido",
+          "Deve ter 14 dígitos"
+         ],
+         [
+          "NCM ou CEST inválido",
+          "Conferir o código no cadastro do produto"
+         ],
+         [
+          "Em emissão",
+          "Aguardar: o pedido já está sendo processado"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Comece pelos mais vendidos",
+        "html": "Preencha primeiro os produtos que mais saem. Se a planilha de edição em massa falhar em alguns, baixe o arquivo de falhas para ver o que corrigir."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual código identifica a mercadoria na nota fiscal?",
+        "options": [
+         "AWB",
+         "SKU interno",
+         "NCM",
+         "GTIN de outra loja"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A NCM é a nomenclatura que classifica o produto."
+       },
+       {
+        "t": "quiz",
+        "q": "O que fazer se a NF-e indica CFOP ausente?",
+        "options": [
+         "Apagar a loja",
+         "Mudar a cor do anúncio",
+         "Excluir o pedido",
+         "Preencher o CFOP no produto"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O CFOP precisa de quatro dígitos e combinar com a operação."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Campos obrigatórios: <b>NCM, natureza, CFOP, origem, CSOSN, unidade, CST</b>",
+         "Edição <b>em massa</b> por planilha",
+         "Erro comum: <b>dado ausente ou inválido</b>",
+         "Na dúvida, <b>contador</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Faturas da plataforma e notas de frete",
+      "minutes": 4,
+      "goal": "Baixar as notas que a plataforma emite para a loja e entender cada uma.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📄",
+        "title": "O que a plataforma emite para você",
+        "text": "Taxas de serviço e de logística geram notas que o contador vai pedir. Saber onde baixar evita correria no fechamento do mês."
+       },
+       {
+        "t": "steps",
+        "title": "Onde baixar",
+        "items": [
+         {
+          "title": "Central do vendedor",
+          "html": "Abra o Seller Center."
+         },
+         {
+          "title": "Finanças",
+          "html": "Entre no menu financeiro."
+         },
+         {
+          "title": "Faturas",
+          "html": "Baixe o PDF ou exporte os detalhes em Excel."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "O que a fatura mostra",
+        "items": [
+         "<b>Taxa de serviço da plataforma</b>",
+         "<b>Taxa de logística</b>",
+         "Detalhe por pedido no arquivo Excel",
+         "Informações fiscais (CNPJ/CPF e endereço) usadas na fatura mensal"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Dado fiscal imutável na fatura",
+        "html": "As informações fiscais usadas nas faturas mensais <b>não podem ser alteradas depois</b>. Mantenha o cadastro atualizado."
+       },
+       {
+        "t": "table",
+        "title": "Notas de logística",
+        "caption": "NFS-e é mensal; CT-e é por pacote.",
+        "head": [
+         "Cenário",
+         "Quem emite"
+        ],
+        "rows": [
+         [
+          "Mesma cidade",
+          "NFS-e da TikTok Logistics Brazil"
+         ],
+         [
+          "Outra cidade ou estado, pelos Correios",
+          "NFS-e"
+         ],
+         [
+          "Outra cidade ou estado, sem Correios",
+          "CT-e, por pacote, no status Pronto para envio"
+         ],
+         [
+          "Devolução pelos Correios",
+          "NFS-e"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Onde achar",
+        "items": [
+         "NFS-e: Finanças > Faturas > Faturas da plataforma",
+         "CT-e: Finanças > Faturas > CT-e (PDF ou XML)",
+         "CT-e normal e complementar (frete extra)",
+         "Recibo comercial mostra a cobrança final de frete"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Amostras grátis pagas pela loja",
+        "html": "Para amostra enviada pela loja, a Academia indica operação de <b>bonificação</b>, sem finalidade de revenda, com CFOP de referência <b>5910</b> (mesmo estado) e <b>6910</b> (outro estado). A base do ICMS varia conforme o regime e o tipo de item, então confirme com o contador."
+       },
+       {
+        "t": "quiz",
+        "q": "Onde se baixa a fatura da plataforma?",
+        "options": [
+         "Marketing > Cupons",
+         "Pedidos > Cancelados",
+         "Finanças > Faturas",
+         "Produtos > Variações"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Ali ficam PDF e exportação de detalhes."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual documento é emitido por pacote em entregas sem Correios?",
+        "options": [
+         "Contrato social",
+         "CT-e",
+         "Boleto",
+         "Orçamento"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "O CT-e é acionado quando o pedido vira Pronto para envio."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Fatura em <b>Finanças > Faturas</b> (PDF e Excel)",
+         "Dado fiscal da fatura <b>não muda</b>",
+         "<b>NFS-e</b> mensal; <b>CT-e</b> por pacote",
+         "Amostra grátis: <b>bonificação</b> (5910/6910)"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O emissor de NF-e do TikTok serve para:",
+      "options": [
+       "Somente pessoas físicas",
+       "Apenas exportadores",
+       "Qualquer regime",
+       "MEI e Simples Nacional"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "É para quem não emite sozinho.",
+      "topic": "NF-e"
+     },
+     {
+      "q": "Qual certificado digital é solicitado?",
+      "options": [
+       "Tipo X",
+       "Tipo A1",
+       "Nenhum",
+       "Tipo Z"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Arquivo .pfx ou .p12.",
+      "topic": "NF-e"
+     },
+     {
+      "q": "Qual código identifica a mercadoria?",
+      "options": [
+       "AWB",
+       "SKU",
+       "PIX",
+       "NCM"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Obrigatório no produto.",
+      "topic": "Produto"
+     },
+     {
+      "q": "CT-e é emitido:",
+      "options": [
+       "Só durante as campanhas",
+       "Por pacote, em Pronto para envio",
+       "Somente por pedido cancelado",
+       "Uma vez por ano, por loja"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Em entregas sem Correios.",
+      "topic": "Frete"
+     },
+     {
+      "q": "Onde baixar faturas da plataforma?",
+      "options": [
+       "Afiliados",
+       "Produtos",
+       "Chat",
+       "Finanças > Faturas"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "PDF e Excel.",
+      "topic": "Faturas"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "O pagamento expresso paga em quantos dias?",
+    "options": [
+     "1 hora",
+     "300 dias",
+     "30 dias",
+     "3 dias"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Para lojas com bom desempenho.",
+    "topic": "Liquidação"
+   },
+   {
+    "q": "O pagamento adiado é de:",
+    "options": [
+     "3 dias",
+     "1 dia",
+     "31 dias",
+     "0 dia"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Aplicado em verificações de segurança.",
+    "topic": "Liquidação"
+   },
+   {
+    "q": "Qual o pagamento mínimo?",
+    "options": [
+     "R$ 100",
+     "R$ 1.000",
+     "R$ 0,01",
+     "R$ 10.000"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O máximo é R$ 1 milhão.",
+    "topic": "Pagamento"
+   },
+   {
+    "q": "Conta de banco fora do Brasil:",
+    "options": [
+     "É obrigatória",
+     "É recomendada",
+     "Não é aceita",
+     "É aceita"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Por enquanto.",
+    "topic": "Conta"
+   },
+   {
+    "q": "Comissão para item de R$ 30:",
+    "options": [
+     "10%",
+     "50%",
+     "6%",
+     "0%"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Mais R$ 4,00 por item.",
+    "topic": "Taxas"
+   },
+   {
+    "q": "Comissão para item de R$ 100:",
+    "options": [
+     "10%",
+     "6%",
+     "20%",
+     "0%"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Mais R$ 6,00 por item.",
+    "topic": "Taxas"
+   },
+   {
+    "q": "A base da taxa é o preço:",
+    "options": [
+     "Do concorrente",
+     "Antes do frete",
+     "Do atacadista",
+     "Após o desconto do vendedor"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Sem o desconto da plataforma.",
+    "topic": "Taxas"
+   },
+   {
+    "q": "Missão de loja nova pode dar:",
+    "options": [
+     "Dinheiro vivo",
+     "Isenção eterna",
+     "Comissão de 0% por 60 dias",
+     "Um carro"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Com teto de R$ 17.000.",
+    "topic": "Incentivo"
+   },
+   {
+    "q": "O que segura a liquidação de um pedido?",
+    "options": [
+     "Dia ensolarado",
+     "Devolução em aberto",
+     "Foto bonita",
+     "Cupom do cliente"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Pedido só liquida após ficar sem pendências.",
+    "topic": "Extrato"
+   },
+   {
+    "q": "O saldo negativo, em geral, vem de:",
+    "options": [
+     "Pouca comissão",
+     "Vendas demais",
+     "Poucas fotos",
+     "Despesas maiores que a receita"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Reembolsos e taxas contam.",
+    "topic": "Saldo"
+   },
+   {
+    "q": "Quanto tempo o Pix de saldo negativo fica válido?",
+    "options": [
+     "Sempre",
+     "1 ano",
+     "30 minutos",
+     "30 dias"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Depois expira.",
+    "topic": "Saldo"
+   },
+   {
+    "q": "NF-e é obrigatória em quais canais?",
+    "options": [
+     "Nenhum",
+     "Só LIVE",
+     "Todos, exceto Correios",
+     "Só Correios"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Segundo a Academia.",
+    "topic": "NF-e"
+   },
+   {
+    "q": "Série da NF-e deve ser:",
+    "options": [
+     "Sempre 0",
+     "Aleatória",
+     "Única para o TikTok Shop",
+     "Igual à de outra plataforma"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Evita conflitos.",
+    "topic": "NF-e"
+   },
+   {
+    "q": "NCM significa:",
+    "options": [
+     "Número Central de Mensagens",
+     "Nota Complementar Média",
+     "Nome Comum do Mercado",
+     "Nomenclatura Comum do Mercosul"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Classifica a mercadoria.",
+    "topic": "Produto"
+   },
+   {
+    "q": "CT-e é:",
+    "options": [
+     "Contrato de Troca Especial",
+     "Código Total de Entrega",
+     "Cadastro de Taxas Extra",
+     "Conhecimento de Transporte Eletrônico"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Emitido por pacote.",
+    "topic": "Frete"
+   },
+   {
+    "q": "Fatura da plataforma lista:",
+    "options": [
+     "Apenas vídeos publicados",
+     "Apenas brindes enviados",
+     "Taxa de serviço e de logística",
+     "Apenas notas dos clientes"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Tem PDF e Excel.",
+    "topic": "Faturas"
+   }
+  ]
+ }
+}

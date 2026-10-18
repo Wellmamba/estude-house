@@ -1,0 +1,1511 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 6: saúde da conta",
+  "tag": "TikTok Shop",
+  "tagline": "SPS, AHR, violações, limites e recursos para manter a loja segura.",
+  "subtitle": "Pontuação de desempenho, avaliação do estado da conta, violações, recursos, OVL, fraudes e Centro de Segurança. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Entender SPS e AHR",
+    "tagline": "Os dois termômetros",
+    "outcome": "Ler corretamente a SPS e o AHR da loja.",
+    "lessons": [
+     {
+      "title": "Dois painéis, duas perguntas",
+      "minutes": 4,
+      "goal": "Diferenciar a Pontuação de Desempenho (SPS) e a Avaliação do Estado da Conta (AHR).",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🩺",
+        "title": "Saúde da conta tem dois termômetros",
+        "text": "Um mede como a loja atende o cliente. O outro mede se ela cumpre as regras. Tratar os dois como a mesma coisa é erro comum."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "SPS: Pontuação de Desempenho",
+         "tone": "bad",
+         "items": [
+          "Nota de <b>0 a 5</b>",
+          "Mede <b>qualidade, logística e atendimento</b>",
+          "Compara com lojas da mesma categoria",
+          "Nota baixa tira oportunidades de crescimento"
+         ]
+        },
+        "right": {
+         "title": "AHR: Avaliação do Estado da Conta",
+         "tone": "good",
+         "items": [
+          "Pontuação de <b>0 a 1.000</b>",
+          "Mede <b>violações de política</b>",
+          "Todos começam com 200",
+          "Pontuação baixa traz restrições e punições"
+         ]
+        }
+       },
+       {
+        "t": "steps",
+        "title": "Onde encontrar",
+        "items": [
+         {
+          "title": "Central do vendedor",
+          "html": "Faça login no Seller Center."
+         },
+         {
+          "title": "Saúde da conta",
+          "html": "Abra o menu de integridade da conta."
+         },
+         {
+          "title": "Escolha o painel",
+          "html": "Pontuação de Desempenho da Loja ou Avaliação do Estado da Conta."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Quem enxerga",
+        "items": [
+         "Hoje, <b>só a loja e o TikTok Shop</b>",
+         "O cliente <b>não</b> vê a SPS",
+         "As duas páginas pedem atenção, cada uma com seu foco"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Mesma loja, dois quadros",
+        "html": "Uma loja envia tudo no prazo e tem SPS 4,6, mas vendeu um produto proibido e recebeu violação: o AHR cai. Outra tem AHR em 200 mas atende mal, e a SPS fica baixa. As duas situações pedem ações diferentes."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Rotina curta",
+        "html": "Abra os dois painéis uma vez por dia. Quem vê a queda no começo corrige antes de chegar a um marco de punição."
+       },
+       {
+        "t": "quiz",
+        "q": "O que a SPS mede?",
+        "options": [
+         "Experiência do cliente com a loja",
+         "O preço médio do produto",
+         "O número de seguidores",
+         "Apenas violações de política"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A SPS resume produto, cumprimento e atendimento."
+       },
+       {
+        "t": "quiz",
+        "q": "Todos os vendedores começam o AHR com quantos pontos?",
+        "options": [
+         "1.000 pontos",
+         "0 pontos",
+         "200 pontos",
+         "5 pontos"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Quem se cadastra começa com 200 pontos."
+       },
+       {
+        "t": "say",
+        "title": "Diga assim",
+        "html": "“A SPS mostra como estou atendendo; o AHR mostra o quanto estou perto de uma punição. Olho os dois todo dia.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>SPS</b> de 0 a 5: experiência do cliente",
+         "<b>AHR</b> de 0 a 1.000: violações de política",
+         "Começa com <b>200</b> pontos no AHR",
+         "Os dois ficam em <b>Saúde da conta</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Como a SPS é calculada",
+      "minutes": 4,
+      "goal": "Conhecer as métricas da SPS, os prazos de cálculo e os benefícios.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⭐",
+        "title": "Cinco métricas, uma nota",
+        "text": "A SPS junta o que o cliente sente em produto, entrega e atendimento. Melhorar uma métrica ajuda a nota inteira."
+       },
+       {
+        "t": "table",
+        "title": "Métricas da SPS",
+        "caption": "Janelas segundo o guia da Academia.",
+        "head": [
+         "Área",
+         "Métrica",
+         "Janela"
+        ],
+        "rows": [
+         [
+          "Produto",
+          "Avaliação negativa (1 ou 2 estrelas)",
+          "60 dias"
+         ],
+         [
+          "Produto",
+          "Devolução e reembolso por falha do vendedor",
+          "60 dias"
+         ],
+         [
+          "Entrega",
+          "Cancelamento por falha do vendedor (SFCR)",
+          "30 dias"
+         ],
+         [
+          "Entrega",
+          "Envio atrasado (LDR)",
+          "Período vigente"
+         ],
+         [
+          "Atendimento",
+          "Resposta em 24 horas",
+          "60 dias"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Mínimo para aparecer",
+        "html": "A nota só é exibida se a loja concluiu pelo menos <b>30 pedidos</b> nos últimos 60 dias corridos."
+       },
+       {
+        "t": "list",
+        "title": "O que não conta",
+        "items": [
+         "Pedidos falsos ou fraudulentos",
+         "Manipulação de avaliações e transações de risco",
+         "Avaliações <b>editadas</b> depois",
+         "Amostras grátis enviadas a criadores"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Benefícios de uma boa nota",
+        "items": [
+         "<b>Ciclo de pagamento</b> mais curto",
+         "Acesso a <b>campanhas</b> da plataforma",
+         "Saída mais rápida do <b>período de experiência</b>",
+         "<b>Selo de loja de qualidade</b> acima de 4,5"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "A nota é relativa",
+        "html": "A SPS compara a loja com outras da mesma categoria. Se os concorrentes melhoram e você fica igual, a nota pode cair. Veja os benchmarks de 1 e 4 pontos na ferramenta de diagnóstico de métricas."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Comece pelo pior",
+        "html": "Descubra a métrica mais distante do benchmark e ataque primeiro. É a que mais rende pontos. Lojas de alto desempenho costumam manter SPS acima de 4."
+       },
+       {
+        "t": "quiz",
+        "q": "A partir de quantos pedidos concluídos a SPS aparece?",
+        "options": [
+         "1 pedido",
+         "30 pedidos em 60 dias",
+         "Nenhum",
+         "5.000 pedidos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Sem volume mínimo, a nota não é exibida."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual benefício a SPS alta pode trazer?",
+        "options": [
+         "Ciclo de pagamento mais curto",
+         "Isenção de impostos",
+         "Mais seguidores no perfil",
+         "Um novo CNPJ"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O pagamento acelerado depende de a nota atender às condições."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "5 métricas: NRR, devolução, <b>SFCR</b>, <b>LDR</b>, resposta em <b>24h</b>",
+         "Precisa de <b>30 pedidos</b> em 60 dias",
+         "Nota <b>relativa</b> à categoria",
+         "Benefícios: pagamento, campanhas, selo"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "AHR: pontos, cores e marcos",
+      "minutes": 4,
+      "goal": "Entender como a pontuação sobe e desce e o que acontece em cada marco.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚦",
+        "title": "Um semáforo de 0 a 1.000",
+        "text": "A Avaliação do Estado da Conta mostra o histórico dos últimos 180 dias. Cada violação tira pontos, e a loja pode recuperar com bom desempenho."
+       },
+       {
+        "t": "table",
+        "title": "Faixas de cor",
+        "caption": "Em 0 ponto a conta é desativada.",
+        "head": [
+         "Cor",
+         "Pontos",
+         "Situação"
+        ],
+        "rows": [
+         [
+          "Verde",
+          "200 ou mais",
+          "Bom estado"
+         ],
+         [
+          "Laranja",
+          "51 a 199",
+          "Risco de medidas por marco"
+         ],
+         [
+          "Vermelho",
+          "50 ou menos",
+          "Risco de desativação"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Como os pontos mudam",
+        "items": [
+         "Violação <b>deduz</b> pontos, conforme gravidade e frequência",
+         "A cada <b>300 pedidos concluídos</b> em 180 dias, a loja ganha pontos (até 200)",
+         "Quizzes de política devem dar pontos (em breve)",
+         "Todo ponto ganho ou perdido <b>zera após 180 dias</b>"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Medidas por marco",
+        "caption": "A reativação fica a critério da plataforma.",
+        "head": [
+         "Pontos",
+         "Efeito"
+        ],
+        "rows": [
+         [
+          "150",
+          "7 dias sem megacampanhas, novos anúncios e saque"
+         ],
+         [
+          "100",
+          "14 dias sem megacampanhas, novos anúncios e saque"
+         ],
+         [
+          "50",
+          "28 dias das restrições e Limite de volume de pedidos (OVL)"
+         ],
+         [
+          "0",
+          "Conta desativada permanentemente"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Violação repetida pesa mais",
+        "html": "A mesma violação repetida tira cada vez mais pontos. A primeira ocorrência pode ser só um aviso, mas as próximas deduzem mais."
+       },
+       {
+        "t": "list",
+        "title": "Tipos de violação que contam",
+        "items": [
+         "Produto proibido ou <b>inseguro</b>",
+         "Qualidade do anúncio (categoria errada)",
+         "<b>Propriedade intelectual</b>",
+         "Pedidos fraudulentos",
+         "Logística e pós-venda, como envio atrasado",
+         "Gestão da conta e manipulação de avaliações"
+        ]
+       },
+       {
+        "t": "quiz",
+        "q": "O que acontece quando o AHR chega a 150 pontos?",
+        "options": [
+         "Sete dias sem campanhas e saque",
+         "A conta é premiada com bônus",
+         "A loja ganha frete grátis ilimitado",
+         "Nada acontece com a conta"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O marco de 150 aplica restrições de 7 dias."
+       },
+       {
+        "t": "quiz",
+        "q": "Em quanto tempo os pontos perdidos voltam sozinhos?",
+        "options": [
+         "Em 180 dias",
+         "Nunca voltam",
+         "Em 1 hora",
+         "Em 10 anos"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Todo ponto ganho ou perdido é zerado depois de 180 dias."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Verde ≥200, laranja 51–199, vermelho ≤50",
+         "Marcos: <b>150, 100, 50 e 0</b>",
+         "Pontos voltam após <b>180 dias</b>",
+         "Violação repetida = <b>mais pontos perdidos</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "A SPS vai de:",
+      "options": [
+       "0 a 10",
+       "10 a 100",
+       "0 a 1.000",
+       "0 a 5"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "É uma nota de zero a cinco.",
+      "topic": "SPS"
+     },
+     {
+      "q": "O AHR começa em:",
+      "options": [
+       "1.000 pontos",
+       "50 pontos",
+       "0 ponto",
+       "200 pontos"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Todo vendedor entra com 200 pontos.",
+      "topic": "AHR"
+     },
+     {
+      "q": "Qual faixa é vermelha no AHR?",
+      "options": [
+       "50 pontos ou menos",
+       "Entre 51 e 199",
+       "200 pontos ou mais",
+       "Exatamente 1.000"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Vermelho é risco de desativação.",
+      "topic": "AHR"
+     },
+     {
+      "q": "A SPS só aparece com quantos pedidos?",
+      "options": [
+       "Nenhum",
+       "1",
+       "10.000",
+       "30 em 60 dias"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "É um volume mínimo.",
+      "topic": "SPS"
+     },
+     {
+      "q": "Os pontos do AHR voltam após:",
+      "options": [
+       "10 anos",
+       "180 dias",
+       "Nunca",
+       "1 dia"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "A janela é de 180 dias.",
+      "topic": "AHR"
+     }
+    ]
+   },
+   {
+    "title": "Violações, limites e recursos",
+    "tagline": "Agir com prazo",
+    "outcome": "Reagir a violações, limites e restrições.",
+    "lessons": [
+     {
+      "title": "Recebi uma violação: o que fazer",
+      "minutes": 4,
+      "goal": "Ler o ticket, escolher entre recurso ou correção e agir dentro do prazo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📬",
+        "title": "O relógio começa no aviso",
+        "text": "Receber violação não é fim de jogo, mas os prazos são curtos. Quem lê o ticket no mesmo dia tem mais chance de reverter."
+       },
+       {
+        "t": "list",
+        "title": "Como a loja é avisada",
+        "items": [
+         "Sempre por <b>e-mail</b> e <b>caixa de entrada</b> do Seller Center",
+         "Violações graves usam <b>mais canais</b>",
+         "A plataforma pode avisar também quando faltarem <b>10 pontos</b> para um marco"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "O que o ticket mostra",
+        "items": [
+         "<b>Ação disciplinar:</b> pendente ou aplicada",
+         "<b>Motivo</b> e <b>detalhes</b> (como ID do produto)",
+         "<b>Próximas etapas:</b> recorrer ou corrigir",
+         "<b>Orientações</b> para evitar nova violação"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Recurso ou correção",
+        "caption": "Recurso fora do prazo não é analisado.",
+        "head": [
+         "Opção",
+         "Regra"
+        ],
+        "rows": [
+         [
+          "Recurso (1º)",
+          "Em até 30 dias do aviso"
+         ],
+         [
+          "Recurso (2º)",
+          "Em até 15 dias da recusa; decisão final"
+         ],
+         [
+          "Correção",
+          "Em 12 a 72 horas, em violações que não aplicam punição imediata"
+         ],
+         [
+          "Limite",
+          "No máximo 2 recursos por violação"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "A prova é sua",
+        "html": "A loja precisa <b>reunir e enviar</b> a documentação que sustenta o recurso. Se o recurso vencer, as medidas são retiradas e os pontos devolvidos."
+       },
+       {
+        "t": "steps",
+        "title": "Passo a passo",
+        "items": [
+         {
+          "title": "Abra o registro",
+          "html": "Entre em Registros de violações."
+         },
+         {
+          "title": "Veja o botão",
+          "html": "“Visualizar e Recorrer” ou “Visualizar e Corrigir”."
+         },
+         {
+          "title": "Reúna as provas",
+          "html": "Documentos, fotos e prints com data."
+         },
+         {
+          "title": "Envie e acompanhe",
+          "html": "Veja o status em Detalhes do recurso."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Não espere o prazo final",
+        "html": "Medidas por marco não entram na hora. Enviar o recurso ou a correção logo dá tempo de a análise terminar antes que a punição se concretize."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o prazo do primeiro recurso?",
+        "options": [
+         "Sem prazo",
+         "90 dias",
+         "30 dias após a notificação",
+         "24 minutos"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O segundo recurso deve ser aberto em 15 dias após a recusa."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a janela típica para corrigir uma violação?",
+        "options": [
+         "De 6 a 12 meses",
+         "Apenas 1 segundo",
+         "De 12 a 72 horas",
+         "Ninguém corrige"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A correção tem prazo curto, que depende da violação."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Aviso por <b>e-mail e caixa de entrada</b>",
+         "Recursos: <b>30 dias</b> + <b>15 dias</b>; máximo de <b>2</b>",
+         "Correção em <b>12 a 72 horas</b>",
+         "A loja entrega as <b>provas</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Limite de pedidos (OVL) e restrições",
+      "minutes": 4,
+      "goal": "Reconhecer quando a loja é limitada e como reagir.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚧",
+        "title": "Produto esgotado... para o sistema",
+        "text": "O Limite de volume de pedidos faz a loja aparecer como esgotada quando o teto diário é atingido. Entender o motivo é o primeiro passo."
+       },
+       {
+        "t": "jargon",
+        "tag": "Restrição",
+        "term": "OVL",
+        "means": "Limite de volume de pedidos. Teto diário de novos pedidos que a loja pode receber. Ao atingi-lo, os produtos aparecem como “Esgotado” até o dia seguinte.",
+        "ex": "Limite de 50 pedidos por dia, e o 51º cliente vê o produto esgotado."
+       },
+       {
+        "t": "list",
+        "title": "Quando o OVL é aplicado",
+        "items": [
+         "Em toda <b>loja nova</b> (período probatório)",
+         "Quando LDR ou SFCR estão <b>altos</b>",
+         "Se a plataforma vê risco de <b>capacidade de atendimento</b>",
+         "Se houver mais de uma regra, vale o <b>menor limite</b>"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Onde conferir",
+        "items": [
+         "Banner na <b>página inicial</b> ou em Gerenciar pedidos",
+         "Integridade da loja > Registros de violações (se foi por violação)",
+         "Reinício automático no <b>início de cada dia</b>"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Restrições temporárias de conta",
+        "html": "Em verificação de segurança ou risco, a plataforma pode limitar recursos por <b>até 30 dias</b>: campanhas, marketplace de afiliados, ciclos de liquidação diferidos, retenções de saque, OVL e outros. A loja é avisada com motivo e duração prevista. Se achar que houve engano, pode abrir um pedido de ajuda."
+       },
+       {
+        "t": "list",
+        "title": "Motivos comuns",
+        "items": [
+         "Pouco histórico de vendas ou conta inativa",
+         "Muitos relatos de <b>item não recebido</b> e reembolsos",
+         "Verificação de documentos ou de conformidade"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Ganhe confiança com constância",
+        "html": "Venda de forma regular, atenda no prazo e responda ao cliente. Isso constrói histórico e ajuda a sair do período de experiência."
+       },
+       {
+        "t": "quiz",
+        "q": "O que o cliente vê quando o OVL é atingido?",
+        "options": [
+         "Preço dobrado",
+         "Loja fechada para sempre",
+         "Pagamento recusado",
+         "Produtos como “Esgotado”"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O limite zera no dia seguinte."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a duração máxima típica de uma restrição temporária?",
+        "options": [
+         "Até 30 dias",
+         "Sempre permanente",
+         "Até 5 minutos",
+         "Até 3 anos"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A restrição vem com motivo e duração prevista."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>OVL</b> limita pedidos por dia",
+         "Aplicado a <b>lojas novas</b>, LDR/SFCR altos e risco",
+         "Reinicia a cada dia; consulte o <b>banner</b>",
+         "Restrições temporárias: <b>até 30 dias</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Recursos de LDR e SFCR",
+      "minutes": 4,
+      "goal": "Saber quando um atraso ou cancelamento pode ser contestado e com quais provas.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📎",
+        "title": "Nem todo atraso é culpa da loja",
+        "text": "A plataforma aceita recurso em cenários específicos, desde que a loja prove com evidência datada."
+       },
+       {
+        "t": "table",
+        "title": "Cenários aceitos",
+        "caption": "Só esses cenários são considerados.",
+        "head": [
+         "Grupo",
+         "Exemplos"
+        ],
+        "rows": [
+         [
+          "Coleta",
+          "Transportadora não compareceu ou veio fora do horário, veículo cheio, atraso no escaneamento"
+         ],
+         [
+          "Ponto de entrega",
+          "Atraso no escaneamento ou ponto fechado"
+         ],
+         [
+          "Não logísticos",
+          "Erro de sistema do TikTok Shop, força maior, pedido de adiamento do cliente, feriado municipal não previsto"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Prova com data e hora",
+        "html": "Todas as evidências devem ter registro de <b>data e horário</b> que combine com o período contestado. Descreva o que aconteceu de forma objetiva."
+       },
+       {
+        "t": "list",
+        "title": "Provas que ajudam",
+        "items": [
+         "Conversas ou gravações com a transportadora",
+         "Fotos do local e do veículo, com data",
+         "Comprovantes de postagem e escaneamento",
+         "Prints de erro do sistema e das conversas com o cliente"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Prova falsa derruba o recurso",
+        "html": "Imagens que não têm relação com o caso, informações falsas ou documentos adulterados fazem o recurso ser recusado e podem agravar a situação."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Guarde enquanto acontece",
+        "html": "Faça print e foto na hora. Reunir tudo depois, com a memória fraca, deixa o recurso incompleto."
+       },
+       {
+        "t": "quiz",
+        "q": "Um recurso de LDR é bem-sucedido quando:",
+        "options": [
+         "A loja manda um print de outro pedido",
+         "A loja apaga os pedidos atrasados",
+         "A loja prova o cenário com data e hora",
+         "A loja só reclama no chat"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A evidência precisa casar com o período do atraso."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual cenário é aceito para recurso?",
+        "options": [
+         "Transportadora que faltou à coleta",
+         "Falta de estoque do produto",
+         "Esquecimento de embalar o pedido",
+         "Folga marcada do funcionário"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Falhas da transportadora estão entre os cenários aceitos."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Recurso só em <b>cenários previstos</b>",
+         "Provas com <b>data e hora</b>",
+         "Documento falso = <b>recusa</b>",
+         "Guarde registros <b>na hora</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O primeiro recurso deve ser aberto em:",
+      "options": [
+       "30 minutos",
+       "Sem prazo",
+       "3 anos",
+       "30 dias"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O prazo conta do aviso.",
+      "topic": "Recurso"
+     },
+     {
+      "q": "O segundo recurso:",
+      "options": [
+       "Não existe",
+       "É grátis e sem prazo",
+       "Tem decisão final",
+       "É ilimitado"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "No máximo dois recursos.",
+      "topic": "Recurso"
+     },
+     {
+      "q": "O OVL faz o produto aparecer como:",
+      "options": [
+       "Proibido",
+       "Em promoção",
+       "Esgotado",
+       "Gratuito"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Até o dia seguinte.",
+      "topic": "OVL"
+     },
+     {
+      "q": "Qual prova ajuda num recurso de coleta?",
+      "options": [
+       "Um texto longo sem prova",
+       "Registro datado da transportadora",
+       "Uma promessa verbal do dono",
+       "Prints de tela sem data"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Evidência datada é o que a plataforma analisa.",
+      "topic": "LDR"
+     },
+     {
+      "q": "Restrição temporária de conta pode durar:",
+      "options": [
+       "Só 2 minutos",
+       "Para sempre sempre",
+       "Até 3 dias úteis apenas",
+       "Até 30 dias"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O prazo vem na notificação.",
+      "topic": "Restrição"
+     }
+    ]
+   },
+   {
+    "title": "Fraude, segurança e rotina",
+    "tagline": "Conduta, proteção e hábito",
+    "outcome": "Evitar fraudes e proteger a loja.",
+    "lessons": [
+     {
+      "title": "Fraude, acesso indevido e negociação de contas",
+      "minutes": 4,
+      "goal": "Evitar condutas de tolerância zero que levam à desativação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🛑",
+        "title": "Tolerância zero",
+        "text": "Algumas práticas custam a conta inteira e o saldo. A plataforma trata como fraude."
+       },
+       {
+        "t": "list",
+        "title": "Pedidos fraudulentos",
+        "items": [
+         "<b>Pedidos maliciosos</b> para inflar vendas ou avaliações",
+         "Produto diferente da descrição, caixa vazia ou peça faltando",
+         "<b>Desvio de tráfego</b> para fora do TikTok Shop",
+         "Usar conta oficial para vender algo diferente do anunciado"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Acesso não autorizado",
+        "items": [
+         "Entrar em contas, e-mails ou sistemas sem permissão",
+         "Criar lojas, anúncios ou pedidos <b>falsos</b>",
+         "Roubar ou usar dados, dinheiro ou identidades",
+         "Falsificar a identidade da plataforma ou de usuários"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Negociação de contas",
+        "items": [
+         "Comprar, vender ou transferir contas de vendedor",
+         "Abrir ou usar mais contas do que o permitido",
+         "Só quem passou pela verificação (KYC) é o dono legítimo",
+         "Mudança de dono segue um <b>processo próprio</b>, não uma venda"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Quais as consequências",
+        "html": "Advertência formal, <b>remoção de vendas e avaliações falsas</b>, perda de benefícios, suspensão de anúncios e de afiliados, retenção de saldo e <b>desativação da conta</b>."
+       },
+       {
+        "t": "p",
+        "title": "Retenção de fundos",
+        "html": "Se a conta é desativada por violação, os fundos podem ser retidos para cobrir perdas. Sem fraude, a retenção é de <b>90 dias corridos</b>; havendo fraude, a plataforma pode reter tudo ou parte."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Proteja os acessos",
+        "html": "Não compartilhe senha com quem não é funcionário. Crie usuários com funções em vez de passar o login do dono."
+       },
+       {
+        "t": "quiz",
+        "q": "Vender a conta de vendedor para outra pessoa é:",
+        "options": [
+         "Permitido com aviso",
+         "Permitido às sextas",
+         "Proibido, é negociação de conta",
+         "Recomendado"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A transferência segue um processo próprio de mudança de propriedade."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual prática é considerada pedido malicioso?",
+        "options": [
+         "Fazer pedidos falsos para inflar vendas",
+         "Dar desconto para cliente antigo",
+         "Atender bem no chat",
+         "Entregar no prazo"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Pedidos de clientes não legítimos são fraude."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Pedido falso e desvio de tráfego = <b>fraude</b>",
+         "Acesso sem permissão é proibido",
+         "<b>Negociar contas</b> é proibido",
+         "Retenção de saldo: <b>90 dias</b> sem fraude"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Centro de Segurança do Vendedor",
+      "minutes": 4,
+      "goal": "Usar os alertas e o bloqueio de compradores para proteger a loja.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🔐",
+        "title": "A plataforma ajuda a barrar o mal",
+        "text": "Depois do período de experiência, a loja ganha ferramentas para detectar riscos e se proteger de compradores mal-intencionados."
+       },
+       {
+        "t": "steps",
+        "title": "Onde fica",
+        "items": [
+         {
+          "title": "Central do vendedor",
+          "html": "Abra o Seller Center."
+         },
+         {
+          "title": "Saúde da conta",
+          "html": "Escolha o menu de integridade."
+         },
+         {
+          "title": "Central de segurança",
+          "html": "Abra o painel de proteção."
+         }
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Proteção e alertas",
+        "items": [
+         "Fraudes confirmadas, como reembolso malicioso ou avaliação falsa, são <b>bloqueadas</b> automaticamente",
+         "Pedidos e reembolsos de risco ganham <b>etiqueta de risco</b>",
+         "O painel mostra o que foi interceptado em tempo real"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Pedidos e reembolsos com alerta",
+        "caption": "A isenção vale para itens sinalizados.",
+        "head": [
+         "Situação",
+         "O que a loja pode fazer"
+        ],
+        "rows": [
+         [
+          "Pedido de alto risco de cancelamento",
+          "Cancelar manualmente, <b>sem penalidade</b> de desempenho"
+         ],
+         [
+          "Reembolso de risco",
+          "Rejeitar a solicitação, sem penalidade"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Bloqueio de compradores",
+        "items": [
+         "Impede <b>novos pedidos</b> do comprador",
+         "Ele ainda pode mandar mensagem e avaliar compras antigas",
+         "Use de forma <b>objetiva e justa</b>",
+         "Abuso encerra o recurso e pode gerar punição"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Atender o que já foi vendido",
+        "html": "Bloquear um comprador não encerra o atendimento dos pedidos existentes. Siga com a comunicação normal."
+       },
+       {
+        "t": "quiz",
+        "q": "O que a loja pode fazer com um pedido marcado com risco alto?",
+        "options": [
+         "Cancelar sem penalidade de desempenho",
+         "Ignorar para sempre",
+         "Cobrar o cliente em dobro",
+         "Pedir pagamento por fora"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Cancelamentos de pedidos sinalizados são isentos de penalidade."
+       },
+       {
+        "t": "quiz",
+        "q": "Bloquear um comprador impede:",
+        "options": [
+         "Que a loja receba pagamentos",
+         "Novos pedidos dele na loja",
+         "Que ele veja o app",
+         "Que a loja envie pedidos antigos"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Mensagens e avaliações de pedidos anteriores continuam possíveis."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Central de segurança fica em <b>Saúde da conta</b>",
+         "Alerta de risco: <b>cancelar ou rejeitar sem penalidade</b>",
+         "Bloqueio: <b>sem novos pedidos</b>, uso justo",
+         "Disponível após o período de experiência"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Rotina semanal de saúde da conta",
+      "minutes": 3,
+      "goal": "Montar uma checklist que mantém a conta saudável todos os dias.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📋",
+        "title": "Prevenir é mais barato",
+        "text": "Quem verifica a conta todo dia raramente chega a um marco de punição."
+       },
+       {
+        "t": "table",
+        "title": "Checklist rápida",
+        "caption": "Adapte à rotina da equipe.",
+        "head": [
+         "Quando",
+         "O que olhar"
+        ],
+        "rows": [
+         [
+          "Todo dia",
+          "E-mail, caixa de entrada e Registros de violações"
+         ],
+         [
+          "Todo dia",
+          "Pedidos vencendo SLA e mensagens sem resposta"
+         ],
+         [
+          "Toda semana",
+          "SPS, AHR, LDR, SFCR e avaliações de 1 e 2 estrelas"
+         ],
+         [
+          "Todo mês",
+          "Produtos com mais devoluções e mais reclamações"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Alvos de operação",
+        "items": [
+         "<b>LDR</b> até 4% e <b>SFCR</b> até 2,5%",
+         "Resposta no chat em <b>24 horas</b>",
+         "Quase zero de produto <b>proibido ou sem autorização</b>",
+         "Estoque sempre sincronizado"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Se a nota cair",
+        "items": [
+         "Identifique a métrica mais baixa",
+         "Compare com o benchmark da categoria",
+         "Corrija processo, não só o sintoma",
+         "Documente tudo para um possível recurso"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Dê responsabilidades",
+        "html": "Defina quem confere violações, quem cuida do chat e quem fecha os pedidos do dia. Sem dono, o aviso fica perdido na caixa de entrada."
+       },
+       {
+        "t": "p",
+        "title": "Quem faz o quê",
+        "html": "Em equipes pequenas, uma só pessoa pode cuidar de tudo. Em equipes maiores, vale dividir: um responsável por <b>pedidos e prazos</b>, outro por <b>chat e avaliações</b> e outro por <b>violações e recursos</b>."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Um dia de rotina",
+        "html": "8h: abrir caixa de entrada e violações. 9h: conferir pedidos que vencem hoje. 14h: responder mensagens sem retorno. 17h: olhar LDR, SFCR e avaliações novas. Em 15 minutos de manhã dá para evitar a maior parte das surpresas."
+       },
+       {
+        "t": "quiz",
+        "q": "Com que frequência olhar a caixa de entrada de avisos?",
+        "options": [
+         "Uma vez por ano",
+         "Todo dia",
+         "Só quando a conta cair",
+         "Nunca"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "Prazos curtos pedem checagem diária."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Veja <b>avisos</b> todo dia",
+         "Acompanhe <b>SPS, AHR, LDR e SFCR</b>",
+         "Aja na métrica <b>mais fraca</b>",
+         "Distribua <b>responsáveis</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Negociar uma conta de vendedor é:",
+      "options": [
+       "Proibido",
+       "Permitido",
+       "Opcional",
+       "Obrigatório"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Existe um processo próprio de mudança de propriedade.",
+      "topic": "Conta"
+     },
+     {
+      "q": "Desviar o cliente para fora da plataforma é:",
+      "options": [
+       "Prática recomendada",
+       "Promoção",
+       "Brinde",
+       "Fraude de desvio de tráfego"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "É proibido em qualquer canal.",
+      "topic": "Fraude"
+     },
+     {
+      "q": "Pedido de alto risco permite:",
+      "options": [
+       "Dobrar o preço",
+       "Pedir PIX ao cliente",
+       "Cancelamento sem penalidade",
+       "Ignorar o pedido"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "A loja se protege sem sofrer na métrica.",
+      "topic": "Segurança"
+     },
+     {
+      "q": "Bloquear comprador impede:",
+      "options": [
+       "Novos pedidos dele",
+       "Que ele veja a loja inteira",
+       "Que ele receba mensagens",
+       "Que ele tenha conta"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Mensagens continuam possíveis.",
+      "topic": "Segurança"
+     },
+     {
+      "q": "Retenção de saldo sem fraude dura:",
+      "options": [
+       "90 minutos",
+       "90 dias corridos",
+       "9 anos",
+       "Sempre"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Depois disso, o saldo é liberado.",
+      "topic": "Fundos"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Qual painel mede violações de política?",
+    "options": [
+     "AHR",
+     "GMV",
+     "CRM",
+     "SPS"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "O AHR é a pontuação de conformidade.",
+    "topic": "AHR"
+   },
+   {
+    "q": "Qual painel compara a loja com a categoria?",
+    "options": [
+     "AHR",
+     "NF-e",
+     "SPS",
+     "MWH"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A SPS é relativa.",
+    "topic": "SPS"
+   },
+   {
+    "q": "Qual métrica da SPS usa avaliações de 1 e 2 estrelas?",
+    "options": [
+     "Avaliação negativa (NRR)",
+     "VTR, de rastreio válido",
+     "LDR, de envio atrasado",
+     "FDR, de envio rápido"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Janela de 60 dias.",
+    "topic": "SPS"
+   },
+   {
+    "q": "Qual benefício a SPS alta pode dar?",
+    "options": [
+     "Isenção de CNPJ",
+     "Mais estoque",
+     "Ciclo de pagamento mais curto",
+     "Frete de graça para o cliente"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Depende das condições da política.",
+    "topic": "SPS"
+   },
+   {
+    "q": "No AHR, 150 pontos geram:",
+    "options": [
+     "Restrições de 7 dias",
+     "Reativação",
+     "Nada",
+     "Prêmio"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "São bloqueios temporários.",
+    "topic": "AHR"
+   },
+   {
+    "q": "No AHR, 0 ponto gera:",
+    "options": [
+     "Um brinde de boas-vindas",
+     "Apenas um aviso por e-mail",
+     "Pagamento antecipado do saldo",
+     "Desativação permanente"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "A reativação fica a critério da plataforma.",
+    "topic": "AHR"
+   },
+   {
+    "q": "O prazo para correção típica é de:",
+    "options": [
+     "12 a 72 horas",
+     "Dez anos",
+     "Um ano",
+     "Dois anos"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Depende da violação.",
+    "topic": "Recurso"
+   },
+   {
+    "q": "Quantos recursos por violação?",
+    "options": [
+     "Até 2",
+     "Ilimitado",
+     "Nenhum",
+     "Até 20"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Segundo recurso em 15 dias.",
+    "topic": "Recurso"
+   },
+   {
+    "q": "OVL significa:",
+    "options": [
+     "Operação virtual local",
+     "Limite de volume de pedidos",
+     "Ordem de venda lenta",
+     "Oferta de valor livre"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Teto diário de pedidos.",
+    "topic": "OVL"
+   },
+   {
+    "q": "Em que lugar o OVL aparece?",
+    "options": [
+     "Na vitrine do concorrente",
+     "No extrato do banco",
+     "Em um banner no Seller Center",
+     "No e-mail do cliente"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Também em Registros de violações.",
+    "topic": "OVL"
+   },
+   {
+    "q": "Qual prova vale num recurso de LDR?",
+    "options": [
+     "Texto sem anexo",
+     "Áudio sem relação",
+     "Print sem data",
+     "Registro datado da falha"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Provas devem ter data e hora.",
+    "topic": "LDR"
+   },
+   {
+    "q": "Pedido malicioso é:",
+    "options": [
+     "Pedido de cliente fiel",
+     "Pedido falso para inflar vendas",
+     "Pedido com frete grátis",
+     "Pedido com cupom"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "É fraude.",
+    "topic": "Fraude"
+   },
+   {
+    "q": "Retenção de fundos sem fraude é de:",
+    "options": [
+     "90 dias",
+     "Sempre",
+     "9 anos",
+     "9 horas"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Depois o saldo é liberado.",
+    "topic": "Fundos"
+   },
+   {
+    "q": "O Centro de Segurança fica em:",
+    "options": [
+     "Pedidos",
+     "Saúde da conta",
+     "Afiliados",
+     "Finanças"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Também mostra bloqueios e alertas.",
+    "topic": "Segurança"
+   },
+   {
+    "q": "O que ocorre ao bloquear um comprador?",
+    "options": [
+     "Ele ganha cupom",
+     "Ele fica sem avaliar",
+     "Ele é banido do app",
+     "Ele não faz novos pedidos"
+    ],
+    "answer": [
+     3
+    ],
+    "why": "Avaliação de compras antigas continua possível.",
+    "topic": "Segurança"
+   },
+   {
+    "q": "Com que frequência olhar avisos e violações?",
+    "options": [
+     "Nunca",
+     "Uma vez por ano",
+     "Todos os dias",
+     "Quando sobra tempo"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Prazos de recurso são curtos.",
+    "topic": "Rotina"
+   }
+  ]
+ }
+}

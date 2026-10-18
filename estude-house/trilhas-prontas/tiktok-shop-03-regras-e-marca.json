@@ -1,0 +1,1731 @@
+{
+ "formato": "estude-house-trilha",
+ "versao": 1,
+ "draft": {
+  "title": "TikTok Shop 3: regras, qualidade e marcas",
+  "tag": "TikTok Shop",
+  "tagline": "Venda só o que pode, anuncie com verdade e proteja a loja de violações.",
+  "subtitle": "Produtos proibidos e restritos, qualidade, segurança, alegações de saúde, propriedade intelectual e autorização de marca. Baseado na TikTok Shop Academy Brasil (conteúdo público lido em out/2026).",
+  "finalSize": 12,
+  "modules": [
+   {
+    "title": "Proibido, restrito e permitido",
+    "tagline": "O primeiro filtro do cadastro",
+    "outcome": "Saber se um produto pode ser vendido e o que exige.",
+    "lessons": [
+     {
+      "title": "Proibido ou restrito?",
+      "minutes": 4,
+      "goal": "Separar o que nunca pode ser vendido do que pode, com aprovação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🚦",
+        "title": "Dois semáforos diferentes",
+        "text": "No TikTok Shop, alguns produtos são vetados para todo mundo e outros só saem do papel com qualificação. Confundir os dois faz a loja perder tempo ou receber violação."
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Produto proibido",
+         "tone": "bad",
+         "items": [
+          "Não pode ser vendido por <b>ninguém</b>",
+          "Não existe formulário de liberação",
+          "Anúncio é removido e a loja pode ser punida"
+         ]
+        },
+        "right": {
+         "title": "Produto restrito",
+         "tone": "good",
+         "items": [
+          "Pode ser vendido <b>depois de aprovado</b>",
+          "Pede documentos por produto ou categoria",
+          "Sem aprovação, o anúncio não vai ao ar"
+         ]
+        }
+       },
+       {
+        "t": "big",
+        "emoji": "",
+        "html": "Legal em outro lugar <b>não</b> quer dizer liberado aqui",
+        "sub": "A plataforma pode vetar um item mesmo que ele seja vendido em outros marketplaces."
+       },
+       {
+        "t": "list",
+        "title": "Onde conferir antes de cadastrar",
+        "items": [
+         "<b>Política de produtos proibidos</b> da Academia",
+         "<b>Política de produtos restritos</b>, com os documentos exigidos",
+         "O Centro de qualificação do Seller Center",
+         "O aviso de rejeição, quando o anúncio já foi enviado"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Mesmo item, caminhos diferentes",
+        "html": "Um fone Bluetooth é <b>restrito</b>: precisa de documento de homologação. Uma réplica de marca famosa é <b>proibida</b>: não há como liberar. Um suplemento medicinal tem tratamento próprio e segue regras mais duras."
+       },
+       {
+        "t": "p",
+        "title": "E se o sistema bloquear por engano?",
+        "html": "Às vezes um produto permitido é barrado por informação incompleta no cadastro. Nesse caso, a loja pode <b>recorrer pela Integridade da loja</b>, abrindo um ticket com as informações que faltavam. Um produto legal no Brasil ainda pode ser restrito pela plataforma, e isso não se resolve com recurso."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Não tente escapar do filtro",
+        "html": "Trocar o nome do produto, usar outra categoria ou esconder o item nas fotos para passar pela análise é <b>violação por si só</b>. O caminho certo é a qualificação ou escolher outro produto."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual destas frases descreve um produto RESTRITO?",
+        "options": [
+         "Pode ser vendido depois de enviar documentos",
+         "Só pode ser vendido por criadores",
+         "Está liberado para qualquer loja nova",
+         "Nunca pode ser vendido na plataforma"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Restrito é o item que exige aprovação com documentos; proibido é o que não tem liberação."
+       },
+       {
+        "t": "say",
+        "title": "Diga assim",
+        "html": "“Antes de comprar estoque, eu confiro se o produto é proibido ou restrito. Se for restrito, já começo o pedido de qualificação.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "<b>Proibido</b> não tem liberação; <b>restrito</b> tem, com documentos",
+         "Ser permitido em outro marketplace não vale aqui",
+         "Bloqueio por engano: <b>ticket na Integridade da loja</b>",
+         "Nunca disfarçar o produto para passar na análise"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Categorias proibidas",
+      "minutes": 4,
+      "goal": "Reconhecer as grandes famílias de produtos que não entram no TikTok Shop.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "⛔",
+        "title": "A lista é longa, mas tem lógica",
+        "text": "Os itens proibidos têm um ponto em comum: risco para pessoas, para menores, para a lei ou para a confiança do comprador."
+       },
+       {
+        "t": "list",
+        "title": "Segurança e lei",
+        "items": [
+         "<b>Armas</b> e acessórios",
+         "<b>Drogas</b> e itens de uso de drogas",
+         "<b>Itens perigosos</b>",
+         "Dispositivos de roubo e de burla de segurança ou privacidade"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Saúde e corpo",
+        "items": [
+         "<b>Medicamentos</b>, EPI e suplementos de uso medicinal",
+         "Partes do corpo",
+         "Produtos de bem-estar sexual",
+         "Produtos para perda de peso e supressão do apetite"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Bebê e menores",
+        "items": [
+         "Itens como mamadeiras, chupetas e bombas de leite",
+         "Itens ligados à <b>segurança de menores</b>",
+         "Conteúdo adulto de qualquer tipo",
+         "Balões e lanternas que representem risco"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Consumo regulado",
+        "items": [
+         "Álcool, tabaco e vapes",
+         "Alimentos sob regra específica",
+         "Animais e plantas",
+         "Jogos de azar"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Mercado e confiança",
+        "items": [
+         "Produtos <b>usados</b> ou de segunda mão",
+         "Produtos discriminatórios ou de conteúdo político",
+         "Serviços virtuais e serviços financeiros",
+         "Itens de <b>surpresa</b> (compra sem saber o que vem)",
+         "Streaming de mídia e veículos e peças"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Na dúvida, procure pelo nome da categoria",
+        "html": "A política é organizada por tema. Quem vende beleza confere o bloco de beleza; quem vende para bebê confere o de bebê. Nunca confie só na memória, porque a lista muda."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual destes itens é proibido no TikTok Shop?",
+        "options": [
+         "Caneca nova de cerâmica",
+         "Fone novo com nota fiscal",
+         "Produto usado vendido como se fosse novo",
+         "Camiseta nova com etiqueta"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Produtos usados ou de segunda mão estão entre os proibidos, e vender usado como novo ainda é problema de qualidade."
+       },
+       {
+        "t": "quiz",
+        "q": "Por que a plataforma veta itens de surpresa?",
+        "options": [
+         "O comprador não sabe o que vai receber",
+         "Eles pesam demais para o frete",
+         "Não passam pelo armazém parceiro",
+         "Só criadores podem vendê-los"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "A compra sem saber o conteúdo vai contra a transparência exigida nos anúncios."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Armas, drogas, medicamentos e itens perigosos estão <b>vetados</b>",
+         "Bebê e menores têm regras próprias e duras",
+         "Usados, surpresa e serviços virtuais também não entram",
+         "A política muda: <b>consulte sempre</b> o texto atual"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Produtos restritos e documentos",
+      "minutes": 4,
+      "goal": "Saber quando um produto pede selo, certificado ou convite.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📑",
+        "title": "Restrito não é proibido",
+        "text": "Muitos produtos comuns precisam de papel antes de ir ao ar. Quem já tem os documentos em mãos vende antes da concorrência."
+       },
+       {
+        "t": "p",
+        "title": "Como a aprovação funciona",
+        "html": "O anúncio de um produto restrito só é publicado depois de <b>aprovado</b>. A loja envia os documentos pedidos para aquele produto ou categoria, e a plataforma confere. Sem aprovação, o item fica barrado."
+       },
+       {
+        "t": "table",
+        "title": "Documentos que aparecem com frequência",
+        "caption": "Confira sempre a política da categoria; a lista varia por produto.",
+        "head": [
+         "Tipo de produto",
+         "Documento"
+        ],
+        "rows": [
+         [
+          "Muitos produtos regulados por segurança",
+          "Selo e certificado do <b>INMETRO</b>"
+         ],
+         [
+          "Telecom, Wi-Fi e Bluetooth",
+          "Homologação da <b>ANATEL</b>"
+         ],
+         [
+          "Marca registrada de terceiros",
+          "Carta de autorização da marca"
+         ],
+         [
+          "Categorias com exigência própria",
+          "Os documentos da política daquele produto"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Certificação",
+        "term": "INMETRO",
+        "means": "Órgão brasileiro que certifica a segurança e a qualidade de muitos produtos. O selo mostra que o item foi avaliado.",
+        "ex": "Capacete, brinquedo e utensílios elétricos costumam levar o selo."
+       },
+       {
+        "t": "jargon",
+        "tag": "Certificação",
+        "term": "ANATEL",
+        "means": "Agência que homologa equipamentos de telecomunicação. Produto com Wi-Fi, Bluetooth ou rádio precisa estar homologado.",
+        "ex": "Fone sem fio, roteador e carregador por indução."
+       },
+       {
+        "t": "jargon",
+        "tag": "Qualificação",
+        "term": "Somente por convite",
+        "means": "Categoria em que a plataforma escolhe quem pode vender. Não basta ter documento: é preciso ser convidado.",
+        "ex": "Alimentos, joias, suplementos, comida para pets, automotivo e bebê estão entre as categorias que usam esse formato."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Documento sem validade não ajuda",
+        "html": "Certificado vencido, ilegível ou de outro produto é recusado. Guarde as versões atualizadas e confira se o nome do produto bate com o documento."
+       },
+       {
+        "t": "quiz",
+        "q": "Um fone sem fio novo é cadastrado sem homologação. O que esperar?",
+        "options": [
+         "A ANATEL envia o certificado sozinha",
+         "O fone é aprovado porque é novo",
+         "O anúncio sobe com preço menor",
+         "O anúncio fica barrado até enviar o documento"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "Equipamentos de telecom precisam da homologação da ANATEL para serem liberados."
+       },
+       {
+        "t": "quiz",
+        "q": "O que significa uma categoria “somente por convite”?",
+        "options": [
+         "Só quem tem cupom pode vender",
+         "Só estrangeiros podem vender",
+         "A plataforma escolhe quem pode vender",
+         "Qualquer loja pode vender sem papel"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Nessas categorias é preciso receber o convite, além de cumprir os requisitos."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Restrito = <b>aprovação com documentos</b>",
+         "INMETRO para segurança, <b>ANATEL</b> para telecom",
+         "Algumas categorias só abrem <b>por convite</b>",
+         "Documento vencido ou de outro produto é recusado"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Um produto proibido pode ser liberado com documentos?",
+      "options": [
+       "Sim, com um selo qualquer",
+       "Não, ele não tem liberação",
+       "Sim, mediante convite",
+       "Sim, se o preço for baixo"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "Proibido é o que ninguém pode vender na plataforma.",
+      "topic": "Proibidos"
+     },
+     {
+      "q": "Qual documento costuma ser pedido para equipamentos Bluetooth?",
+      "options": [
+       "Contrato do aluguel da loja",
+       "Certidão de nascimento",
+       "Cartão de crédito da loja",
+       "Homologação da ANATEL"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "Produtos de telecomunicação precisam de homologação da ANATEL.",
+      "topic": "Restritos"
+     },
+     {
+      "q": "Se um produto permitido foi bloqueado por engano, o caminho é:",
+      "options": [
+       "Criar outra loja",
+       "Abrir ticket na Integridade da loja",
+       "Esperar um ano",
+       "Apagar todas as imagens"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "O recurso vai pela Integridade da loja, com as informações que faltavam.",
+      "topic": "Recurso"
+     },
+     {
+      "q": "Qual destas categorias é proibida?",
+      "options": [
+       "Medicamentos",
+       "Canecas de cerâmica",
+       "Capas de celular",
+       "Camisetas lisas"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "Medicamentos estão na lista de produtos proibidos.",
+      "topic": "Proibidos"
+     },
+     {
+      "q": "Uma categoria “somente por convite” funciona assim:",
+      "options": [
+       "Só vende quem faz LIVE",
+       "Só vende quem tem cupom",
+       "A plataforma escolhe quem pode vender",
+       "Todo mundo vende sem análise"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Além dos requisitos, é preciso receber o convite.",
+      "topic": "Restritos"
+     }
+    ]
+   },
+   {
+    "title": "Qualidade, segurança e conteúdo",
+    "tagline": "Anúncios que não derrubam a loja",
+    "outcome": "Evitar punições de qualidade, segurança e alegações enganosas.",
+    "lessons": [
+     {
+      "title": "Qualidade do produto",
+      "minutes": 4,
+      "goal": "Entender o que a plataforma considera problema de qualidade e como evitá-lo.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🏅",
+        "title": "Qualidade é reputação",
+        "text": "Cliente decepcionado devolve, avalia mal e reclama. A plataforma enxerga tudo isso e reage."
+       },
+       {
+        "t": "list",
+        "title": "Como um produto é sinalizado",
+        "items": [
+         "<b>Notas baixas</b> dadas pelos compradores",
+         "<b>Devoluções altas</b> por falha do vendedor",
+         "Reclamações enviadas ao suporte da plataforma"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Problemas comuns",
+        "items": [
+         "Produto “novo” entregue <b>usado</b> ou aberto",
+         "Cor, textura, tamanho, função ou quantidade diferentes do anúncio",
+         "Item danificado ou com defeito",
+         "Produto vencido ou perto do vencimento, sem prazo razoável de uso"
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Exemplos por tipo de produto",
+        "caption": "Resumo dos exemplos da política de qualidade.",
+        "head": [
+         "Tipo",
+         "Problema que gera ação"
+        ],
+        "rows": [
+         [
+          "Beleza",
+          "Contaminação, cheiro ou cor diferente, embalagem com defeito"
+         ],
+         [
+          "Consumíveis",
+          "Deterioração, sabor estranho, objeto estranho, vencido"
+         ],
+         [
+          "Eletrônicos e casa",
+          "Peça com defeito, fio exposto, superaquecimento"
+         ],
+         [
+          "Moda",
+          "Tamanho e tecido diferentes do anúncio"
+         ]
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "A escada de punições",
+        "html": "A venda de produto abaixo do padrão pode levar a <b>avisos, limite de exibição, congelamento do produto, desativação do produto</b> e até <b>suspensão da conta</b>."
+       },
+       {
+        "t": "list",
+        "title": "Práticas que protegem a loja",
+        "items": [
+         "Mostrar tamanhos no padrão brasileiro (33, 34, 35 para calçados)",
+         "Informar instruções de lavagem e cuidados",
+         "Dizer validade e prazo de uso dos consumíveis",
+         "Criar um controle de qualidade e uma boa embalagem"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Leia as avaliações como um mapa",
+        "html": "Reclamações repetidas indicam um problema real no produto ou na descrição. Resolver cedo evita a punição e reduz devolução."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual destes é um problema de qualidade típico?",
+        "options": [
+         "Envio no mesmo dia",
+         "Cliente que gostou do produto",
+         "Produto novo entregue aberto ou usado",
+         "Foto com fundo branco"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A política lista como problema comum o produto anunciado como novo e entregue usado ou aberto."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual a punição MAIS leve da escada de qualidade?",
+        "options": [
+         "Multa fixa de 10 mil reais",
+         "Suspensão imediata da conta",
+         "Desativação da loja inteira",
+         "Aviso para corrigir o problema"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "A escada começa por avisos e só chega à suspensão em casos graves."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Notas baixas, devoluções por falha e reclamações <b>sinalizam o produto</b>",
+         "Anúncio e produto precisam ser <b>idênticos</b>",
+         "Punições vão de aviso até <b>suspensão da conta</b>",
+         "Controle de qualidade e boa embalagem protegem a loja"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Segurança do produto e recall",
+      "minutes": 4,
+      "goal": "Cumprir os deveres de segurança e saber o que fazer diante de uma denúncia.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🛡️",
+        "title": "Segurança vem antes da venda",
+        "text": "Produto que machuca alguém é o pior cenário para o cliente e para a loja. A plataforma age mesmo sem esperar uma decisão oficial."
+       },
+       {
+        "t": "list",
+        "title": "O que o vendedor precisa garantir",
+        "items": [
+         "Produto <b>seguro</b> para o uso previsto",
+         "<b>Inspeções regulares</b> de desempenho e função",
+         "Resposta rápida a problemas de segurança vindos das avaliações ou de outros canais"
+        ]
+       },
+       {
+        "t": "flow",
+        "title": "Quando chega uma denúncia de segurança",
+        "caption": "Sequência possível, conforme o nível de risco.",
+        "loop": false,
+        "items": [
+         {
+          "icon": "🔍",
+          "title": "Revisão",
+          "text": "A plataforma revisa o anúncio e o conteúdo ligado a ele."
+         },
+         {
+          "icon": "⏸️",
+          "title": "Suspensão",
+          "text": "O anúncio pode ser suspenso, de forma temporária ou permanente."
+         },
+         {
+          "icon": "📨",
+          "title": "Pedido de provas",
+          "text": "A loja recebe um pedido de informações e documentos."
+         },
+         {
+          "icon": "🏛️",
+          "title": "Autoridades",
+          "text": "Casos graves podem ser comunicados aos órgãos competentes."
+         }
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Responder rápido é obrigação",
+        "html": "A loja precisa atender <b>de imediato</b> aos pedidos de informação. Falta de resposta, ou resposta fora do prazo, pode gerar medidas disciplinares. Pode ser necessário falar com o fabricante, o fornecedor ou o importador."
+       },
+       {
+        "t": "jargon",
+        "tag": "Segurança",
+        "term": "Recall",
+        "means": "Ação para retirar ou restringir produtos por risco de segurança, defeito ou descumprimento de norma. Pode partir de autoridades, do fabricante ou da própria plataforma.",
+        "ex": "Um carregador com risco de superaquecimento é recolhido por uma autoridade."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Recolhido não se vende",
+        "html": "Produto em recall é <b>proibido</b>. A regra vale também para anúncios duplicados, versões modificadas, kits e itens com o mesmo defeito. Os custos do recolhimento podem ser cobrados da loja."
+       },
+       {
+        "t": "list",
+        "title": "Medidas possíveis contra a loja",
+        "items": [
+         "Mensagem de aviso para corrigir de imediato",
+         "Bloqueio do anúncio",
+         "Desconto do saldo para cobrir perdas",
+         "Suspensão temporária ou definitiva da conta"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Recurso",
+        "html": "Depois de corrigir o problema, ou se a punição foi um engano, a loja abre um <b>ticket em Integridade da loja</b> (Seller Center ou app) mostrando o que foi feito para melhorar o produto."
+       },
+       {
+        "t": "quiz",
+        "q": "A plataforma só age quando existe recall oficial de uma autoridade?",
+        "options": [
+         "Não, ela pode agir por conta própria",
+         "Sim, só com decisão oficial",
+         "Não, mas só em feriados",
+         "Sim, e apenas por ordem judicial"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O TikTok Shop pode agir com base em reclamações, incidentes e avaliações internas."
+       },
+       {
+        "t": "quiz",
+        "q": "Quem arca com os custos de um recall do produto da loja?",
+        "options": [
+         "Sempre o governo federal",
+         "O criador que divulgou o item",
+         "Sempre o comprador do produto",
+         "O vendedor, e a plataforma pode cobrar dele"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "A política diz que os custos do recolhimento podem ser recuperados do vendedor."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Produto <b>seguro</b> e inspecionado, sempre",
+         "Pedido de informação = <b>resposta imediata</b>",
+         "Produto recolhido é proibido, <b>inclusive duplicados e kits</b>",
+         "Recurso via <b>Integridade da loja</b>, com a correção feita"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Saúde, peso e promessas enganosas",
+      "minutes": 4,
+      "goal": "Escrever anúncios e vídeos sem alegações médicas ou milagrosas.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "💊",
+        "title": "Não prometa o que o produto não pode provar",
+        "text": "Textos que curam, emagrecem ou rejuvenescem derrubam anúncios. A regra vale para a página, para o vídeo e para a LIVE."
+       },
+       {
+        "t": "list",
+        "title": "Três alegações proibidas",
+        "items": [
+         "<b>Médicas:</b> tratar, curar ou prevenir uma condição",
+         "<b>De peso:</b> emagrecer, engordar, ganhar massa, queimar gordura",
+         "<b>De bem-estar:</b> prevenir ou curar algo físico, mental ou emocional"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Aviso sobre “GLP”",
+        "html": "Produtos que usem “GLP”, ou qualquer variação, na marca ou no título são <b>proibidos</b>. Não vale tentar encaixar a palavra de outra forma."
+       },
+       {
+        "t": "table",
+        "title": "Prometeu, caiu",
+        "caption": "Quanto mais absoluta a promessa, maior o risco.",
+        "head": [
+         "Evite",
+         "Por quê"
+        ],
+        "rows": [
+         [
+          "“Cura acne em 3 dias”",
+          "Prazo fixo e cura sem prova"
+         ],
+         [
+          "“Queima gordura” e “suprime o apetite”",
+          "Alegação de peso e corpo"
+         ],
+         [
+          "“Elimina rugas para sempre”",
+          "Efeito permanente irreal"
+         ],
+         [
+          "Fotos de antes e depois dramáticas",
+          "Transformação sem comprovação"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "O que costuma ser aceito",
+        "items": [
+         "Falar de <b>ingrediente</b> com fatos: “contém vitamina C”",
+         "Repetir a alegação que está <b>na embalagem oficial</b>",
+         "Dizer que o produto é adequado a pele sensível ou a celíacos, se for verdade",
+         "Descrever tons de maquiagem por tipo de pele"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Vale para vendedor e criador",
+        "html": "Tudo o que você diz importa: título, imagens, legenda, hashtag, discurso, nome da conta e até a roupa. Se o conjunto passa uma promessa médica, o conteúdo pode ser derrubado."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Reescrevendo um texto",
+        "html": "Ruim: “Suplemento que queima gordura em 7 dias.” Melhor: não anunciar. Para um produto de beleza permitido: “Creme com vitamina C, indicado para pele sensível.” Fala do ingrediente e da adequação, sem prometer resultado."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Tire a promessa e conte a característica",
+        "html": "Troque “resolve queda de cabelo” por material, uso, modo de aplicação e embalagem. A informação útil continua, a promessa irreal sai."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual frase tende a ser aceita no anúncio?",
+        "options": [
+         "Contém vitamina C e serve para pele sensível",
+         "Cura queda de cabelo em 2 semanas",
+         "Elimina rugas para sempre sem esforço",
+         "Faz perder peso e queima gordura"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Falar do ingrediente com fatos é aceito; prometer cura, prazo ou efeito permanente não é."
+       },
+       {
+        "t": "quiz",
+        "q": "O que fazer com fotos de antes e depois muito dramáticas?",
+        "options": [
+         "Não usar, pois são consideradas enganosas",
+         "Trocar a cor do fundo",
+         "Usar apenas na primeira imagem",
+         "Postar só nos vídeos"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "Comparações com transformações drásticas ou irreais são proibidas."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Sem alegação <b>médica, de peso ou de bem-estar</b>",
+         "“GLP” na marca ou título: <b>proibido</b>",
+         "Pode falar de <b>ingrediente</b>, embalagem e adequação",
+         "A regra vale para texto, vídeo e LIVE"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Moda, lingerie e conteúdo sensível",
+      "minutes": 3,
+      "goal": "Anunciar roupas íntimas e moda praia sem cair na regra de nudez.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "👙",
+        "title": "Pode vender, se for catálogo",
+        "text": "Lingerie e moda praia são permitidas. O que derruba o anúncio é a imagem ou o texto que pareça material adulto."
+       },
+       {
+        "t": "list",
+        "title": "O que é considerado violação",
+        "items": [
+         "Nudez ou exposição de partes íntimas",
+         "Transparência que mostre mamilos ou genitais",
+         "Poses sugestivas ou eróticas",
+         "Descrições como “sexy”, “sedutora” ou “erótica”"
+        ]
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Como fazer certo",
+         "tone": "bad",
+         "items": [
+          "Fundo neutro de estúdio",
+          "Pose em pé, no padrão de catálogo",
+          "Peça cobrindo totalmente as áreas íntimas",
+          "Descrição de material, alça e caimento"
+         ]
+        },
+        "right": {
+         "title": "Como fazer errado",
+         "tone": "good",
+         "items": [
+          "Quarto com clima sexual",
+          "Modelo inclinada ou abrindo as pernas",
+          "Peça transparente exposta",
+          "Texto que fala em seduzir o parceiro"
+         ]
+        }
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Título aceito",
+        "html": "Título: “Conjunto de lingerie rendada com alças ajustáveis”. Imagem: modelo em pé, fundo branco, sem exposição. Para moda praia: “Biquíni de duas peças com design frente única”, modelo em pose natural."
+       },
+       {
+        "t": "p",
+        "title": "Por que a regra é tão firme",
+        "html": "A plataforma é vista por públicos de várias idades. Por isso, conteúdo que lembre material adulto sai do ar mesmo quando o produto em si é permitido. A análise olha <b>imagem, título e descrição juntos</b>."
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Vale para vídeo e LIVE também",
+        "html": "Uma peça permitida no anúncio pode virar problema se o criador a mostrar em pose sugestiva no vídeo. Alinhe o roteiro com quem divulga."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Quando a foto gera dúvida",
+        "html": "Use flat lay (peça aberta sobre uma superfície) ou manequim. Corte ou edite a imagem se ela mostrar demais. Modelos com ar profissional e neutro evitam rejeição."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual título está dentro da regra?",
+        "options": [
+         "Lingerie sexy para uma noite quente",
+         "Lingerie erótica para seduzir seu parceiro",
+         "Fetiche e sedução em renda",
+         "Conjunto de lingerie rendada com alças ajustáveis"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O texto foca no produto, com termos neutros, sem sugerir atividade sexual."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Lingerie e moda praia <b>são permitidas</b>",
+         "Fundo neutro, pose de catálogo, <b>sem transparência</b>",
+         "Texto neutro: material, alça, caimento",
+         "Na dúvida: flat lay ou manequim"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "O que pode levar um produto a ser sinalizado por qualidade?",
+      "options": [
+       "Estar em promoção durante a semana",
+       "Notas baixas e devoluções por falha da loja",
+       "Ter muitos vídeos publicados na loja",
+       "Ter uma ótima foto de capa do anúncio"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "A política cita notas baixas, devoluções altas e reclamações.",
+      "topic": "Qualidade"
+     },
+     {
+      "q": "Como tratar um pedido de documentos de segurança?",
+      "options": [
+       "Pedir ao cliente para esperar",
+       "Ignorar até o fim do mês",
+       "Responder imediatamente",
+       "Apagar o anúncio sem avisar"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Atraso ou falta de resposta pode gerar medidas disciplinares.",
+      "topic": "Segurança"
+     },
+     {
+      "q": "Qual afirmação está proibida no anúncio?",
+      "options": [
+       "Adequado para pele sensível",
+       "Sem glúten, adequado a celíacos",
+       "Cura acne em 3 dias",
+       "Contém vitamina C"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Alegações de cura e prazo fixo são proibidas.",
+      "topic": "Saúde"
+     },
+     {
+      "q": "Como lingerie pode ser anunciada com segurança?",
+      "options": [
+       "Com texto sobre seduzir o parceiro",
+       "Em quarto com clima sexual",
+       "Em fundo neutro, com pose de catálogo",
+       "Com peça transparente exposta"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Catálogo neutro e profissional evita a violação de nudez.",
+      "topic": "Moda"
+     },
+     {
+      "q": "Produto em recall pode ser vendido?",
+      "options": [
+       "Sim, só em LIVE",
+       "Sim, com desconto",
+       "Não, é proibido",
+       "Sim, em kit"
+      ],
+      "answer": [
+       2
+      ],
+      "why": "Produto recolhido ou inseguro não pode ser vendido, inclusive duplicados e kits.",
+      "topic": "Recall"
+     }
+    ]
+   },
+   {
+    "title": "Marca e propriedade intelectual",
+    "tagline": "Vender com direito e com prova",
+    "outcome": "Pedir autorização, anunciar com segurança e recorrer quando preciso.",
+    "lessons": [
+     {
+      "title": "Propriedade intelectual em 5 minutos",
+      "minutes": 4,
+      "goal": "Conhecer os tipos de PI e o que a plataforma faz diante de uma violação.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "©️",
+        "title": "Marca alheia não é enfeite",
+        "text": "Usar nome, logo, desenho ou foto de outra pessoa sem direito é o caminho mais rápido para perder anúncio, saldo e até a conta."
+       },
+       {
+        "t": "list",
+        "title": "Tipos de propriedade intelectual",
+        "items": [
+         "<b>Marca registrada:</b> nomes, logos e sinais",
+         "<b>Direito autoral:</b> fotos, textos, vídeos, ilustrações",
+         "<b>Patente:</b> invenção ou funcionamento técnico",
+         "<b>Desenho industrial (design):</b> forma visual do produto"
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Marca",
+        "term": "Falsificação",
+        "means": "Produto que copia uma marca para se passar pelo original. É proibida em qualquer hipótese.",
+        "ex": "Tênis com logo idêntico ao de uma marca famosa, vendido como original."
+       },
+       {
+        "t": "jargon",
+        "tag": "Marca",
+        "term": "Réplica",
+        "means": "Produto que imita o original sem ser dele. Também é vetado, mesmo quando o vendedor avisa que é “réplica”.",
+        "ex": "Bolsa “estilo” grife com formato e detalhes iguais."
+       },
+       {
+        "t": "list",
+        "title": "Medidas da plataforma",
+        "items": [
+         "Remoção do anúncio",
+         "Pontos de violação e advertências",
+         "Suspensão da conta",
+         "Retenção de saldo, em casos graves"
+        ]
+       },
+       {
+        "t": "p",
+        "title": "Duas ideias que confundem",
+        "html": "<b>Revender produto original</b> de uma marca também exige direito: se a marca exige autorização, ela vem antes do anúncio. Já <b>não ter marca</b> só vale para produtos que realmente não têm marca; escolher “Sem marca” para algo claramente de marca pode levar à remoção."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Cheque antes de anunciar",
+        "html": "Antes de publicar, verifique se o produto leva marca de terceiros, se há restrição para aquela marca na lista do campo Marca e se você possui carta de autorização ou nota de compra."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual das opções é uma violação de propriedade intelectual?",
+        "options": [
+         "Vender bolsa lisa e sem marca",
+         "Vender camiseta própria desenhada pela loja",
+         "Vender uma bolsa com logo de grife sem direito",
+         "Vender caneca com arte da própria loja"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "Usar marca de terceiros sem direito é violação, mesmo sem intenção."
+       },
+       {
+        "t": "quiz",
+        "q": "Escolher “Sem marca” para um produto claramente de marca:",
+        "options": [
+         "Só vale para LIVE",
+         "É liberado se o preço for baixo",
+         "É a forma recomendada de evitar problema",
+         "É proibido e pode remover o anúncio"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "O guia proíbe escolher “Sem marca” quando o produto tem marca evidente."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "PI = marca, <b>direito autoral</b>, patente e design",
+         "Falsificação e réplica são <b>vetadas</b>",
+         "Medidas vão de remoção a <b>retenção de saldo</b>",
+         "Revenda de marca com restrição exige <b>autorização</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Autorização de marca: quem é você e o que enviar",
+      "minutes": 4,
+      "goal": "Escolher o tipo certo de autorização e reunir os documentos.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🪪",
+        "title": "O menu de marca é um porteiro",
+        "text": "Algumas marcas aparecem cinza na lista. Isso quer dizer que falta a autorização, ou que ela não cobre aquela categoria."
+       },
+       {
+        "t": "steps",
+        "title": "Onde pedir",
+        "items": [
+         {
+          "title": "Entre no Seller Center",
+          "html": "No canto superior, abra a sua conta."
+         },
+         {
+          "title": "Minha conta",
+          "html": "Siga para Configurações da conta."
+         },
+         {
+          "title": "Centro de qualificação",
+          "html": "Abra a área de Qualificação da marca."
+         },
+         {
+          "title": "Adicionar autorização",
+          "html": "Escolha o tipo e preencha os dados."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Quatro perfis possíveis",
+        "caption": "O guia mais recente cita até o 3º nível.",
+        "head": [
+         "Perfil",
+         "O que enviar"
+        ],
+        "rows": [
+         [
+          "Proprietário da marca",
+          "Certificado de registro do INPI"
+         ],
+         [
+          "Autorizado de 1º nível",
+          "1 carta de autorização, vinda direto da marca"
+         ],
+         [
+          "Autorizado de 2º nível",
+          "2 cartas: marca → 1º nível e 1º nível → você"
+         ],
+         [
+          "Autorizado de 3º nível",
+          "3 cartas, seguindo a mesma cadeia"
+         ]
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Documento",
+        "term": "LOA",
+        "means": "Carta de autorização. É o documento em que o dono da marca diz que você pode vender e anunciar os produtos dele.",
+        "ex": "Carta no papel timbrado da marca, assinada e com validade."
+       },
+       {
+        "t": "list",
+        "title": "O que a carta precisa trazer",
+        "items": [
+         "Nome de quem autoriza e de quem é autorizado",
+         "<b>Data de validade</b>",
+         "Nome da marca, categoria e <b>território</b>",
+         "Assinatura ou carimbo oficial do dono da marca"
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Regras do arquivo",
+        "items": [
+         "Formatos: PDF (preferido), JPG, JPEG ou PNG",
+         "Até <b>5 MB</b>",
+         "Cópia legível, em papel timbrado",
+         "Nome da marca com 2 a 30 caracteres, igual ao site e à embalagem"
+        ]
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Marca pendente não entra",
+        "html": "Não envie pedido de autorização para marcas que ainda estão com status “marca comercial pendente” no registro. Espere a concessão."
+       },
+       {
+        "t": "p",
+        "title": "Marca acinzentada na lista",
+        "html": "Se você tem a autorização, mas a categoria do produto não está vinculada, a marca continua cinza. A solução é enviar a autorização da mesma marca para a <b>classe</b> correta. As classes seguem a Classificação de Nice: de 1 a 34 são produtos e de 35 a 45, serviços."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantas cartas de autorização um vendedor de 2º nível envia?",
+        "options": [
+         "Uma só, da marca",
+         "Duas",
+         "Nenhuma",
+         "Quatro"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "São duas cartas: da marca para o 1º nível e do 1º nível para o vendedor."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o tamanho máximo do arquivo da carta?",
+        "options": [
+         "5 MB",
+         "50 MB",
+         "500 KB",
+         "1 GB"
+        ],
+        "answer": [
+         0
+        ],
+        "multi": false,
+        "why": "O arquivo aceita PDF, JPG, JPEG ou PNG de até 5 MB."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Pedido em <b>Centro de qualificação > Qualificação da marca</b>",
+         "Dono da marca envia o <b>certificado do INPI</b>; revendedor envia a(s) <b>carta(s)</b>",
+         "Arquivo até <b>5 MB</b>, legível e com validade",
+         "Marca cinza = falta autorização ou <b>classe</b> certa"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Boas práticas de marca no dia a dia",
+      "minutes": 4,
+      "goal": "Anunciar compatíveis, revender e comprovar origem sem risco.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "🧾",
+        "title": "O dia a dia pede prova",
+        "text": "Mesmo com tudo certo, a plataforma pode pedir comprovação. Quem guarda documento resolve em minutos."
+       },
+       {
+        "t": "list",
+        "title": "Antes de publicar",
+        "items": [
+         "Confirme se o produto tem marca de terceiros",
+         "Confira se a marca exige autorização",
+         "Veja se a categoria está vinculada",
+         "Revise imagens e textos que citem marcas"
+        ]
+       },
+       {
+        "t": "compare",
+        "left": {
+         "title": "Use",
+         "tone": "bad",
+         "items": [
+          "<b>“Compatível com”</b> quando o produto funciona com outra marca",
+          "Foto própria do seu produto",
+          "Nome da marca apenas onde for a sua"
+         ]
+        },
+        "right": {
+         "title": "Evite",
+         "tone": "good",
+         "items": [
+          "“Semelhante a”, “inspirado em” ou “réplica”",
+          "Logos e fotos copiados do site da marca",
+          "Marca de terceiros nas imagens para atrair busca"
+         ]
+        }
+       },
+       {
+        "t": "callout",
+        "tone": "atencao",
+        "title": "Esconder a marca também é violação",
+        "html": "Borrar, cobrir com adesivo ou tampar a marca com o dedo na foto é tratado como <b>ocultação de marca</b> e vira violação. Se o produto é de marca, trate dentro das regras."
+       },
+       {
+        "t": "callout",
+        "tone": "regra",
+        "title": "Guarde as notas fiscais",
+        "html": "Mantenha as notas de compra dos produtos por <b>12 meses</b>. Elas ajudam a comprovar a origem se a loja receber uma denúncia."
+       },
+       {
+        "t": "callout",
+        "tone": "exemplo",
+        "title": "Capa de celular",
+        "html": "Anúncio correto: “Capa de silicone compatível com o modelo X”. Anúncio arriscado: “Capa estilo marca famosa” ou imagem com o logo de outra empresa."
+       },
+       {
+        "t": "quiz",
+        "q": "Como anunciar uma capa que serve em um celular de marca?",
+        "options": [
+         "Escrever que é a capa original da marca",
+         "Chamar de “réplica” da marca",
+         "Esconder a marca com adesivo",
+         "Usar “compatível com” e descrever o modelo"
+        ],
+        "answer": [
+         3
+        ],
+        "multi": false,
+        "why": "A forma correta é informar a compatibilidade, sem sugerir que o produto é da marca."
+       },
+       {
+        "t": "quiz",
+        "q": "Por quanto tempo guardar as notas de compra dos produtos?",
+        "options": [
+         "1 semana",
+         "Não é preciso guardar",
+         "12 meses",
+         "30 dias"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "A recomendação é manter as notas por 12 meses para comprovar a origem."
+       },
+       {
+        "t": "say",
+        "title": "Diga assim",
+        "html": "“Meu anúncio diz ‘compatível com’, tem foto própria e a nota de compra está arquivada por um ano.”"
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Use <b>“compatível com”</b>",
+         "<b>Nada de réplica</b>, “inspirado” ou logos copiados",
+         "Esconder marca na foto = <b>violação</b>",
+         "Nota fiscal guardada por <b>12 meses</b>"
+        ]
+       }
+      ]
+     },
+     {
+      "title": "Violação recebida: recurso e IPPC",
+      "minutes": 4,
+      "goal": "Saber o que fazer ao receber aviso de PI e como os donos de marca denunciam.",
+      "blocks": [
+       {
+        "t": "hook",
+        "emoji": "📬",
+        "title": "Chegou o aviso. E agora?",
+        "text": "Receber uma violação de PI não é o fim. Dá para contestar, mas há prazo curto e é preciso documento."
+       },
+       {
+        "t": "steps",
+        "title": "Como recorrer (vendedor)",
+        "items": [
+         {
+          "title": "Entre no Seller Center",
+          "html": "Acesse Integridade da loja."
+         },
+         {
+          "title": "Registros de violação",
+          "html": "Abra o registro da violação."
+         },
+         {
+          "title": "Recorrer",
+          "html": "Clique no botão e envie os documentos."
+         },
+         {
+          "title": "Acompanhe",
+          "html": "Use Detalhes do recurso para ver o andamento."
+         }
+        ]
+       },
+       {
+        "t": "table",
+        "title": "Prazos do recurso",
+        "caption": "Contar a partir da data do aviso ou da recusa.",
+        "head": [
+         "Etapa",
+         "Prazo"
+        ],
+        "rows": [
+         [
+          "1º recurso (vendedor)",
+          "30 dias corridos após o aviso"
+         ],
+         [
+          "2º recurso (vendedor)",
+          "15 dias corridos após a recusa do 1º"
+         ],
+         [
+          "Recursos por violação",
+          "No máximo 2"
+         ],
+         [
+          "Criador de conteúdo",
+          "1 recurso, em 30 dias corridos"
+         ]
+        ]
+       },
+       {
+        "t": "list",
+        "title": "Documentos que sustentam um recurso",
+        "items": [
+         "<b>Carta de autorização</b> do dono da marca ou distribuidor de 1º nível",
+         "<b>Certificado de PI</b> (marca, direito autoral ou desenho registrado)",
+         "Informações como país, titular, validade e classe da marca"
+        ]
+       },
+       {
+        "t": "jargon",
+        "tag": "Proteção",
+        "term": "IPPC",
+        "means": "Centro de Proteção à Propriedade Intelectual. É a ferramenta dos donos de direitos: registrar ativos, procurar produtos, vídeos e LIVEs com violação e acompanhar denúncias.",
+        "ex": "Uma marca usa o IPPC para pedir a remoção de uma réplica."
+       },
+       {
+        "t": "p",
+        "title": "O que o IPPC muda para o vendedor",
+        "html": "O dono da marca pode <b>autorizar vendedores</b> de forma eletrônica, e a marca autorizada é sincronizada com a conta na Central do vendedor. Isso agiliza o pedido de qualificação e reduz o trabalho manual."
+       },
+       {
+        "t": "callout",
+        "tone": "dica",
+        "title": "Prazo perdido é recurso perdido",
+        "html": "Anote a data do aviso assim que ele chegar e junte a carta e o certificado antes de abrir o recurso. Recurso sem documento tende a ser recusado."
+       },
+       {
+        "t": "quiz",
+        "q": "Qual o prazo para o primeiro recurso de uma violação de PI?",
+        "options": [
+         "90 dias úteis",
+         "Não há prazo",
+         "30 dias corridos após o aviso",
+         "24 horas"
+        ],
+        "answer": [
+         2
+        ],
+        "multi": false,
+        "why": "O primeiro recurso deve ser aberto em até 30 dias corridos da emissão do aviso."
+       },
+       {
+        "t": "quiz",
+        "q": "Quantos recursos um vendedor pode abrir por violação?",
+        "options": [
+         "Quantos quiser",
+         "Até dois",
+         "Até dez",
+         "Apenas um"
+        ],
+        "answer": [
+         1
+        ],
+        "multi": false,
+        "why": "São dois recursos: o segundo em até 15 dias corridos após a recusa do primeiro."
+       },
+       {
+        "t": "recap",
+        "title": "Guarda isso",
+        "items": [
+         "Recurso em <b>Integridade da loja > Registros de violação</b>",
+         "Prazos: <b>30 dias</b> e depois <b>15 dias</b>",
+         "Leve <b>carta de autorização</b> e/ou certificado de PI",
+         "IPPC é a ferramenta do <b>dono da marca</b>"
+        ]
+       }
+      ]
+     }
+    ],
+    "questions": [
+     {
+      "q": "Onde se pede autorização de marca?",
+      "options": [
+       "Aba de pedidos cancelados",
+       "Centro de qualificação, na área de marca",
+       "Chat com o cliente do pedido",
+       "Página de campanhas da loja"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "O pedido sai de Minha conta > Configurações da conta > Centro de qualificação.",
+      "topic": "Autorização"
+     },
+     {
+      "q": "Um vendedor de 1º nível envia:",
+      "options": [
+       "Uma carta direta da marca",
+       "Só o CNPJ da loja",
+       "Três cartas",
+       "Nada, é automático"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "O 1º nível recebe a carta diretamente do titular da marca.",
+      "topic": "Autorização"
+     },
+     {
+      "q": "Como anunciar um acessório que serve em um aparelho de marca?",
+      "options": [
+       "Usar “compatível com”",
+       "Chamar de réplica",
+       "Usar o logo da marca",
+       "Escrever “inspirado em”"
+      ],
+      "answer": [
+       0
+      ],
+      "why": "“Compatível com” informa o uso sem copiar a marca.",
+      "topic": "Boas práticas"
+     },
+     {
+      "q": "Qual o prazo do 1º recurso por violação de PI?",
+      "options": [
+       "Sem prazo",
+       "2 anos",
+       "24 horas",
+       "30 dias corridos"
+      ],
+      "answer": [
+       3
+      ],
+      "why": "O prazo conta da emissão do aviso.",
+      "topic": "Recurso"
+     },
+     {
+      "q": "Por quanto tempo guardar as notas de compra?",
+      "options": [
+       "1 dia",
+       "12 meses",
+       "7 dias",
+       "Nunca"
+      ],
+      "answer": [
+       1
+      ],
+      "why": "As notas ajudam a comprovar a origem do produto.",
+      "topic": "Provas"
+     }
+    ]
+   }
+  ],
+  "finalQuestions": [
+   {
+    "q": "Qual a diferença entre produto proibido e restrito?",
+    "options": [
+     "São a mesma coisa",
+     "Restrito pode ser liberado com aprovação",
+     "Restrito nunca pode ser vendido",
+     "Proibido tem formulário de liberação"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Só o restrito tem caminho de aprovação.",
+    "topic": "Regras"
+   },
+   {
+    "q": "A venda de um item em outro marketplace garante que ele é permitido?",
+    "options": [
+     "Sim, para vendedores antigos",
+     "Sim, para produtos novos",
+     "Não, cada plataforma tem as suas regras",
+     "Sim, sempre"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O TikTok Shop pode vetar o que é vendido em outros lugares.",
+    "topic": "Regras"
+   },
+   {
+    "q": "Qual documento é típico de produtos com Bluetooth?",
+    "options": [
+     "Certidão de óbito",
+     "Homologação da ANATEL",
+     "Alvará da prefeitura",
+     "Extrato bancário"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "Equipamentos de telecom pedem esse documento.",
+    "topic": "Restritos"
+   },
+   {
+    "q": "Produto vendido como novo e entregue usado é:",
+    "options": [
+     "Permitido com desconto",
+     "Regra de fidelidade",
+     "Problema de qualidade",
+     "Prática recomendada"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "É listado como problema comum na política de qualidade.",
+    "topic": "Qualidade"
+   },
+   {
+    "q": "Uma denúncia de segurança exige da loja:",
+    "options": [
+     "Resposta imediata e documentos",
+     "Aumento do preço",
+     "Silêncio por 30 dias",
+     "Mudança de nome da loja"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "O prazo importa para evitar medidas disciplinares.",
+    "topic": "Segurança"
+   },
+   {
+    "q": "Produto em recall pode ser republicado em kit?",
+    "options": [
+     "Não, kits e duplicados também ficam vetados",
+     "Sim, se for vendido em kit com desconto",
+     "Sim, se for vendido em kit com brinde",
+     "Sim, se o título do anúncio mudar"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "A política atinge versões, kits e duplicados.",
+    "topic": "Recall"
+   },
+   {
+    "q": "“GLP” no título do produto:",
+    "options": [
+     "Torna o produto proibido",
+     "Só vale para suplementos",
+     "É permitido em LIVE",
+     "Aumenta a conversão"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "A palavra e suas variações na marca ou título são vetadas.",
+    "topic": "Saúde"
+   },
+   {
+    "q": "Qual alegação costuma ser aceita?",
+    "options": [
+     "“Cura queda de cabelo”",
+     "“Elimina rugas para sempre”",
+     "“Contém vitamina C”",
+     "“Queima gordura”"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Fatos sobre ingrediente são aceitos.",
+    "topic": "Saúde"
+   },
+   {
+    "q": "Qual o formato correto de foto de lingerie?",
+    "options": [
+     "Peça transparente exposta",
+     "Modelo abrindo as pernas",
+     "Pose em pé, fundo neutro, sem transparência",
+     "Foto no quarto com clima sexual"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Padrão de catálogo evita rejeição.",
+    "topic": "Moda"
+   },
+   {
+    "q": "Quantas cartas de autorização um vendedor de 2º nível envia?",
+    "options": [
+     "Cinco",
+     "Uma",
+     "Duas",
+     "Nenhuma"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Marca → 1º nível e 1º nível → vendedor.",
+    "topic": "Marca"
+   },
+   {
+    "q": "Tamanho máximo do arquivo da LOA:",
+    "options": [
+     "50 KB",
+     "5 MB",
+     "500 MB",
+     "5 GB"
+    ],
+    "answer": [
+     1
+    ],
+    "why": "PDF, JPG, JPEG ou PNG de até 5 MB.",
+    "topic": "Marca"
+   },
+   {
+    "q": "Marca acinzentada na lista significa:",
+    "options": [
+     "Marca descontinuada",
+     "Preço muito alto",
+     "Falta autorização ou a classe certa",
+     "Loja sem estoque"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "A marca só fica liberada com autorização na categoria.",
+    "topic": "Marca"
+   },
+   {
+    "q": "Qual a forma correta de citar a marca de um aparelho que o acessório atende?",
+    "options": [
+     "“Compatível com”",
+     "“Inspirado em”",
+     "“Original da marca” sem direito",
+     "“Réplica de”"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "A expressão informa compatibilidade, sem copiar.",
+    "topic": "Boas práticas"
+   },
+   {
+    "q": "Tapar a marca na foto com um adesivo:",
+    "options": [
+     "É violação por si só",
+     "Evita multas",
+     "É permitido sempre",
+     "É exigido pela plataforma"
+    ],
+    "answer": [
+     0
+    ],
+    "why": "Ocultação de marca é tratada como violação.",
+    "topic": "Boas práticas"
+   },
+   {
+    "q": "Em quantos dias o 1º recurso de PI deve ser aberto?",
+    "options": [
+     "3 dias úteis",
+     "6 meses",
+     "30 dias corridos",
+     "Sem prazo"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "O 2º recurso é em 15 dias corridos após a recusa.",
+    "topic": "Recurso"
+   },
+   {
+    "q": "Notas de compra devem ser guardadas por:",
+    "options": [
+     "Uma semana",
+     "1 dia",
+     "12 meses",
+     "Não precisa"
+    ],
+    "answer": [
+     2
+    ],
+    "why": "Servem como prova de origem.",
+    "topic": "Provas"
+   }
+  ]
+ }
+}
