@@ -52,6 +52,8 @@ const H = (v, max) => cleanHtml(v, max);
 function U(v) {
   const raw = S(v, 700);
   if (!raw) return "";
+  // imagens que vêm junto com o site (ex.: trilhas importadas): só dentro de /trilhas/, sem "..".
+  if (/^\/trilhas\/[A-Za-z0-9_\-./]+\.(?:jpe?g|png|webp|gif|svg|mp4|webm)$/i.test(raw) && !raw.includes("..")) return raw;
   try { const u = new URL(raw); return u.protocol === "https:" ? u.href : ""; } catch { return ""; }
 }
 
@@ -441,6 +443,22 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
       });
     }
     return json({ trails: rows, ver: meta.ver, ids });
+  }
+
+  // importar uma trilha pronta (arquivo .json) como rascunho novo; nada aparece pros alunos até publicar
+  if (id === "import" && !action && method === "POST") {
+    const s = await S_();
+    if ((await s.keys({ prefix: "t:" })).length >= MAX_TRAILS) fail(409, `Limite de ${MAX_TRAILS} trilhas criadas. Exclua alguma que não usa mais.`);
+    const src = body?.draft && typeof body.draft === "object" ? body.draft : body;
+    if (!src || !Array.isArray(src.modules) || !src.modules.length) fail(400, "Esse arquivo não parece uma trilha do BRANTY SHOOT.");
+    const tid = "c" + crypto.randomBytes(3).toString("hex");
+    const draft = cleanDraft(src, tid);
+    if (draftBytes(draft) > LIMITS.bytes) fail(413, "A trilha ficou grande demais para importar.");
+    const t = now();
+    const doc = { id: tid, rev: 1, draft, live: null, dirty: true, qArchive: [], createdBy: user.id, createdAt: t, updatedAt: t, publishedAt: null };
+    await s.set("t:" + tid, doc);
+    await logEvent(req, "trilha_importada", user, { trilha: tid, title: draft.title });
+    return json({ trail: doc, problems: problems(draft) }, 201);
   }
 
   // criar

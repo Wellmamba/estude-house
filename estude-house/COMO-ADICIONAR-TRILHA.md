@@ -1,6 +1,6 @@
 > **Atalho:** trilhas novas agora podem ser criadas direto no site, sem código (menu **Gestão de trilhas**). Veja `GUIA-CONSTRUTOR-DE-TRILHAS.md`. Este documento continua valendo para trilhas feitas em arquivo.
 
-# Como subir novos conteúdos no Estude House
+# Como subir novos conteúdos no BRANTY SHOOT
 
 O site abre num **menu de trilhas**. Cada trilha é um treinamento completo (módulos, aulas, quizzes, provas e certificado próprios). A PriceBot é a primeira. Cada nova trilha vira um card novo no menu, com o mesmo login dos alunos.
 

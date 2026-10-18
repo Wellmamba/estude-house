@@ -142,7 +142,7 @@
     try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
     location.reload(); // recarrega para o navegador reler o tamanho da tela
   };
-  M.BUILD = "2026-10-18-h"; // igual ao BUILD de netlify/functions/api.mjs
+  M.BUILD = "2026-10-18-i"; // igual ao BUILD de netlify/functions/api.mjs
   M.modeSwitch = function ({ label = true } = {}) {
     const cur = M.effectiveMode(), saved = M.getMode();
     const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
@@ -295,12 +295,15 @@
   M.icon = (name, size = 20) =>
     M.svg(`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[name] || ""}"/></svg>`);
 
-  /* marca: aro de basquete */
+  /* logo: bola de basquete */
+  M.ballSvg = (size = 24) =>
+    `<svg width="${size}" height="${size}" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#f58220"/><path d="M16 2v28M2 16h28M5.6 5.6C11 10.5 11 21.5 5.6 26.4M26.4 5.6C21 10.5 21 21.5 26.4 26.4" fill="none" stroke="#2a1206" stroke-width="1.7" stroke-linecap="round"/><circle cx="16" cy="16" r="14" fill="none" stroke="#2a1206" stroke-width="1.7"/></svg>`;
+
+  /* marca: BRANTY SHOOT + bola de basquete */
   M.brand = function (href) {
     return M.h("a", { class: "brand", href: href || "#/" },
-      M.h("span", { class: "brand-mark" }, M.svg(
-        `<svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="none" stroke="#fdb927" stroke-width="3.2"/><path d="M7 16h18M16 7c3 3 3 15 0 18M16 7c-3 3-3 15 0 18" stroke="#fdb927" stroke-width="1.6" fill="none" opacity=".75"/></svg>`)),
-      M.h("span", { class: "brand-name" }, "Estude House", M.h("small", { text: "Ambiente de estudos da Mamba" })));
+      M.h("span", { class: "brand-mark" }, M.svg(M.ballSvg(26))),
+      M.h("span", { class: "brand-name" }, "BRANTY SHOOT", M.h("small", { text: "Ambiente de estudos da Mamba" })));
   };
 
   /* rótulos de exame; com `withTrail`, acrescenta o nome da trilha (útil quando há mais de uma) */

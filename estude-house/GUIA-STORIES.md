@@ -1,9 +1,9 @@
 > Os cards também podem ser montados pelo construtor do site (`GUIA-CONSTRUTOR-DE-TRILHAS.md`), com os mesmos limites de tom e tamanho.
 
-# Guia: reescrever aulas no formato Stories (Estude House · Mamba Digital)
+# Guia: reescrever aulas no formato Stories (BRANTY SHOOT · Mamba Digital)
 
 ## Contexto
-O Estude House agora mostra cada aula como **stories**: cada bloco de `lesson.blocks` vira UM card de tela cheia no celular (390×844), que o aluno avança tocando. Toda aula nova (e toda aula reescrita) segue esse formato e a linguagem Gen Z. O conteúdo atual é a BASE: nada de inventar regra, número ou política; tudo que importa continua, só dissolvido em doses pequenas e dito de forma simples.
+O BRANTY SHOOT agora mostra cada aula como **stories**: cada bloco de `lesson.blocks` vira UM card de tela cheia no celular (390×844), que o aluno avança tocando. Toda aula nova (e toda aula reescrita) segue esse formato e a linguagem Gen Z. O conteúdo atual é a BASE: nada de inventar regra, número ou política; tudo que importa continua, só dissolvido em doses pequenas e dito de forma simples.
 
 Público: colaboradores da Geração Z, de iniciantes (N0) a estrategistas (N3), estudando principalmente no celular. Assessores de marketplace da Mamba Digital (Mercado Livre e Shopee).
 
