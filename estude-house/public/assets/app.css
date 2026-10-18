@@ -1709,3 +1709,70 @@ html[data-mode="mobile"] input, html[data-mode="mobile"] select, html[data-mode=
 .dst-frame.is-held .dst-lower { opacity: 0; }
 .dst-lower.is-solo { top: 0; align-content: center; background: none; padding: 90px 0 40px; }
 .dst-lower.is-solo .dst-poll { margin-top: 0; }
+
+/* ───── Trilhas: categorias, busca e cartões compactos ───── */
+.cat-bar { display: grid; gap: 12px; margin: 34px 0 6px; }
+.cat-chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.cat-chip { flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; border: 1.5px solid var(--line-strong); background: transparent; color: var(--text); font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.cat-chip b { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: rgba(255, 255, 255, .1); font-size: .78rem; }
+.cat-chip:hover { border-color: var(--gold); }
+.cat-chip[aria-selected="true"] { border-color: var(--gold); background: rgba(253, 185, 39, .14); color: var(--gold); }
+.cat-chip[aria-selected="true"] b { background: var(--gold); color: #2a1206; }
+.cat-chip:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.cat-tools { display: flex; gap: 10px; flex-wrap: wrap; }
+.cat-search { position: relative; flex: 1 1 260px; min-width: 0; display: flex; align-items: center; }
+.cat-search svg { position: absolute; left: 12px; color: var(--muted); pointer-events: none; }
+.cat-search .input { padding-left: 38px; width: 100%; }
+.cat-tools > select.input { flex: 0 1 220px; }
+.cat-sec { margin-top: 26px; }
+.cat-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.cat-head h3 { margin: 0; font-size: 1.9rem; }
+.cat-head .linkish { margin-left: auto; }
+.cat-prova .cat-head h3 { color: var(--gold); }
+.trail-grid.dense { grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 14px; }
+.trail-grid.dense .trail-card { padding: 18px; gap: 10px; }
+.trail-grid.dense .trail-card h3 { font-size: 1.55rem; line-height: 1.1; }
+.trail-grid.dense .trail-card .trail-tag { font-size: .93rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.trail-card.is-prova { border-style: dashed; border-color: rgba(253, 185, 39, .55); }
+.trail-card.is-prova.is-done { border-style: solid; border-color: rgba(82, 224, 163, .5); }
+.cat-result .empty { margin-top: 18px; }
+
+/* abas Trilhas | Provas avulsas na gestão */
+.seg-tabs { display: inline-flex; gap: 4px; padding: 4px; border-radius: 14px; border: 1px solid var(--line); background: rgba(10, 4, 28, .4); }
+.seg-tab { padding: 9px 16px; border-radius: 10px; color: var(--muted); text-decoration: none; font-weight: 700; }
+.seg-tab:hover { color: var(--text); }
+.seg-tab[aria-selected="true"] { background: var(--gold); color: #2a1206; }
+
+/* editor de prova avulsa */
+.pv-edit { display: grid; gap: 10px; max-width: 880px; }
+.pv-meta { display: grid; gap: 14px; }
+.pv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.pv-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.pv-qs { display: grid; gap: 14px; }
+.pv-q { display: grid; gap: 12px; }
+.pv-opts { display: grid; gap: 8px; }
+.pv-opt { display: flex; align-items: center; gap: 8px; }
+.pv-opt .input { flex: 1; min-width: 0; }
+.pv-right { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 10px; border: 1.5px solid var(--line-strong); cursor: pointer; font-weight: 800; flex: none; }
+.pv-right input { width: 18px; height: 18px; accent-color: var(--gold); }
+.pv-opt.is-right .pv-right { border-color: var(--mint, #52e0a3); background: rgba(82, 224, 163, .14); }
+
+/* ───── Tour guiado ───── */
+.tour-layer { position: fixed; inset: 0; z-index: 400; }
+.tour-shade { position: absolute; inset: 0; background: rgba(8, 3, 22, .72); }
+.tour-ring { position: absolute; border-radius: 14px; box-shadow: 0 0 0 9999px rgba(8, 3, 22, .72), 0 0 0 3px var(--gold), 0 0 24px 4px rgba(253, 185, 39, .45); pointer-events: none; transition: left .28s ease, top .28s ease, width .28s ease, height .28s ease; }
+.tour-card { position: absolute; width: min(360px, calc(100vw - 24px)); padding: 18px 18px 14px; border-radius: 18px; background: var(--panel-solid, #241448); border: 1.5px solid var(--gold); color: var(--text); box-shadow: 0 18px 50px rgba(0, 0, 0, .55); display: grid; gap: 10px; transition: left .28s ease, top .28s ease, opacity .2s; }
+.tour-card.is-center { left: 50%; top: 50%; translate: -50% -50%; width: min(440px, calc(100vw - 28px)); text-align: center; }
+.tour-card h3 { margin: 0; font-size: 1.7rem; }
+.tour-card p { margin: 0; color: var(--text); line-height: 1.5; }
+.tour-emoji { font-size: 2.6rem; line-height: 1; }
+.tour-dots { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+.tour-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, .25); }
+.tour-dots i.on { background: var(--gold); width: 20px; border-radius: 99px; }
+.tour-actions { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.tour-actions .grow { flex: 1; }
+.tour-skip { background: none; border: 0; color: var(--muted); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 6px 2px; }
+.tour-count { color: var(--muted); font-size: .82rem; }
+@media (prefers-reduced-motion: reduce) { .tour-ring, .tour-card { transition: none; } }
+.pv-edit .textarea, .pv-edit .input { font-family: var(--body); }
+.pv-grid .field { align-content: start; }

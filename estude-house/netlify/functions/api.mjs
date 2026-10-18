@@ -11,6 +11,7 @@ import * as eng from "./lib/engage.mjs";
 import * as signup from "./lib/signup.mjs";
 import * as notify from "./lib/notify.mjs";
 import * as destaques from "./lib/destaques.mjs";
+import * as provas from "./lib/provas.mjs";
 import * as forum from "./lib/forum.mjs";
 import { now } from "./lib/clock.mjs";
 import { outcomeFor, drawQuestionIds, buildItems, publicQuestions, grade, reviewItem } from "./lib/exam.mjs";
@@ -21,7 +22,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-18-m";
+const BUILD = "2026-10-18-n";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -701,7 +702,13 @@ export default async (req, context) => {
         destaques.unseenCount(user).catch(() => 0),
         can(user, "forum") ? forum.pendingCount().catch(() => 0) : 0,
       ]);
-      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, pendingForum, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), restricted: trailsLib.restricted(), hidden: hiddenIdsFor(user, TRAILS.map((t) => t.id)), rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: { ...publicUser(user), tourSeen: !!user.tourAt }, progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, pendingForum, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), restricted: trailsLib.restricted(), hidden: hiddenIdsFor(user, TRAILS.map((t) => t.id)), rules: { ...RULES, examSize: EXAM_SIZE } });
+    }
+    // tour guiado: marca que a pessoa já viu (ou volta a mostrar no próximo acesso)
+    if (path === "auth/tour" && method === "POST") {
+      if (body.reset === true) delete user.tourAt; else user.tourAt = user.tourAt || Date.now();
+      await saveUser(user);
+      return json({ ok: true, tour: !!user.tourAt });
     }
     if (path === "auth/password" && method === "POST") {
       if (!verifyPassword(String(body.current || ""), user.passHash)) fail(400, "A senha atual não confere.");
@@ -729,6 +736,8 @@ export default async (req, context) => {
     if (trails_) return trails_;
     const dest_ = await destaques.handle(ctx2, { req, method, path, url, body, user });
     if (dest_) return dest_;
+    const provas_ = await provas.handle(ctx2, { req, method, path, url, body, user });
+    if (provas_) return provas_;
     const forum_ = await forum.handle(ctx2, { req, method, path, url, body, user });
     if (forum_) return forum_;
 

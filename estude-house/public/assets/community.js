@@ -218,6 +218,7 @@
     rejected: () => "recusou o seu post",
     forum_ok: () => "aprovou a sua dúvida/sugestão: virou publicação do fórum",
     forum_no: () => "reprovou a sua dúvida/sugestão. Veja o motivo",
+    prova_nova: () => "liberou uma prova para você",
   };
   M.bell = function () {
     const badge = h("span", { class: "bell-n", hidden: true });

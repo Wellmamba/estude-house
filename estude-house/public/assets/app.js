@@ -18,6 +18,9 @@
     [/^#\/tag\/([\w-]+)$/, "tag", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Tag")], view: () => M.views.home({ tag: m[1] }) })],
     [/^#\/admin\/trilhas$/, "admin", () => ({ key: "admin-trails", crumbs: [T("Administração"), T("Trilhas")], view: () => M.views.adminTrails(), wide: true })],
     [/^#\/admin\/trilhas\/(c[0-9a-f]{6})$/, "admin", (m) => ({ key: "admin-trails", crumbs: [T("Administração"), { text: "Trilhas", href: "#/admin/trilhas" }, T("Editor")], view: () => M.views.trailBuilder(m[1]), wide: true, bare: true })],
+    [/^#\/admin\/provas$/, "admin", () => ({ key: "admin-trails", crumbs: [T("Administração"), T("Provas avulsas")], view: () => M.views.adminProvas(), wide: true })],
+    [/^#\/admin\/provas\/(pv[0-9a-f]{6})$/, "admin", (m) => ({ key: "admin-trails", crumbs: [T("Administração"), { text: "Provas avulsas", href: "#/admin/provas" }, T("Editor")], view: () => M.views.provaEditor(m[1]) })],
+    [/^#\/prova\/(pv[0-9a-f]{6})$/, "prova", (m) => ({ key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, T("Prova")], view: () => M.views.prova(m[1]) })],
     [/^#\/admin\/tags$/, "admin", () => ({ key: "admin-tags", crumbs: [T("Administração"), T("Tags e moderação")], view: () => M.views.adminTags(), wide: true })],
     [/^#\/admin\/aprovacoes$/, "admin", () => ({ key: "admin-approve", crumbs: [T("Administração"), T("Aprovações")], view: () => M.views.adminApprovals(), wide: true })],
     [/^#\/admin\/engajamento$/, "admin", () => ({ key: "admin-engage", crumbs: [T("Administração"), T("Engajamento")], view: () => M.views.adminEngage(), wide: true })],
@@ -92,6 +95,7 @@
       const node = await def.view();
       if (my !== seq) return;
       M.setPage(def.key, node._crumbs || def.crumbs, node, { wide: def.wide });
+      if (M.tour) M.tour.maybeStart(def.key);
       document.title = (node._crumbs ? node._crumbs[node._crumbs.length - 1].text : def.crumbs[def.crumbs.length - 1].text) + " · BRYANT SHOOT";
     } catch (e) {
       if (my !== seq || e.status === 401) return;

@@ -47,11 +47,12 @@
   /* ───── quem vê a trilha: todos os alunos ou só os escolhidos ───── */
   M.audienceDialog = async function (t, onSaved) {
     let d;
-    try { d = await M.get(`admin/trails/${t.id}/audience`); } catch (e) { M.toast(e.message, "err"); return; }
+    try { d = await M.get(t.audienceUrl || `admin/trails/${t.id}/audience`); } catch (e) { M.toast(e.message, "err"); return; }
+    const noun = t.noun || "trilha";
     M.modal((close) => {
       let mode = d.mode;
       const sel = new Set(d.students.filter((s) => s.has).map((s) => s.id));
-      const modeBox = h("div", { class: "aud-modes", role: "radiogroup", "aria-label": "Quem vê esta trilha" });
+      const modeBox = h("div", { class: "aud-modes", role: "radiogroup", "aria-label": "Quem vê" });
       const search = h("input", { class: "input", type: "search", placeholder: "Buscar aluno por nome, @ ou e-mail", "aria-label": "Buscar aluno" });
       const list = h("div", { class: "aud-list" });
       const count = h("span", { class: "muted small" });
@@ -62,7 +63,7 @@
       function drawModes() {
         const opt = (k, title, sub) => h("button", { class: "aud-mode", type: "button", role: "radio", "aria-checked": String(mode === k), onclick: () => { mode = k; drawModes(); } },
           h("strong", { text: title }), h("span", { class: "muted small", text: sub }));
-        modeBox.replaceChildren(opt("all", "Todos os alunos", "Quem entrar na plataforma, inclusive os novos, vê esta trilha."),
+        modeBox.replaceChildren(opt("all", "Todos os alunos", `Quem entrar na plataforma, inclusive os novos, vê esta ${noun}.`),
           opt("assigned", "Só quem eu escolher", "Só os alunos marcados abaixo veem. Para os outros ela não existe."));
         pickBox.hidden = mode !== "assigned";
         draw();
@@ -86,15 +87,15 @@
       save.addEventListener("click", async () => {
         save.disabled = true; err.replaceChildren();
         try {
-          const r = await M.api("PUT", `admin/trails/${t.id}/audience`, { mode, users: [...sel] });
-          close(); M.toast(mode === "all" ? "Agora todos os alunos veem esta trilha." : `Pronto: ${r.assigned} ${r.assigned === 1 ? "aluno vê" : "alunos veem"} esta trilha.`, "ok");
-          M.session.restricted = (M.session.restricted || []).filter((x) => x !== t.id).concat(mode === "assigned" ? [t.id] : []);
+          const r = await M.api("PUT", t.audienceUrl || `admin/trails/${t.id}/audience`, { mode, users: [...sel] });
+          close(); M.toast(mode === "all" ? `Agora todos os alunos veem esta ${noun}.` : `Pronto: ${r.assigned} ${r.assigned === 1 ? "aluno vê" : "alunos veem"} esta ${noun}.`, "ok");
+          if (!t.audienceUrl) M.session.restricted = (M.session.restricted || []).filter((x) => x !== t.id).concat(mode === "assigned" ? [t.id] : []);
           onSaved && onSaved(r);
         } catch (e) { err.replaceChildren(h("div", { class: "form-error", text: e.message })); save.disabled = false; }
       });
       drawModes();
       return [h("h3", { text: "Quem vê: " + t.title }),
-        h("p", { class: "muted small", style: "margin:0 0 12px", text: "O gestor sempre vê todas as trilhas. Quem perde o acesso não perde o que já estudou: o progresso fica guardado." }),
+        h("p", { class: "muted small", style: "margin:0 0 12px", text: noun === "prova" ? "O gestor sempre vê todas as provas. Quem já fez a prova mantém o resultado, mesmo se sair da lista." : "O gestor sempre vê todas as trilhas. Quem perde o acesso não perde o que já estudou: o progresso fica guardado." }),
         modeBox, pickBox, err,
         h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => close(), text: "Cancelar" }), save)];
     });
@@ -103,8 +104,26 @@
   M.views.adminTrails = async function () {
     const d = await M.get("admin/trails");
     const list = h("div", { class: "tm-grid" });
+    /* filtro por categoria e busca: com muitas trilhas, o gestor acha a que quer */
+    const AF = M.adminTrailFilter || (M.adminTrailFilter = { cat: "", q: "" });
+    const catOfRow = (t) => { const tag = String((t.kind === "nativa" ? M.allTrails().find((x) => x.id === t.id)?.tag : t.tag) || "").trim(); return !tag || tag.toLowerCase() === "trilha" ? "Geral" : tag; };
+    const catsBox = h("div", { class: "cat-chips", role: "tablist", "aria-label": "Categorias" });
+    const search = h("input", { class: "input", type: "search", placeholder: "Buscar trilha", "aria-label": "Buscar trilha", value: AF.q });
+    const norm = (v) => String(v || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    let current = d.trails;
+    const drawChips = (rows) => {
+      const cats = [...new Set(rows.map(catOfRow))].sort((a, b) => (a === "Geral") - (b === "Geral") || a.localeCompare(b, "pt-BR"));
+      if (AF.cat && !cats.includes(AF.cat)) AF.cat = "";
+      const chip = (key, label, n) => h("button", { class: "cat-chip", type: "button", role: "tab", "aria-selected": String(AF.cat === key), onclick: () => { AF.cat = key; draw(current); } }, label, h("b", { text: String(n) }));
+      catsBox.replaceChildren(chip("", "Todas", rows.length), ...cats.map((c) => chip(c, c, rows.filter((r) => catOfRow(r) === c).length)));
+    };
     const draw = (rowsData) => {
-      list.replaceChildren(rowsData.map((t) => {
+      current = rowsData;
+      drawChips(rowsData);
+      const q = norm(AF.q.trim());
+      const view = rowsData.filter((t) => (!AF.cat || catOfRow(t) === AF.cat) && (!q || norm(`${t.title} ${catOfRow(t)}`).includes(q)));
+      if (!view.length) { list.replaceChildren(h("div", { class: "empty", style: "grid-column:1/-1" }, h("h3", { text: "Nenhuma trilha encontrada" }), h("p", { text: "Tire o filtro de categoria ou limpe a busca." }))); return; }
+      list.replaceChildren(view.map((t) => {
         const created = t.kind === "criada";
         const st = created ? STATUS[t.status] : null;
         const sw = h("input", { type: "checkbox", checked: t.active, role: "switch", "aria-label": (t.active ? "Inativar " : "Ativar ") + t.title });
@@ -122,7 +141,7 @@
         });
         const card = h("article", { class: "tm-card" + (t.active ? "" : " is-off") },
           h("div", { class: "row row-between" },
-            h("div", { class: "row" }, h("span", { class: "chip chip-tag", text: created ? "Criada por você" : "Nativa" }), st ? h("span", { class: st[0], text: st[1] }) : null),
+            h("div", { class: "row" }, h("span", { class: "chip chip-tag", text: catOfRow(t) }), h("span", { class: "chip", text: created ? "Criada por você" : "Nativa" }), st ? h("span", { class: st[0], text: st[1] }) : null),
             h("label", { class: "bd-switch" }, sw, h("span", { class: "bd-switch-ui" }), state)),
           h("h3", { text: t.title }),
           h("div", { class: "row tm-aud" }, M.icon("users", 16),
@@ -143,14 +162,17 @@
         return card;
       }));
     };
+    search.addEventListener("input", () => { AF.q = search.value; draw(current); });
     draw(d.trails);
     return h("div", null,
       h("div", { class: "page-head" },
         h("h2", { text: "Gestão de trilhas" }),
         h("p", { text: "Ative ou inative qualquer trilha e crie as suas, do zero. Trilha inativa some para os alunos; o progresso e os certificados ficam guardados e voltam quando você ativar de novo." })),
-      h("div", { class: "row", style: "margin-bottom:18px;gap:10px;flex-wrap:wrap" },
+      M.gestaoTabs("trilhas"),
+      h("div", { class: "row", style: "margin:18px 0;gap:10px;flex-wrap:wrap" },
         h("button", { class: "btn btn-gold", type: "button", onclick: M.createTrailDialog }, M.icon("plus", 18), " Criar nova trilha"),
         h("button", { class: "btn btn-ghost", type: "button", onclick: M.importTrailDialog }, M.icon("clip", 18), " Importar trilha pronta (.json)")),
+      h("div", { class: "cat-bar" }, catsBox, h("div", { class: "cat-tools" }, h("div", { class: "cat-search" }, M.icon("search", 18), search))),
       list);
   };
 
@@ -574,7 +596,12 @@
       if (s.kind === "trail") {
         kids.push(h("h3", { text: "Dados da trilha" }));
         kids.push(B.field("Nome", B.input(D_, "title", c, { max: 80 })));
-        kids.push(B.field("Etiqueta (aparece no cartão)", B.input(D_, "tag", c, { max: 24, ph: "Ex.: Atendimento" })));
+        {
+          const catInput = B.input(D_, "tag", c, { max: 24, ph: "Ex.: Mercado Livre" });
+          catInput.setAttribute("list", "bd-cats");
+          const cats = [...new Set([...M.allTrails().map((t) => t.tag), "Mercado Livre", "Shopee", "Atendimento", "Formação"].map((x) => String(x || "").trim()).filter((x) => x && x.toLowerCase() !== "trilha"))];
+          kids.push(B.field("Categoria (agrupa a trilha na tela de Trilhas)", catInput, "Escolha uma que já existe ou escreva uma nova. As trilhas da mesma categoria aparecem juntas."), h("datalist", { id: "bd-cats" }, cats.map((x) => h("option", { value: x }))));
+        }
         kids.push(B.field("Frase de apresentação", B.area(D_, "tagline", c, { rows: 2, max: 200, rich: false })));
         kids.push(B.field("Subtítulo da página da trilha (opcional)", B.input(D_, "subtitle", c, { max: 160 })));
         kids.push(h("div", { class: "bd-box" }, h("b", { text: "Situação" }), h("p", { class: "muted small", text: S.live ? "Os alunos veem a última versão publicada. O que você edita aqui só chega a eles quando clicar em Publicar mudanças." : "Rascunho: só você vê. Clique em Publicar quando terminar." })));
