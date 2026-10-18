@@ -11,6 +11,8 @@ import * as mod from "./moderation.mjs";
 import * as notify from "./notify.mjs";
 import { match, snippet } from "./textsearch.mjs";
 import * as forum from "./forum.mjs";
+import * as wpush from "./push.mjs";
+import { pickVideo } from "./videos.mjs";
 
 const MAX_TEXT = 2000, MAX_COMMENT = 500, MAX_MEDIA = 4, PAGE = 12, MAX_PENDING = 3;
 const MAX_TAGS = 30, MAX_PINNED = 3, MAX_QUESTIONS = 6, MAX_OPTIONS = 8;
@@ -18,6 +20,8 @@ const TAG_COLORS = ["gold", "purple", "green", "red", "blue", "orange", "pink", 
 const BLOCKED_MSG = "Não foi possível enviar: o texto tem linguagem ofensiva. Reescreva com respeito.";
 const RESERVED = new Set(["admin", "adm", "mamba", "suporte", "gestor", "gestora", "estude", "house", "root", "todos", "all", "everyone", "eu", "voce", "ninguem", "moderador"]);
 const MEDIA_TYPES = ["image", "video", "file", "link"];
+// Tipos de post que o aluno pode escolher: dão contexto e estimulam compartilhar aprendizados.
+export const KINDS = ["curiosidade", "case", "dica", "conquista"];
 
 const t13 = (n) => String(n).padStart(13, "0");
 const inv = (ts) => t13(9e12 - ts);
@@ -123,6 +127,15 @@ async function updatePost(found, change) {
   return after;
 }
 
+/* vídeo novo no Feed: quem ligou "Vídeos novos" recebe um aviso (no máximo um a cada 6 horas) e o vídeo entra nos Reels */
+async function announceVideo(doc, author) {
+  if (!pickVideo(doc.media)) return;
+  const p = wpush.payloadFor("reel", { by: author, postId: doc.id, text: doc.text });
+  if (!p) return;
+  p.url = "/#/reels"; p.tag = "reel";
+  await Promise.race([wpush.broadcast({ payload: p, cat: "videos", exclude: [doc.authorId] }), new Promise((r) => setTimeout(r, 5000))]).catch(() => {});
+}
+
 /* ---------- tags ---------- */
 async function loadTags() {
   const d = await (await feed()).get("tags");
@@ -215,13 +228,13 @@ async function countsFor(id, meId) {
   }).then((x) => ({ hypes: x.hypers.length, comments: x.comments, hyped: x.hypers.includes(meId) }));
 }
 
-async function views(ctx, docs, user, { withCounts = true } = {}) {
+export async function views(ctx, docs, user, { withCounts = true } = {}) {
   const [authors, tags, polls] = await Promise.all([authorsFor(ctx, docs.map((d) => d.authorId)), loadTags(), pmap(docs, (d) => pollFor(d, user))]);
   const tagMap = new Map(tags.map((t) => [t.id, t]));
   const counts = withCounts ? await pmap(docs, (d) => (d.status === "published" ? countsFor(d.id, user.id) : { hypes: 0, comments: 0, hyped: false })) : [];
   return docs.map((d, i) => ({
     id: d.id, author: authors.get(d.authorId), text: d.text, media: d.media || [],
-    tag: d.tag && tagMap.has(d.tag) ? tagView(tagMap.get(d.tag)) : null, pinned: !!d.pinnedAt, poll: polls[i],
+    tag: d.tag && tagMap.has(d.tag) ? tagView(tagMap.get(d.tag)) : null, kind: d.kind || null, pinned: !!d.pinnedAt, poll: polls[i],
     status: d.status, createdAt: d.createdAt, publishedAt: d.publishedAt || null, reason: d.reason || null,
     ...(withCounts ? counts[i] : {}),
     canDelete: can(user, "moderar") || d.authorId === user.id,
@@ -271,7 +284,10 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     return json({ top, fresh, more: fresh >= 21, pins });
   }
   if (path === "feed/tags" && method === "GET") return json({ tags: (await loadTags()).map(tagView), colors: TAG_COLORS });
-  if (path === "feed/status" && method === "GET") return json({ uploads: uploadsOn(), maxMedia: MAX_MEDIA, maxText: MAX_TEXT, maxQuestions: MAX_QUESTIONS, maxOptions: MAX_OPTIONS, maxPinned: MAX_PINNED });
+  if (path === "feed/status" && method === "GET") {
+    const cfg = await eng.loadCfg();
+    return json({ uploads: uploadsOn(), maxMedia: MAX_MEDIA, maxText: MAX_TEXT, maxQuestions: MAX_QUESTIONS, maxOptions: MAX_OPTIONS, maxPinned: MAX_PINNED, postXp: cfg.xp.post, kinds: KINDS });
+  }
   if (path === "feed/upload-sign" && method === "POST") {
     if (!uploadsOn()) fail(503, "O envio de arquivos ainda não foi configurado pela administração.");
     const rl = await store("rl");
@@ -312,10 +328,14 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const doc = { id: newId("po_"), authorId: user.id, text, media, createdAt: t, status: isAdmin ? "published" : "pending", publishedAt: isAdmin ? t : null };
     if (poll) doc.poll = poll;
     if (tag) doc.tag = tag;
+    if (body.kind != null && body.kind !== "") {
+      if (!KINDS.includes(body.kind)) fail(400, "Tipo de post inválido.");
+      doc.kind = body.kind;
+    }
     if (isAdmin && body.pinned) doc.pinnedAt = t;
     await putPost(doc, isAdmin ? "pub" : "pend");
     await ctx.logEvent(req, "post_criado", user, { post: doc.id, status: doc.status });
-    if (isAdmin) await notify.notifyMentions({ text, author: user, postId: doc.id, where: "post" });
+    if (isAdmin) { await notify.notifyMentions({ text, author: user, postId: doc.id, where: "post" }); await announceVideo(doc, user); }
     const [view] = await views(ctx, [doc], user);
     return json({ post: view, status: doc.status }, 201);
   }
@@ -460,6 +480,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
       await ctx.logEvent(req, "post_aprovado", user, { post: d.id, autor: author?.email || d.authorId, xp: r.gained });
       if (author) await notify.notifyMentions({ text: d.text, author, postId: d.id, where: "post" });
       await notify.notifyUser(d.authorId, "approved", user, d.id, d.text || "Seu post");
+      if (author) await announceVideo(d, author);
       return json({ ok: true, xp: r.gained });
     }
     d.status = "rejected"; d.reason = cleanMultiline(body.reason, 200).replace(/\n+/g, " ") || null; d.reviewedBy = user.id;

@@ -4,6 +4,7 @@
 import { store } from "./db.mjs";
 import { newId, can } from "./auth.mjs";
 import { now } from "./clock.mjs";
+import * as wpush from "./push.mjs";
 
 const KEEP = 40;
 const MAX_MENTIONS = 12;
@@ -49,22 +50,37 @@ export async function notifyMentions({ text, author, postId, where, skip = [] })
     const d = (await s.get("all")) || { items: [] };
     d.items = [{ ...base("all", author, postId, text), where }, ...d.items].slice(0, KEEP);
     await s.set("all", d);
+    const p = wpush.payloadFor("all", { by: author, postId, text });
+    if (p) await Promise.race([wpush.broadcast({ payload: p, cat: "avisos", exclude: [author?.id] }), new Promise((r) => setTimeout(r, 5000))]).catch(() => {});
   }
   for (const id of ids) {
     if (skip.includes(id)) continue;
     await push(id, { ...base("mention", author, postId, text), where });
+    await wpush.sendNotice(id, "mention", { by: author, postId, text, where });
     sent.push(id);
   }
   return { sent, all };
 }
 
-export const notifyUser = (userId, type, by, postId, text, link) => push(userId, base(type, by, postId, text, link));
+export async function notifyUser(userId, type, by, postId, text, link) {
+  await push(userId, base(type, by, postId, text, link));
+  await wpush.sendNotice(userId, type, { by, postId, text, link });
+}
+
+// Aviso do gestor para o time: vai para o mural "all" (o sino de todos) e, se a pessoa ativou, para o aparelho.
+export async function notifyAll({ by, title, text, link, audience = "todos" }) {
+  const s = await store("notif");
+  const d = (await s.get("all")) || { items: [] };
+  d.items = [{ ...base("all", by, null, [title, text].filter(Boolean).join(": "), link), ...(audience !== "todos" ? { aud: audience } : {}) }, ...d.items].slice(0, KEEP);
+  await s.set("all", d);
+}
+const isStaffRole = (u) => u?.role === "admin" || u?.role === "subadmin";
 
 // Lista da pessoa: as dela + @todos (a partir de quando ela entrou), mais novas primeiro.
 export async function listFor(user, limit = 30) {
   const [mine, all] = await Promise.all([doc("u:" + user.id), doc("all")]);
   const since = user.createdAt || 0;
-  const items = [...mine.items, ...all.items.filter((i) => i.at >= since && i.by !== user.id)].sort((a, b) => b.at - a.at).slice(0, limit);
+  const items = [...mine.items, ...all.items.filter((i) => i.at >= since && i.by !== user.id && (!i.aud || (i.aud === "gestores") === isStaffRole(user)))].sort((a, b) => b.at - a.at).slice(0, limit);
   return { items: items.map((i) => ({ ...i, unread: i.at > (mine.readAt || 0) })), readAt: mine.readAt || 0 };
 }
 export async function unreadCount(user) {

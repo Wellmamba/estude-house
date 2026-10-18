@@ -46,6 +46,9 @@ async function recent() {
   return cache.busy;
 }
 
+export const recentDocs = recent;
+export const liveNow = isLive;
+
 async function find(id) {
   const s = await hl();
   const ix = await s.get("ix:" + id);

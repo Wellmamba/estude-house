@@ -13,6 +13,8 @@ import * as notify from "./lib/notify.mjs";
 import * as destaques from "./lib/destaques.mjs";
 import * as provas from "./lib/provas.mjs";
 import * as forum from "./lib/forum.mjs";
+import * as reelsLib from "./lib/reels.mjs";
+import * as pushLib from "./lib/push.mjs";
 import { now } from "./lib/clock.mjs";
 import { outcomeFor, drawQuestionIds, buildItems, publicQuestions, grade, reviewItem } from "./lib/exam.mjs";
 
@@ -22,7 +24,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-18-o";
+const BUILD = "2026-10-18-p";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -683,7 +685,7 @@ export default async (req, context) => {
     if (method === "OPTIONS") return new Response(null, { status: 204 });
     const body = await readBody(req);
 
-    if (path === "health") return json({ ok: true, build: BUILD, blobs: blobsMode(), uploads: social.uploadsOn() ? "cloudinary" : "desligado", rules: RULES });
+    if (path === "health") return json({ ok: true, build: BUILD, blobs: blobsMode(), uploads: social.uploadsOn() ? "cloudinary" : "desligado", push: (await pushLib.vapid()) ? "ativo" : "indisponível", rules: RULES });
     if (path === "auth/register" && method === "POST") return await register(req, body);
     if (path === "auth/login" && method === "POST") return await login(req, body);
     if (path === "auth/activate" && method === "POST") return await signup.activate({ json, fail, logEvent, loadUser, saveUser, findByEmail }, req, body);
@@ -736,6 +738,10 @@ export default async (req, context) => {
     if (trails_) return trails_;
     const dest_ = await destaques.handle(ctx2, { req, method, path, url, body, user });
     if (dest_) return dest_;
+    const push_ = await pushLib.handle(ctx2, { req, method, path, url, body, user });
+    if (push_) return push_;
+    const reels_ = await reelsLib.handle(ctx2, { req, method, path, url, body, user });
+    if (reels_) return reels_;
     const provas_ = await provas.handle(ctx2, { req, method, path, url, body, user });
     if (provas_) return provas_;
     const forum_ = await forum.handle(ctx2, { req, method, path, url, body, user });
