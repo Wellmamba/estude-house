@@ -16,9 +16,10 @@
 
 import crypto from "node:crypto";
 import { store, pmap } from "./db.mjs";
-import { newId } from "./auth.mjs";
+import { newId, can } from "./auth.mjs";
 import { now } from "./clock.mjs";
-import { TRAILS, BUILTIN_IDS, setCustomTrails, setInactive, isTrailActive, inactiveIds } from "./manifest.mjs";
+import { isLive } from "./auth.mjs";
+import { TRAILS, BUILTIN_IDS, setCustomTrails, setInactive, isTrailActive, inactiveIds, setRestricted, restrictedIds, isRestricted, trailVisibleTo } from "./manifest.mjs";
 import { setCustomQuestions } from "./questions/index.mjs";
 
 /* ───────────────────────── limpeza de texto ───────────────────────── */
@@ -331,7 +332,7 @@ function toQuestions(id, d) {
 
 const st = { ver: -1, checkedAt: 0, docs: new Map(), loading: null };
 const S_ = () => store("trails");
-const emptyMeta = () => ({ ver: 0, flags: {}, trails: {} });
+const emptyMeta = () => ({ ver: 0, flags: {}, trails: {}, audience: {} });
 
 function rebuild(meta) {
   const trails = [], active = [], archived = [];
@@ -345,6 +346,7 @@ function rebuild(meta) {
   setCustomTrails(trails);
   setCustomQuestions(active, archived);
   setInactive(Object.entries(meta.flags).filter(([, f]) => f?.active === false).map(([id]) => id));
+  setRestricted(Object.entries(meta.audience || {}).filter(([, a]) => a?.mode === "assigned").map(([id]) => id));
 }
 
 async function doSync(force) {
@@ -371,6 +373,9 @@ export async function sync(force = false) {
 
 export const version = () => st.ver;
 export const inactive = () => inactiveIds();
+export const restricted = () => restrictedIds();
+// o gestor mudou quem vê o quê: faz os aparelhos baixarem a lista de trilhas de novo
+export async function bumpVersion() { await mutateMeta(() => {}); }
 
 // Lê-modifica-grava o meta (raro: só quando o gestor publica, inativa ou exclui).
 async function mutateMeta(fn) {
@@ -396,12 +401,12 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   if (path === "trails/custom" && method === "GET") {
     if (url.searchParams.get("v") === String(st.ver)) return json({ same: true, ver: st.ver });
     const list = [];
-    for (const [id, doc] of st.docs) if (doc.live) list.push(toClient(id, doc.live));
+    for (const [id, doc] of st.docs) if (doc.live && trailVisibleTo(user, id)) list.push(toClient(id, doc.live));
     return json({ ver: st.ver, trails: list });
   }
 
   if (!path.startsWith("admin/trails")) return null;
-  if (user.role !== "admin") fail(403, "Área restrita a administradores.");
+  if (!can(user, "trilhas")) fail(403, "Você não tem permissão para esta área.");
   const parts = path.split("/"); // admin, trails, :id, ação
   const id = parts[2] || "";
   const action = parts[3] || "";
@@ -420,15 +425,17 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const ids = Object.keys(meta.trails);
     const s = await S_();
     const docs = (await pmap((await s.keys({ prefix: "t:" })), (k) => s.get(k), 8)).filter(Boolean);
+    const students = (await ctx.allUsers()).filter((u) => u.role === "aluno" && isLive(u));
+    const aud = (tid) => ({ audience: meta.audience?.[tid]?.mode === "assigned" ? "assigned" : "all", assigned: students.filter((u) => (u.trailAccess || []).includes(tid)).length, students: students.length });
     const rows = TRAILS.filter((t) => BUILTIN_IDS.has(t.id)).map((t) => ({
-      id: t.id, kind: "nativa", title: t.title, active: isTrailActive(t.id),
+      id: t.id, kind: "nativa", title: t.title, active: isTrailActive(t.id), ...aud(t.id),
       modules: t.modules.length, lessons: t.modules.reduce((a, m) => a + m.lessons.length, 0),
     }));
     for (const doc of docs) {
       const d = doc.draft;
       rows.push({
         id: doc.id, kind: "criada", title: d.title || "(sem nome)", status: doc.live ? (doc.dirty ? "publicada-com-mudancas" : "publicada") : "rascunho",
-        active: isTrailActive(doc.id), modules: d.modules.length, lessons: d.modules.reduce((a, m) => a + m.lessons.length, 0),
+        active: isTrailActive(doc.id), ...aud(doc.id), modules: d.modules.length, lessons: d.modules.reduce((a, m) => a + m.lessons.length, 0),
         cards: d.modules.reduce((a, m) => a + m.lessons.reduce((b, l) => b + l.blocks.length, 0), 0),
         updatedAt: doc.updatedAt, publishedAt: doc.publishedAt || null, live: !!meta.trails[doc.id]?.live,
       });
@@ -455,6 +462,35 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     await mutateMeta((m) => { if (on) delete m.flags[id]; else m.flags[id] = { active: false, by: user.id, at: now() }; });
     await logEvent(req, on ? "trilha_ativada" : "trilha_inativada", user, { trilha: id });
     return json({ ok: true, id, active: on, inactive: inactiveIds(), ver: st.ver });
+  }
+
+  // quem vê a trilha: todos os alunos (padrão) ou só os escolhidos
+  if (action === "audience" && (method === "GET" || method === "PUT")) {
+    if (!BUILTIN_IDS.has(id)) await load(id);
+    const students = (await ctx.allUsers()).filter((u) => u.role === "aluno" && isLive(u));
+    if (method === "GET") {
+      const meta = await flags();
+      return json({
+        mode: meta.audience?.[id]?.mode === "assigned" ? "assigned" : "all",
+        students: students.map((u) => ({ id: u.id, name: u.name, email: u.email, nickname: u.nickname || null, avatar: u.avatar || null, has: (u.trailAccess || []).includes(id) }))
+          .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")),
+      });
+    }
+    const assigned = body.mode === "assigned";
+    const want = new Set(Array.isArray(body.users) ? body.users.map(String) : []);
+    await mutateMeta((m) => { m.audience = m.audience || {}; if (assigned) m.audience[id] = { mode: "assigned", by: user.id, at: now() }; else delete m.audience[id]; });
+    let changed = 0;
+    if (assigned) {
+      await pmap(students.filter((u) => (u.trailAccess || []).includes(id) !== want.has(u.id)), async (u) => {
+        const list = new Set(u.trailAccess || []);
+        if (want.has(u.id)) list.add(id); else list.delete(id);
+        u.trailAccess = [...list];
+        await ctx.saveUser(u);
+        changed++;
+      }, 8);
+    }
+    await logEvent(req, "trilha_audiencia", user, { trilha: id, quem: assigned ? `${want.size} escolhidos` : "todos os alunos" });
+    return json({ ok: true, mode: assigned ? "assigned" : "all", assigned: assigned ? students.filter((u) => want.has(u.id)).length : 0, changed });
   }
 
   if (BUILTIN_IDS.has(id)) fail(400, "As trilhas nativas não são editadas pelo construtor. Você pode ativar, inativar ou duplicar o formato.");
@@ -513,7 +549,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   if (!action && method === "DELETE") {
     const doc = await load(id);
     await (await S_()).delete("t:" + id);
-    await mutateMeta((m) => { delete m.trails[id]; delete m.flags[id]; });
+    await mutateMeta((m) => { delete m.trails[id]; delete m.flags[id]; if (m.audience) delete m.audience[id]; });
     await logEvent(req, "trilha_excluida", user, { trilha: id, title: doc.draft.title });
     return json({ ok: true });
   }
@@ -521,5 +557,5 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   return null;
 }
 
-export { isTrailActive, inactiveIds };
+export { isTrailActive, inactiveIds, isRestricted, restrictedIds };
 export const _internal = { toManifest, toClient, toQuestions, finalScopeOf };

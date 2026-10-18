@@ -70,6 +70,20 @@ const INACTIVE = new Set();
 export function setInactive(ids) { INACTIVE.clear(); for (const id of ids) INACTIVE.add(id); }
 export const isTrailActive = (id) => !INACTIVE.has(id);
 export const inactiveIds = () => [...INACTIVE];
+// Trilhas "só para quem o admin escolher": o aluno vê apenas se a trilha estiver na lista dele (user.trailAccess).
+const RESTRICTED = new Set();
+export function setRestricted(ids) { RESTRICTED.clear(); for (const id of ids) RESTRICTED.add(id); }
+export const isRestricted = (id) => RESTRICTED.has(id);
+export const restrictedIds = () => [...RESTRICTED];
+export const hasTrailAccess = (user, id) => Array.isArray(user?.trailAccess) && user.trailAccess.includes(id);
+// Gestor vê tudo. Aluno vê se a trilha está ativa e (é para todos ou foi atribuída a ele).
+export function trailVisibleTo(user, id) {
+  if (user?.role === "admin" || user?.role === "subadmin") return true;
+  if (INACTIVE.has(id)) return false;
+  return !RESTRICTED.has(id) || hasTrailAccess(user, id);
+}
+// Ids das trilhas que somem para esta pessoa (inativas ou não atribuídas a ela).
+export function hiddenIdsFor(user, allIds) { return allIds.filter((id) => !trailVisibleTo(user, id)); }
 
 export const trailById = (id) => TRAILS.find((t) => t.id === id) || null;
 export const trailOfLesson = (lessonId) => TRAILS.find((t) => t.modules.some((m) => m.lessons.includes(lessonId))) || null;

@@ -3,7 +3,7 @@ import {
   normalizeEmail, isValidEmail, emailKey, hashPassword, verifyPassword, signToken, verifyToken,
   passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed, isLive, can, isStaff, cleanPerms,
 } from "./lib/auth.mjs";
-import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope, isTrailActive } from "./lib/manifest.mjs";
+import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope, isTrailActive, trailVisibleTo, hiddenIdsFor, isRestricted } from "./lib/manifest.mjs";
 import { QUESTIONS, byId } from "./lib/questions/index.mjs";
 import * as trailsLib from "./lib/trails.mjs";
 import * as social from "./lib/social.mjs";
@@ -21,7 +21,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-16-f";
+const BUILD = "2026-10-18-g";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -228,7 +228,7 @@ function examScope(scope) {
 
 // Trilha inativa: o aluno não estuda nem faz prova (o gestor continua livre para testar).
 function needActive(user, trail) {
-  if (!isStaff(user) && !isTrailActive(trail.id)) fail(403, "Esta trilha está inativa no momento.");
+  if (!trailVisibleTo(user, trail.id)) fail(403, isTrailActive(trail.id) ? "Esta trilha não está liberada para você. Fale com a administração." : "Esta trilha está inativa no momento.");
 }
 
 async function completeLesson(req, user, body) {
@@ -409,6 +409,7 @@ function userSummary(u, p, e) {
     nickname: u.nickname || null,
     avatar: u.avatar || null,
     master: isMaster(u.email),
+    ...(u.role === "aluno" ? { trailAccess: u.trailAccess || [] } : {}),
     ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}),
   };
 }
@@ -430,9 +431,14 @@ async function adminOverview() {
   const all = (await allWithProgress()).filter(({ u }) => !u.access || u.access === "active");
   const rows = all.map(({ u, p, e }) => userSummary(u, p, e));
   const alunos = rows.filter((r) => r.role === "aluno");
-  const alunoProgress = all.filter(({ u }) => u.role === "aluno").map(({ p }) => p);
+  const alunoRows = all.filter(({ u }) => u.role === "aluno");
   const trails = {};
   for (const t of TRAILS) {
+    /* trilha só para escolhidos: as contas consideram apenas quem recebeu a trilha */
+    const pool = isRestricted(t.id) ? alunoRows.filter(({ u }) => (u.trailAccess || []).includes(t.id)) : alunoRows;
+    const poolIds = new Set(pool.map(({ u }) => u.id));
+    const poolRows = alunos.filter((r) => poolIds.has(r.id));
+    const alunoProgress = pool.map(({ p }) => p);
     const totalLessons = t.modules.reduce((a, m) => a + m.lessons.length, 0);
     const funnel = t.modules.map((m) => {
       let started = 0, approved = 0;
@@ -444,10 +450,10 @@ async function adminOverview() {
     });
     const lessonsOf = (r) => r.trails[t.id].lessonsDone;
     trails[t.id] = {
-      started: alunos.filter((r) => lessonsOf(r) > 0).length,
-      approved: alunos.filter((r) => r.trails[t.id].finalStatus === "approved").length,
-      avgProgress: alunos.length ? Math.round((alunos.reduce((a, r) => a + lessonsOf(r), 0) / (alunos.length * totalLessons)) * 100) : 0,
-      funnel,
+      started: poolRows.filter((r) => lessonsOf(r) > 0).length,
+      approved: poolRows.filter((r) => r.trails[t.id].finalStatus === "approved").length,
+      avgProgress: poolRows.length ? Math.round((poolRows.reduce((a, r) => a + lessonsOf(r), 0) / (poolRows.length * totalLessons)) * 100) : 0,
+      funnel, audience: pool.length, restricted: isRestricted(t.id),
     };
   }
   const logs = await store("logs");
@@ -535,6 +541,7 @@ async function adminPatchUser(req, admin, id, body) {
   const master = isMaster(u.email);
   onlyAdminTouchesStaff(admin, u);
   const changes = {};
+  let trailsChanged = false;
   if (body.name !== undefined) {
     const n = cleanText(body.name, 80);
     if (n.length < 2) fail(400, "Nome inválido.");
@@ -553,6 +560,12 @@ async function adminPatchUser(req, admin, id, body) {
     if (u.role !== "subadmin") fail(400, "Só sub-administradores têm permissões configuráveis.");
     u.perms = cleanPerms(body.perms); changes.perms = u.perms;
   }
+  if (body.trails !== undefined) {
+    if (u.role !== "aluno") fail(400, "Atribuição de trilhas vale só para alunos.");
+    const ok = new Set(TRAILS.map((t) => t.id));
+    u.trailAccess = [...new Set((Array.isArray(body.trails) ? body.trails : []).map(String).filter((t) => ok.has(t)))]; changes.trilhas = u.trailAccess.join(",") || "nenhuma";
+    trailsChanged = true;
+  }
   if (body.active !== undefined) {
     if (master) fail(403, "O acesso master não pode ser desativado.");
     if (id === admin.id) fail(400, "Você não pode desativar o próprio acesso.");
@@ -565,6 +578,7 @@ async function adminPatchUser(req, admin, id, body) {
     u.passHash = hashPassword(String(body.password)); changes.password = "redefinida"; newPassword = true;
   }
   await saveUser(u);
+  if (trailsChanged) await trailsLib.bumpVersion().catch(() => {});
   await logEvent(req, "admin_alterou_usuario", admin, { target: u.email, ...changes });
   return json({ user: userSummary(u, await loadProgress(id)), passwordChanged: !!newPassword });
 }
@@ -687,7 +701,7 @@ export default async (req, context) => {
         destaques.unseenCount(user).catch(() => 0),
         can(user, "forum") ? forum.pendingCount().catch(() => 0) : 0,
       ]);
-      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, pendingForum, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: publicUser(user), progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, pendingForum, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), restricted: trailsLib.restricted(), hidden: hiddenIdsFor(user, TRAILS.map((t) => t.id)), rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     if (path === "auth/password" && method === "POST") {
       if (!verifyPassword(String(body.current || ""), user.passHash)) fail(400, "A senha atual não confere.");

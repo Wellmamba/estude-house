@@ -142,7 +142,7 @@
     try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
     location.reload(); // recarrega para o navegador reler o tamanho da tela
   };
-  M.BUILD = "2026-10-16-f"; // igual ao BUILD de netlify/functions/api.mjs
+  M.BUILD = "2026-10-18-g"; // igual ao BUILD de netlify/functions/api.mjs
   M.modeSwitch = function ({ label = true } = {}) {
     const cur = M.effectiveMode(), saved = M.getMode();
     const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
@@ -192,7 +192,9 @@
   M.customTrails = [];
   M.allTrails = () => [...(window.TRILHAS || []), ...M.customTrails];
   M.isInactive = (id) => (M.session.inactive || []).includes(id);
-  M.trails = () => (M.isAdmin() ? M.allTrails() : M.allTrails().filter((t) => !M.isInactive(t.id)));
+  M.isRestricted = (id) => (M.session.restricted || []).includes(id);
+  /* aluno só enxerga trilha ativa e (liberada para todos ou atribuída a ele); o servidor manda a lista das escondidas */
+  M.trails = () => (M.isAdmin() ? M.allTrails() : M.allTrails().filter((t) => !M.isInactive(t.id) && !(M.session.hidden || []).includes(t.id)));
   /* baixa as trilhas criadas quando a versão mudou (o /me traz o número da versão) */
   M.syncCustomTrails = async function (ctv) {
     if (ctv == null || ctv === M.ctv) return;

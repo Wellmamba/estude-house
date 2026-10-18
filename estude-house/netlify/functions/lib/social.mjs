@@ -4,7 +4,7 @@
 // hypes/<post>:<pessoa>, comments/<post>:<tempo>-<sufixo>, nicks/n:<apelido>.
 import crypto from "node:crypto";
 import { store, pmap } from "./db.mjs";
-import { newId, isLive } from "./auth.mjs";
+import { newId, isLive, can, isStaff } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as eng from "./engage.mjs";
 import * as mod from "./moderation.mjs";
@@ -161,7 +161,7 @@ function sanitizePoll(p, fail) {
 async function pollFor(d, user) {
   const p = d.poll;
   if (!p) return null;
-  const admin = user.role === "admin";
+  const admin = isStaff(user);
   const live = d.status === "published";
   const keys = live ? await memo("polls:" + d.id, TTL, async () => (await store("polls")).keys({ prefix: d.id + ":" })) : [];
   const counts = p.questions.map((q) => q.options.map(() => 0));
@@ -223,7 +223,7 @@ async function views(ctx, docs, user, { withCounts = true } = {}) {
     tag: d.tag && tagMap.has(d.tag) ? tagView(tagMap.get(d.tag)) : null, pinned: !!d.pinnedAt, poll: polls[i],
     status: d.status, createdAt: d.createdAt, publishedAt: d.publishedAt || null, reason: d.reason || null,
     ...(withCounts ? counts[i] : {}),
-    canDelete: user.role === "admin" || d.authorId === user.id,
+    canDelete: can(user, "moderar") || d.authorId === user.id,
   }));
 }
 
@@ -231,8 +231,10 @@ async function views(ctx, docs, user, { withCounts = true } = {}) {
 export async function handle(ctx, { req, method, path, url, body, user }) {
   const { json, fail } = ctx;
   const parts = path.split("/");
-  const isAdmin = user.role === "admin";
-  const needAdmin = () => { if (!isAdmin) fail(403, "Área restrita a administradores."); };
+  /* admin faz tudo; sub-adm só o que tem na lista de permissões */
+  const isAdmin = can(user, "publicar"); // publica direto, cria enquete, fixa, escolhe tag
+  const canMod = can(user, "moderar"), canApprove = can(user, "aprovar");
+  const needPerm = (ok) => { if (!ok) fail(403, "Você não tem permissão para esta área."); };
 
   /* --- feed --- */
   if (path === "feed" && method === "GET") {
@@ -319,11 +321,11 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   if (parts[0] === "feed" && parts[1] === "post" && parts[2]) {
     const found = await findPost(parts[2]);
     if (method === "GET") {
-      if (!found || (found.doc.status !== "published" && found.doc.authorId !== user.id && !isAdmin)) fail(404, "Post não encontrado.");
+      if (!found || (found.doc.status !== "published" && found.doc.authorId !== user.id && !canApprove && !canMod)) fail(404, "Post não encontrado.");
       return json({ post: (await views(ctx, [found.doc], user))[0] });
     }
     if (method === "PATCH") {
-      needAdmin();
+      needPerm(isAdmin || canMod);
       if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
       const change = {};
       if (body.tag !== undefined) {
@@ -348,7 +350,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     }
     if (method === "DELETE") {
       if (!found) fail(404, "Post não encontrado.");
-      if (!isAdmin && found.doc.authorId !== user.id) fail(403, "Só quem publicou ou a administração pode remover.");
+      if (!canMod && found.doc.authorId !== user.id) fail(403, "Só quem publicou ou a administração pode remover.");
       const f = await feed();
       await Promise.all([f.delete(found.key), f.delete("ix:" + found.doc.id), ...extraKeys(found.doc).map((x) => f.delete(x))]);
       const [hs, cs, ps] = [await store("hypes"), await store("comments"), await store("polls")];
@@ -403,7 +405,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const keys = await cs.keys({ prefix: found.doc.id + ":", limit: 200 });
     const docs = (await pmap(keys, (k) => cs.get(k))).filter(Boolean);
     const authors = await authorsFor(ctx, docs.map((c) => c.authorId));
-    return json({ comments: docs.map((c) => ({ id: c.id, author: authors.get(c.authorId), text: c.text, at: c.at, canDelete: isAdmin || c.authorId === user.id })) });
+    return json({ comments: docs.map((c) => ({ id: c.id, author: authors.get(c.authorId), text: c.text, at: c.at, canDelete: canMod || c.authorId === user.id })) });
   }
   if (parts[0] === "feed" && parts[1] === "comment" && parts[2] && method === "POST") {
     const found = await findPost(parts[2]);
@@ -428,7 +430,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const k = `${parts[2]}:${parts[3]}`;
     const c = await cs.get(k);
     if (!c) fail(404, "Comentário não encontrado.");
-    if (!isAdmin && c.authorId !== user.id) fail(403, "Só quem comentou ou a administração pode remover.");
+    if (!canMod && c.authorId !== user.id) fail(403, "Só quem comentou ou a administração pode remover.");
     await cs.delete(k);
     bust("posts:c:" + parts[2]);
     return json({ ok: true });
@@ -436,14 +438,14 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
 
   /* --- moderação --- */
   if (path === "admin/feed/pending" && method === "GET") {
-    needAdmin();
+    needPerm(canApprove);
     const f = await feed();
     const keys = await f.keys({ prefix: "pend:" });
     const docs = (await pmap(keys, (k) => f.get(k))).filter(Boolean).sort((a, b) => a.createdAt - b.createdAt);
     return json({ posts: await views(ctx, docs, user, { withCounts: false }) });
   }
   if (parts[0] === "admin" && parts[1] === "feed" && parts[2] && ["approve", "reject"].includes(parts[3]) && method === "POST") {
-    needAdmin();
+    needPerm(canApprove);
     const found = await findPost(parts[2]);
     if (!found || found.doc.status !== "pending") fail(404, "Esse post não está mais aguardando aprovação.");
     const f = await feed();
@@ -465,9 +467,9 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     await notify.notifyUser(d.authorId, "rejected", user, d.id, d.reason || d.text || "Seu post");
     return json({ ok: true });
   }
-  if (path === "admin/engage/config" && method === "GET") { needAdmin(); return json({ config: await eng.loadCfg(), metrics: eng.METRICS, defaults: eng.DEFAULT_CFG }); }
+  if (path === "admin/engage/config" && method === "GET") { needPerm(can(user, "engajamento")); return json({ config: await eng.loadCfg(), metrics: eng.METRICS, defaults: eng.DEFAULT_CFG }); }
   if (path === "admin/engage/config" && method === "PUT") {
-    needAdmin();
+    needPerm(can(user, "engajamento"));
     const cfg = await eng.saveCfg(body, newId, fail);
     await ctx.logEvent(req, "admin_config_engajamento", user, { metas: cfg.goals.length });
     return json({ config: cfg });
@@ -475,7 +477,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
 
   /* --- tags (gestão) e moderação --- */
   if (path === "admin/tags" && method === "POST") {
-    needAdmin();
+    needPerm(canMod);
     const list = await loadTags();
     if (list.length >= MAX_TAGS) fail(400, `No máximo ${MAX_TAGS} tags.`);
     const t = { id: newId("tg_"), name: tagName(body.name, list, fail), color: TAG_COLORS.includes(body.color) ? body.color : "gold", createdAt: now() };
@@ -484,7 +486,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     return json({ tag: tagView(t), tags: [...list, t].map(tagView) }, 201);
   }
   if (parts[0] === "admin" && parts[1] === "tags" && parts[2] && ["PATCH", "DELETE"].includes(method)) {
-    needAdmin();
+    needPerm(canMod);
     const list = await loadTags();
     const t = list.find((x) => x.id === parts[2]);
     if (!t) fail(404, "Tag não encontrada.");
@@ -502,15 +504,15 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     await ctx.logEvent(req, "tag_removida", user, { tag: t.name });
     return json({ tags: list.filter((x) => x.id !== t.id).map(tagView) });
   }
-  if (path === "admin/moderation" && method === "GET") { needAdmin(); return json({ moderation: await mod.loadMod() }); }
+  if (path === "admin/moderation" && method === "GET") { needPerm(canMod); return json({ moderation: await mod.loadMod() }); }
   if (path === "admin/moderation" && method === "PUT") {
-    needAdmin();
+    needPerm(canMod);
     const m = await mod.saveMod(body, fail);
     await ctx.logEvent(req, "admin_moderacao", user, { filtro: m.on ? "ligado" : "desligado", palavras: m.words.length });
     return json({ moderation: m });
   }
   if (path === "admin/moderation/test" && method === "POST") {
-    needAdmin();
+    needPerm(canMod);
     const m = await mod.loadMod();
     return json({ hit: mod.offense(String(body.text || ""), m.words) });
   }
@@ -621,7 +623,7 @@ async function search(ctx, user, q, tagId = "") {
   const pRows = [];
   for (const u of tag ? [] : people) {
     if (!isLive(u)) continue;
-    const m = match(qPerson, [{ text: u.name, weight: 3 }, { text: u.nickname || "", weight: 3 }, ...(user.role === "admin" ? [{ text: u.email, weight: 2 }] : [])]);
+    const m = match(qPerson, [{ text: u.name, weight: 3 }, { text: u.nickname || "", weight: 3 }, ...(isStaff(user) ? [{ text: u.email, weight: 2 }] : [])]);
     if (m) pRows.push({ s: m.score, p: { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role } });
   }
   pRows.sort((a, b) => b.s - a.s);

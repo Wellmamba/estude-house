@@ -67,6 +67,9 @@ A trilha **Grade de Formação Mamba** (14 módulos, 68 aulas) traz gráficos, t
 
 O gestor cria trilhas dentro da plataforma (módulos, aulas, cards, gráficos, imagens, vídeos por upload, link ou gravação, quizzes e provas) e ativa ou inativa qualquer trilha. Passo a passo em **GUIA-CONSTRUTOR-DE-TRILHAS.md**. Upload e gravação de vídeo precisam do Cloudinary.
 
+## Quem vê cada trilha
+Cada trilha aparece para **todos os alunos** (padrão) ou **só para quem o admin escolher** (atribuição), em Gestão de trilhas > "Quem vê" ou na página do aluno. Veja `GUIA-QUEM-VE-A-TRILHA.md`.
+
 ## Várias trilhas
 
 Todas as trilhas vivem em `window.TRILHAS` (site) e em `TRAILS` (servidor, `manifest.mjs`). O andamento é por trilha (`progress.trails[id]`): módulos em sequência, prova final e certificado próprios. Reprovar na final zera só a trilha em questão. Usuários, logs e administração são compartilhados; o painel tem seletor de trilha. O certificado de cada trilha é emitido em `#/cert/<trilha>`, e a lista de certificados fica em `#/cert`.

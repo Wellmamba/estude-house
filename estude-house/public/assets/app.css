@@ -1568,6 +1568,19 @@ html[data-mode="mobile"] .tabbar { left: 50%; right: auto; width: min(100%, 480p
 .sub-item.sub-approved { border-color: rgba(82, 224, 163, .4); }
 .sub-reason { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: var(--bad-bg); border: 1px solid rgba(255, 122, 151, .35); font-size: .92rem; }
 
+/* quem vê a trilha */
+.tm-aud { gap: 8px; align-items: center; margin: 2px 0 8px; color: var(--muted); }
+.aud-modes { display: grid; gap: 8px; margin-bottom: 14px; }
+.aud-mode { display: grid; gap: 2px; text-align: left; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--line-strong); background: var(--panel); color: var(--text); cursor: pointer; font: inherit; }
+.aud-mode[aria-checked="true"] { border-color: var(--gold); background: rgba(253, 185, 39, .1); }
+.aud-mode:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.aud-list { display: grid; gap: 4px; max-height: 320px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; padding: 6px; background: rgba(10, 4, 28, .35); }
+.aud-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+.aud-row:hover { background: rgba(255, 255, 255, .05); }
+.aud-row input { width: 20px; height: 20px; accent-color: var(--gold); flex: none; }
+.aud-who { display: grid; min-width: 0; }
+.aud-who > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 /* ===MODO-CELULAR-BEGIN=== */
 /* gerado por scripts/sync-mobile-css.mjs: não edite aqui */
 html[data-mode="mobile"] .auth { grid-template-columns: minmax(0, 1fr); }

@@ -196,6 +196,7 @@
   /* ───── detalhe do usuário ───── */
   M.views.adminUser = async function (id) {
     const g = guard("usuarios"); if (g) return g;
+    try { await M.refreshMe(); } catch {}
     const box = h("div");
     async function load() {
       let d;
@@ -224,6 +225,19 @@
           h("div", { class: "row", style: "margin-top:12px" }, h("button", { class: "btn btn-gold btn-sm", type: "button", text: "Salvar permissões", onclick: () => act(() => M.api("PATCH", "admin/users/" + id, { perms: pe.get() }), "Permissões salvas.") }))) : null,
         u.role === "subadmin" && !pe ? h("section", { class: "panel" }, h("h3", { text: "Permissões" }),
           h("p", { class: "muted small", style: "margin:0", text: (u.perms || []).length ? (u.perms || []).map((k) => M.PERMS.find((x) => x.k === k)?.label || k).join(" · ") : "Nenhuma permissão marcada." })) : null,
+        u.role === "aluno" ? h("section", { class: "panel" }, h("h3", { text: "Trilhas liberadas" }),
+          h("p", { class: "muted small", style: "margin:0 0 10px", text: "Trilhas marcadas como \"só alunos escolhidos\" aparecem aqui para você liberar ou tirar. As outras já aparecem para todos os alunos." }),
+          h("div", { class: "perm-list" }, M.allTrails().map((t) => {
+            const restricted = M.isRestricted(t.id);
+            const has = (u.trailAccess || []).includes(t.id);
+            const cb = h("input", { type: "checkbox", id: "ta-" + t.id, checked: restricted ? has : true, disabled: !restricted });
+            if (restricted) cb.addEventListener("change", () => {
+              const cur = new Set(u.trailAccess || []);
+              if (cb.checked) cur.add(t.id); else cur.delete(t.id);
+              act(() => M.api("PATCH", "admin/users/" + id, { trails: [...cur] }), cb.checked ? "Trilha liberada para " + u.name + "." : "Trilha retirada. O progresso dele fica guardado.");
+            });
+            return h("label", { class: "perm-item", for: "ta-" + t.id }, cb, h("span", null, h("strong", { text: t.title }), h("span", { class: "muted small", text: restricted ? (has ? "Liberada para este aluno" : "Não liberada para este aluno") : "Para todos os alunos" })));
+          }))) : null,
         M.trails().map((t) => h("section", { class: "panel" }, h("h3", { text: M.trails().length > 1 ? "Andamento · " + t.title : "Andamento" }),
           h("div", { class: "table-wrap" }, h("table", { class: "tbl", style: "min-width:520px" },
             h("thead", null, h("tr", null, ["Módulo", "Aulas", "Prova", "Melhor nota", "Tentativas"].map((x) => h("th", { text: x })))),

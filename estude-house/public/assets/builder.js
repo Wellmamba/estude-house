@@ -27,6 +27,62 @@
     } catch (e) { M.toast(e.message, "err"); }
   };
 
+  /* ───── quem vê a trilha: todos os alunos ou só os escolhidos ───── */
+  M.audienceDialog = async function (t, onSaved) {
+    let d;
+    try { d = await M.get(`admin/trails/${t.id}/audience`); } catch (e) { M.toast(e.message, "err"); return; }
+    M.modal((close) => {
+      let mode = d.mode;
+      const sel = new Set(d.students.filter((s) => s.has).map((s) => s.id));
+      const modeBox = h("div", { class: "aud-modes", role: "radiogroup", "aria-label": "Quem vê esta trilha" });
+      const search = h("input", { class: "input", type: "search", placeholder: "Buscar aluno por nome, @ ou e-mail", "aria-label": "Buscar aluno" });
+      const list = h("div", { class: "aud-list" });
+      const count = h("span", { class: "muted small" });
+      const err = h("div");
+      const save = h("button", { class: "btn btn-gold", type: "button", text: "Salvar" });
+      const pickBox = h("div", { class: "aud-pick" });
+      const shown = () => { const q = search.value.trim().toLowerCase(); return d.students.filter((s) => !q || `${s.name} ${s.nickname || ""} ${s.email}`.toLowerCase().includes(q)); };
+      function drawModes() {
+        const opt = (k, title, sub) => h("button", { class: "aud-mode", type: "button", role: "radio", "aria-checked": String(mode === k), onclick: () => { mode = k; drawModes(); } },
+          h("strong", { text: title }), h("span", { class: "muted small", text: sub }));
+        modeBox.replaceChildren(opt("all", "Todos os alunos", "Quem entrar na plataforma, inclusive os novos, vê esta trilha."),
+          opt("assigned", "Só quem eu escolher", "Só os alunos marcados abaixo veem. Para os outros ela não existe."));
+        pickBox.hidden = mode !== "assigned";
+        draw();
+      }
+      function draw() {
+        const rows = shown();
+        count.textContent = `${sel.size} de ${d.students.length} alunos com acesso`;
+        list.replaceChildren(...(rows.length ? rows.map((s) => {
+          const cb = h("input", { type: "checkbox", checked: sel.has(s.id), id: "aud-" + s.id });
+          cb.addEventListener("change", () => { if (cb.checked) sel.add(s.id); else sel.delete(s.id); count.textContent = `${sel.size} de ${d.students.length} alunos com acesso`; });
+          return h("label", { class: "aud-row", for: "aud-" + s.id }, cb, M.avatar(s, 30), h("span", { class: "aud-who" }, h("strong", { text: s.name }), h("span", { class: "muted small", text: (s.nickname ? "@" + s.nickname + " · " : "") + s.email })));
+        }) : [h("p", { class: "muted", style: "padding:14px;margin:0", text: d.students.length ? "Ninguém encontrado com essa busca." : "Ainda não há alunos cadastrados." })]));
+      }
+      search.addEventListener("input", draw);
+      const setShown = (v) => { shown().forEach((s) => { if (v) sel.add(s.id); else sel.delete(s.id); }); draw(); };
+      pickBox.append(search,
+        h("div", { class: "row", style: "gap:8px;margin:8px 0" }, count, h("span", { class: "spacer", style: "flex:1" }),
+          h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: () => setShown(true), text: "Marcar os da lista" }),
+          h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: () => setShown(false), text: "Desmarcar" })),
+        list);
+      save.addEventListener("click", async () => {
+        save.disabled = true; err.replaceChildren();
+        try {
+          const r = await M.api("PUT", `admin/trails/${t.id}/audience`, { mode, users: [...sel] });
+          close(); M.toast(mode === "all" ? "Agora todos os alunos veem esta trilha." : `Pronto: ${r.assigned} ${r.assigned === 1 ? "aluno vê" : "alunos veem"} esta trilha.`, "ok");
+          M.session.restricted = (M.session.restricted || []).filter((x) => x !== t.id).concat(mode === "assigned" ? [t.id] : []);
+          onSaved && onSaved(r);
+        } catch (e) { err.replaceChildren(h("div", { class: "form-error", text: e.message })); save.disabled = false; }
+      });
+      drawModes();
+      return [h("h3", { text: "Quem vê: " + t.title }),
+        h("p", { class: "muted small", style: "margin:0 0 12px", text: "O gestor sempre vê todas as trilhas. Quem perde o acesso não perde o que já estudou: o progresso fica guardado." }),
+        modeBox, pickBox, err,
+        h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => close(), text: "Cancelar" }), save)];
+    });
+  };
+
   M.views.adminTrails = async function () {
     const d = await M.get("admin/trails");
     const list = h("div", { class: "tm-grid" });
@@ -52,6 +108,9 @@
             h("div", { class: "row" }, h("span", { class: "chip chip-tag", text: created ? "Criada por você" : "Nativa" }), st ? h("span", { class: st[0], text: st[1] }) : null),
             h("label", { class: "bd-switch" }, sw, h("span", { class: "bd-switch-ui" }), state)),
           h("h3", { text: t.title }),
+          h("div", { class: "row tm-aud" }, M.icon("users", 16),
+            h("span", { class: "small", text: t.audience === "assigned" ? `Só alunos escolhidos (${t.assigned} de ${t.students})` : `Todos os alunos (${t.students})` }),
+            h("button", { class: "linkish small", type: "button", onclick: () => M.audienceDialog(t, (r) => { t.audience = r.mode; t.assigned = r.assigned; draw(rowsData); }), text: "Quem vê" })),
           h("p", { class: "muted small", text: `${t.modules} ${t.modules === 1 ? "módulo" : "módulos"} · ${t.lessons} ${t.lessons === 1 ? "aula" : "aulas"}${t.cards != null ? " · " + t.cards + " cards" : ""}${t.updatedAt ? " · editada " + M.fmtDateTime(t.updatedAt) : ""}` }),
           h("div", { class: "tm-actions" },
             created ? h("a", { class: "btn btn-gold btn-sm", href: "#/admin/trilhas/" + t.id }, "Editar") : null,

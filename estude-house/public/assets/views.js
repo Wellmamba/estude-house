@@ -9,7 +9,7 @@
     /* se o admin mudou o perfil ou as permissões desta pessoa, o menu lateral é refeito */
     const sig = (x) => (x ? x.role + "|" + (x.perms || []).join(",") : "");
     const changed = !!M.session.user && sig(M.session.user) !== sig(d.user);
-    M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules; M.session.inactive = d.inactive || [];
+    M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules; M.session.inactive = d.inactive || []; M.session.restricted = d.restricted || []; M.session.hidden = d.hidden || [];
     if (changed) M.resetShell();
     try { await M.syncCustomTrails(d.ctv); } catch (e) { console.warn("trilhas criadas não carregaram", e); }
     M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.pendingForum = d.pendingForum || 0; M.session.unread = d.unread || 0; M.session.destaques = d.destaques || 0;
@@ -386,7 +386,7 @@
       return h("a", { class: "trail-card" + (st === "done" ? " is-done" : ""), href: M.trailHref(t) },
         h("div", { class: "row row-between" },
           h("span", { class: "chip chip-tag", text: t.tag || "Trilha" }),
-          h("span", { class: "row" }, M.isInactive(t.id) ? h("span", { class: "chip chip-bad", text: "Inativa (só gestor vê)" }) : null, h("span", { class: chip[0], text: chip[1] }))),
+          h("span", { class: "row" }, M.isInactive(t.id) ? h("span", { class: "chip chip-bad", text: "Inativa (só gestor vê)" }) : M.isRestricted(t.id) ? h("span", { class: "chip chip-gold", text: "Só alunos escolhidos" }) : null, h("span", { class: chip[0], text: chip[1] }))),
         h("h3", { text: t.title }),
         h("p", { class: "trail-tag", text: t.tagline }),
         h("div", { class: "trail-meta" },
@@ -421,6 +421,7 @@
         stat(M.totalXp(), "pontos de experiência")),
       h("h2", { style: "margin:40px 0 16px", text: "Trilhas" }),
       h("div", { class: "trail-grid" }, cards, soon),
+      !cards.length && !M.isAdmin() ? h("div", { class: "empty" }, h("h3", { text: "Nenhuma trilha liberada para você ainda" }), h("p", { text: "Quando a administração liberar uma trilha, ela aparece aqui. Se você acha que já deveria ter acesso, fale com o seu gestor." })) : null,
       soon.length ? null : h("p", { class: "muted small", style: "margin-top:20px", text: "Novas trilhas da Mamba Digital aparecem aqui, com o mesmo login." }));
   };
 
