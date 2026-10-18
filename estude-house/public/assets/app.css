@@ -1676,3 +1676,36 @@ html[data-mode="mobile"] .composer.panel { border-radius: 14px; }
 html[data-mode="mobile"] .shell, html[data-mode="mobile"] .auth { max-width: 480px; margin-left: auto; margin-right: auto; }
 html[data-mode="mobile"] input, html[data-mode="mobile"] select, html[data-mode="mobile"] textarea { font-size: 16px; }
 /* ===MODO-CELULAR-END=== */
+
+/* ───── Destaques: duração, enquete e selo "Expirado" ───── */
+.dst-dur { display: flex; flex-wrap: wrap; gap: 8px; }
+.dst-dur-opt { padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--text); font: inherit; font-weight: 600; cursor: pointer; }
+.dst-dur-opt.on { border-color: var(--gold); background: rgba(253, 185, 39, .12); color: var(--gold); }
+.tool-btn.is-on { border-color: var(--gold); color: var(--gold); }
+.dst-pollform { display: grid; gap: 8px; padding: 12px; border-radius: 12px; border: 1px dashed var(--line-strong); }
+.dst-item.is-expired .dst-ring { background: none; border: 2px dashed var(--line-strong); padding: 0; opacity: .75; }
+.dst-item.is-expired .dst-name { color: var(--muted); }
+.dst-new.is-exp { background: #5b5470; }
+
+.dst-lower { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: grid; gap: 4px; pointer-events: none; padding-bottom: max(20px, env(safe-area-inset-bottom)); background: linear-gradient(to top, rgba(8, 3, 22, .78) 55%, transparent); }
+.dst-lower .dst-cap { position: static; padding: 24px 22px 6px; }
+.dst-lower .dst-cap p { max-height: 18vh; }
+.dst-poll { pointer-events: auto; display: grid; gap: 8px; margin: 28px 16px 0; padding: 14px; border-radius: 18px; background: rgba(255, 255, 255, .96); color: #1b1230; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); }
+.dst-lower .dst-cap + .dst-poll { margin-top: 8px; }
+.dst-poll-q { margin: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; line-height: 1.25; text-wrap: balance; overflow-wrap: anywhere; }
+.dst-poll-opts { display: grid; gap: 7px; }
+.dst-po { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 10px 14px; border-radius: 12px; border: 1.5px solid #cdbfe6; background: #f4effb; color: #1b1230; font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+.dst-po:hover:not(:disabled) { border-color: #552583; }
+.dst-po:disabled { cursor: default; opacity: 1; }
+.dst-po.is-mine { border-color: #552583; }
+.dst-po-fill { position: absolute; inset: 0 auto 0 0; background: rgba(85, 37, 131, .18); transition: width .5s ease; }
+.dst-po.is-mine .dst-po-fill { background: rgba(253, 185, 39, .55); }
+.dst-po-t, .dst-po-n, .dst-po-me { position: relative; }
+.dst-po-t { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.dst-po-me { display: inline-grid; place-items: center; }
+.dst-poll-note { margin: 0; font-size: .8rem; color: #5b5470; }
+.dst-frame.has-poll .dst-textslide { padding-bottom: 330px; place-items: start center; padding-top: 112px; }
+.dst-frame.has-poll .dst-textslide .dst-text { font-size: clamp(1.5rem, 6.4vw, 2.2rem); }
+.dst-frame.is-held .dst-lower { opacity: 0; }
+.dst-lower.is-solo { top: 0; align-content: center; background: none; padding: 90px 0 40px; }
+.dst-lower.is-solo .dst-poll { margin-top: 0; }

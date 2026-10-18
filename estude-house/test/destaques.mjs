@@ -6,6 +6,9 @@ process.env.ADMIN_EMAILS = "wellington.moreira@mambadigital.com.br";
 import assert from "node:assert/strict";
 import handler from "../netlify/functions/api.mjs";
 import { TRAILS } from "../netlify/functions/lib/manifest.mjs";
+import { setClock } from "../netlify/functions/lib/clock.mjs";
+let skew = 0;
+setClock(() => Date.now() + skew);
 
 let passed = 0;
 const ok = (m) => { passed++; console.log("  ✓", m); };
@@ -180,6 +183,106 @@ console.log("Fórum dos gestores");
     assert.ok(r.data.forum.some((f) => f.category === cat), `a busca "${q}" deveria achar um post de ${cat}: ` + JSON.stringify(r.data.forum.map((f) => f.title)));
   }
   ok("o aluno acha os passos básicos pela busca");
+}
+
+console.log("Destaques: prazo e enquete");
+{
+  const H = 3600e3;
+  const pollSlide = (mode = "open") => ({ text: "Antes de começar", poll: { q: "Qual horário é melhor?", options: ["9h", "14h", "16h"], mode } });
+  let r = await call("POST", "destaques", { token: adm.token, body: { title: "Dia", duration: "24h", slides: [{ text: "Vale por 1 dia" }] } });
+  assert.equal(r.status, 201, JSON.stringify(r.data)); const d24 = r.data.item.id;
+  assert.ok(Math.abs(r.data.item.expiresAt - (Date.now() + 24 * H)) < 5000); ok("prazo de 24 horas grava o fim");
+  r = await call("POST", "destaques", { token: adm.token, body: { title: "Semana", duration: "7d", slides: [{ text: "Vale por 1 semana" }] } });
+  const d7 = r.data.item.id; assert.ok(Math.abs(r.data.item.expiresAt - (Date.now() + 168 * H)) < 5000); ok("prazo de 1 semana");
+  r = await call("POST", "destaques", { token: adm.token, body: { title: "Sempre", duration: "forever", slides: [{ text: "Sem prazo" }] } });
+  const dF = r.data.item.id; assert.equal(r.data.item.expiresAt, null); ok("para sempre não tem fim");
+  r = await call("POST", "destaques", { token: adm.token, body: { title: "Ruim", duration: "3h", slides: [{ text: "x" }] } });
+  assert.equal(r.status, 400); ok("prazo desconhecido é recusado");
+
+  r = await call("GET", "destaques", { token: ana.token });
+  assert.ok([d24, d7, dF].every((i) => r.data.items.some((x) => x.id === i))); ok("aluno vê os três enquanto estão no ar");
+
+  // enquete
+  r = await call("POST", "destaques", { token: adm.token, body: { title: "Enquete", slides: [pollSlide(), { text: "sem enquete" }] } });
+  assert.equal(r.status, 201, JSON.stringify(r.data)); const dp = r.data.item.id;
+  for (const bad of [{ q: "x", options: ["a", "b"] }, { q: "Pergunta ok", options: ["só uma"] }, { q: "Pergunta ok", options: ["a", "A"] }, { q: "Pergunta ok", options: ["a", "b", "c", "d", "e"] }]) {
+    r = await call("POST", "destaques", { token: adm.token, body: { title: "Ruim", slides: [{ poll: bad }] } });
+    assert.equal(r.status, 400, JSON.stringify(bad));
+  }
+  ok("enquete exige pergunta e de 2 a 4 opções diferentes");
+  r = await call("POST", "destaques", { token: adm.token, body: { title: "Só enq", slides: [{ poll: { q: "Pode ser só enquete?", options: ["sim", "claro"] } }] } });
+  assert.equal(r.status, 201); const dOnly = r.data.item.id; ok("card pode ter só a enquete");
+
+  r = await call("GET", "destaques/" + dp, { token: ana.token });
+  const sl = r.data.destaque.slides[0];
+  assert.ok(sl.id && sl.poll.options.length === 3 && sl.poll.mine === null && sl.poll.total === undefined && sl.poll.options[0].n === undefined);
+  assert.equal(JSON.stringify(r.data).includes("pid"), false); ok("aluno vê a enquete sem resultado e sem o id interno");
+
+  r = await call("POST", `destaques/${dp}/vote`, { token: ana.token, body: { slide: sl.id, o: 1 } });
+  assert.equal(r.status, 200, JSON.stringify(r.data)); assert.equal(r.data.poll.mine, 1); assert.equal(r.data.poll.total, 1); assert.equal(r.data.poll.options[1].pct, 100); ok("voto em enquete aberta mostra o resultado");
+  r = await call("POST", `destaques/${dp}/vote`, { token: ana.token, body: { slide: sl.id, o: 0 } });
+  assert.equal(r.status, 409); ok("um voto por pessoa");
+  r = await call("POST", `destaques/${dp}/vote`, { token: leo.token, body: { slide: sl.id, o: 9 } });
+  assert.equal(r.status, 400); ok("opção inexistente é recusada");
+  r = await call("POST", `destaques/${dp}/vote`, { token: leo.token, body: { slide: "nao-existe", o: 0 } });
+  assert.equal(r.status, 404); ok("card sem enquete não aceita voto");
+  r = await call("POST", `destaques/${dp}/vote`, { token: leo.token, body: { slide: sl.id, o: 1 } });
+  assert.equal(r.data.poll.total, 2); assert.equal(r.data.poll.options[1].pct, 100); ok("segundo voto soma");
+  r = await call("GET", "destaques/" + dp, { token: adm.token });
+  assert.equal(r.data.destaque.slides[0].poll.total, 2); ok("gestor vê o resultado mesmo sem votar");
+
+  // secreta
+  r = await call("POST", "destaques", { token: adm.token, body: { title: "Secreta", slides: [pollSlide("secret")] } });
+  const ds = r.data.item.id; const ssl = (await call("GET", "destaques/" + ds, { token: ana.token })).data.destaque.slides[0];
+  r = await call("POST", `destaques/${ds}/vote`, { token: ana.token, body: { slide: ssl.id, o: 2 } });
+  assert.equal(r.data.poll.mine, 2); assert.equal(r.data.poll.total, undefined); assert.equal(r.data.poll.options[0].n, undefined); ok("enquete secreta não mostra o resultado a quem vota");
+  r = await call("GET", "destaques/" + ds, { token: adm.token });
+  assert.equal(r.data.destaque.slides[0].poll.total, 1); assert.equal(r.data.destaque.slides[0].poll.options[2].n, 1); ok("gestor vê o resultado da secreta");
+
+  // editar mantém os votos; mudar a pergunta zera
+  const cur = (await call("GET", "destaques/" + dp, { token: adm.token })).data.destaque;
+  const same = cur.slides.map((x) => ({ id: x.id, text: x.text, mood: x.mood, poll: x.poll && { q: x.poll.q, mode: x.poll.mode, options: x.poll.options.map((o) => o.t) } }));
+  r = await call("PUT", "destaques/" + dp, { token: adm.token, body: { title: "Enquete", slides: same } });
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  assert.equal((await call("GET", "destaques/" + dp, { token: adm.token })).data.destaque.slides[0].poll.total, 2); ok("editar sem mexer na enquete mantém os votos");
+  assert.equal((await call("GET", "destaques/" + dp, { token: ana.token })).data.destaque.slides[0].poll.mine, 1); ok("quem votou continua com o voto dele");
+  same[0].poll.options[0] = "8h";
+  await call("PUT", "destaques/" + dp, { token: adm.token, body: { title: "Enquete", slides: same } });
+  const after = (await call("GET", "destaques/" + dp, { token: adm.token })).data.destaque;
+  assert.equal(after.slides[0].poll.total, 0); ok("mudar as opções zera os votos");
+  assert.equal(after.expiresAt, null); ok("editar sem o campo prazo não mexe no prazo");
+
+  // virar post leva a enquete
+  r = await call("POST", `destaques/${dOnly}/to-feed`, { token: adm.token, body: { slide: 0 } });
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  r = await call("GET", "feed", { token: ana.token });
+  const post = r.data.posts.find((x) => x.poll?.questions?.[0]?.text === "Pode ser só enquete?");
+  assert.ok(post, "post com enquete no feed"); ok("card com enquete vira post de feed com a enquete");
+
+  // apagar limpa os votos
+  r = await call("DELETE", "destaques/" + ds, { token: adm.token });
+  assert.equal(r.status, 200); ok("apagar destaque com enquete");
+
+  // vencimento
+  skew = 25 * H;
+  r = await call("GET", "destaques", { token: ana.token });
+  assert.ok(!r.data.items.some((x) => x.id === d24)); assert.ok(r.data.items.some((x) => x.id === d7 && x.id)); ok("depois de 25 horas o de 24h some para o aluno");
+  assert.equal((await call("GET", "destaques/" + d24, { token: ana.token })).status, 404); ok("link direto do vencido também não abre");
+  assert.equal((await call("POST", `destaques/${d24}/seen`, { token: ana.token })).status, 404);
+  r = await call("GET", "destaques", { token: adm.token });
+  const ex = r.data.items.find((x) => x.id === d24); assert.ok(ex && ex.expired === true); assert.equal(r.data.items[r.data.items.length - 1].id, d24); ok("gestor ainda vê o vencido, marcado, no fim da fila");
+  r = await call("GET", "me", { token: ana.token });
+  const feedUnseen = (await call("GET", "destaques", { token: ana.token })).data.unseen;
+  assert.equal(r.data.destaques, feedUnseen); ok("o contador de novos ignora os vencidos");
+  r = await call("PUT", "destaques/" + d24, { token: adm.token, body: { title: "Dia", duration: "7d", slides: [{ text: "Vale por 1 dia" }] } });
+  assert.equal(r.status, 200); assert.ok(r.data.item.expiresAt > Date.now() + 6 * 24 * H);
+  assert.ok((await call("GET", "destaques", { token: ana.token })).data.items.some((x) => x.id === d24)); ok("gestor renova o prazo e o destaque volta ao ar");
+  r = await call("POST", `destaques/${dp}/vote`, { token: leo.token, body: { slide: after.slides[0].id, o: 0 } });
+  assert.equal(r.status, 200);
+  skew = 8 * 24 * H;
+  assert.ok(!(await call("GET", "destaques", { token: ana.token })).data.items.some((x) => x.id === d7)); ok("depois de 8 dias o de 1 semana sai");
+  assert.ok((await call("GET", "destaques", { token: ana.token })).data.items.some((x) => x.id === dF)); ok("o de para sempre continua");
+  skew = 0;
 }
 
 console.log("Aulas em sequência");

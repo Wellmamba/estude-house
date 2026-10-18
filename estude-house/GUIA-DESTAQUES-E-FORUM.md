@@ -1,8 +1,10 @@
 # Destaques e Fórum (só para gestores)
 
 ## Destaques (a bolinha de Story)
-- Ficam no topo do **Feed**, no celular e no computador. São como Stories, mas **não somem em 24 horas**.
+- Ficam no topo do **Feed**, no celular e no computador. São como Stories, e **quem publica escolhe quanto tempo ele fica no ar** (veja abaixo).
 - **Só gestor cria.** Aluno só assiste. Toque no **+ Novo** (primeira bolinha) para criar: título curto, de 1 a 20 cartões, cor de fundo e, se quiser, foto ou vídeo por cartão.
+- **Tempo no ar** (ao publicar, campo "Quanto tempo fica no ar?"): **24 horas**, **1 semana** ou **Para sempre**. Já vem marcado "Para sempre". Passado o prazo, o destaque **some sozinho para os alunos**. O gestor continua vendo, com a etiqueta **Expirado**, no fim da fila, para renovar (Editar › escolher um prazo novo, que conta a partir de agora) ou apagar. Dentro do destaque aparece "sai em 5h" / "sai em 3 dias". Ao editar, "Manter" não mexe no prazo.
+- **Enquete no card**: no formulário, cada card tem o botão **Enquete**. Pergunta (até 90 letras) e de 2 a 4 opções. Pode ser **Aberta** (quem vota vê o percentual) ou **Secreta** (só os gestores veem o resultado). Cada pessoa vota uma vez, sem trocar. O card pode ter só a enquete, ou texto/foto/vídeo junto. O gestor vê o resultado e o total de votos no próprio card. Se mudar a pergunta ou as opções ao editar, os votos daquela enquete zeram; se só mexer em outras coisas, os votos ficam. Ao transformar o card em post, a enquete vai junto para o Feed (sem os votos do destaque).
 - **O anel é a foto de quem postou**, como no Instagram. Quem não tem foto aparece com as iniciais.
 - **Formato Instagram**, no celular e no computador (no PC o destaque abre num quadro vertical no centro). Toque na direita para avançar, na esquerda para voltar, **segure para pausar**. Vídeo toca sozinho e, quando termina, passa para o próximo cartão. Há botões de pausa e de som.
 - Foto e vídeo usam o envio do Cloudinary. Se ainda não configurou, veja `COMO-CONFIGURAR-FEED-E-UPLOAD.md`. Sem Cloudinary, dá para criar só com texto.

@@ -1,9 +1,21 @@
-/* Destaques: stories fixos (não somem em 24 horas). Só gestores publicam; o time assiste e ganha XP ao ver até o fim.
+/* Destaques: stories que o gestor deixa no ar por 24 horas, 1 semana ou para sempre, com enquete opcional. Só gestores publicam; o time assiste e ganha XP ao ver até o fim.
    Aqui ficam a barra de bolinhas do Feed, o player em tela cheia e o formulário de novo destaque. */
 (function () {
   const { h } = M;
   const MOODS = [["violet", "Roxo"], ["gold", "Dourado"], ["pink", "Rosa"], ["mint", "Verde"], ["dark", "Escuro"]];
   const MB = 1048576;
+
+  const DURATIONS = [["24h", "24 horas", "Some sozinho depois de 1 dia."], ["7d", "1 semana", "Some sozinho depois de 7 dias."], ["forever", "Para sempre", "Fica até um gestor apagar."]];
+  /* "sai em 5h", "sai em 3 dias" */
+  function leftLabel(at) {
+    if (!at) return "";
+    const ms = at - Date.now();
+    if (ms <= 0) return "expirado";
+    const hrs = Math.ceil(ms / 3600e3);
+    if (hrs < 2) return "sai em menos de 1h";
+    if (hrs <= 47) return `sai em ${hrs}h`;
+    return `sai em ${Math.ceil(hrs / 24)} dias`;
+  }
 
   const imgUrl = (url, w) => (String(url).includes("/image/upload/") ? String(url).replace("/image/upload/", `/image/upload/f_auto,q_auto,w_${w}/`) : url);
   const vidUrl = (url) => (String(url).includes("/video/upload/") ? String(url).replace("/video/upload/", "/video/upload/f_auto,q_auto/") : url);
@@ -111,8 +123,53 @@
     }
     function fillHead() {
       ring.replaceChildren(M.avatar(data.author || { name: "Gestor", role: "admin" }, 34));
-      who.replaceChildren(h("b", { text: data.title }), h("span", { text: `${data.author?.nickname || data.author?.name || "Gestor"} · ${M.timeAgo(data.createdAt)}` }));
+      const left = data.expired ? "expirado" : leftLabel(data.expiresAt);
+      who.replaceChildren(h("b", { text: data.title }), h("span", { text: `${data.author?.nickname || data.author?.name || "Gestor"} · ${M.timeAgo(data.createdAt)}${left ? " · " + left : ""}` }));
       bars.replaceChildren(...data.slides.map(() => h("span", { class: "st-seg" }, h("i"))));
+    }
+
+    /* enquete do card: votar aqui não reinicia o vídeo nem o card */
+    let voting = false;
+    function pollNode(s) {
+      const p = s.poll;
+      const box = h("section", { class: "dst-poll", "aria-label": "Enquete" });
+      const results = p.options.some((o) => o.n !== undefined);
+      const voted = p.mine !== null && p.mine !== undefined;
+      box.append(h("p", { class: "dst-poll-q", text: p.q }));
+      const opts = h("div", { class: "dst-poll-opts" });
+      p.options.forEach((o, oi) => {
+        const mine = p.mine === oi;
+        if (results) {
+          const row = h("button", { class: "dst-po is-result" + (mine ? " is-mine" : ""), type: "button", disabled: voted || voting, "aria-label": `${o.t}: ${o.pct}% (${o.n})${mine ? ", seu voto" : ""}`, onclick: () => vote(s, oi) },
+            h("i", { class: "dst-po-fill", style: `width:${o.pct}%` }),
+            h("span", { class: "dst-po-t", text: o.t }), mine ? h("span", { class: "dst-po-me" }, M.icon("check", 14)) : null,
+            h("b", { class: "dst-po-n", text: o.pct + "%" }));
+          opts.append(row);
+        } else {
+          opts.append(h("button", { class: "dst-po" + (mine ? " is-mine" : ""), type: "button", disabled: voted || voting, onclick: () => vote(s, oi) }, h("span", { class: "dst-po-t", text: o.t }), mine ? h("span", { class: "dst-po-me" }, M.icon("check", 14)) : null));
+        }
+      });
+      box.append(opts);
+      const note = results ? `${p.total} ${p.total === 1 ? "voto" : "votos"}${isAdm && p.mode === "secret" ? " · secreta: só gestores veem" : ""}`
+        : voted ? "Voto registrado. Esta enquete é secreta: só os gestores veem o resultado." : "Toque numa opção para votar.";
+      box.append(h("p", { class: "dst-poll-note", text: note }));
+      return box;
+    }
+    async function vote(s, oi) {
+      if (voting) return;
+      voting = true;
+      const my = token;
+      try {
+        const r = await M.post(`destaques/${data.id}/vote`, { slide: s.id, o: oi });
+        s.poll = r.poll;
+        if (my === token && slides()[i] === s) {
+          const old = stage.parentNode.querySelector(".dst-poll");
+          if (old) old.replaceWith(pollNode(s));
+          elapsed = 0; dur = Math.max(dur, 7000); // dá tempo de ver o resultado
+        }
+        M.toast("Voto registrado.", "ok");
+      } catch (e) { M.toast(e.message, "err"); if (/já votou/.test(e.message)) reload(null); }
+      voting = false;
     }
 
     function show() {
@@ -142,12 +199,22 @@
         });
         ready = true;
       }
-      if (s.text) {
+      frame.querySelector(":scope > .dst-lower")?.remove();
+      frame.classList.toggle("has-poll", !!s.poll);
+      if (s.poll) {
+        // legenda e enquete ficam juntas embaixo, acima da área de toque
+        const lower = h("div", { class: "dst-lower" + (!s.text && !s.media ? " is-solo" : "") });
+        if (s.text && s.media) lower.append(h("div", { class: "dst-cap" }, h("p", {}, M.rich(s.text))));
+        lower.append(pollNode(s));
+        if (s.text && !s.media) kids.push(h("div", { class: "dst-textslide" }, h("p", { class: "dst-text" }, M.rich(s.text))));
+        frame.insertBefore(lower, frame.querySelector(".st-top"));
+      } else if (s.text) {
         kids.push(s.media
           ? h("div", { class: "dst-cap" }, h("p", {}, M.rich(s.text)))
           : h("div", { class: "dst-textslide" }, h("p", { class: "dst-text" }, M.rich(s.text))));
       }
       dur = s.media?.type === "video" ? 0 : Math.max(s.media ? SLIDE_MS : 5000, Math.min(14000, 3200 + (s.text || "").length * 48));
+      if (s.poll && dur) dur = Math.max(dur, 12000);
       stage.className = "dst-stage " + (dir > 0 ? "in-next" : "in-prev");
       stage.replaceChildren(...kids);
       frame.dataset.mood = s.media ? "dark" : (s.mood || "violet");
@@ -213,7 +280,7 @@
     function edit(addCard) {
       if (!data) return;
       manual = false;
-      M.openDestaqueComposer(hooks.meta || {}, () => { hooks.changed = true; reload(addCard ? "end" : null); }, { id: data.id, title: data.title, slides: data.slides }, { addCard });
+      M.openDestaqueComposer(hooks.meta || {}, () => { hooks.changed = true; reload(addCard ? "end" : null); }, { id: data.id, title: data.title, slides: data.slides, expiresAt: data.expiresAt, expired: data.expired }, { addCard });
     }
     async function toFeed(which) {
       const whole = which === "all";
@@ -318,10 +385,10 @@
       const add = meta.canPost ? h("li", null, h("button", { class: "dst-item is-add", type: "button", onclick: () => M.openDestaqueComposer(meta, () => root.refresh()) },
         h("span", { class: "dst-ring" }, h("span", { class: "dst-disc" }, M.icon("plus", 28))), h("span", { class: "dst-name", text: "Novo" }))) : null;
       row.replaceChildren(add, ...items.map((it) => h("li", null,
-        h("button", { class: "dst-item" + (it.seen ? " is-seen" : " is-new"), type: "button", "aria-label": `Destaque de ${it.author?.name || "gestor"}: ${it.title}${it.seen ? "" : " (novo)"}`,
+        h("button", { class: "dst-item" + (it.expired ? " is-expired" : it.seen ? " is-seen" : " is-new"), type: "button", "aria-label": `Destaque de ${it.author?.name || "gestor"}: ${it.title}${it.expired ? " (expirado, só gestores veem)" : it.seen ? "" : " (novo)"}`,
           onclick: () => M.openDestaque(items, it.id, { meta, onSeen: () => { paint(); M.session.destaques = Math.max(0, items.filter((x) => !x.seen).length); M.paintBadges(); }, onClose: () => root.refresh(), onDeleted: () => root.refresh() }) },
         h("span", { class: "dst-ring" }, h("span", { class: "dst-disc has-photo" }, M.avatar(it.author || { name: "Gestor", role: "admin" }, 64))),
-        it.seen ? null : h("em", { class: "dst-new", text: "Novo" }),
+        it.expired ? h("em", { class: "dst-new is-exp", text: "Expirado" }) : it.seen ? null : h("em", { class: "dst-new", text: "Novo" }),
         h("span", { class: "dst-name", text: it.title })))));
     }
     root.refresh = async function () {
@@ -343,10 +410,24 @@
     try { uploads = !!(await M.get("feed/status")).uploads; } catch {}
     const maxSlides = meta.maxSlides || 20, maxText = meta.maxText || 280, maxTitle = meta.maxTitle || 24;
     let seq = 0;
+    const pollOf = (x) => (x.poll ? { q: x.poll.q, options: x.poll.options.map((o) => o.t ?? o), mode: x.poll.mode || "open" } : null);
     const slides = existing
-      ? existing.slides.map((x) => ({ id: ++seq, text: x.text || "", mood: x.mood || "violet", media: x.media ? { type: x.media.type, url: x.media.url, name: x.media.type === "video" ? "Vídeo atual" : "Foto atual", status: "done", preview: x.media.type === "image" ? imgUrl(x.media.url, 240) : null, keep: true } : null }))
-      : [{ id: ++seq, text: "", mood: "violet", media: null }];
-    if (existing && opt.addCard && slides.length < maxSlides) slides.push({ id: ++seq, text: "", mood: slides[slides.length - 1]?.mood || "violet", media: null });
+      ? existing.slides.map((x) => ({ id: ++seq, sid: x.id, poll: pollOf(x), text: x.text || "", mood: x.mood || "violet", media: x.media ? { type: x.media.type, url: x.media.url, name: x.media.type === "video" ? "Vídeo atual" : "Foto atual", status: "done", preview: x.media.type === "image" ? imgUrl(x.media.url, 240) : null, keep: true } : null }))
+      : [{ id: ++seq, text: "", mood: "violet", media: null, poll: null }];
+    if (existing && opt.addCard && slides.length < maxSlides) slides.push({ id: ++seq, text: "", mood: slides[slides.length - 1]?.mood || "violet", media: null, poll: null });
+    const pm = meta.poll || {}, maxQ = pm.maxQuestion || 90, maxO = pm.maxOption || 40, minOpts = pm.minOptions || 2, maxOpts = pm.maxOptions || 4;
+    // novo: "para sempre" já vem marcado. Editando: começa em "manter" (não mexe no prazo); escolher um prazo conta a partir de agora.
+    let duration = existing ? "keep" : "forever";
+    const keepNote = existing ? (existing.expired ? "Expirado: escolha um prazo para voltar ao ar." : existing.expiresAt ? `Hoje: ${leftLabel(existing.expiresAt)}.` : "Hoje: sem prazo.") : "";
+    const durBox = h("div", { class: "field" });
+    function drawDur() {
+      const opts = (existing && !existing.expired ? [["keep", "Manter", keepNote]] : existing ? [["keep", "Continuar expirado", keepNote]] : []).concat(DURATIONS);
+      durBox.replaceChildren(
+        h("label", { id: "dstDurL", text: "Quanto tempo fica no ar?" }),
+        h("div", { class: "dst-dur", role: "radiogroup", "aria-labelledby": "dstDurL" }, opts.map(([k, t]) =>
+          h("button", { type: "button", role: "radio", class: "dst-dur-opt" + (duration === k ? " on" : ""), "aria-checked": String(duration === k), "data-d": k, onclick: () => { duration = k; drawDur(); } }, t))),
+        h("span", { class: "hint", text: (opts.find((x) => x[0] === duration) || [])[2] + (existing && duration !== "keep" ? " Conta a partir de agora." : "") }));
+    }
     const title = h("input", { class: "input", type: "text", maxlength: String(maxTitle), placeholder: "Ex.: Novidade, Meta da semana, Dica", "aria-label": "Nome do destaque" });
     if (existing) title.value = existing.title;
     const list = h("div", { class: "dst-slides" });
@@ -383,6 +464,17 @@
         h("div", { class: "att-info" }, h("strong", { text: m.name }),
           m.status === "uploading" ? h("div", { class: "bar" }, h("i", { style: `width:${m.pct}%` })) : h("span", { class: "small " + (m.status === "error" ? "bad" : "muted"), text: m.status === "error" ? m.error : m.type === "video" ? "Vídeo pronto" : "Foto pronta" })),
         h("button", { class: "icon-btn", type: "button", "aria-label": "Remover foto ou vídeo", onclick: () => { if (m.preview && !m.keep) URL.revokeObjectURL(m.preview); s.media = null; draw(); } }, M.icon("x", 16))) : null;
+      const pollBtn = h("button", { class: "tool-btn" + (s.poll ? " is-on" : ""), type: "button", "aria-pressed": String(!!s.poll), onclick: () => { s.poll = s.poll ? null : { q: "", options: ["", ""], mode: "open" }; draw(); if (s.poll) list.querySelector(`[data-s="${s.id}"] .dst-pq`)?.focus(); } }, M.icon("chart", 18), h("span", { text: s.poll ? "Tirar a enquete" : "Enquete" }));
+      const pollBox = s.poll ? h("div", { class: "dst-pollform" },
+        h("div", { class: "pb-modes", role: "radiogroup", "aria-label": "Tipo de enquete" },
+          [["open", "Aberta", "Quem vota vê o resultado."], ["secret", "Secreta", "Só os gestores veem o resultado."]].map(([k, t, d]) =>
+            h("button", { type: "button", role: "radio", "aria-checked": String(s.poll.mode === k), class: "pb-mode" + (s.poll.mode === k ? " on" : ""), onclick: () => { s.poll.mode = k; draw(); } }, h("strong", { text: t }), h("span", { class: "small", text: d })))),
+        h("input", { class: "input dst-pq", type: "text", maxlength: String(maxQ), placeholder: "Pergunta. Ex.: Qual horário é melhor?", "aria-label": `Pergunta da enquete do card ${k + 1}`, value: s.poll.q, oninput: (e) => { s.poll.q = e.target.value; } }),
+        ...s.poll.options.map((o, oi) => h("div", { class: "pb-opt" },
+          h("input", { class: "input", type: "text", maxlength: String(maxO), placeholder: `Opção ${oi + 1}`, "aria-label": `Card ${k + 1}, opção ${oi + 1}`, value: o, oninput: (e) => { s.poll.options[oi] = e.target.value; } }),
+          s.poll.options.length > minOpts ? h("button", { class: "icon-btn", type: "button", "aria-label": "Remover opção", onclick: () => { s.poll.options.splice(oi, 1); draw(); } }, M.icon("x", 16)) : null)),
+        s.poll.options.length < maxOpts ? h("button", { class: "linkish", type: "button", onclick: () => { s.poll.options.push(""); draw(); const ins = list.querySelectorAll(`[data-s="${s.id}"] .pb-opt input`); ins[ins.length - 1]?.focus(); }, text: "+ Adicionar opção" }) : null,
+        existing && s.sid ? h("span", { class: "hint", text: "Mudar a pergunta ou as opções apaga os votos desta enquete." }) : null) : null;
       return h("section", { class: "dst-slide", "data-s": String(s.id), "data-mood": s.mood },
         h("div", { class: "row row-between" }, h("strong", { text: `Card ${k + 1}` }),
           h("div", { class: "row", style: "gap:2px" },
@@ -390,7 +482,7 @@
             k < slides.length - 1 ? h("button", { class: "icon-btn", type: "button", "aria-label": `Descer o card ${k + 1}`, onclick: () => { [slides[k + 1], slides[k]] = [slides[k], slides[k + 1]]; draw(); } }, M.icon("down", 16)) : null,
             slides.length > 1 ? h("button", { class: "icon-btn", type: "button", "aria-label": `Remover o card ${k + 1}`, onclick: () => { slides.splice(k, 1); draw(); } }, M.icon("trash", 16)) : null)),
         h("div", { class: "dst-moods", role: "group", "aria-label": "Cor do card" }, MOODS.map(([id, label]) => h("button", { class: "dst-mood", type: "button", "data-m": id, "aria-pressed": String(s.mood === id), title: label, "aria-label": label, onclick: () => { s.mood = id; draw(); } }))),
-        ta, mediaRow, h("div", { class: "row" }, pick, file));
+        ta, mediaRow, h("div", { class: "row" }, pick, pollBtn, file), pollBox);
     }
 
     function draw() {
@@ -399,7 +491,7 @@
       addBtn.lastChild.textContent = `Adicionar card (${slides.length}/${maxSlides})`;
       pub.disabled = slides.some((s) => s.media?.status === "uploading");
     }
-    addBtn.addEventListener("click", () => { if (slides.length < maxSlides) { slides.push({ id: ++seq, text: "", mood: slides[slides.length - 1].mood, media: null }); draw(); list.lastElementChild?.querySelector("textarea")?.focus(); } });
+    addBtn.addEventListener("click", () => { if (slides.length < maxSlides) { slides.push({ id: ++seq, text: "", mood: slides[slides.length - 1].mood, media: null, poll: null }); draw(); list.lastElementChild?.querySelector("textarea")?.focus(); } });
 
     return M.modal((done) => {
       pub.addEventListener("click", async () => {
@@ -410,23 +502,31 @@
         for (const [k, s] of slides.entries()) {
           const text = s.text.trim(), ok = s.media?.status === "done";
           if (s.media && !ok) { err.replaceChildren(h("div", { class: "form-error", text: `Espere o envio do card ${k + 1} terminar (ou remova o arquivo).` })); return; }
-          if (!text && !ok) { err.replaceChildren(h("div", { class: "form-error", text: `O card ${k + 1} está vazio: escreva um texto ou coloque uma foto ou vídeo.` })); return; }
-          body.push({ text: text || undefined, mood: s.mood, media: ok ? { type: s.media.type, url: s.media.url } : undefined });
+          let poll;
+          if (s.poll) {
+            const q = s.poll.q.trim(), o = s.poll.options.map((x) => x.trim()).filter(Boolean);
+            if (q.length < 3) { err.replaceChildren(h("div", { class: "form-error", text: `Escreva a pergunta da enquete do card ${k + 1} (ou tire a enquete).` })); return; }
+            if (o.length < minOpts) { err.replaceChildren(h("div", { class: "form-error", text: `A enquete do card ${k + 1} precisa de pelo menos ${minOpts} opções.` })); return; }
+            if (new Set(o.map((x) => x.toLowerCase())).size !== o.length) { err.replaceChildren(h("div", { class: "form-error", text: `A enquete do card ${k + 1} tem opções repetidas.` })); return; }
+            poll = { q, options: o, mode: s.poll.mode };
+          }
+          if (!text && !ok && !poll) { err.replaceChildren(h("div", { class: "form-error", text: `O card ${k + 1} está vazio: escreva um texto, coloque uma foto ou vídeo, ou crie uma enquete.` })); return; }
+          body.push({ id: s.sid, text: text || undefined, mood: s.mood, media: ok ? { type: s.media.type, url: s.media.url } : undefined, poll });
         }
         pub.disabled = true;
         try {
-          if (existing) { await M.api("PUT", "destaques/" + existing.id, { title: t, slides: body }); M.toast("Destaque atualizado.", "ok"); }
-          else { await M.post("destaques", { title: t, slides: body }); M.toast("Destaque publicado. O time já vê a bolinha no Feed.", "ok"); }
+          if (existing) { await M.api("PUT", "destaques/" + existing.id, { title: t, slides: body, ...(duration !== "keep" ? { duration } : {}) }); M.toast("Destaque atualizado.", "ok"); }
+          else { await M.post("destaques", { title: t, slides: body, duration }); M.toast("Destaque publicado. O time já vê a bolinha no Feed.", "ok"); }
           done(true);
           if (onDone) onDone();
         } catch (e) { err.replaceChildren(h("div", { class: "form-error", text: e.message })); pub.disabled = false; }
       });
-      draw();
+      draw(); drawDur();
       return h("div", { class: "dst-compose" },
         h("h3", { text: existing ? "Editar destaque" : "Novo destaque" }),
-        h("p", { class: "muted small", style: "margin:0", text: existing ? "Acrescente, reordene ou tire cards. Quem já assistiu volta a ver o destaque como novo quando entra card novo." : "Vira uma bolinha no Feed de todo o time, com a sua foto de perfil, e não some em 24 horas. Quem assiste até o último card ganha XP." }),
+        h("p", { class: "muted small", style: "margin:0", text: existing ? "Acrescente, reordene ou tire cards. Quem já assistiu volta a ver o destaque como novo quando entra card novo." : "Vira uma bolinha no Feed de todo o time, com a sua foto de perfil. Você escolhe se fica 24 horas, 1 semana ou para sempre. Quem assiste até o último card ganha XP." }),
         h("div", { class: "field" }, h("label", { text: "Nome da bolinha" }), title, h("span", { class: "hint", text: `Até ${maxTitle} letras.` })),
-        list, err,
+        durBox, list, err,
         h("div", { class: "dlg-actions", style: "justify-content:space-between" }, addBtn,
           h("div", { class: "row" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => done(false), text: "Cancelar" }), pub)));
     });
