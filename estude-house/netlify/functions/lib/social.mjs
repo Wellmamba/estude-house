@@ -98,9 +98,10 @@ async function putPost(d, kind) {
 }
 
 /* publica na hora um post em nome de alguém (usado quando um card de destaque vira post do feed) */
-export async function publishFor(authorId, { text, media }) {
+export async function publishFor(authorId, { text, media, poll }) {
   const t = now();
   const doc = { id: newId("po_"), authorId, text: cleanMultiline(text, MAX_TEXT), media: media || [], createdAt: t, status: "published", publishedAt: t };
+  if (poll) doc.poll = poll;
   await putPost(doc, "pub");
   return doc;
 }

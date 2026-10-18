@@ -417,19 +417,39 @@
     if (existing && opt.addCard && slides.length < maxSlides) slides.push({ id: ++seq, text: "", mood: slides[slides.length - 1]?.mood || "violet", media: null, poll: null });
     const pm = meta.poll || {}, maxQ = pm.maxQuestion || 90, maxO = pm.maxOption || 40, minOpts = pm.minOptions || 2, maxOpts = pm.maxOptions || 4;
     // novo: "para sempre" já vem marcado. Editando: começa em "manter" (não mexe no prazo); escolher um prazo conta a partir de agora.
+    // novo destaque pode entrar numa bolinha que já existe: os cards vão para o fim dela
+    let target = null;
+    const cur = () => existing || target;
+    const room = () => maxSlides - (target ? target.count : 0);
     let duration = existing ? "keep" : "forever";
-    const keepNote = existing ? (existing.expired ? "Expirado: escolha um prazo para voltar ao ar." : existing.expiresAt ? `Hoje: ${leftLabel(existing.expiresAt)}.` : "Hoje: sem prazo.") : "";
+    const keepNote = () => (cur() ? (cur().expired ? "Expirado: escolha um prazo para voltar ao ar." : cur().expiresAt ? `Hoje: ${leftLabel(cur().expiresAt)}.` : "Hoje: sem prazo.") : "");
     const durBox = h("div", { class: "field" });
     function drawDur() {
-      const opts = (existing && !existing.expired ? [["keep", "Manter", keepNote]] : existing ? [["keep", "Continuar expirado", keepNote]] : []).concat(DURATIONS);
+      const c = cur();
+      const opts = (c && !c.expired ? [["keep", "Manter", keepNote()]] : c ? [["keep", "Continuar expirado", keepNote()]] : []).concat(DURATIONS);
       durBox.replaceChildren(
         h("label", { id: "dstDurL", text: "Quanto tempo fica no ar?" }),
         h("div", { class: "dst-dur", role: "radiogroup", "aria-labelledby": "dstDurL" }, opts.map(([k, t]) =>
           h("button", { type: "button", role: "radio", class: "dst-dur-opt" + (duration === k ? " on" : ""), "aria-checked": String(duration === k), "data-d": k, onclick: () => { duration = k; drawDur(); } }, t))),
-        h("span", { class: "hint", text: (opts.find((x) => x[0] === duration) || [])[2] + (existing && duration !== "keep" ? " Conta a partir de agora." : "") }));
+        h("span", { class: "hint", text: (opts.find((x) => x[0] === duration) || [])[2] + (cur() && duration !== "keep" ? " Conta a partir de agora." : "") }));
     }
     const title = h("input", { class: "input", type: "text", maxlength: String(maxTitle), placeholder: "Ex.: Novidade, Meta da semana, Dica", "aria-label": "Nome do destaque" });
     if (existing) title.value = existing.title;
+    const nameField = h("div", { class: "field" }, h("label", { text: "Nome da bolinha" }), title, h("span", { class: "hint", text: `Até ${maxTitle} letras.` }));
+    const pickable = !existing ? (meta.items || []) : [];
+    const targetSel = pickable.length ? h("select", { class: "input", "aria-label": "Onde publicar" },
+      h("option", { value: "", text: "Nova bolinha" }),
+      ...pickable.map((it) => h("option", { value: it.id, text: `${it.title} (${it.count} ${it.count === 1 ? "card" : "cards"}${it.expired ? ", expirado" : ""})` }))) : null;
+    const targetField = targetSel ? h("div", { class: "field" }, h("label", { text: "Onde publicar" }), targetSel, h("span", { class: "hint", id: "dstTargetHint", text: "Crie uma bolinha nova ou acrescente estes cards a um destaque que já existe." })) : null;
+    if (targetSel) targetSel.addEventListener("change", () => {
+      target = pickable.find((x) => x.id === targetSel.value) || null;
+      nameField.hidden = !!target;
+      duration = target ? "keep" : "forever";
+      if (target && slides.length > room()) slides.length = Math.max(1, room());
+      drawDur(); draw();
+      const hint = targetField.querySelector(".hint");
+      hint.textContent = target ? (room() > 0 ? `Os cards vão para o fim de "${target.title}" (cabem mais ${room()}). Quem já viu volta a ver como novo.` : `"${target.title}" já está com ${maxSlides} cards. Escolha outro ou apague algum card.`) : "Crie uma bolinha nova ou acrescente estes cards a um destaque que já existe.";
+    });
     const list = h("div", { class: "dst-slides" });
     const addBtn = h("button", { class: "btn btn-ghost btn-sm", type: "button" }, M.icon("plus", 16), "Adicionar card");
     const pub = h("button", { class: "btn btn-gold", type: "button", text: existing ? "Salvar alterações" : "Publicar destaque" });
@@ -487,17 +507,17 @@
 
     function draw() {
       list.replaceChildren(...slides.map(slideCard));
-      addBtn.disabled = slides.length >= maxSlides;
-      addBtn.lastChild.textContent = `Adicionar card (${slides.length}/${maxSlides})`;
+      addBtn.disabled = slides.length >= room();
+      addBtn.lastChild.textContent = `Adicionar card (${slides.length}/${target ? room() : maxSlides})`;
       pub.disabled = slides.some((s) => s.media?.status === "uploading");
     }
-    addBtn.addEventListener("click", () => { if (slides.length < maxSlides) { slides.push({ id: ++seq, text: "", mood: slides[slides.length - 1].mood, media: null, poll: null }); draw(); list.lastElementChild?.querySelector("textarea")?.focus(); } });
+    addBtn.addEventListener("click", () => { if (slides.length < room()) { slides.push({ id: ++seq, text: "", mood: slides[slides.length - 1].mood, media: null, poll: null }); draw(); list.lastElementChild?.querySelector("textarea")?.focus(); } });
 
     return M.modal((done) => {
       pub.addEventListener("click", async () => {
         err.replaceChildren();
         const t = title.value.trim();
-        if (t.length < 2) { err.replaceChildren(h("div", { class: "form-error", text: "Dê um nome curto ao destaque. Ele aparece embaixo da bolinha." })); title.focus(); return; }
+        if (!target && t.length < 2) { err.replaceChildren(h("div", { class: "form-error", text: "Dê um nome curto ao destaque. Ele aparece embaixo da bolinha." })); title.focus(); return; }
         const body = [];
         for (const [k, s] of slides.entries()) {
           const text = s.text.trim(), ok = s.media?.status === "done";
@@ -513,9 +533,16 @@
           if (!text && !ok && !poll) { err.replaceChildren(h("div", { class: "form-error", text: `O card ${k + 1} está vazio: escreva um texto, coloque uma foto ou vídeo, ou crie uma enquete.` })); return; }
           body.push({ id: s.sid, text: text || undefined, mood: s.mood, media: ok ? { type: s.media.type, url: s.media.url } : undefined, poll });
         }
+        if (target && room() < 1) { err.replaceChildren(h("div", { class: "form-error", text: `"${target.title}" já está com ${maxSlides} cards. Escolha outra bolinha.` })); return; }
         pub.disabled = true;
         try {
-          if (existing) { await M.api("PUT", "destaques/" + existing.id, { title: t, slides: body, ...(duration !== "keep" ? { duration } : {}) }); M.toast("Destaque atualizado.", "ok"); }
+          if (target) {
+            // acrescenta no fim do destaque escolhido, mantendo os cards (e os votos) que ele já tem
+            const cur0 = (await M.get("destaques/" + target.id)).destaque;
+            const old = cur0.slides.map((x) => ({ id: x.id, text: x.text, mood: x.mood, media: x.media, poll: x.poll ? { q: x.poll.q, mode: x.poll.mode, options: x.poll.options.map((o) => o.t) } : undefined }));
+            await M.api("PUT", "destaques/" + target.id, { title: cur0.title, slides: old.concat(body), ...(duration !== "keep" ? { duration } : {}) });
+            M.toast(`Cards adicionados em "${cur0.title}".`, "ok");
+          } else if (existing) { await M.api("PUT", "destaques/" + existing.id, { title: t, slides: body, ...(duration !== "keep" ? { duration } : {}) }); M.toast("Destaque atualizado.", "ok"); }
           else { await M.post("destaques", { title: t, slides: body, duration }); M.toast("Destaque publicado. O time já vê a bolinha no Feed.", "ok"); }
           done(true);
           if (onDone) onDone();
@@ -525,7 +552,7 @@
       return h("div", { class: "dst-compose" },
         h("h3", { text: existing ? "Editar destaque" : "Novo destaque" }),
         h("p", { class: "muted small", style: "margin:0", text: existing ? "Acrescente, reordene ou tire cards. Quem já assistiu volta a ver o destaque como novo quando entra card novo." : "Vira uma bolinha no Feed de todo o time, com a sua foto de perfil. Você escolhe se fica 24 horas, 1 semana ou para sempre. Quem assiste até o último card ganha XP." }),
-        h("div", { class: "field" }, h("label", { text: "Nome da bolinha" }), title, h("span", { class: "hint", text: `Até ${maxTitle} letras.` })),
+        targetField, nameField,
         durBox, list, err,
         h("div", { class: "dlg-actions", style: "justify-content:space-between" }, addBtn,
           h("div", { class: "row" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => done(false), text: "Cancelar" }), pub)));
