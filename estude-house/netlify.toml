@@ -4,6 +4,8 @@
 
 [functions]
   node_bundler = "esbuild"
+  # biblioteca de avisos (Web Push): fica fora do pacote único para carregar do jeito original
+  external_node_modules = ["web-push"]
 
 [[headers]]
   for = "/*"
@@ -16,3 +18,15 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=300, must-revalidate"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+    Service-Worker-Allowed = "/"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+    Cache-Control = "public, max-age=3600"
