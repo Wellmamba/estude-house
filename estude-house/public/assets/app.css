@@ -1141,15 +1141,15 @@ a.tag-chip:hover { background: rgba(var(--tc), .26); }
   .post { display: flex; flex-direction: column; padding: 0 0 6px; border-radius: 18px; border-width: 1px; background: #241448; overflow: hidden; }
   .post-head { order: 0; margin: 0; padding: 12px 14px 10px; }
   .post-head .avatar { width: 38px !important; height: 38px !important; }
-  .post .media { order: 1; margin: 0; gap: 0; }
+  .post .media { order: 3; margin: 0; gap: 0; }
   .post .m-grid { border-radius: 0; }
   .post .m-img img, .post .m-grid.n1 .m-img img { max-height: none; width: 100%; }
   .post .m-video { border-radius: 0; max-height: none; }
   .post .m-embed-wrap { border-radius: 0; border-left: 0; border-right: 0; }
-  .post .poll { order: 2; margin: 10px 14px 0; }
-  .post-actions { order: 3; border-top: 0; margin: 0; padding: 4px 6px 0; }
-  .post-text { order: 4; margin: 4px 0 6px; padding: 0 14px; }
-  .post > .linkish { order: 5; margin: 0 0 6px; padding: 0 14px; }
+  .post .poll { order: 4; margin: 10px 14px 0; }
+  .post-actions { order: 5; border-top: 0; margin: 0; padding: 4px 6px 0; }
+  .post-text { order: 1; margin: 0 0 10px; padding: 0 14px; }
+  .post > .linkish { order: 2; margin: -4px 0 10px; padding: 0 14px; align-self: flex-start; }
   .post-reason { order: 6; margin: 8px 14px 0; }
   .post .comments { order: 7; padding: 0 14px 10px; }
   .hype-label { display: none; }
@@ -1644,15 +1644,15 @@ html[data-mode="mobile"] .feed-list { gap: 14px; margin-left: 0; margin-right: 0
 html[data-mode="mobile"] .post { display: flex; flex-direction: column; padding: 0 0 6px; border-radius: 18px; border-width: 1px; background: #241448; overflow: hidden; }
 html[data-mode="mobile"] .post-head { order: 0; margin: 0; padding: 12px 14px 10px; }
 html[data-mode="mobile"] .post-head .avatar { width: 38px !important; height: 38px !important; }
-html[data-mode="mobile"] .post .media { order: 1; margin: 0; gap: 0; }
+html[data-mode="mobile"] .post .media { order: 3; margin: 0; gap: 0; }
 html[data-mode="mobile"] .post .m-grid { border-radius: 0; }
 html[data-mode="mobile"] .post .m-img img, html[data-mode="mobile"] .post .m-grid.n1 .m-img img { max-height: none; width: 100%; }
 html[data-mode="mobile"] .post .m-video { border-radius: 0; max-height: none; }
 html[data-mode="mobile"] .post .m-embed-wrap { border-radius: 0; border-left: 0; border-right: 0; }
-html[data-mode="mobile"] .post .poll { order: 2; margin: 10px 14px 0; }
-html[data-mode="mobile"] .post-actions { order: 3; border-top: 0; margin: 0; padding: 4px 6px 0; }
-html[data-mode="mobile"] .post-text { order: 4; margin: 4px 0 6px; padding: 0 14px; }
-html[data-mode="mobile"] .post > .linkish { order: 5; margin: 0 0 6px; padding: 0 14px; }
+html[data-mode="mobile"] .post .poll { order: 4; margin: 10px 14px 0; }
+html[data-mode="mobile"] .post-actions { order: 5; border-top: 0; margin: 0; padding: 4px 6px 0; }
+html[data-mode="mobile"] .post-text { order: 1; margin: 0 0 10px; padding: 0 14px; }
+html[data-mode="mobile"] .post > .linkish { order: 2; margin: -4px 0 10px; padding: 0 14px; align-self: flex-start; }
 html[data-mode="mobile"] .post-reason { order: 6; margin: 8px 14px 0; }
 html[data-mode="mobile"] .post .comments { order: 7; padding: 0 14px 10px; }
 html[data-mode="mobile"] .hype-label { display: none; }
