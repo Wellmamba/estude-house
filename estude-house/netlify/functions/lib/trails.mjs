@@ -438,7 +438,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     for (const doc of docs) {
       const d = doc.draft;
       rows.push({
-        id: doc.id, kind: "criada", title: d.title || "(sem nome)", status: doc.live ? (doc.dirty ? "publicada-com-mudancas" : "publicada") : "rascunho",
+        id: doc.id, kind: "criada", title: d.title || "(sem nome)", tag: d.tag || "", status: doc.live ? (doc.dirty ? "publicada-com-mudancas" : "publicada") : "rascunho",
         active: isTrailActive(doc.id), ...aud(doc.id), modules: d.modules.length, lessons: d.modules.reduce((a, m) => a + m.lessons.length, 0),
         cards: d.modules.reduce((a, m) => a + m.lessons.reduce((b, l) => b + l.blocks.length, 0), 0),
         updatedAt: doc.updatedAt, publishedAt: doc.publishedAt || null, live: !!meta.trails[doc.id]?.live,
@@ -452,7 +452,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const s = await S_();
     if ((await s.keys({ prefix: "t:" })).length >= MAX_TRAILS) fail(409, `Limite de ${MAX_TRAILS} trilhas criadas. Exclua alguma que não usa mais.`);
     const src = body?.draft && typeof body.draft === "object" ? body.draft : body;
-    if (!src || !Array.isArray(src.modules) || !src.modules.length) fail(400, "Esse arquivo não parece uma trilha do BRANTY SHOOT.");
+    if (!src || !Array.isArray(src.modules) || !src.modules.length) fail(400, "Esse arquivo não parece uma trilha do BRYANT SHOOT.");
     const tid = "c" + crypto.randomBytes(3).toString("hex");
     const draft = cleanDraft(src, tid);
     if (draftBytes(draft) > LIMITS.bytes) fail(413, "A trilha ficou grande demais para importar.");
