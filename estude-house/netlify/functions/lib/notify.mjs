@@ -1,7 +1,7 @@
 // Notificações (o sino): menção por @apelido, @todos (só gestor), comentário no seu post e resultado de aprovação.
 // Cada pessoa tem um documento (u:<id>) com as últimas notificações e o horário da última leitura.
 // "@todos" não duplica para cada pessoa: vai uma vez para o mural "all", e cada um lê esse mural junto com o seu.
-import { store } from "./db.mjs";
+import { store, cached, bust, clone } from "./db.mjs";
 import { newId, can } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as wpush from "./push.mjs";
@@ -11,7 +11,10 @@ const MAX_MENTIONS = 12;
 const MENTION = /(?:^|[^\w@.])@([a-z][a-z0-9_.]{2,19})/gi;
 
 const clip = (s, n = 110) => { const t = String(s || "").replace(/\s+/g, " ").trim(); return t.length > n ? t.slice(0, n - 1) + "…" : t; };
-const doc = async (key) => (await (await store("notif")).get(key)) || { items: [], readAt: 0 };
+// O mural "all" (@todos e avisos) é igual para todo mundo: fica guardado por 8 s na instância.
+const doc = async (key) => (key === "all"
+  ? clone(await cached("notif:all", 8000, async () => (await (await store("notif")).get("all")) || { items: [], readAt: 0 }))
+  : (await (await store("notif")).get(key)) || { items: [], readAt: 0 });
 
 // Quem foi marcado no texto: { ids: [userId], all: boolean }
 export async function mentionsIn(text, author) {
@@ -49,7 +52,7 @@ export async function notifyMentions({ text, author, postId, where, skip = [] })
     const s = await store("notif");
     const d = (await s.get("all")) || { items: [] };
     d.items = [{ ...base("all", author, postId, text), where }, ...d.items].slice(0, KEEP);
-    await s.set("all", d);
+    await s.set("all", d); bust("notif:all");
     const p = wpush.payloadFor("all", { by: author, postId, text });
     if (p) await Promise.race([wpush.broadcast({ payload: p, cat: "avisos", exclude: [author?.id] }), new Promise((r) => setTimeout(r, 5000))]).catch(() => {});
   }
@@ -72,7 +75,7 @@ export async function notifyAll({ by, title, text, link, audience = "todos" }) {
   const s = await store("notif");
   const d = (await s.get("all")) || { items: [] };
   d.items = [{ ...base("all", by, null, [title, text].filter(Boolean).join(": "), link), ...(audience !== "todos" ? { aud: audience } : {}) }, ...d.items].slice(0, KEEP);
-  await s.set("all", d);
+  await s.set("all", d); bust("notif:all");
 }
 const isStaffRole = (u) => u?.role === "admin" || u?.role === "subadmin";
 

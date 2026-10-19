@@ -5,6 +5,7 @@ import { now, dayKey, addDays } from "./clock.mjs";
 import * as push from "./push.mjs";
 import * as eng from "./engage.mjs";
 
+const pm = (l, f) => pmap(l, f, 32); // 32 pessoas ao mesmo tempo (a agenda do Netlify tem 30 s)
 const inv = (ts) => String(9e12 - ts).padStart(13, "0");
 
 async function students() {
@@ -20,7 +21,7 @@ export async function run(kind) {
   const give = async (u, payload, cat) => { const r = await push.sendTo(u.id, payload, { cat, throttle: 20 * 3600e3 }); if (r.sent) people++; };
 
   if (kind === "checkin") {
-    await pmap(list, async (u) => {
+    await pm(list, async (u) => {
       const e = await eng.loadEng(u.id);
       if (e.lastCheckin === day) return;
       const s = eng.effectiveStreak(e, day);
@@ -31,7 +32,7 @@ export async function run(kind) {
       }, "lembretes");
     });
   } else if (kind === "streak") {
-    await pmap(list, async (u) => {
+    await pm(list, async (u) => {
       const e = await eng.loadEng(u.id);
       if (e.lastCheckin !== addDays(day, -1) || e.streak < 1) return;
       await give(u, {
@@ -44,7 +45,7 @@ export async function run(kind) {
     const f = await store("feed");
     const cut = `pub:${inv(now() - 7 * 864e5)}:`;
     const n = (await f.keys({ prefix: "pub:", limit: 300 })).filter((k) => k < cut).length;
-    await pmap(list, (u) => give(u, {
+    await pm(list, (u) => give(u, {
       title: "Resumo da semana 🏆",
       body: n ? `O time publicou ${n} ${n === 1 ? "post" : "posts"} nos últimos 7 dias. Veja quem lidera o ranking e comece a semana participando.` : "Semana nova no BRYANT SHOOT. Que tal abrir com um post ou uma aula?",
       url: "/#/ranking", tag: "weekly",

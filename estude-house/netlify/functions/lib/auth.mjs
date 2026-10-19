@@ -49,8 +49,11 @@ export function verifyPassword(password, stored) {
 
 const b64u = (buf) => Buffer.from(buf).toString("base64url");
 
-export function signToken(userId) {
-  const payload = b64u(JSON.stringify({ sub: userId, exp: Date.now() + TOKEN_TTL_MS }));
+// Marca da senha: trocar a senha derruba as sessões abertas antes da troca (inclusive de quem roubou o acesso).
+export const passVersion = (passHash) => crypto.createHash("sha256").update(String(passHash || "")).digest("base64url").slice(0, 10);
+
+export function signToken(userId, passHash) {
+  const payload = b64u(JSON.stringify({ sub: userId, exp: Date.now() + TOKEN_TTL_MS, ...(passHash ? { v: passVersion(passHash) } : {}) }));
   const sig = crypto.createHmac("sha256", secret()).update(payload).digest("base64url");
   return `${payload}.${sig}`;
 }

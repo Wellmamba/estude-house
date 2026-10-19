@@ -1,6 +1,6 @@
 // Reels: vídeos dos posts e dos destaques dos últimos 30 dias, num formato vertical de um por vez.
 // O servidor só junta e descreve os vídeos; a ordem (novos primeiro, o resto aleatório) é feita no aparelho de cada pessoa.
-import { store, pmap } from "./db.mjs";
+import { store, pmap, cached } from "./db.mjs";
 import { now } from "./clock.mjs";
 import { views } from "./social.mjs";
 import * as destaques from "./destaques.mjs";
@@ -15,10 +15,13 @@ const snip = (t) => String(t || "").replace(/\s+/g, " ").trim().slice(0, 180);
 
 export async function collect(ctx, user, t = now()) {
   const cutoff = t - WINDOW_DAYS * DAY;
-  const f = await store("feed");
-  const keys = await f.keys({ prefix: "pub:", limit: MAX_POSTS });
-  const docs = (await pmap(keys, (k) => f.get(k))).filter((d) => d && d.status === "published" && (d.publishedAt || d.createdAt) >= cutoff);
-  const withVideo = docs.map((d) => ({ d, v: pickVideo(d.media) })).filter((x) => x.v);
+  // os posts com vídeo são os mesmos para todo mundo: guardados por 20 s na instância
+  const withVideo = await cached("reels:posts:" + Math.floor(t / 600000), 20000, async () => {
+    const f = await store("feed");
+    const keys = await f.keys({ prefix: "pub:", limit: MAX_POSTS });
+    const docs = (await pmap(keys, (k) => f.get(k), 24)).filter((d) => d && d.status === "published" && (d.publishedAt || d.createdAt) >= cutoff);
+    return docs.map((d) => ({ d, v: pickVideo(d.media) })).filter((x) => x.v);
+  });
   const postViews = withVideo.length ? await views(ctx, withVideo.map((x) => x.d), user) : [];
   const items = withVideo.map((x, i) => {
     const p = postViews[i];

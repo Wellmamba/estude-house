@@ -3,21 +3,29 @@
 
 const MEM = (globalThis.__MAMBA_MEM__ ||= {});
 
+// Só nos testes locais: conta as operações no banco e, se BLOB_LAT_MS existir, simula a demora da rede.
+export const OPS = (globalThis.__MAMBA_OPS__ ||= { get: 0, set: 0, keys: 0, delete: 0 });
+const lag = () => (process.env.BLOB_LAT_MS ? new Promise((r) => setTimeout(r, Number(process.env.BLOB_LAT_MS))) : null);
+
 function memStore(name) {
   const m = (MEM[name] ||= new Map());
   return {
     async get(key) {
+      OPS.get++; await lag();
       const v = m.get(key);
       return v === undefined ? null : JSON.parse(v);
     },
     async set(key, value) {
+      OPS.set++; await lag();
       m.set(key, JSON.stringify(value));
     },
     async delete(key) {
+      OPS.delete++; await lag();
       m.delete(key);
     },
     // Retorna chaves em ordem alfabética, depois de `after`, até `limit`.
     async keys({ prefix = "", after = "", limit = Infinity } = {}) {
+      OPS.keys++; await lag();
       const all = [...m.keys()].filter((k) => k.startsWith(prefix)).sort();
       const out = [];
       for (const k of all) {
@@ -109,6 +117,33 @@ export async function pmap(list, fn, n = 16) {
   return out;
 }
 
+/* ── cache de curta duração dentro da própria instância do servidor ──
+   Com centenas de pessoas usando ao mesmo tempo, as mesmas leituras (quem é o usuário, a lista de posts, o ranking)
+   se repetem a cada segundo. Guardar o resultado por alguns segundos tira a carga do banco.
+   • pedidos iguais que chegam juntos esperam uma única leitura (sem "avalanche");
+   • quem grava limpa o cache com bust(), então na mesma instância a mudança aparece na hora;
+   • nos testes locais o cache fica desligado (a menos que CACHE_FORCE=1), para os testes verem sempre o dado novo. */
+const CACHE = (globalThis.__MAMBA_CACHE__ ||= new Map());
+export const cacheOn = () => !process.env.LOCAL_DB || !!process.env.CACHE_FORCE;
+const MAX_CACHE = 4000;
+export function cached(key, ttl, fn) {
+  if (!ttl || !cacheOn()) return fn();
+  const hit = CACHE.get(key);
+  if (hit && hit.at > Date.now() - ttl) return hit.p;
+  const p = Promise.resolve().then(fn);
+  if (CACHE.size >= MAX_CACHE) { const first = CACHE.keys().next().value; CACHE.delete(first); }
+  const entry = { at: Date.now(), p };
+  CACHE.set(key, entry);
+  p.catch(() => { if (CACHE.get(key) === entry) CACHE.delete(key); });
+  return p;
+}
+export function bust(prefix = "") {
+  for (const k of [...CACHE.keys()]) if (k.startsWith(prefix)) CACHE.delete(k);
+}
+// cópia segura: quem recebe pode mexer no objeto sem estragar o que está guardado
+export const clone = (v) => (v == null ? v : structuredClone(v));
+
 export function resetMemory() {
+  CACHE.clear();
   for (const k of Object.keys(MEM)) delete MEM[k];
 }

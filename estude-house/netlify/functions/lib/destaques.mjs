@@ -2,7 +2,7 @@
 // (24 horas, 1 semana ou para sempre) e pode pôr uma enquete em qualquer card.
 // Chaves: store "hl": d:<tempo invertido>:<id> (o destaque) e ix:<id>; store "hlseen": <pessoa>:<id> (quem já assistiu até o fim);
 // store "hlpoll": <enquete>:<pessoa>:<opção> (o voto; ler só as chaves já basta para contar).
-import { store, pmap } from "./db.mjs";
+import { store, pmap, cached, bust as dbBust } from "./db.mjs";
 import { newId, can } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as eng from "./engage.mjs";
@@ -57,8 +57,9 @@ async function find(id) {
   return doc ? { doc, key: ix.k } : null;
 }
 
+// o que a pessoa já viu: perguntado a cada abertura do Feed e do /me; guardado por 10 s (marcar como visto limpa na hora)
 async function seenIds(userId) {
-  const keys = await (await seenStore()).keys({ prefix: userId + ":" });
+  const keys = await cached("seen:" + userId, 10000, async () => (await seenStore()).keys({ prefix: userId + ":" }));
   return new Set(keys.map((k) => k.slice(userId.length + 1)));
 }
 
@@ -66,6 +67,7 @@ async function resetSeen(id, keepUserId) {
   const ss = await seenStore();
   const keys = (await ss.keys({})).filter((k) => k.endsWith(":" + id) && !k.startsWith(keepUserId + ":"));
   await pmap(keys, (k) => ss.delete(k));
+  dbBust("seen:");
 }
 
 /* quantos destaques novos (ainda não assistidos até o fim) a pessoa tem */
@@ -182,6 +184,7 @@ export async function handle(ctx, { req, method, path, body, user }) {
     const k = `d:${inv(t)}:${d.id}`;
     const s = await hl();
     await Promise.all([s.set(k, d), s.set("ix:" + d.id, { k }), (await seenStore()).set(`${user.id}:${d.id}`, { at: t, own: true })]);
+    dbBust("seen:" + user.id);
     bust();
     await ctx.logEvent(req, "destaque_publicado", user, { destaque: d.id, titulo: title, cards: slides.length, duracao: duration, enquetes: pollIds(slides).length });
     return json({ item: { id: d.id, title, count: slides.length, expiresAt: d.expiresAt || null } }, 201);
@@ -207,7 +210,7 @@ export async function handle(ctx, { req, method, path, body, user }) {
     const ss = await seenStore();
     const k = `${user.id}:${id}`;
     if (await ss.get(k)) return json({ ok: true, gained: 0, goals: [] });
-    await ss.set(k, { at: now() });
+    await ss.set(k, { at: now() }); dbBust("seen:" + user.id);
     const r = f.doc.authorId === user.id ? { gained: 0, goals: [] } : await eng.record(user, "destaque", "Assistiu um destaque");
     return json({ ok: true, gained: r.gained, goals: r.goals });
   }

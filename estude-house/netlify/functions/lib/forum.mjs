@@ -1,7 +1,7 @@
 // Fórum dos gestores: publicações simples (título, categoria opcional e texto) que só gestores escrevem.
 // O aluno não vê o fórum no menu: os posts aparecem na busca e ele abre para ler.
 // Chaves (store "forum"): f:<tempo invertido>:<id> (o post) e ix:<id> (onde está cada post).
-import { store, pmap } from "./db.mjs";
+import { store, pmap, cached } from "./db.mjs";
 import { newId, can, isStaff } from "./auth.mjs";
 import * as notify from "./notify.mjs";
 import * as mod from "./moderation.mjs";
@@ -286,4 +286,4 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
 }
 
 /* quantos envios de alunos aguardam análise (selo no menu do gestor) */
-export async function pendingCount() { return (await (await forum()).keys({ prefix: "sp:", limit: 500 })).length; }
+export async function pendingCount() { return cached("forum:pend", 8000, async () => (await (await forum()).keys({ prefix: "sp:", limit: 500 })).length); }

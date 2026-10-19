@@ -167,7 +167,7 @@ export async function broadcast({ payload, cat = "avisos", loadUser, audience = 
     }
     const r = await sendTo(id, payload, { cat, force });
     if (r.sent) { people++; devices += r.sent; }
-  });
+  }, 40); // 40 pessoas ao mesmo tempo: 300 pessoas leva poucos segundos
   return { people, devices, reach: ids.length };
 }
 

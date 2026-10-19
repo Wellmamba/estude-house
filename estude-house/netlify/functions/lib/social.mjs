@@ -3,7 +3,7 @@
 // feed/rej:<autor>:<tempo>:<id> (recusados), feed/ix:<id> (onde está cada post), feed/au:<autor>:<tempo invertido>:<id> (posts por pessoa),
 // hypes/<post>:<pessoa>, comments/<post>:<tempo>-<sufixo>, nicks/n:<apelido>.
 import crypto from "node:crypto";
-import { store, pmap } from "./db.mjs";
+import { store, pmap, cached, bust as dbBust } from "./db.mjs";
 import { newId, isLive, can, isStaff } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as eng from "./engage.mjs";
@@ -27,17 +27,10 @@ const t13 = (n) => String(n).padStart(13, "0");
 const inv = (ts) => t13(9e12 - ts);
 
 /* ---------- cache curto por instância (só para leituras repetidas em rajada) ---------- */
-const MEMO = new Map();
-const TTL = process.env.LOCAL_DB ? 0 : 5000;
-async function memo(key, ttl, fn) {
-  const t = process.env.LOCAL_DB ? 0 : ttl;
-  const hit = MEMO.get(key);
-  if (t && hit && hit.at > Date.now() - t) return hit.v;
-  const v = await fn();
-  if (t) MEMO.set(key, { at: Date.now(), v });
-  return v;
-}
-const bust = (prefix) => { for (const k of MEMO.keys()) if (k.startsWith(prefix)) MEMO.delete(k); };
+// Cache de curta duração (em db.mjs): centenas de pessoas pedem o mesmo Feed ao mesmo tempo.
+const TTL = 5000;
+const memo = (key, ttl, fn) => cached("s:" + key, ttl, fn);
+const bust = (prefix) => { dbBust("s:" + prefix); if (prefix.startsWith("posts")) dbBust("reels:"); };
 
 /* ---------- envio de arquivos (Cloudinary) ---------- */
 const cloud = () => ({ name: process.env.CLOUDINARY_CLOUD_NAME || "", key: process.env.CLOUDINARY_API_KEY || "", secret: process.env.CLOUDINARY_API_SECRET || "" });
@@ -67,9 +60,11 @@ export function sanitizeMedia(list, fail) {
   });
 }
 
+// Só estes tipos de arquivo entram no Cloudinary da empresa (nada de página, script ou executável).
+export const UPLOAD_FORMATS = "jpg,jpeg,png,gif,webp,avif,heic,heif,bmp,tif,tiff,mp4,mov,m4v,webm,mkv,avi,3gp,ogv,wmv,mpeg,mpg,mp3,m4a,wav,pdf,doc,docx,xls,xlsx,ppt,pptx,csv,txt,rtf,zip,odt,ods,odp";
 function signUpload(user) {
   const c = cloud();
-  const params = { folder: "estude-house", timestamp: Math.floor(Date.now() / 1000) };
+  const params = { allowed_formats: UPLOAD_FORMATS, folder: "estude-house", timestamp: Math.floor(Date.now() / 1000) };
   const toSign = Object.keys(params).sort().map((k) => `${k}=${params[k]}`).join("&");
   const signature = crypto.createHash("sha1").update(toSign + c.secret).digest("hex");
   return { cloudName: c.name, apiKey: c.key, ...params, signature, url: `https://api.cloudinary.com/v1_1/${c.name}/auto/upload` };
@@ -258,12 +253,16 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const after = url.searchParams.get("after") || "";
     const indirect = !!(author || tag);
     const prefix = author ? `au:${author}:` : tag ? `tg:${tag}:` : "pub:";
-    const keys = await f.keys({ prefix, after, limit: PAGE + 1 });
-    const page = keys.slice(0, PAGE);
-    let docs = (await pmap(page, async (k) => (indirect ? (await f.get((await f.get(k))?.k || "x")) : f.get(k)))).filter(Boolean);
+    // a página do Feed é a mesma para todos: guardada por 3 s na instância (quem posta ou apaga limpa na hora)
+    const { keys, page, docs: pageDocs } = await memo(`posts:page:${prefix}|${after}`, 3000, async () => {
+      const keys = await f.keys({ prefix, after, limit: PAGE + 1 });
+      const page = keys.slice(0, PAGE);
+      return { keys, page, docs: (await pmap(page, async (k) => (indirect ? (await f.get((await f.get(k))?.k || "x")) : f.get(k)))).filter(Boolean) };
+    });
+    let docs = pageDocs;
     if (!indirect) {
       // fixados: ficam no topo do feed principal e não se repetem na lista comum
-      const pins = (await pmap(await f.keys({ prefix: "pin:" }), async (k) => f.get((await f.get(k))?.k || "x"))).filter((d) => d && d.status === "published");
+      const pins = await memo("posts:pins", 3000, async () => (await pmap(await f.keys({ prefix: "pin:" }), async (k) => f.get((await f.get(k))?.k || "x"))).filter((d) => d && d.status === "published"));
       const pinIds = new Set(pins.map((d) => d.id));
       docs = docs.filter((d) => !pinIds.has(d.id));
       if (!after) docs = [...pins, ...docs];
@@ -277,8 +276,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const tag = url.searchParams.get("tag") || "";
     const since = url.searchParams.get("since") || "";
     const prefix = tag ? `tg:${tag}:` : "pub:";
-    const keys = await f.keys({ prefix, limit: 21 });
-    const pins = (await f.keys({ prefix: "pin:" })).join("|");
+    const { keys, pins } = await memo(`posts:pulse:${prefix}`, 4000, async () => ({ keys: await f.keys({ prefix, limit: 21 }), pins: (await f.keys({ prefix: "pin:" })).join("|") }));
     const top = keys[0] || "";
     const fresh = since ? keys.filter((k) => k < since).length : 0;
     return json({ top, fresh, more: fresh >= 21, pins });
@@ -678,5 +676,5 @@ async function search(ctx, user, q, tagId = "") {
 const norm1 = (s) => String(s || "").replace(/[^\p{L}\p{N}]/gu, "");
 
 export async function pendingCount() {
-  return (await (await feed()).keys({ prefix: "pend:" })).length;
+  return memo("posts:pend", 8000, async () => (await (await feed()).keys({ prefix: "pend:" })).length);
 }

@@ -1,6 +1,6 @@
 // XP de engajamento: check-in diário, posts aprovados, hypes, comentários e metas.
 // Cada aluno tem um documento próprio (eng:<id>), então ninguém disputa a gravação de outra pessoa.
-import { store, pmap } from "./db.mjs";
+import { store, pmap, cached, cacheOn } from "./db.mjs";
 import { now, dayKey, addDays, weekKey, monthKey, daysOfWeek } from "./clock.mjs";
 
 export const METRICS = { checkin: "check-ins", hype: "hypes dados", comment: "comentários", post: "posts aprovados", destaque: "destaques assistidos" };
@@ -180,10 +180,12 @@ export async function view(user) {
 }
 
 // Ranking de engajamento. period: "week" | "month" | "all". `students` = usuários com perfil aluno.
-export async function ranking(period, students, meId) {
+// Calcular o ranking lê o engajamento de TODOS os alunos (centenas de leituras), então o resultado fica guardado
+// no banco por 60 s e é compartilhado entre todas as instâncias do servidor: só uma pessoa a cada minuto paga a conta.
+async function computeRanking(period, students) {
   const day = dayKey();
   const wk = weekKey(day), mo = monthKey(day);
-  const engs = await pmap(students, (u) => loadEng(u.id));
+  const engs = await pmap(students, (u) => loadEng(u.id), 24);
   const rows = students.map((u, i) => {
     const e = engs[i];
     let score = 0;
@@ -194,7 +196,21 @@ export async function ranking(period, students, meId) {
     return { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, xp: score, streak: effectiveStreak(e, day) };
   });
   rows.sort((a, b) => b.xp - a.xp || a.name.localeCompare(b.name, "pt-BR"));
-  const ranked = rows.filter((r) => r.xp > 0).map((r, i) => ({ ...r, pos: i + 1 }));
+  return { ranked: rows.filter((r) => r.xp > 0).map((r, i) => ({ ...r, pos: i + 1 })), since: period === "week" ? wk : period === "month" ? mo : null };
+}
+const RANK_SHARED_MS = 60000;
+export async function ranking(period, students, meId) {
+  const snap = cacheOn()
+    ? await cached("rank:" + period, 15000, async () => {
+        const st = await store("eng");
+        const doc = await st.get("rk:" + period);
+        if (doc && Date.now() - doc.at < RANK_SHARED_MS) return doc;
+        const fresh = { at: Date.now(), ...(await computeRanking(period, students)) };
+        await st.set("rk:" + period, fresh).catch(() => {});
+        return fresh;
+      })
+    : await computeRanking(period, students);
+  const ranked = snap.ranked;
   const me = ranked.find((r) => r.id === meId) || null;
-  return { period, rows: ranked.slice(0, 100), me, total: ranked.length, since: period === "week" ? wk : period === "month" ? mo : null };
+  return { period, rows: ranked.slice(0, 100), me, total: ranked.length, since: snap.since };
 }

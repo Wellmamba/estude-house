@@ -3,7 +3,7 @@
 // só então entra ("active"). Não há envio de e-mail.
 // Chaves: signups/p:<id> (aguardando), signups/i:<id> (aprovado, falta ativar), signups/r:<id> (recusado), invites/i:<id>.
 import crypto from "node:crypto";
-import { store, pmap } from "./db.mjs";
+import { store, pmap, cached } from "./db.mjs";
 import { secret, normalizeEmail, isValidEmail, emailKey } from "./auth.mjs";
 import { now } from "./clock.mjs";
 
@@ -26,7 +26,7 @@ export async function untrack(id) {
   await (await invites()).delete("i:" + id);
 }
 export async function pendingCount() {
-  return (await (await ix()).keys({ prefix: "p:" })).length;
+  return cached("signup:pend", 8000, async () => (await (await ix()).keys({ prefix: "p:" })).length);
 }
 
 // Gera um código novo (o anterior deixa de valer) e devolve para o gestor entregar à pessoa.

@@ -1,7 +1,7 @@
-import { store, pmap, blobsMode } from "./lib/db.mjs";
+import { store, pmap, blobsMode, cached, bust, clone } from "./lib/db.mjs";
 import {
   normalizeEmail, isValidEmail, emailKey, hashPassword, verifyPassword, signToken, verifyToken,
-  passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed, isLive, can, isStaff, cleanPerms,
+  passwordProblem, randomPassword, newId, certCode, isMaster, domainAllowed, isLive, can, isStaff, cleanPerms, passVersion,
 } from "./lib/auth.mjs";
 import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOfLesson, trailOfScope, isFinalScope, isTrailActive, trailVisibleTo, hiddenIdsFor, isRestricted } from "./lib/manifest.mjs";
 import { QUESTIONS, byId } from "./lib/questions/index.mjs";
@@ -24,16 +24,22 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-18-r";
+const BUILD = "2026-10-18-s";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
 }
 const fail = (status, message, extra) => { throw new HttpError(status, message, extra); };
 
-async function readBody(req) {
+// Tamanho máximo do que o navegador pode mandar: 1 MB nas telas comuns; 6 MB (limite do Netlify) na gestão,
+// onde a importação de trilhas leva imagens dentro do arquivo.
+async function readBody(req, path = "") {
   if (req.method === "GET" || req.method === "HEAD") return {};
-  try { return (await req.json()) || {}; } catch { return {}; }
+  const limit = path.startsWith("admin/") ? 6e6 : 1e6;
+  if (Number(req.headers.get("content-length") || 0) > limit) fail(413, "O envio é grande demais.");
+  const raw = await req.text();
+  if (raw.length > limit) fail(413, "O envio é grande demais.");
+  try { return JSON.parse(raw) || {}; } catch { return {}; }
 }
 
 const clientIp = (req) =>
@@ -74,12 +80,18 @@ async function loadProgress(userId) {
 }
 async function saveProgress(userId, p) {
   await (await store("progress")).set("p:" + userId, p);
+  bust("adm:all");
 }
+// O cadastro da pessoa é lido a cada requisição (para saber se o acesso continua ativo). Fica guardado por 10 s
+// na instância; quem grava (saveUser) limpa na hora, então desativar alguém vale em até 10 s em qualquer instância.
+const USER_TTL = 10000;
 async function loadUser(id) {
-  return id ? await (await store("users")).get("u:" + id) : null;
+  if (!id) return null;
+  return clone(await cached("user:" + id, USER_TTL, async () => (await (await store("users")).get("u:" + id)) ?? null));
 }
 async function saveUser(u) {
   await (await store("users")).set("u:" + u.id, u);
+  bust("user:" + u.id); bust("allusers");
 }
 async function findByEmail(email) {
   const id = await (await store("emails")).get(emailKey(email));
@@ -139,6 +151,7 @@ async function requireUser(req) {
   if (!data) fail(401, "Sessão expirada. Entre novamente.");
   const user = await loadUser(data.sub);
   if (!user || !isLive(user)) fail(401, "Acesso desativado. Fale com a administração.");
+  if (data.v && data.v !== passVersion(user.passHash)) fail(401, "Sua senha foi alterada. Entre novamente.");
   return user;
 }
 
@@ -154,6 +167,7 @@ async function createUser({ name, email, password, role = "aluno", perms = null,
   if (access) user.access = access;
   await users.set("u:" + id, user);
   await emails.set(emailKey(email), id);
+  bust("allusers");
   return user;
 }
 
@@ -185,7 +199,7 @@ async function register(req, body) {
     return json({ pending: true, email, message: "Cadastro recebido! Um gestor vai analisar. Quando for aprovado, peça a ele o código de ativação." }, 202);
   }
   await logEvent(req, "cadastro", user);
-  return json({ token: signToken(user.id), user: publicUser(user) }, 201);
+  return json({ token: signToken(user.id, user.passHash), user: publicUser(user) }, 201);
 }
 
 async function login(req, body) {
@@ -197,9 +211,20 @@ async function login(req, body) {
     const min = Math.ceil((state.until - Date.now()) / 60000);
     fail(429, `Muitas tentativas. Tente de novo em ${min} min.`);
   }
+  // Freio por endereço: quem erra a senha de muitas contas diferentes (adivinhação em massa) é barrado.
+  // O limite é alto de propósito: um escritório inteiro pode sair do mesmo endereço.
+  const ip = clientIp(req);
+  const ipKey = ip ? "loginip:" + emailKey(ip) : null;
+  const ipState = ipKey ? (await rl.get(ipKey)) || { n: 0, at: 0, until: 0 } : null;
+  if (ipState && ipState.until > Date.now()) fail(429, "Muitas tentativas deste aparelho. Tente de novo em alguns minutos.");
   const user = isValidEmail(email) ? await findByEmail(email) : null;
   const ok = user && verifyPassword(String(body.password || ""), user.passHash);
   if (!ok) {
+    if (ipState) {
+      if (Date.now() - ipState.at > 10 * 60 * 1000) { ipState.n = 0; ipState.at = Date.now(); }
+      if (++ipState.n >= 80) { ipState.until = Date.now() + 10 * 60 * 1000; ipState.n = 0; }
+      await rl.set(ipKey, ipState);
+    }
     state.count += 1;
     if (state.count >= 5) { state.until = Date.now() + 10 * 60 * 1000; state.count = 0; }
     await rl.set(key, state);
@@ -218,7 +243,7 @@ async function login(req, body) {
     saveUser(user),
     logEvent(req, "login", user),
   ]);
-  return json({ token: signToken(user.id), user: publicUser(user) });
+  return json({ token: signToken(user.id, user.passHash), user: publicUser(user) });
 }
 
 /* ---------- progresso e provas ---------- */
@@ -417,17 +442,22 @@ function userSummary(u, p, e) {
   };
 }
 
+// Lista de todo mundo: 300 leituras. Fica guardada por 20 s (várias telas pedem: marcar com @, ranking, provas).
 async function allUsers() {
-  const users = await store("users");
-  const keys = await users.keys({ prefix: "u:" });
-  return (await pmap(keys, (k) => users.get(k))).filter(Boolean);
+  return clone(await cached("allusers", 20000, async () => {
+    const users = await store("users");
+    const keys = await users.keys({ prefix: "u:" });
+    return (await pmap(keys, (k) => users.get(k), 24)).filter(Boolean);
+  }));
 }
 
 // Usuários + progresso de cada um, lidos em paralelo (uma leitura por pessoa).
 async function allWithProgress() {
-  const list = await allUsers();
-  const [progs, engs] = await Promise.all([pmap(list, (u) => loadProgress(u.id)), pmap(list, (u) => eng.loadEng(u.id))]);
-  return list.map((u, i) => ({ u, p: progs[i], e: engs[i] }));
+  return clone(await cached("adm:all", 15000, async () => {
+    const list = await allUsers();
+    const [progs, engs] = await Promise.all([pmap(list, (u) => loadProgress(u.id), 24), pmap(list, (u) => eng.loadEng(u.id), 24)]);
+    return list.map((u, i) => ({ u, p: progs[i], e: engs[i] }));
+  }));
 }
 
 async function adminOverview() {
@@ -629,6 +659,7 @@ async function adminDeleteUser(req, admin, id) {
 }
 
 async function removeUser(u) {
+  bust("user:" + u.id); bust("allusers");
   await (await store("users")).delete("u:" + u.id);
   await (await store("emails")).delete(emailKey(u.email));
   await (await store("progress")).delete("p:" + u.id);
@@ -677,13 +708,20 @@ function adminQuestions() {
 
 /* ---------- roteador ---------- */
 
+// Depois de qualquer gravação, os números derivados (contadores de pendências, painel do gestor) são recalculados.
 export default async (req, context) => {
+  const res = await handleApi(req, context);
+  if (req.method !== "GET" && req.method !== "HEAD" && res.status < 400) { bust("forum:pend"); bust("signup:pend"); bust("adm:"); }
+  return res;
+};
+
+async function handleApi(req, context) {
   try {
     const url = new URL(req.url);
     const path = url.pathname.replace(/^\/api\/?/, "").replace(/\/+$/, "");
     const method = req.method.toUpperCase();
     if (method === "OPTIONS") return new Response(null, { status: 204 });
-    const body = await readBody(req);
+    const body = await readBody(req, path);
 
     if (path === "health") return json({ ok: true, build: BUILD, blobs: blobsMode(), uploads: social.uploadsOn() ? "cloudinary" : "desligado", push: (await pushLib.vapid()) ? "ativo" : "indisponível", rules: RULES });
     if (path === "auth/register" && method === "POST") return await register(req, body);
@@ -777,10 +815,13 @@ export default async (req, context) => {
     console.error("erro no servidor:", e);
     if (e.status) return json({ error: e.message }, e.status);
     // Mostra um código curto do erro: ajuda a administração a achar a causa no log do Netlify.
+    // O detalhe técnico fica só no registro (Logs do gestor e do Netlify); para o navegador vai só um código curto.
     const detail = cleanText(`${e.name || "Error"}: ${e.message || ""}`, 140);
+    const ref = newId().slice(0, 6).toUpperCase();
+    console.error("erro", ref, detail);
     try {
-      await logEvent(req, "erro_servidor", null, { path: new URL(req.url).pathname, method: req.method, detail });
+      await logEvent(req, "erro_servidor", null, { path: new URL(req.url).pathname, method: req.method, detail, ref });
     } catch {}
-    return json({ error: "Erro interno. Tente novamente em instantes.", detail }, 500);
+    return json({ error: `Erro interno. Tente novamente em instantes. (código ${ref})`, ref }, 500);
   }
-};
+}
