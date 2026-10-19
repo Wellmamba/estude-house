@@ -1,6 +1,6 @@
 # Nova interface: Feed enxuto, menu do gestor, Reels e avisos no aparelho
 
-Versão do site: `2026-10-18-p`. Confira em `/api/health`: o campo `build` deve mostrar essa versão e o campo `push` deve mostrar `ativo`.
+Versão do site: `2026-10-18-q`. Confira em `/api/health`: o campo `build` deve mostrar essa versão e o campo `push` deve mostrar `ativo`.
 
 ## 1. O que mudou na tela
 
