@@ -62,8 +62,11 @@
       const tab = getComputedStyle(document.querySelector(".tabbar") || document.body).display !== "none" ? (document.querySelector(".tabbar")?.offsetHeight || 0) : 0;
       const hgt = tab ? innerHeight - top - tab : Math.min(innerHeight - top - 40, 860);
       wrap.style.setProperty("--reels-h", Math.max(320, hgt) + "px");
+      /* no celular o CSS prende o quadro entre o topo e a barra de baixo; aqui só informamos as alturas reais */
+      document.documentElement.style.setProperty("--top-h", top + "px");
+      document.documentElement.style.setProperty("--tab-h", tab + "px");
     }
-    fit(); addEventListener("resize", fit);
+    fit(); addEventListener("resize", fit); addEventListener("orientationchange", () => setTimeout(fit, 250));
 
     function build(item) {
       const post = { id: item.postId, hyped: item.hyped, hypes: item.hypes };

@@ -150,7 +150,6 @@ a.fs-chip:hover { border-color: var(--gold); color: var(--text); }
 .vmode .mode-btns { flex: none; }
 
 /* ───── troca de aba ao arrastar ───── */
-.page { will-change: transform; }
 html[data-swipe="next"] .page { animation: sw-next .26s ease-out; }
 html[data-swipe="prev"] .page { animation: sw-prev .26s ease-out; }
 @keyframes sw-next { from { transform: translateX(46px); opacity: .2; } to { transform: none; opacity: 1; } }
@@ -174,9 +173,11 @@ html[data-swipe="prev"] .page { animation: sw-prev .26s ease-out; }
 @keyframes bell-pulse { 0%, 62%, 100% { transform: scale(1); } 10% { transform: scale(1.3); } 22% { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .bell-btn.has-new svg, .bell-btn.has-new .bell-n, .bell-btn.rang svg { animation: none; } }
 
-.vmode { flex-wrap: wrap; }
-.vmode .mode-btns { flex: 1 1 100%; }
+.vmode { flex-wrap: wrap; align-items: center; }
+.vmode .mode-switch { flex: 1 1 100%; min-width: 0; justify-items: stretch; margin: 4px 0 6px; }
+.vmode .mode-btns { display: flex; width: 100%; }
 .vmode .mode-opt { flex: 1; justify-content: center; }
+.vmode .mode-auto { justify-self: center; }
 
 /* ───── Reels ───── */
 .page.page-reels { max-width: none; padding: 14px 0 0; }
@@ -227,12 +228,17 @@ html[data-swipe="prev"] .page { animation: sw-prev .26s ease-out; }
 .rs-card { position: relative; max-height: 72%; overflow: auto; background: var(--panel); border-radius: 18px 18px 0 0; padding: 14px 14px 18px; color: var(--text); }
 .rs-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .reels-empty { margin: 60px auto; max-width: 520px; display: grid; justify-items: center; gap: 12px; }
+/* celular: o quadro dos Reels fica preso entre o topo e a barra de baixo; assim ele acompanha a barra de endereço do navegador sem depender de cálculo em JS */
 @media (max-width: 860px) {
-  .page.page-reels { padding: 0; }
-  .reels-wrap { display: block; }
-  .reels-stage { width: 100%; border-radius: 0; border: 0; box-shadow: none; }
+  .page.page-reels { position: fixed; left: 0; right: 0; top: var(--top-h, 75px); bottom: var(--tab-h, 70px); max-width: none; margin: 0; padding: 0; overflow: hidden; }
+  .reels-wrap { display: block; height: 100%; }
+  .reels-stage { width: 100%; height: 100%; border-radius: 0; border: 0; box-shadow: none; }
   .reels-nav { display: none; }
 }
+html[data-mode="mobile"] .page.page-reels { position: fixed; left: 0; right: 0; top: var(--top-h, 75px); bottom: var(--tab-h, 70px); max-width: none; margin: 0; padding: 0; overflow: hidden; }
+html[data-mode="mobile"] .reels-wrap { display: block; height: 100%; }
+html[data-mode="mobile"] .reels-stage { width: 100%; height: 100%; border-radius: 0; border: 0; box-shadow: none; }
+html[data-mode="mobile"] .reels-nav { display: none; }
 body.is-reels { overflow: hidden; }
 @media (min-width: 861px) { body.is-reels { overflow: auto; } }
 
