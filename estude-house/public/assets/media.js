@@ -141,6 +141,7 @@
     return M.post("feed/upload-sign").then((sign) => new Promise((res, rej) => {
       const fd = new FormData();
       fd.append("file", file); fd.append("api_key", sign.apiKey); fd.append("timestamp", sign.timestamp); fd.append("signature", sign.signature); fd.append("folder", sign.folder);
+      if (sign.allowed_formats) fd.append("allowed_formats", sign.allowed_formats); /* faz parte da assinatura */
       const x = new XMLHttpRequest();
       x.open("POST", sign.url.replace("/auto/upload", `/${kind}/upload`));
       x.upload.onprogress = (e) => { if (onProgress && e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100)); };

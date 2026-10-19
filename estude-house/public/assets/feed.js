@@ -544,8 +544,8 @@
         live.hidden = false;
       } catch {}
     }
-    const onVisible = () => { if (!document.hidden) pulse(); };
-    function stopLive() { clearInterval(timer); document.removeEventListener("visibilitychange", onVisible); window.removeEventListener("focus", onVisible); }
+    const onVisible = () => { if (!document.hidden) setTimeout(pulse, Math.random() * 1500); };
+    function stopLive() { clearTimeout(timer); document.removeEventListener("visibilitychange", onVisible); window.removeEventListener("focus", onVisible); }
 
     async function load(reset) {
       if (reset) { list.replaceChildren(M.loading()); next = null; more.replaceChildren(); live.hidden = true; if (tab === "feed") rebase(); }
@@ -592,7 +592,10 @@
     drawTop();
     if (!isAdm && M.session.user.role === "aluno" && matchMedia("(min-width: 1180px)").matches) M.get("engage/me").then((v) => { railGoals = (v.goals || []).filter((g) => !g.done).concat((v.goals || []).filter((g) => g.done)); if (layout.isConnected) drawRail(); }).catch(() => {});
     load(true);
-    timer = setInterval(pulse, window.__LIVE_MS || 20000);
+    /* confere a cada ~30 s, com variação aleatória, para 300 pessoas não baterem no servidor no mesmo segundo */
+    const liveMs = () => (window.__LIVE_MS || 30000) * (0.8 + Math.random() * 0.4);
+    const loop = () => { timer = setTimeout(async () => { try { await pulse(); } catch {} if (node.isConnected) loop(); }, liveMs()); };
+    loop();
     document.addEventListener("visibilitychange", onVisible); window.addEventListener("focus", onVisible);
     return layout;
   };
