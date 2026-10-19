@@ -33,6 +33,17 @@ const BUILTIN_TRAILS = [
     ],
   },
   {
+    id: "bpp",
+    title: "Brand Protection Program (Mercado Livre)",
+    finalScope: "final-bpp",
+    finalSize: 15,
+    modules: [
+      { id: "bpp-m1", examSize: 8, lessons: ["bpp-l1-1", "bpp-l1-2"] },
+      { id: "bpp-m2", examSize: 8, lessons: ["bpp-l2-1", "bpp-l2-2", "bpp-l2-3", "bpp-l2-4", "bpp-l2-5"] },
+      { id: "bpp-m3", examSize: 8, lessons: ["bpp-l3-1", "bpp-l3-2", "bpp-l3-3"] },
+    ],
+  },
+  {
     id: "gf",
     title: "Grade de Formação Mamba",
     finalScope: "final-gf",

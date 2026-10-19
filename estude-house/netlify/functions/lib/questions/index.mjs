@@ -11,6 +11,10 @@ import rtM2 from "./rt-m2.mjs";
 import rtM3 from "./rt-m3.mjs";
 import rtM4 from "./rt-m4.mjs";
 import rtFinal from "./rt-final.mjs";
+import bppM1 from "./bpp-m1.mjs";
+import bppM2 from "./bpp-m2.mjs";
+import bppM3 from "./bpp-m3.mjs";
+import bppFinal from "./bpp-final.mjs";
 import gfM1 from "./gf-m1.mjs";
 import gfM2 from "./gf-m2.mjs";
 import gfM3 from "./gf-m3.mjs";
@@ -31,7 +35,7 @@ import gfFinal from "./gf-final.mjs";
 // { id, module, topic, q, options: [...], answer: [índices corretos], why }
 // answer com 1 índice = escolha única; com 2+ = múltipla escolha (tudo ou nada).
 
-export const QUESTIONS = [...m0, ...m1, ...m2, ...m3, ...m4, ...m5, ...m6, ...final, ...rtM1, ...rtM2, ...rtM3, ...rtM4, ...rtFinal, ...gfM1, ...gfM2, ...gfM3, ...gfM4, ...gfM5, ...gfM6, ...gfM7, ...gfM8, ...gfM9, ...gfM10, ...gfM11, ...gfM12, ...gfM13, ...gfM14, ...gfFinal];
+export const QUESTIONS = [...m0, ...m1, ...m2, ...m3, ...m4, ...m5, ...m6, ...final, ...rtM1, ...rtM2, ...rtM3, ...rtM4, ...rtFinal, ...bppM1, ...bppM2, ...bppM3, ...bppFinal, ...gfM1, ...gfM2, ...gfM3, ...gfM4, ...gfM5, ...gfM6, ...gfM7, ...gfM8, ...gfM9, ...gfM10, ...gfM11, ...gfM12, ...gfM13, ...gfM14, ...gfFinal];
 
 const BUILTIN_COUNT = QUESTIONS.length;
 const map = new Map(QUESTIONS.map((q) => [q.id, q]));

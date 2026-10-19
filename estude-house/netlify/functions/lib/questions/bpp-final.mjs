@@ -1,0 +1,100 @@
+const M = "final-bpp";
+export default [
+  {
+    id: "final-bpp-01", module: M, topic: "Caso integrado",
+    q: "O cliente tem a marca registrada, mas o certificado no BPP venceu semana passada. Aparece um anúncio com o logo dele copiado em produto falso. Qual é a sequência certa?",
+    options: [
+      "Abrir agora pelo catálogo, que não olha o status do direito",
+      "Renovar o direito em Minha conta e só depois abrir a denúncia",
+      "Marcar o vendedor como confiável e aguardar a renovação automática",
+      "Pedir ao suporte para abrir a denúncia sem o certificado em dia",
+    ],
+    answer: [1],
+    why: "Com o direito vencido o BPP não deixa denunciar. Primeiro renove (três pontos, Ver registros, certificado de renovação) e depois abra a denúncia.",
+  },
+  {
+    id: "final-bpp-02", module: M, topic: "Caso integrado",
+    q: "Um catálogo tem a foto autoral do cliente copiada e, além disso, o título usa a marca dele de forma confusa. Como denunciar?",
+    options: [
+      "Só marcar as fotos como suspeitas, porque o título não pode ser denunciado",
+      "Só reportar infração aos direitos, porque as fotos entram no mesmo botão",
+      "Duas denúncias: fotos como suspeitas e reportar infração ao conteúdo",
+      "Abrir um formulário de Mercado Pago, que cobre fotos e título juntos",
+    ],
+    answer: [2],
+    why: "São dois caminhos diferentes do catálogo: marcar fotos como suspeitas (direitos autorais) e reportar uma infração aos direitos pelo uso indevido da marca no conteúdo.",
+  },
+  {
+    id: "final-bpp-03", module: M, topic: "Caso integrado",
+    q: "Uma denúncia foi recusada. O status mostra que o direito do cliente aparecia como vencido na data. O que fazer?",
+    options: [
+      "Reenviar a mesma denúncia amanhã, porque o status se corrige sozinho",
+      "Renovar o direito, confirmar o status ativo e abrir a denúncia de novo",
+      "Escrever ao suporte pedindo para ignorar o status e aceitar a denúncia",
+      "Trocar o motivo para direitos conexos, que não exigem certificado",
+    ],
+    answer: [1],
+    why: "A causa está no direito vencido. Renove, confira que o status está ativo e refaça a denúncia. O suporte é para quando a dúvida persistir depois dessa checagem.",
+  },
+  {
+    id: "final-bpp-04", module: M, topic: "Caso integrado",
+    q: "Um anúncio tem seis cores, e duas usam a estampa protegida do cliente. Qual é a forma mais precisa de denunciar?",
+    options: [
+      "Selecionar só as duas variações com a estampa e marcar como suspeito",
+      "Marcar o anúncio inteiro, porque as seis cores são o mesmo produto",
+      "Denunciar uma cor hoje e a outra na semana seguinte, uma por vez",
+      "Marcar o vendedor como confiável e abrir o caso direto pelo suporte do BPP",
+    ],
+    answer: [0],
+    why: "O fluxo de variações existe para isso: selecionar só as versões que infringem, escolher o motivo e comentar os detalhes.",
+  },
+  {
+    id: "final-bpp-05", module: M, topic: "Caso integrado",
+    q: "O cliente quer derrubar o anúncio de um revendedor autorizado que vende o original abaixo da tabela. Você aplica o filtro das 6 perguntas. Qual é o resultado?",
+    options: [
+      "Abrir agora: o direito está ativo e a marca está no título",
+      "Juntar prova: falta o print do preço para anexar à denúncia",
+      "Outro caminho: é questão comercial, sem infração de PI",
+      "Regularizar o direito: o status precisa ser reconfirmado antes",
+    ],
+    answer: [2],
+    why: "Produto original de revendedor autorizado não é falsificação, e preço fora da tabela é assunto de contrato. O filtro manda pelo outro caminho: conversar com o revendedor.",
+  },
+  {
+    id: "final-bpp-06", module: M, topic: "Caso integrado",
+    q: "Marque o que é verdade sobre o fluxo completo de uma denúncia de anúncio tradicional. Marque todas.",
+    multi: true,
+    options: [
+      "O direito do cliente precisa estar cadastrado e ativo",
+      "O motivo é escolhido com base nos direitos cadastrados",
+      "A denúncia só conclui depois de confirmada em Anúncios suspeitos",
+      "Marcar como confiável abre a denúncia automaticamente",
+    ],
+    answer: [0, 1, 2],
+    why: "Direito ativo, motivo conforme os direitos e confirmação em Anúncios suspeitos fazem parte do fluxo. Marcar como confiável faz o oposto: esconde o vendedor das buscas.",
+  },
+  {
+    id: "final-bpp-07", module: M, topic: "Caso integrado",
+    q: "Você identifica uma réplica, com logo copiado, de um vendedor que cresce rápido. O direito está ativo. Qual conjunto de ações é o mais forte?",
+    options: [
+      "Prints, comparação com o original, motivo de marca e descrição clara",
+      "Denúncia imediata com a frase “falso, favor derrubar” e nenhum anexo de prova",
+      "Marcar o vendedor como confiável para acompanhar as vendas dele",
+      "Esperar as avaliações piorarem para ter mais argumentos depois",
+    ],
+    answer: [0],
+    why: "Direito ativo, infração clara, prova na mão e descrição precisa são o que faz a denúncia entrar forte. Frases genéricas e espera enfraquecem o caso.",
+  },
+  {
+    id: "final-bpp-08", module: M, topic: "Caso integrado",
+    q: "A plataforma do BPP trava no meio da denúncia. Você já limpou o cache e usou janela anônima. O que mais tentar antes do suporte?",
+    options: [
+      "Criar outro cadastro de vendedor para tentar de novo",
+      "Reenviar a denúncia dez vezes seguidas, até ela passar",
+      "Conferir se está usando VPN, que pode atrapalhar a ferramenta",
+      "Trocar o tipo de direito do cliente para conseguir seguir adiante",
+    ],
+    answer: [2],
+    why: "As dicas do suporte são cache, janela anônima e não usar VPN. Se o erro persistir, grave um vídeo do problema e anexe ao formulário.",
+  },
+];
