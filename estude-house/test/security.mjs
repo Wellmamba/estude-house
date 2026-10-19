@@ -55,7 +55,7 @@ console.log("Áreas do gestor: aluno e sub-adm sem permissão não passam");
   const found = new Set();
   for (const d of dirs) for (const f of fs.readdirSync(d)) if (f.endsWith(".mjs")) for (const m of fs.readFileSync(path.join(d, f), "utf8").matchAll(/"(admin\/[a-z0-9/_-]+)"/g)) found.add(m[1]);
   const bases = [...found].filter((x) => !x.endsWith("/"));
-  const extra = ["admin/users/x", "admin/users/x/reset", "admin/feed/x/approve", "admin/feed/x/reject", "admin/tags/x", "admin/signups", "admin/signups/x/approve", "admin/signups/x/reject", "admin/provas/x", "admin/trails/x", "admin/trails/x/publish", "destaques/x", "destaques/x/post", "forum/importar-manuais", "forum/envios/x/aprovar", "forum/envios/x/reprovar", "trails/custom/x", "trails/x/active", "trails/x/ativar"];
+  const extra = ["admin/users/x", "admin/users/x/reset", "admin/feed/x/approve", "admin/feed/x/reject", "admin/tags/x", "admin/signups", "admin/signups/x/approve", "admin/signups/x/reject", "admin/provas/x", "admin/trails/x", "admin/trails/x/publish", "admin/trails/categories", "admin/trails/x/category", "destaques/x", "destaques/x/post", "forum/importar-manuais", "forum/envios/x/aprovar", "forum/envios/x/reprovar", "trails/custom/x", "trails/x/active", "trails/x/ativar"];
   const alvo = [...new Set([...bases, ...extra])];
   let n = 0;
   for (const who of [ana, { token: sub.token }]) {

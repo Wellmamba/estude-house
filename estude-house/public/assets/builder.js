@@ -44,6 +44,92 @@
     inp.click();
   };
 
+  /* ───── categorias: 100% do gestor ───── */
+  const applyCats = (r) => { M.session.cats = { list: r.list || [], map: r.map || {} }; };
+  const askName = (title, label, start = "") => M.modal((close) => {
+    const inp = h("input", { class: "input", type: "text", maxlength: "24", value: start, "aria-label": label });
+    const go = () => { const v = inp.value.trim(); if (!v) { M.toast("Escreva o nome da categoria.", "err"); return; } close(v); };
+    inp.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); go(); } });
+    setTimeout(() => inp.focus(), 50);
+    return [h("h3", { text: title }), h("div", { class: "field" }, h("label", { text: label }), inp),
+      h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => close(null), text: "Cancelar" }), h("button", { class: "btn btn-gold", type: "button", onclick: go, text: "Salvar" }))];
+  });
+
+  /* seletor de categoria de uma trilha (nativa, criada ou importada). Salva na hora. */
+  M.catPicker = function (t, onChange) {
+    const own = () => M.session.cats?.map?.[t.id] || "";
+    const fileTag = () => M.catNorm(t.tag);
+    const sel = h("select", { class: "input cat-pick", "aria-label": "Categoria de " + t.title });
+    const fill = () => {
+      const cur = own();
+      sel.replaceChildren(
+        h("option", { value: "", text: `Automática (${fileTag()})` }),
+        ...M.catList().map((c) => h("option", { value: c, text: c })),
+        h("option", { value: "@nova", text: "+ Nova categoria…" }));
+      sel.value = cur;
+    };
+    fill();
+    sel.addEventListener("change", async () => {
+      let v = sel.value;
+      if (v === "@nova") {
+        v = await askName("Nova categoria", "Nome da categoria");
+        if (!v) { fill(); return; }
+      }
+      sel.disabled = true;
+      try {
+        const r = await M.post(`admin/trails/${t.id}/category`, { category: v });
+        applyCats(r);
+        M.toast(r.category ? `Categoria: ${r.category}` : "Categoria automática.", "ok");
+        onChange && onChange(r);
+      } catch (e) { M.toast(e.message, "err"); }
+      sel.disabled = false; fill();
+    });
+    return sel;
+  };
+
+  /* gerenciar a lista: criar, renomear, ordenar, excluir */
+  M.categoriesDialog = async function (onSaved) {
+    let cur;
+    try { cur = await M.get("admin/trails/categories"); } catch (e) { M.toast(e.message, "err"); return; }
+    const used = (name) => Object.values(cur.map || {}).filter((x) => x === name).length;
+    M.modal((close) => {
+      const rows = cur.list.map((n) => ({ orig: n, name: n }));
+      const box = h("div", { class: "cat-mgr" });
+      const err = h("div");
+      const draw = () => {
+        box.replaceChildren(...rows.map((r, i) => {
+          const inp = h("input", { class: "input", type: "text", maxlength: "24", value: r.name, "aria-label": "Nome da categoria" });
+          inp.addEventListener("input", () => { r.name = inp.value; });
+          const move = (d) => () => { const j = i + d; if (j < 0 || j >= rows.length) return; [rows[i], rows[j]] = [rows[j], rows[i]]; draw(); };
+          return h("div", { class: "row", style: "gap:8px;margin-bottom:8px;align-items:center" }, inp,
+            h("span", { class: "muted small", style: "white-space:nowrap", text: r.orig ? `${used(r.orig)} ${used(r.orig) === 1 ? "trilha" : "trilhas"}` : "nova" }),
+            h("button", { class: "btn btn-ghost btn-sm", type: "button", "aria-label": "Subir", onclick: move(-1), text: "↑" }),
+            h("button", { class: "btn btn-ghost btn-sm", type: "button", "aria-label": "Descer", onclick: move(1), text: "↓" }),
+            h("button", { class: "btn btn-ghost btn-sm tm-del", type: "button", "aria-label": "Excluir categoria", onclick: () => { rows.splice(i, 1); draw(); }, text: "Excluir" }));
+        }), rows.length ? null : h("p", { class: "muted small", text: "Nenhuma categoria criada ainda. Crie a primeira abaixo." }));
+      };
+      draw();
+      const save = h("button", { class: "btn btn-gold", type: "button", text: "Salvar categorias" });
+      save.addEventListener("click", async () => {
+        const list = rows.map((r) => r.name.trim()).filter(Boolean);
+        const renames = {};
+        for (const r of rows) if (r.orig && r.name.trim() && r.name.trim() !== r.orig) renames[r.orig] = r.name.trim();
+        save.disabled = true; err.replaceChildren();
+        try {
+          const r = await M.api("PUT", "admin/trails/categories", { list, renames });
+          applyCats(r); M.toast("Categorias salvas.", "ok"); close(); onSaved && onSaved(r);
+        } catch (e) { err.replaceChildren(h("p", { class: "err", role: "alert", text: e.message })); }
+        save.disabled = false;
+      });
+      return [h("h3", { text: "Categorias das trilhas" }),
+        h("p", { class: "muted small", text: "Você decide quais categorias existem e em qual delas cada trilha fica. Renomear leva as trilhas junto. Excluir devolve as trilhas ao padrão (a etiqueta do arquivo, ou Geral)." }),
+        box,
+        h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: async () => { const v = await askName("Nova categoria", "Nome da categoria"); if (v) { if (!rows.some((r) => r.name.toLowerCase() === v.toLowerCase())) rows.push({ orig: "", name: v }); draw(); } }, text: "+ Nova categoria" }),
+        err,
+        h("div", { class: "dlg-actions" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => close(), text: "Cancelar" }), save)];
+    });
+  };
+
   /* ───── quem vê a trilha: todos os alunos ou só os escolhidos ───── */
   M.audienceDialog = async function (t, onSaved) {
     let d;
@@ -106,7 +192,7 @@
     const list = h("div", { class: "tm-grid" });
     /* filtro por categoria e busca: com muitas trilhas, o gestor acha a que quer */
     const AF = M.adminTrailFilter || (M.adminTrailFilter = { cat: "", q: "" });
-    const catOfRow = (t) => { const tag = String((t.kind === "nativa" ? M.allTrails().find((x) => x.id === t.id)?.tag : t.tag) || "").trim(); return !tag || tag.toLowerCase() === "trilha" ? "Geral" : tag; };
+    const catOfRow = (t) => M.session.cats?.map?.[t.id] || M.catNorm(t.kind === "nativa" ? M.allTrails().find((x) => x.id === t.id)?.tag : t.tag);
     const catsBox = h("div", { class: "cat-chips", role: "tablist", "aria-label": "Categorias" });
     const search = h("input", { class: "input", type: "search", placeholder: "Buscar trilha", "aria-label": "Buscar trilha", value: AF.q });
     const norm = (v) => String(v || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -147,6 +233,7 @@
           h("div", { class: "row tm-aud" }, M.icon("users", 16),
             h("span", { class: "small", text: t.audience === "assigned" ? `Só alunos escolhidos (${t.assigned} de ${t.students})` : `Todos os alunos (${t.students})` }),
             h("button", { class: "linkish small", type: "button", onclick: () => M.audienceDialog(t, (r) => { t.audience = r.mode; t.assigned = r.assigned; draw(rowsData); }), text: "Quem vê" })),
+          h("div", { class: "row tm-cat", style: "gap:8px;align-items:center;margin:6px 0" }, h("span", { class: "small muted", text: "Categoria" }), M.catPicker(t.kind === "nativa" ? (M.allTrails().find((x) => x.id === t.id) || t) : t, () => draw(rowsData))),
           h("p", { class: "muted small", text: `${t.modules} ${t.modules === 1 ? "módulo" : "módulos"} · ${t.lessons} ${t.lessons === 1 ? "aula" : "aulas"}${t.cards != null ? " · " + t.cards + " cards" : ""}${t.updatedAt ? " · editada " + M.fmtDateTime(t.updatedAt) : ""}` }),
           h("div", { class: "tm-actions" },
             created ? h("a", { class: "btn btn-gold btn-sm", href: "#/admin/trilhas/" + t.id }, "Editar") : null,
@@ -167,11 +254,12 @@
     return h("div", null,
       h("div", { class: "page-head" },
         h("h2", { text: "Gestão de trilhas" }),
-        h("p", { text: "Ative ou inative qualquer trilha e crie as suas, do zero. Trilha inativa some para os alunos; o progresso e os certificados ficam guardados e voltam quando você ativar de novo." })),
+        h("p", { text: "Você decide a categoria de cada trilha (inclusive as que já vêm prontas), ativa ou inativa qualquer uma e cria as suas, do zero. Trilha inativa some para os alunos; o progresso e os certificados ficam guardados e voltam quando você ativar de novo." })),
       M.gestaoTabs("trilhas"),
       h("div", { class: "row", style: "margin:18px 0;gap:10px;flex-wrap:wrap" },
         h("button", { class: "btn btn-gold", type: "button", onclick: M.createTrailDialog }, M.icon("plus", 18), " Criar nova trilha"),
-        h("button", { class: "btn btn-ghost", type: "button", onclick: M.importTrailDialog }, M.icon("clip", 18), " Importar trilha pronta (.json)")),
+        h("button", { class: "btn btn-ghost", type: "button", onclick: M.importTrailDialog }, M.icon("clip", 18), " Importar trilha pronta (.json)"),
+        h("button", { class: "btn btn-ghost", type: "button", onclick: () => M.categoriesDialog(() => draw(current)) }, M.icon("tag", 18), " Categorias")),
       h("div", { class: "cat-bar" }, catsBox, h("div", { class: "cat-tools" }, h("div", { class: "cat-search" }, M.icon("search", 18), search))),
       list);
   };
@@ -596,12 +684,7 @@
       if (s.kind === "trail") {
         kids.push(h("h3", { text: "Dados da trilha" }));
         kids.push(B.field("Nome", B.input(D_, "title", c, { max: 80 })));
-        {
-          const catInput = B.input(D_, "tag", c, { max: 24, ph: "Ex.: Mercado Livre" });
-          catInput.setAttribute("list", "bd-cats");
-          const cats = [...new Set([...M.allTrails().map((t) => t.tag), "Mercado Livre", "Shopee", "Atendimento", "Formação"].map((x) => String(x || "").trim()).filter((x) => x && x.toLowerCase() !== "trilha"))];
-          kids.push(B.field("Categoria (agrupa a trilha na tela de Trilhas)", catInput, "Escolha uma que já existe ou escreva uma nova. As trilhas da mesma categoria aparecem juntas."), h("datalist", { id: "bd-cats" }, cats.map((x) => h("option", { value: x }))));
-        }
+        kids.push(B.field("Categoria (agrupa a trilha na tela de Trilhas)", M.catPicker({ id, title: D_.title || "esta trilha", tag: D_.tag }, (r) => { D_.tag = r.category || D_.tag; }), "Quem decide é você: escolha uma categoria que já existe ou crie uma nova. Também dá para trocar depois, em Gestão de trilhas."));
         kids.push(B.field("Frase de apresentação", B.area(D_, "tagline", c, { rows: 2, max: 200, rich: false })));
         kids.push(B.field("Subtítulo da página da trilha (opcional)", B.input(D_, "subtitle", c, { max: 160 })));
         kids.push(h("div", { class: "bd-box" }, h("b", { text: "Situação" }), h("p", { class: "muted small", text: S.live ? "Os alunos veem a última versão publicada. O que você edita aqui só chega a eles quando clicar em Publicar mudanças." : "Rascunho: só você vê. Clique em Publicar quando terminar." })));

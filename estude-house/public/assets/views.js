@@ -9,7 +9,7 @@
     /* se o admin mudou o perfil ou as permissões desta pessoa, o menu lateral é refeito */
     const sig = (x) => (x ? x.role + "|" + (x.perms || []).join(",") : "");
     const changed = !!M.session.user && sig(M.session.user) !== sig(d.user);
-    M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules; M.session.inactive = d.inactive || []; M.session.restricted = d.restricted || []; M.session.hidden = d.hidden || [];
+    M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules; M.session.inactive = d.inactive || []; M.session.restricted = d.restricted || []; M.session.cats = d.cats || { list: [], map: {} }; M.session.hidden = d.hidden || [];
     if (changed) M.resetShell();
     try { await M.syncCustomTrails(d.ctv); } catch (e) { console.warn("trilhas criadas não carregaram", e); }
     M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.pendingForum = d.pendingForum || 0; M.session.unread = d.unread || 0; M.session.destaques = d.destaques || 0;
@@ -420,7 +420,7 @@
   const STATE_CHIP = { done: ["chip chip-good", "Concluída"], going: ["chip chip-gold", "Em andamento"], new: ["chip", "Não iniciada"] };
 
   /* ───── início: menu de trilhas ───── */
-  M.views.trails = async function () {
+  M.views.trails = async function (catKey) {
     const [, provas] = await Promise.all([M.refreshMe(), M.loadProvas()]);
     const p = M.session.progress, trails = M.trails();
     const views = trails.map((t) => M.tp(t));
@@ -444,14 +444,17 @@
     /* ── catálogo: trilhas e provas viram "itens" com categoria, para filtrar e agrupar ── */
     const catOf = (tag) => { const c = String(tag || "").trim(); return !c || c.toLowerCase() === "trilha" ? "Geral" : c; };
     const items = [];
-    for (const t of trails) items.push({ kind: "trail", cat: catOf(t.tag), title: t.title, text: `${t.tagline || ""} ${t.subtitle || ""}`, state: stateOfTrail(t), t });
+    for (const t of trails) items.push({ kind: "trail", cat: M.catOfTrail(t), title: t.title, text: `${t.tagline || ""} ${t.subtitle || ""}`, state: stateOfTrail(t), t });
     for (const pv of provas) items.push({ kind: "prova", cat: catOf(pv.tag === "Provas" ? "" : pv.tag), title: pv.title, text: pv.description || "", state: pv.status === "approved" ? "done" : pv.attempts ? "going" : "new", pv });
-    for (const x of window.PROXIMAS || []) items.push({ kind: "soon", cat: catOf(x.tag), title: x.title, text: x.tagline || "", state: "new", x });
-    const F = M.trailFilter || (M.trailFilter = { cat: "", q: "", state: "" });
-    const cats = [...new Set(items.map((i) => i.cat))].sort((a, b) => (a === "Geral") - (b === "Geral") || a.localeCompare(b, "pt-BR"));
+    for (const x of window.PROXIMAS || []) items.push({ kind: "soon", cat: x.id && M.session.cats?.map?.[x.id] ? M.session.cats.map[x.id] : catOf(x.tag), title: x.title, text: x.tagline || "", state: "new", x });
+    const F = M.trailFilter || (M.trailFilter = { q: "", state: "" });
+    /* ordem das categorias: a que o gestor definiu; as sem lista vêm depois (A–Z) e "Geral" por último */
+    const order = M.session.cats?.list || [];
+    const rank = (c) => (c === "Geral" ? 1e6 : order.indexOf(c) >= 0 ? order.indexOf(c) : 1e5);
+    const cats = [...new Set(items.map((i) => i.cat))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b, "pt-BR"));
     const nProvas = items.filter((i) => i.kind === "prova").length;
-    if (F.cat && F.cat !== "@provas" && !cats.includes(F.cat)) F.cat = "";
-    if (F.cat === "@provas" && !nProvas) F.cat = "";
+    /* a categoria aberta vem da rota (#/trilhas/c/<nome>); nome que não existe mais volta para o início */
+    const openCat = catKey === "@provas" ? (nProvas ? "@provas" : "") : cats.includes(catKey) ? catKey : "";
 
     const stateChip = (st) => STATE_CHIP[st];
     function cardFor(it) {
@@ -487,74 +490,100 @@
         h("span", { class: "trail-cta muted", text: "Disponível em breve" }));
     }
 
-    /* ── barra de filtros ── */
-    const catsBox = h("div", { class: "cat-chips", role: "tablist", "aria-label": "Categorias" });
-    const search = h("input", { class: "input", type: "search", placeholder: "Buscar trilha ou prova", "aria-label": "Buscar trilha ou prova", value: F.q });
+    /* ── filtros: busca e situação (valem dentro da categoria aberta ou, no início, em todas) ── */
+    const search = h("input", { class: "input", type: "search", placeholder: openCat ? "Buscar nesta categoria" : "Buscar trilha ou prova", "aria-label": "Buscar trilha ou prova", value: F.q });
     const stateSel = h("select", { class: "input", "aria-label": "Situação" }, [["", "Todas as situações"], ["going", "Em andamento"], ["new", "Não iniciadas"], ["done", "Concluídas"]].map(([v, l]) => h("option", { value: v, text: l })));
     stateSel.value = F.state;
     const result = h("div", { class: "cat-result" });
     const norm = (v) => String(v || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const catHref = (c) => "#/trilhas/c/" + encodeURIComponent(c);
 
     function visible() {
       const q = norm(F.q.trim());
-      return items.filter((i) => (!F.cat || (F.cat === "@provas" ? i.kind === "prova" : i.cat === F.cat))
+      return items.filter((i) => (!openCat || (openCat === "@provas" ? i.kind === "prova" : i.cat === openCat))
         && (!F.state || (i.kind !== "soon" && i.state === F.state))
         && (!q || norm(`${i.title} ${i.text} ${i.cat}`).includes(q)));
     }
-    function drawChips() {
-      const count = (f) => items.filter(f).length;
-      const chip = (key, label, n) => h("button", { class: "cat-chip", type: "button", role: "tab", "aria-selected": String((F.cat || "") === key), onclick: () => { F.cat = key; drawChips(); drawResult(); } }, label, h("b", { text: String(n) }));
-      catsBox.replaceChildren(chip("", "Todas", items.length), ...cats.map((c) => chip(c, c, count((i) => i.cat === c))), nProvas ? chip("@provas", "Só provas", nProvas) : null);
+    function grid(list) { return h("div", { class: "trail-grid dense" }, list.map(cardFor)); }
+
+    /* card de uma categoria: nome, quantas trilhas/provas, progresso e um aperitivo do que tem dentro */
+    function catCard(c) {
+      const inCat = c === "@provas" ? items.filter((i) => i.kind === "prova") : items.filter((i) => i.cat === c);
+      const tr = inCat.filter((i) => i.kind === "trail"), pv = inCat.filter((i) => i.kind === "prova"), soon = inCat.filter((i) => i.kind === "soon");
+      const total = tr.reduce((a, i) => a + M.tp(i.t).lessonsTotal, 0), done = tr.reduce((a, i) => a + M.tp(i.t).lessonsDone, 0);
+      const pct = M.pct(done, total);
+      const pend = pv.filter((i) => i.state !== "done").length;
+      const parts = [];
+      if (tr.length) parts.push(`${tr.length} ${tr.length === 1 ? "trilha" : "trilhas"}`);
+      if (pv.length) parts.push(`${pv.length} ${pv.length === 1 ? "prova" : "provas"}`);
+      if (soon.length) parts.push(`${soon.length} em breve`);
+      const doneAll = tr.length && tr.every((i) => i.state === "done");
+      const peek = inCat.filter((i) => i.kind !== "soon").slice(0, 3).map((i) => i.title);
+      return h("a", { class: "cat-card" + (doneAll ? " is-done" : ""), href: catHref(c), "aria-label": `${c === "@provas" ? "Provas avulsas" : c}: ${parts.join(", ")}` },
+        h("div", { class: "row row-between" },
+          h("span", { class: "cat-ico", "aria-hidden": "true" }, M.icon(c === "@provas" ? "flag" : "tag", 22)),
+          pend ? h("span", { class: "chip chip-warn", text: `${pend} ${pend === 1 ? "prova para fazer" : "provas para fazer"}` }) : doneAll ? h("span", { class: "chip chip-good", text: "Tudo concluído" }) : null),
+        h("h3", { text: c === "@provas" ? "Provas avulsas" : c }),
+        h("p", { class: "cat-count", text: parts.join(" · ") }),
+        peek.length ? h("ul", { class: "cat-peek" }, peek.map((t) => h("li", { text: t })), inCat.length > peek.length ? h("li", { class: "more", text: "e mais…" }) : null) : null,
+        total ? h("div", { class: "trail-prog" },
+          h("div", { class: "bar", role: "progressbar", "aria-valuenow": String(pct), "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": `Progresso em ${c}` }, h("i", { style: `width:${pct}%` })),
+          h("span", { class: "small muted", text: `${done}/${total} aulas · ${pct}%` })) : null,
+        h("span", { class: "trail-cta" }, "Abrir categoria", M.icon("arrow", 18)));
     }
-    function section(title, list, extra) {
-      return h("section", { class: "cat-sec" },
-        h("div", { class: "cat-head" }, h("h3", { text: title }), h("span", { class: "chip", text: `${list.length} ${list.length === 1 ? "item" : "itens"}` }), extra || null),
-        h("div", { class: "trail-grid dense" }, list.map(cardFor)));
-    }
+
     function drawResult() {
       const list = visible();
+      const filtering = !!(F.q.trim() || F.state);
       const kids = [];
-      if (!list.length) {
-        kids.push(h("div", { class: "empty" }, h("h3", { text: items.length ? "Nada encontrado com esses filtros" : "Nenhuma trilha liberada para você ainda" }),
-          h("p", { text: items.length ? "Tire um filtro ou limpe a busca para ver mais." : "Quando a administração liberar uma trilha, ela aparece aqui. Se você acha que já deveria ter acesso, fale com o seu gestor." }),
-          items.length ? h("button", { class: "btn btn-ghost", type: "button", onclick: () => { F.cat = ""; F.q = ""; F.state = ""; search.value = ""; stateSel.value = ""; drawChips(); drawResult(); } }, "Limpar filtros") : null));
-      } else if (!F.cat && !F.q.trim() && !F.state) {
-        /* sem filtro: provas pendentes em destaque e depois uma seção por categoria */
-        const pend = list.filter((i) => i.kind === "prova" && i.state !== "done");
-        if (pend.length) kids.push(h("section", { class: "cat-sec cat-prova" }, h("div", { class: "cat-head" }, h("h3", { text: "Provas para você fazer" }), h("span", { class: "chip chip-warn", text: String(pend.length) })), h("div", { class: "trail-grid dense" }, pend.map(cardFor))));
-        for (const c of cats) {
-          const inCat = list.filter((i) => i.cat === c && !pend.includes(i));
-          if (inCat.length) kids.push(section(c, inCat, h("button", { class: "linkish small", type: "button", onclick: () => { F.cat = c; drawChips(); drawResult(); window.scrollTo({ top: 0 }); }, text: "Ver só esta categoria" })));
-        }
+      if (!openCat && !filtering) {
+        /* início: só os cards das categorias */
+        if (!cats.length) kids.push(h("div", { class: "empty" }, h("h3", { text: "Nenhuma trilha liberada para você ainda" }), h("p", { text: "Quando a administração liberar uma trilha, ela aparece aqui. Se você acha que já deveria ter acesso, fale com o seu gestor." })));
+        else kids.push(h("div", { class: "cat-grid", role: "list" }, [...cats.map(catCard), nProvas ? catCard("@provas") : null].filter(Boolean).map((c) => h("div", { role: "listitem", style: "display:contents" }, c))));
+      } else if (!list.length) {
+        kids.push(h("div", { class: "empty" }, h("h3", { text: "Nada encontrado com esses filtros" }),
+          h("p", { text: "Tire o filtro de situação ou limpe a busca para ver mais." }),
+          h("button", { class: "btn btn-ghost", type: "button", onclick: () => { F.q = ""; F.state = ""; search.value = ""; stateSel.value = ""; drawResult(); } }, "Limpar filtros")));
+      } else if (openCat) {
+        kids.push(grid(list));
       } else {
-        kids.push(section(F.cat === "@provas" ? "Provas" : F.cat || "Resultado da busca", list));
+        /* busca no início: resultados de todas as categorias, com o nome da categoria em cada seção */
+        for (const c of cats) {
+          const inCat = list.filter((i) => i.cat === c);
+          if (inCat.length) kids.push(h("section", { class: "cat-sec" }, h("div", { class: "cat-head" }, h("h3", { text: c }), h("span", { class: "chip", text: `${inCat.length} ${inCat.length === 1 ? "item" : "itens"}` }), h("a", { class: "linkish small", href: catHref(c), text: "Abrir categoria" })), grid(inCat)));
+        }
       }
       result.replaceChildren(...kids);
     }
     search.addEventListener("input", () => { F.q = search.value; drawResult(); });
     stateSel.addEventListener("change", () => { F.state = stateSel.value; drawResult(); });
-    drawChips(); drawResult();
+    drawResult();
 
+    const openLabel = openCat === "@provas" ? "Provas avulsas" : openCat;
+    const openItems = openCat ? items.filter((i) => (openCat === "@provas" ? i.kind === "prova" : i.cat === openCat)) : [];
     return h("div", null,
-      h("div", { class: "page-head" },
-        h("h2", { text: "Olá, " + M.firstName(M.session.user.name) }),
-        h("p", { text: "Escolha uma categoria para ver as trilhas dela. Cada trilha tem aulas, quizzes, provas por módulo e uma prova final que libera o certificado." })),
-      M.can("trilhas") ? h("div", { class: "panel tr-admin", "aria-label": "Ferramentas do gestor" },
-        h("div", null, h("b", { text: "Gestor" }), h("p", { class: "muted small", text: "Crie uma trilha ou uma prova avulsa, edite as suas e ative ou inative qualquer uma." })),
+      openCat
+        ? h("div", { class: "page-head" },
+          h("a", { class: "small", href: M.trailsHref }, "← Todas as categorias"),
+          h("h2", { style: "margin-top:12px", text: openLabel }),
+          h("p", { text: `${openItems.length} ${openItems.length === 1 ? "item" : "itens"} nesta categoria. Escolha uma trilha para começar ou continuar.` }))
+        : h("div", { class: "page-head" },
+          h("h2", { text: "Olá, " + M.firstName(M.session.user.name) }),
+          h("p", { text: "Escolha uma categoria para ver as trilhas dela. Cada trilha tem aulas, quizzes, provas por módulo e uma prova final que libera o certificado." })),
+      M.can("trilhas") && !openCat ? h("div", { class: "panel tr-admin", "aria-label": "Ferramentas do gestor" },
+        h("div", null, h("b", { text: "Gestor" }), h("p", { class: "muted small", text: "Crie uma trilha ou uma prova avulsa, organize as categorias e ative ou inative qualquer trilha." })),
         h("div", { class: "row", style: "flex-wrap:wrap" },
           h("button", { class: "btn btn-gold", type: "button", onclick: M.createTrailDialog }, M.icon("plus", 18), " Criar nova trilha"),
           h("a", { class: "btn btn-ghost", href: "#/admin/provas" }, "Provas avulsas"),
-          h("a", { class: "btn btn-ghost", href: "#/admin/trilhas" }, "Gerenciar trilhas"))) : null,
-      M.can("trilhas") ? h("div", { style: "height:18px" }) : null,
-      resume, resume ? h("div", { style: "height:18px" }) : null,
-      h("div", { class: "grid grid-4" },
+          h("a", { class: "btn btn-ghost", href: "#/admin/trilhas" }, "Gerenciar trilhas e categorias"))) : null,
+      M.can("trilhas") && !openCat ? h("div", { style: "height:18px" }) : null,
+      openCat ? null : resume, !openCat && resume ? h("div", { style: "height:18px" }) : null,
+      openCat ? null : h("div", { class: "grid grid-4" },
         stat(`${doneTrails}/${trails.length}`, trails.length === 1 ? "trilha concluída" : "trilhas concluídas"),
         stat(lessons, "aulas concluídas"),
         stat(mods, "módulos aprovados"),
         stat(M.totalXp(), "pontos de experiência")),
-      h("div", { class: "cat-bar" },
-        catsBox,
-        h("div", { class: "cat-tools" }, h("div", { class: "cat-search" }, M.icon("search", 18), search), stateSel)),
+      h("div", { class: "cat-bar" }, h("div", { class: "cat-tools" }, h("div", { class: "cat-search" }, M.icon("search", 18), search), stateSel)),
       result);
   };
 
@@ -594,9 +623,9 @@
     }));
 
     const node = h("div", null,
-      h("a", { class: "small", href: M.trailsHref }, "← Todas as trilhas"),
+      h("a", { class: "small", href: "#/trilhas/c/" + encodeURIComponent(M.catOfTrail(t)) }, "← " + M.catOfTrail(t)),
       h("div", { class: "page-head", style: "margin-top:12px" },
-        h("span", { class: "chip chip-gold", style: "justify-self:start", text: t.tag || "Trilha" }),
+        h("span", { class: "chip chip-gold", style: "justify-self:start", text: M.catOfTrail(t) === "Geral" ? "Trilha" : M.catOfTrail(t) }),
         h("h2", { text: t.title }),
         h("p", { text: t.subtitle || t.tagline })),
       nextCard, h("div", { style: "height:18px" }), stats,
@@ -663,7 +692,7 @@
         h("p", null, h("strong", { text: "Ao final você consegue: " }), m.outcome)),
       h("a", { class: "btn btn-gold reel-cta", href: "#/l/" + m.lessons[Math.max(0, m.lessons.findIndex((l) => !p.lessons[l.id]))].id },
         M.icon("arrow", 18), st.done === 0 ? "Assistir o módulo" : allDone ? "Rever o módulo" : "Continuar de onde parou"),
-      h("ul", { class: "reel" }, m.lessons.map((l, k) => {
+      h("ul", { class: "lesson-reel" }, m.lessons.map((l, k) => {
         const done = !!p.lessons[l.id];
         const cur = !done && k === m.lessons.findIndex((x) => !p.lessons[x.id]);
         const open = M.lessonOpen(m, k);

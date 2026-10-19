@@ -7,6 +7,7 @@
   const trailCrumb = (t) => ({ text: t.title, href: M.trailHref(t) });
   const routes = [
     [/^#?\/?$/, "home", () => ({ key: "home", crumbs: [T("Feed")], view: () => M.views.home() })],
+    [/^#\/trilhas\/c\/(.+)$/, "trails", (m) => { let c = m[1]; try { c = decodeURIComponent(c); } catch {} return { key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, T(c === "@provas" ? "Provas avulsas" : c)], view: () => M.views.trails(c) }; }],
     [/^#\/trilhas$/, "trails", () => ({ key: "trails", crumbs: [T("Trilhas")], view: () => M.views.trails() })],
     [/^#\/post\/([\w-]+)$/, "post", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Post")], view: () => M.views.post(m[1]) })],
     [/^#\/u\/([^/?]+)$/, "profile", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Perfil")], view: () => M.views.profile(decodeURIComponent(m[1])) })],

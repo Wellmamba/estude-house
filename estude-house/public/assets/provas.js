@@ -257,7 +257,7 @@
 
     const title = bind(h("input", { class: "input", type: "text", maxlength: "80", "aria-label": "Nome da prova" }), "title");
     const tag = bind(h("input", { class: "input", type: "text", maxlength: "24", list: "pv-cats", placeholder: "Ex.: Mercado Livre", "aria-label": "Categoria" }), "tag");
-    const cats = h("datalist", { id: "pv-cats" }, [...new Set([...M.allTrails().map((t) => t.tag), "Provas"].filter(Boolean))].map((c) => h("option", { value: c })));
+    const cats = h("datalist", { id: "pv-cats" }, [...new Set([...M.catList(), "Provas"].filter(Boolean))].map((c) => h("option", { value: c })));
     const desc = bind(h("textarea", { class: "textarea", rows: "2", maxlength: "400", placeholder: "O que o aluno precisa saber antes de começar (opcional)" }), "description");
     const pass = h("select", { class: "input", "aria-label": "Nota mínima" }, [50, 60, 70, 80, 90, 100].map((n) => h("option", { value: String(n), text: n + "%" })));
     pass.value = String(S.d.passPct); pass.addEventListener("change", () => { S.d.passPct = Number(pass.value); touch(); });

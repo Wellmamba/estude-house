@@ -142,7 +142,7 @@
     try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
     location.reload(); // recarrega para o navegador reler o tamanho da tela
   };
-  M.BUILD = "2026-10-19-a"; // igual ao BUILD de netlify/functions/api.mjs
+  M.BUILD = "2026-10-19-b"; // igual ao BUILD de netlify/functions/api.mjs
   M.modeSwitch = function ({ label = true } = {}) {
     const cur = M.effectiveMode(), saved = M.getMode();
     const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
@@ -191,6 +191,10 @@
      Trilha inativa some para o aluno; o gestor vê todas. */
   M.customTrails = [];
   M.allTrails = () => [...(window.TRILHAS || []), ...M.customTrails];
+  /* Categoria da trilha: quem manda é o gestor (M.session.cats.map[id]). Sem escolha dele, vale a etiqueta que veio no arquivo; sem nada, "Geral". */
+  M.catNorm = (tag) => { const c = String(tag || "").trim(); return !c || c.toLowerCase() === "trilha" ? "Geral" : c; };
+  M.catOfTrail = (t) => (t && M.session.cats?.map?.[t.id]) || M.catNorm(t && t.tag);
+  M.catList = () => [...new Set([...(M.session.cats?.list || []), ...M.allTrails().map(M.catOfTrail).filter((c) => c !== "Geral")])];
   M.isInactive = (id) => (M.session.inactive || []).includes(id);
   M.isRestricted = (id) => (M.session.restricted || []).includes(id);
   /* aluno só enxerga trilha ativa e (liberada para todos ou atribuída a ele); o servidor manda a lista das escondidas */
