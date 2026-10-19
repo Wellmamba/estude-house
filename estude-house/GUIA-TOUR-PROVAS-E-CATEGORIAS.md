@@ -31,3 +31,20 @@ Observação: prova avulsa não dá XP nem certificado.
 - Tela de **Trilhas** (aluno e gestor): chips de categoria com a contagem, busca por nome e filtro por situação (em andamento, não iniciadas, concluídas). Sem filtro, as trilhas aparecem agrupadas por categoria; clicar numa categoria mostra só ela.
 - A **Gestão de trilhas** também tem os chips de categoria e a busca.
 - Provas avulsas usam o mesmo campo de categoria e aparecem junto das trilhas da categoria.
+
+---
+
+## Categorias 100% do gestor (build 2026-10-19-b)
+
+**Para o aluno.** A tela *Trilhas* abre com um card por categoria (nome, quantas trilhas, progresso e as primeiras trilhas dentro). As trilhas só aparecem quando ele clica no card. Cada categoria tem endereço próprio (`#/trilhas/c/<nome>`), então o botão Voltar do navegador e o link "← nome da categoria" dentro da trilha levam de volta para ela. A busca no início procura em todas as categorias.
+
+**Para o gestor** (menu Conteúdo → Trilhas, ou o botão *Gerenciar trilhas e categorias*):
+- **Categorias** (botão ao lado de "Importar trilha"): cria, renomeia, reordena (↑ ↓) e exclui. Renomear leva as trilhas junto. Excluir devolve as trilhas ao padrão. A ordem que você define é a ordem dos cards para o aluno. Até 30 categorias, 24 caracteres cada.
+- **Categoria de cada trilha**: em cada card há um seletor. Vale para as nativas (PriceBot, Reforma, BPP, Grade de Formação), para as criadas no construtor e para as importadas (.json). Salva na hora. Para criar uma categoria nova, escolha "+ Nova categoria…" no próprio seletor.
+- **Automática**: se você não escolher, a trilha usa a etiqueta que veio no arquivo (ou "Geral"). Escolhendo, a sua escolha sempre vence, mesmo se a trilha for atualizada por código depois.
+- No editor da trilha, o campo Categoria também é esse seletor.
+- Provas avulsas continuam com o campo de categoria delas, agora com sugestão da sua lista. Categorias vazias não aparecem para o aluno.
+
+**Técnico.** Rotas (exigem a permissão *trilhas*): `GET/PUT admin/trails/categories` e `POST admin/trails/:id/category`. Os dados ficam no meta das trilhas (`cats.list` e `cats.map`), vão para o aluno no `/me` (`cats`) e valem para qualquer id de trilha. Testes em `test/categories.mjs`.
+
+**Correção junto.** A lista de aulas de um módulo tinha um bloco preto atrás, por conflito de nome de CSS com o feed de Reels. A lista agora usa a classe própria `lesson-reel`.
