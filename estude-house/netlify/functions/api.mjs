@@ -24,7 +24,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-19-a";
+const BUILD = "2026-10-19-b";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -742,7 +742,7 @@ async function handleApi(req, context) {
         destaques.unseenCount(user).catch(() => 0),
         can(user, "forum") ? forum.pendingCount().catch(() => 0) : 0,
       ]);
-      return json({ user: { ...publicUser(user), tourSeen: !!user.tourAt }, progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, pendingForum, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), restricted: trailsLib.restricted(), hidden: hiddenIdsFor(user, TRAILS.map((t) => t.id)), rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: { ...publicUser(user), tourSeen: !!user.tourAt }, progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, pendingForum, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), restricted: trailsLib.restricted(), cats: trailsLib.categories(), hidden: hiddenIdsFor(user, TRAILS.map((t) => t.id)), rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     // tour guiado: marca que a pessoa já viu (ou volta a mostrar no próximo acesso)
     if (path === "auth/tour" && method === "POST") {

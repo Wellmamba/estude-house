@@ -336,7 +336,21 @@ function toQuestions(id, d) {
 
 const st = { ver: -1, checkedAt: 0, docs: new Map(), loading: null };
 const S_ = () => store("trails");
-const emptyMeta = () => ({ ver: 0, flags: {}, trails: {}, audience: {} });
+const emptyMeta = () => ({ ver: 0, flags: {}, trails: {}, audience: {}, cats: { list: [], map: {} } });
+
+/* ── Categorias: 100% do gestor ──
+   cats.list = categorias que o gestor criou (ordem dele); cats.map = categoria escolhida por trilha (nativa, criada ou importada).
+   Trilha sem escolha usa, só como ponto de partida, a etiqueta que veio no arquivo; o gestor pode trocar a qualquer momento. */
+const CAT_MAX = 24, CAT_LIMIT = 30;
+const catName = (v) => S(v, CAT_MAX).replace(/\s+/g, " ");
+const CATS = { list: [], map: {} };
+export const categories = () => ({ list: [...CATS.list], map: { ...CATS.map } });
+function setCats(c) {
+  CATS.list = Array.isArray(c?.list) ? c.list.map(catName).filter(Boolean) : [];
+  CATS.map = {};
+  for (const [id, name] of Object.entries(c?.map || {})) if (CATS.list.includes(name)) CATS.map[id] = name;
+}
+const sameName = (a, b) => a.localeCompare(b, "pt-BR", { sensitivity: "base" }) === 0;
 
 function rebuild(meta) {
   const trails = [], active = [], archived = [];
@@ -351,6 +365,7 @@ function rebuild(meta) {
   setCustomQuestions(active, archived);
   setInactive(Object.entries(meta.flags).filter(([, f]) => f?.active === false).map(([id]) => id));
   setRestricted(Object.entries(meta.audience || {}).filter(([, a]) => a?.mode === "assigned").map(([id]) => id));
+  setCats(meta.cats);
 }
 
 async function doSync(force) {
@@ -423,6 +438,33 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     return doc;
   };
 
+  // categorias (lista do gestor): ver, criar, renomear, reordenar, excluir
+  if (id === "categories" && !action) {
+    const meta = await flags();
+    const cur = meta.cats || { list: [], map: {} };
+    if (method === "GET") return json({ list: cur.list, map: cur.map });
+    if (method === "PUT") {
+      const raw = Array.isArray(body.list) ? body.list : [];
+      const list = [];
+      for (const r of raw) { const n = catName(r); if (n && n.toLowerCase() !== "trilha" && !list.some((x) => sameName(x, n))) list.push(n); }
+      if (list.length > CAT_LIMIT) fail(400, `No máximo ${CAT_LIMIT} categorias.`);
+      // renomear: { "Nome antigo": "Nome novo" } leva junto as trilhas que estavam nela
+      const ren = body.renames && typeof body.renames === "object" ? body.renames : {};
+      await mutateMeta((m) => {
+        const old = m.cats || { list: [], map: {} };
+        const map = {};
+        for (const [tid, name] of Object.entries(old.map || {})) {
+          const to = catName(ren[name] ?? name);
+          if (list.includes(to)) map[tid] = to;
+        }
+        m.cats = { list, map };
+      });
+      await logEvent(req, "categorias_editadas", user, { total: list.length });
+      return json({ ok: true, ...categories() });
+    }
+    return null;
+  }
+
   // lista: nativas + criadas
   if (!id && method === "GET") {
     const meta = await flags();
@@ -473,6 +515,27 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     await s.set("t:" + tid, doc);
     await logEvent(req, "trilha_criada", user, { trilha: tid, title: doc.draft.title });
     return json({ trail: doc }, 201);
+  }
+
+  // categoria da trilha (vale para nativas, criadas e importadas); "" volta ao padrão do arquivo
+  if (action === "category" && method === "POST") {
+    if (!BUILTIN_IDS.has(id)) await load(id);
+    const name = catName(body.category);
+    if (name.toLowerCase() === "trilha") fail(400, "Escolha outro nome para a categoria.");
+    const meta0 = await flags();
+    const have = meta0.cats?.list || [];
+    if (name && !have.some((x) => sameName(x, name)) && have.length >= CAT_LIMIT) fail(400, `No máximo ${CAT_LIMIT} categorias.`);
+    let final = name;
+    await mutateMeta((m) => {
+      const c = m.cats || (m.cats = { list: [], map: {} });
+      c.map = c.map || {};
+      if (!name) { delete c.map[id]; return; }
+      final = c.list.find((x) => sameName(x, name)) || name;
+      if (!c.list.includes(final)) c.list.push(final);
+      c.map[id] = final;
+    });
+    await logEvent(req, "trilha_categoria", user, { trilha: id, categoria: final || "(padrão)" });
+    return json({ ok: true, id, category: name ? final : "", ...categories() });
   }
 
   // ativar / inativar (vale para nativas e criadas)
@@ -569,7 +632,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   if (!action && method === "DELETE") {
     const doc = await load(id);
     await (await S_()).delete("t:" + id);
-    await mutateMeta((m) => { delete m.trails[id]; delete m.flags[id]; if (m.audience) delete m.audience[id]; });
+    await mutateMeta((m) => { delete m.trails[id]; delete m.flags[id]; if (m.audience) delete m.audience[id]; if (m.cats?.map) delete m.cats.map[id]; });
     await logEvent(req, "trilha_excluida", user, { trilha: id, title: doc.draft.title });
     return json({ ok: true });
   }
