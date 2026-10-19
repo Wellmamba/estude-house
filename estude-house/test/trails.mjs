@@ -46,7 +46,7 @@ let tid, doc;
 
   r = await call("GET", "admin/trails", { token: adm.token });
   const row = r.data.trails.find((t) => t.id === tid);
-  assert.equal(row.status, "rascunho"); assert.ok(r.data.trails.some((t) => t.id === "gf" && t.kind === "nativa" && t.active)); ok("lista mostra nativas e criadas, com o estado de cada");
+  assert.equal(row.status, "rascunho"); assert.ok(r.data.trails.some((t) => t.id === "fund" && t.kind === "nativa" && t.active)); ok("lista mostra nativas e criadas, com o estado de cada");
 
   r = await call("GET", "trails/custom", { token: ana.token });
   assert.equal(r.data.trails.length, 0); ok("rascunho não aparece para o aluno");
@@ -181,14 +181,14 @@ console.log("Ativar e inativar trilhas");
   let r = await call("GET", "me", { token: ana.token });
   assert.deepEqual(r.data.inactive, []);
 
-  r = await call("POST", "admin/trails/gf/active", { token: ana.token, body: { active: false } });
+  r = await call("POST", "admin/trails/fund/active", { token: ana.token, body: { active: false } });
   assert.equal(r.status, 403); ok("aluno não inativa trilha");
 
-  r = await call("POST", "admin/trails/gf/active", { token: adm.token, body: { active: false } });
-  assert.equal(r.status, 200); assert.deepEqual(r.data.inactive, ["gf"]); ok("gestor inativa uma trilha nativa");
+  r = await call("POST", "admin/trails/fund/active", { token: adm.token, body: { active: false } });
+  assert.equal(r.status, 200); assert.deepEqual(r.data.inactive, ["fund"]); ok("gestor inativa uma trilha nativa");
 
   r = await call("GET", "me", { token: ana.token });
-  assert.deepEqual(r.data.inactive, ["gf"]); ok("/me avisa quais trilhas estão inativas");
+  assert.deepEqual(r.data.inactive, ["fund"]); ok("/me avisa quais trilhas estão inativas");
 
   r = await call("POST", "progress/lesson", { token: ana.token, body: { lessonId: "gf-l1-1" } });
   assert.equal(r.status, 403); assert.match(r.data.error, /inativa/); ok("aluno não conclui aula de trilha inativa");
@@ -198,11 +198,11 @@ console.log("Ativar e inativar trilhas");
   assert.equal(r.status, 200); ok("gestor continua livre para testar");
 
   r = await call("POST", `admin/trails/${tid}/active`, { token: adm.token, body: { active: false } });
-  assert.deepEqual(r.data.inactive.sort(), ["gf", tid].sort()); ok("também inativa uma trilha criada no construtor");
+  assert.deepEqual(r.data.inactive.sort(), ["fund", tid].sort()); ok("também inativa uma trilha criada no construtor");
   r = await call("GET", "admin/trails", { token: adm.token });
-  assert.equal(r.data.trails.find((t) => t.id === tid).active, false); assert.equal(r.data.trails.find((t) => t.id === "gf").active, false); ok("lista do gestor mostra as inativas");
+  assert.equal(r.data.trails.find((t) => t.id === tid).active, false); assert.equal(r.data.trails.find((t) => t.id === "fund").active, false); ok("lista do gestor mostra as inativas");
 
-  r = await call("POST", "admin/trails/gf/active", { token: adm.token, body: { active: true } });
+  r = await call("POST", "admin/trails/fund/active", { token: adm.token, body: { active: true } });
   assert.deepEqual(r.data.inactive, [tid]);
   r = await call("POST", "progress/lesson", { token: ana.token, body: { lessonId: "gf-l1-1" } });
   assert.equal(r.status, 200); ok("reativada: o aluno volta a estudar e o progresso dele continua lá");

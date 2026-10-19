@@ -29,7 +29,7 @@ Toda aula é um **stories**: cada bloco de `blocks` vira um card de tela cheia (
 
 - Tom: Gen Z, direto, frases curtas, todo termo técnico traduzido na hora (bloco `jargon`) e conteúdo difícil em doses pequenas com **conta de exemplo** (bloco `conta`).
 - Blocos novos: `hook` (capa, obrigatório no início), `big` (frase de impacto), `jargon`, `conta`, `recap` (resumo, obrigatório no fim). `p` e `list` aceitam `title`. O bloco `h` não existe mais.
-- Blocos visuais (gráficos, fluxos, tabelas, telas com pinos, simuladores com sliders): `chart`, `flow`, `table`, `tree`, `timeline`, `stairs`, `anno`, `lab`. Formatos e exemplos em **GUIA-GRADE-DE-FORMACAO.md**; `--require-visual` no verificador exige pelo menos um por aula.
+- Blocos visuais (gráficos, fluxos, tabelas, telas com pinos, simuladores com sliders): `chart`, `flow`, `table`, `tree`, `timeline`, `stairs`, `anno`, `lab`. Formatos e exemplos em **GUIA-FORMACAO-MAMBA.md**; `--require-visual` no verificador exige pelo menos um por aula.
 - Cada aula: 10 a 24 cards, 2 a 8 minutos.
 - Regras completas, limites de palavras e exemplos: **GUIA-STORIES.md**.
 - Conferir antes de publicar: `node scripts/check-stories.mjs public/trilhas/<trilha>/content.js` (ou `npm run stories`).

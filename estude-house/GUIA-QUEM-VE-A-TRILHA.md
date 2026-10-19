@@ -24,7 +24,7 @@ Admin > **Acessos** > abra o aluno > quadro **Trilhas liberadas**. As trilhas em
 ## Regras
 - Quem perde o acesso **não perde o que estudou**: progresso, provas e certificado ficam guardados e voltam se a trilha for liberada de novo.
 - O servidor barra aula e prova de trilha não liberada (não é só esconder). Nas trilhas criadas no construtor, o conteúdo nem é baixado por quem não tem acesso.
-- As 3 trilhas nativas (PriceBot, Reforma Tributária e Grade de Formação) têm o conteúdo em arquivos públicos do site: a atribuição esconde a trilha e bloqueia aulas e provas, mas quem souber o endereço do arquivo consegue ler o texto. Para conteúdo realmente sigiloso, use uma trilha criada no construtor.
+- As trilhas nativas (PriceBot, Reforma Tributária, BPP, Live Commerce e as 11 da Formação Mamba) têm o conteúdo em arquivos públicos do site: a atribuição esconde a trilha e bloqueia aulas e provas, mas quem souber o endereço do arquivo consegue ler o texto. Para conteúdo realmente sigiloso, use uma trilha criada no construtor.
 - Modo "só escolhidos" sem ninguém marcado = trilha visível só para gestores (bom para preparar antes de lançar).
 - Aluno novo entra sem nenhuma trilha em modo "só escolhidos"; é preciso atribuir.
 - O painel conta só os alunos que receberam a trilha (começaram, aprovados, média de progresso).

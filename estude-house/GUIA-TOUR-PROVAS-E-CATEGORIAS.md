@@ -40,7 +40,7 @@ Observação: prova avulsa não dá XP nem certificado.
 
 **Para o gestor** (menu Conteúdo → Trilhas, ou o botão *Gerenciar trilhas e categorias*):
 - **Categorias** (botão ao lado de "Importar trilha"): cria, renomeia, reordena (↑ ↓) e exclui. Renomear leva as trilhas junto. Excluir devolve as trilhas ao padrão. A ordem que você define é a ordem dos cards para o aluno. Até 30 categorias, 24 caracteres cada.
-- **Categoria de cada trilha**: em cada card há um seletor. Vale para as nativas (PriceBot, Reforma, BPP, Grade de Formação), para as criadas no construtor e para as importadas (.json). Salva na hora. Para criar uma categoria nova, escolha "+ Nova categoria…" no próprio seletor.
+- **Categoria de cada trilha**: em cada card há um seletor. Vale para as nativas (PriceBot, Reforma, BPP, Live Commerce e as da Formação Mamba), para as criadas no construtor e para as importadas (.json). Salva na hora. Para criar uma categoria nova, escolha "+ Nova categoria…" no próprio seletor.
 - **Automática**: se você não escolher, a trilha usa a etiqueta que veio no arquivo (ou "Geral"). Escolhendo, a sua escolha sempre vence, mesmo se a trilha for atualizada por código depois.
 - No editor da trilha, o campo Categoria também é esse seletor.
 - Provas avulsas continuam com o campo de categoria delas, agora com sugestão da sua lista. Categorias vazias não aparecem para o aluno.

@@ -59,9 +59,9 @@ npm test          # 56 de regras, provas, admin e logs + 38 de feed e engajament
 npm run local     # http://localhost:8888, banco em memória (zera ao reiniciar)
 ```
 
-## Trilha Grade de Formação e blocos visuais
+## Formação Mamba (11 trilhas) e blocos visuais
 
-A trilha **Grade de Formação Mamba** (14 módulos, 68 aulas) traz gráficos, telas desenhadas com pinos e simuladores dentro das aulas (`public/assets/viz.js` e `calc-gf.js`). Tudo explicado em **GUIA-GRADE-DE-FORMACAO.md**. Para conferir uma trilha com visuais obrigatórios: `node scripts/check-stories.mjs public/trilhas/gf/content.js --require-visual`.
+As **11 trilhas da Formação Mamba** (Fundamentos, operação ML e Shopee, anúncios, fiscal, preço, logística, mercado, promoções e ads, dados, comunicação) trazem gráficos, telas desenhadas com pinos e simuladores dentro das aulas (`public/assets/viz.js` e `calc-gf.js`). Tudo explicado em **GUIA-FORMACAO-MAMBA.md**. Para conferir uma trilha com visuais obrigatórios: `node scripts/check-stories.mjs public/trilhas/fund/content.js --require-visual`.
 
 ## Construtor de trilhas
 

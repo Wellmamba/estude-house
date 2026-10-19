@@ -114,7 +114,9 @@ console.log("Conteúdo x manifesto");
     for (const id of [...t.modules.map((m) => m.id), ...t.modules.flatMap((m) => m.lessons), t.finalScope]) {
       assert.ok(!seen.has(id), "id repetido entre trilhas: " + id); seen.add(id);
     }
-    assert.ok(QUESTIONS.filter((q) => q.module === t.finalScope).length >= 6, `${t.id}: a prova final precisa de questões próprias`);
+    // A prova final sorteia questões dos módulos da trilha e as exclusivas dela (módulo = finalScope); o conjunto precisa cobrir o tamanho da prova.
+    const pool = QUESTIONS.filter((q) => q.module === t.finalScope || t.modules.some((m) => m.id === q.module)).length;
+    assert.ok(pool >= Math.max(t.finalSize || 30, 6), `${t.id}: faltam questões para a prova final (${pool})`);
   }
   ok(`${TRAILS.length} trilha(s): módulos, aulas e provas finais batem com o servidor e não repetem ids`);
 }
