@@ -220,6 +220,7 @@ html[data-swipe="prev"] .page { animation: sw-prev .26s ease-out; }
 .reel-pause-ico svg { width: 64px; height: 64px; padding: 16px; border-radius: 50%; background: rgba(0, 0, 0, .5); }
 .reel.is-paused .reel-pause-ico { opacity: 1; }
 .reel.is-done .reel-pause-ico { opacity: 0; }
+.reel.is-manual .reel-tap, .reel.is-manual .reel-pause-ico { display: none; }
 .reel-start { position: absolute; z-index: 8; left: 50%; top: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; border: 0; background: var(--gold); color: var(--gold-ink); font: inherit; font-weight: 800; cursor: pointer; }
 .reel.is-broken::after { content: "Não foi possível tocar este vídeo. Use “Ver post”."; position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; padding: 30px; text-align: center; background: rgba(0, 0, 0, .6); }
 .reels-sheet-host { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
@@ -264,3 +265,15 @@ body.is-reels { overflow: hidden; }
 .av-ideas { display: flex; flex-wrap: wrap; gap: 6px; }
 .av-hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .panel.fpush .fs-ico { background: rgba(253, 185, 39, .18); color: var(--gold); }
+
+/* ───── celular: a página nunca pode ficar mais larga que a tela ─────
+   (uma barra de filtros com muitas tags empurrava o Feed para 1000 px e o iPhone diminuía o zoom) */
+.feed, .feed-top { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.feed > *, .feed-top > *, .feed-layout > * { min-width: 0; }
+.fbar, .fstrip, .composer { min-width: 0; }
+.main, .page { min-width: 0; }
+html, body { max-width: 100%; overflow-x: clip; }
+/* a barra de baixo ganha camada própria: no iPhone ela não "sobe" quando a barra do Safari se mexe */
+.tabbar { will-change: transform; backface-visibility: hidden; -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(21, 11, 43, .98); }
+body { min-height: 100dvh; }
+.shell { min-height: 100dvh; }

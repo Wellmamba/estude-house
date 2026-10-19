@@ -22,14 +22,15 @@
 
   /* endereço do player de cada serviço, já com autoplay e sem barra de controles */
   function embedSrc(v, sound) {
-    const mute = sound ? 0 : 1;
+    const mute = 1; /* o celular só toca sozinho sem som; se a pessoa já ligou o som, ligamos depois que começar */
     if (v.provider === "youtube") return `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&mute=${mute}&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&loop=1&playlist=${v.id}&enablejsapi=1`;
     if (v.provider === "vimeo") return `https://player.vimeo.com/video/${v.id}?autoplay=1&muted=${mute}&loop=1&playsinline=1&controls=0&title=0&byline=0&portrait=0`;
     if (v.provider === "loom") return `https://www.loom.com/embed/${v.id}?autoplay=1&muted=${mute}&hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`;
     if (v.provider === "drive") return `https://drive.google.com/file/d/${v.id}/preview`;
     return "";
   }
-  const AUTOPLAYS = new Set(["youtube", "vimeo", "loom"]); /* o Drive não deixa tocar sozinho: pede um toque */
+  const IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const AUTOPLAYS = new Set(IOS ? ["youtube", "vimeo"] : ["youtube", "vimeo", "loom"]); /* o Drive não deixa tocar sozinho: pede um toque */
 
   M.views.reels = async function () {
     await M.refreshMe();
@@ -55,6 +56,9 @@
     let sound = store.sound();
     let cur = -1, ctl = null, seenTimer = 0;
     const els = new Map(); // id -> { item, el, ...partes }
+    const posts = new Map(); // id do vídeo -> post (o hype é o mesmo em todas as cópias)
+    const base = data.items.slice(); // todos os vídeos; a lista roda sem fim, embaralhando de novo
+    let round = 0;
 
     /* altura útil: a tela menos o topo e a barra de baixo (celular) */
     function fit() {
@@ -69,7 +73,8 @@
     fit(); addEventListener("resize", fit); addEventListener("orientationchange", () => setTimeout(fit, 250));
 
     function build(item) {
-      const post = { id: item.postId, hyped: item.hyped, hypes: item.hypes };
+      const post = posts.get(item.baseId || item.id) || { id: item.postId, hyped: item.hyped, hypes: item.hypes };
+      posts.set(item.baseId || item.id, post);
       const mediaBox = h("div", { class: "reel-media" });
       const prog = h("i", { class: "reel-prog-bar" });
       const end = h("div", { class: "reel-end", hidden: true },
@@ -157,37 +162,97 @@
         resume() { if (finished || !paused) return; paused = false; t0 += performance.now() - pausedAt; part.el.classList.remove("is-paused"); if (!isIframe && node) node.play().catch(() => {}); else if (node?.contentWindow) { try { if (v.provider === "youtube") node.contentWindow.postMessage(JSON.stringify({ event: "command", func: "playVideo", args: [] }), "*"); if (v.provider === "vimeo") node.contentWindow.postMessage(JSON.stringify({ method: "play" }), "*"); } catch {} } raf = requestAnimationFrame(tick); },
         toggle() { if (finished) return; if (paused) api.resume(); else api.pause(); },
         replay() { part.el.classList.remove("is-done"); end.hidden = true; api.stop(); ctl = play(part); },
-        stop() { cancelAnimationFrame(raf); finished = true; if (node && !isIframe) { node.pause(); node.removeAttribute("src"); node.load(); } if (node && isIframe) node.remove(); node = null; mediaBox.replaceChildren(); },
+        stop() { cancelAnimationFrame(raf); finished = true; part.cleanup?.(); if (node && !isIframe) { node.pause(); node.removeAttribute("src"); node.load(); } if (node && isIframe) node.remove(); node = null; mediaBox.replaceChildren(); },
       };
       if (v.type === "video" || v.provider === "file") {
         const src = v.type === "video" ? M.vidUrl(v.url) : v.url;
-        node = h("video", { class: "reel-video", src, poster: v.type === "video" ? M.posterUrl(v.url) : undefined, playsinline: "", muted: "", preload: "auto", "webkit-playsinline": "" });
-        node.muted = !sound; node.playsInline = true;
+        node = h("video", { class: "reel-video", src, poster: v.type === "video" ? M.posterUrl(v.url) : undefined, playsinline: "", muted: "", autoplay: "", preload: "auto", "webkit-playsinline": "" });
+        node.defaultMuted = true; node.muted = true; node.playsInline = true; /* começa sem som: é o único jeito de tocar sozinho no iPhone */
         if (v.type === "video" && M.posterUrl(v.url)) part.el.querySelector(".reel-bg").style.backgroundImage = `url('${M.posterUrl(v.url)}')`;
         node.addEventListener("loadedmetadata", () => { if (node && node.videoWidth && node.videoHeight / node.videoWidth < 1.15) part.el.classList.add("is-landscape"); });
         node.addEventListener("ended", () => { if (node && node.duration > MAX_S + 0.5) finish(); else if (node) { node.currentTime = 0; node.play().catch(() => {}); } });
         node.addEventListener("error", () => { part.el.classList.add("is-broken"); });
         mediaBox.append(node);
-        const go = () => { node.play().then(() => { raf = requestAnimationFrame(tick); }).catch(() => { part.el.classList.add("is-paused"); paused = true; pausedAt = performance.now(); }); };
-        go();
+        let started = false, btn = null, autoPaused = false;
+        const unmute = () => {
+          if (!sound || !node) return;
+          node.muted = false;
+          setTimeout(() => { if (node && !finished && !paused && node.paused) { node.muted = true; node.play().catch(() => {}); setSound(false); } }, 350); /* o navegador pausou ao ligar o som: volta sem som */
+        };
+        const onPlaying = () => { started = true; btn?.remove(); btn = null; if (autoPaused) { paused = false; autoPaused = false; } part.el.classList.remove("is-paused"); if (!raf && !paused) raf = requestAnimationFrame(tick); unmute(); };
+        node.addEventListener("playing", onPlaying, { once: true });
+        const needTap = () => {
+          if (started || finished || btn || !node) return;
+          paused = true; autoPaused = true; pausedAt = performance.now();
+          btn = h("button", { class: "reel-start", type: "button" }, M.icon("play", 26), "Toque para assistir");
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation(); btn.remove(); btn = null; paused = false; autoPaused = false;
+            node.muted = !sound; node.play().catch(() => { node.muted = true; node.play().catch(() => {}); });
+          });
+          mediaBox.append(btn);
+        };
+        node.play().catch(needTap);
+        setTimeout(() => { if (!started && node && node.paused && !paused) needTap(); }, 1600); /* modo de economia de bateria: o navegador nem avisa que bloqueou */
       } else {
         isIframe = true;
         const thumb = v.provider === "youtube" ? `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg` : "";
         if (thumb) part.el.querySelector(".reel-bg").style.backgroundImage = `url('${thumb}')`;
+        let playing = false, btn = null, onMsg = null, guard = 0;
+        const manual = () => { /* deixa a pessoa tocar no play do próprio player */
+          btn?.remove(); btn = null;
+          if (node) node.style.pointerEvents = "auto";
+          part.el.classList.add("is-manual");
+        };
+        const askTap = (label) => {
+          if (btn) return;
+          btn = h("button", { class: "reel-start", type: "button" }, M.icon("play", 26), label || "Toque para assistir");
+          btn.addEventListener("click", (e) => { e.stopPropagation(); manual(); });
+          mediaBox.append(btn);
+        };
         const start = () => {
           node = h("iframe", { class: "reel-iframe", src: embedSrc(v, sound), title: "Vídeo", allow: "autoplay; encrypted-media; picture-in-picture", referrerpolicy: "strict-origin-when-cross-origin", sandbox: "allow-scripts allow-same-origin allow-presentation allow-popups", loading: "eager" });
           mediaBox.append(node); t0 = performance.now(); raf = requestAnimationFrame(tick);
-          if (!AUTOPLAYS.has(v.provider)) part.el.classList.add("is-manual");
+          if (!AUTOPLAYS.has(v.provider)) { part.el.classList.add("is-manual"); return; }
+          /* escuta o player para saber se começou mesmo; se não começar em 3 s (celular, economia de bateria), pede um toque */
+          onMsg = (ev) => {
+            if (!node || ev.source !== node.contentWindow) return;
+            let d = ev.data; if (typeof d === "string") { try { d = JSON.parse(d); } catch { return; } }
+            if (!d) return;
+            const yt = (d.event === "infoDelivery" && d.info && d.info.playerState === 1) || (d.event === "onStateChange" && d.info === 1);
+            const vm = d.event === "play" || d.event === "playProgress" || d.event === "timeupdate";
+            if (yt || vm) { playing = true; clearTimeout(guard); btn?.remove(); btn = null; if (sound) api.applySound(); }
+          };
+          addEventListener("message", onMsg);
+          node.addEventListener("load", () => {
+            try {
+              if (v.provider === "youtube") node.contentWindow.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), "*");
+              if (v.provider === "vimeo") ["play", "playProgress"].forEach((n) => node.contentWindow.postMessage(JSON.stringify({ method: "addEventListener", value: n }), "*"));
+            } catch {}
+          });
+          guard = setTimeout(() => { if (!playing && node && !finished) askTap(); }, 3200);
         };
+        part.cleanup = () => { clearTimeout(guard); if (onMsg) removeEventListener("message", onMsg); };
         if (AUTOPLAYS.has(v.provider)) start();
         else {
           const b = h("button", { class: "reel-start", type: "button" }, M.icon("play", 26), "Toque para assistir");
-          b.addEventListener("click", (e) => { e.stopPropagation(); b.remove(); start(); node.style.pointerEvents = "none"; });
+          b.addEventListener("click", (e) => { e.stopPropagation(); b.remove(); start(); node.style.pointerEvents = "auto"; });
           mediaBox.append(b);
           paused = false;
         }
       }
       return api;
+    }
+
+    /* lista sem fim: quando chega perto do último, vem outra rodada embaralhada (sem repetir o mesmo vídeo em seguida) */
+    function more() {
+      if (base.length < 2) return;
+      round++;
+      let batch = shuffle(base.slice());
+      const lastBase = items[items.length - 1].baseId || items[items.length - 1].id;
+      if (batch[0].id === lastBase) batch.push(batch.shift());
+      const copies = batch.map((x) => ({ ...x, baseId: x.id, id: x.id + "~" + round }));
+      items.push(...copies);
+      for (const it of copies) { const el = build(it); scroller.append(el); io.observe(el); }
     }
 
     function activate(i) {
@@ -198,7 +263,9 @@
       cur = i;
       const part = els.get(items[i].id);
       ctl = play(part);
-      seenTimer = setTimeout(() => store.mark(items[i].id), 2000);
+      const baseId = items[i].baseId || items[i].id;
+      seenTimer = setTimeout(() => store.mark(baseId), 2000);
+      if (i >= items.length - 2) more();
       /* guarda só o que importa: o vídeo anterior volta a ser só a capa */
       if (prev >= 0 && items[prev]) els.get(items[prev].id)?.el.classList.remove("is-paused", "is-done");
     }
@@ -228,10 +295,11 @@
       if (document.hidden) return;
       try {
         const d = await M.get("reels");
-        const have = new Set(items.map((x) => x.id));
+        const have = new Set(base.map((x) => x.id));
         const fresh = d.items.filter((x) => !have.has(x.id));
         if (!fresh.length) return;
         fresh.sort((a, b) => b.at - a.at);
+        base.push(...fresh);
         const at = Math.max(cur, 0) + 1;
         items.splice(at, 0, ...fresh);
         let ref = els.get(items[at - 1].id).el;
