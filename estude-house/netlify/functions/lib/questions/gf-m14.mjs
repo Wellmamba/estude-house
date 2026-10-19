@@ -216,7 +216,7 @@ export default [
     q: "Você percebe que mandou um número errado no relatório, e o cliente ainda não notou. O que fazer?",
     options: [
       "Esperar o cliente perguntar, porque corrigir sozinho só chama atenção pro erro e pode gerar dúvida",
-      "Assumir o erro, corrigir o relatório e avisar o cliente e o gestor o quanto antes",
+      "Assumir o erro, corrigir o relatório e avisar o cliente e o líder o quanto antes",
       "Corrigir o número no próximo relatório do mês, sem comentar nada sobre a versão anterior",
       "Culpar a fonte do dado e pedir que o cliente ignore a versão anterior, sem dar mais detalhes"
     ],
@@ -291,7 +291,7 @@ export default [
     q: "Pelo check de saída do módulo, quando um relatório pode ser considerado bom?",
     options: [
       "Quando traz todas as abas e gráficos possíveis, mostrando o quanto a equipe analisou a conta",
-      "Quando o gestor aprova o formato, mesmo que o cliente precise ligar pra entender o texto",
+      "Quando o líder aprova o formato, mesmo que o cliente precise ligar pra entender o texto",
       "Quando o cliente leigo entende o relatório sem ligar pra tirar dúvida",
       "Quando usa os termos técnicos da plataforma, mesmo sem traduzir, para mostrar domínio do tema"
     ],

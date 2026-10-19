@@ -15,7 +15,7 @@ export default [
   },
   {
     id: "gf-m11-02", module: M, topic: "Automática ou manual",
-    q: "A assessora vai começar o ads de uma conta que ainda não conhece bem e quer testar rápido, com pouco trabalho. O que combina mais?",
+    q: "Você vai começar o ads de uma conta que ainda não conhece bem e quer testar rápido, com pouco trabalho. O que combina mais?",
     options: [
       "Campanha automática: a plataforma escolhe onde aparecer, dá menos trabalho e serve pra começar e testar",
       "Campanha manual em todos os produtos: dá mais controle, e controle é o que mais importa em conta nova",

@@ -26,7 +26,7 @@ export default [
   },
   {
     id: "gf-m12-03", module: "gf-m12", topic: "Tabela dinâmica",
-    q: "Você exportou 5 mil linhas de pedidos e o gestor quer ver as vendas por SKU em cada semana. Qual recurso resolve mais rápido?",
+    q: "Você exportou 5 mil linhas de pedidos e o líder quer ver as vendas por SKU em cada semana. Qual recurso resolve mais rápido?",
     options: [
       "Criar uma tabela dinâmica com SKU nas linhas, semana nas colunas e soma de vendas",
       "Filtrar a base SKU por SKU e somar as vendas de cada semana em uma célula à parte",

@@ -1,7 +1,7 @@
 // Banco de questões do módulo 7 (Preço e financeiro). Números de conta são fictícios (exemplo).
 export default [
   { id: "gf-m7-01", module: "gf-m7", topic: "Faturamento x lucro",
-    q: "O seller comemora: “fechei o mês com R$ 80 mil vendidos, tô lucrando muito”. Qual é a melhor resposta do assessor?",
+    q: "O seller comemora: “fechei o mês com R$ 80 mil vendidos, tô lucrando muito”. Qual é a melhor resposta?",
     options: [
       "Parabéns, R$ 80 mil de vendas é o lucro, desde que o Ads tenha sido pago no mês",
       "Parabéns. O lucro é o faturamento menos só o custo do produto, o resto não conta",
@@ -145,7 +145,7 @@ export default [
     answer: [0,1,2],
     why: "Atacado funciona com sobra positiva e um motivo claro: girar estoque, diluir frete ou fidelizar. Sobra perto de zero ou copiar o concorrente sem conta não são motivos." },
   { id: "gf-m7-15", module: "gf-m7", topic: "Atacado com sobra zero",
-    q: "Preço R$ 100, custos em reais de R$ 60 e custos em % de 25% (números de exemplo). O cliente pede 20% de desconto no atacado. O que o assessor responde?",
+    q: "Preço R$ 100, custos em reais de R$ 60 e custos em % de 25% (números de exemplo). O cliente pede 20% de desconto no atacado. O que você responde?",
     options: [
       "Aceitar, porque comprar em quantidade sempre compensa a sobra menor",
       "Recusar ou renegociar: a R$ 80 a sobra zera, e nenhum volume compensa",
@@ -175,7 +175,7 @@ export default [
     answer: [0],
     why: "Vendas = 3 × 2.000 = 6.000. Margem = 25% de 6.000 = 1.500. Resultado = 1.500 − 2.000 = −R$ 500. O equilíbrio seria 4x." },
   { id: "gf-m7-18", module: "gf-m7", topic: "ROAS e margem",
-    q: "Dois produtos têm ROAS de 4x. Um tem 50% de margem antes do Ads e o outro 20% (números de exemplo). O que o assessor conclui?",
+    q: "Dois produtos têm ROAS de 4x. Um tem 50% de margem antes do Ads e o outro 20% (números de exemplo). O que você conclui?",
     options: [
       "Os dois lucram, porque 4x é um ROAS alto em qualquer produto",
       "Os dois perdem, porque 4x fica abaixo do equilíbrio de 5x",

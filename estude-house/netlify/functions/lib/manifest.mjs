@@ -57,24 +57,104 @@ const BUILTIN_TRAILS = [
     ],
   },
   {
-    id: "gf",
-    title: "Grade de Formação Mamba",
-    finalScope: "final-gf",
-    finalSize: 40,
+    id: "fund",
+    title: "Fundamentos Mamba e e-commerce",
+    finalScope: "final-fund",
+    finalSize: 16,
     modules: [
       { id: "gf-m1", lessons: ["gf-l1-1", "gf-l1-2", "gf-l1-3"] },
       { id: "gf-m2", lessons: ["gf-l2-1", "gf-l2-2", "gf-l2-3", "gf-l2-4", "gf-l2-5"] },
+    ],
+  },
+  {
+    id: "mlop",
+    title: "Operação no Mercado Livre",
+    finalScope: "final-mlop",
+    finalSize: 12,
+    modules: [
       { id: "gf-m3", lessons: ["gf-l3-1", "gf-l3-2", "gf-l3-3", "gf-l3-4", "gf-l3-5"] },
+    ],
+  },
+  {
+    id: "spop",
+    title: "Operação na Shopee",
+    finalScope: "final-spop",
+    finalSize: 12,
+    modules: [
       { id: "gf-m4", lessons: ["gf-l4-1", "gf-l4-2", "gf-l4-3", "gf-l4-4", "gf-l4-5"] },
+    ],
+  },
+  {
+    id: "anuncios",
+    title: "Anúncios que vendem",
+    finalScope: "final-anuncios",
+    finalSize: 12,
+    modules: [
       { id: "gf-m5", lessons: ["gf-l5-1", "gf-l5-2", "gf-l5-3", "gf-l5-4", "gf-l5-5", "gf-l5-6"] },
+    ],
+  },
+  {
+    id: "fiscal",
+    title: "Fiscal sem medo",
+    finalScope: "final-fiscal",
+    finalSize: 12,
+    modules: [
       { id: "gf-m6", lessons: ["gf-l6-1", "gf-l6-2", "gf-l6-3", "gf-l6-4", "gf-l6-5", "gf-l6-6"] },
+    ],
+  },
+  {
+    id: "preco",
+    title: "Preço e financeiro",
+    finalScope: "final-preco",
+    finalSize: 12,
+    modules: [
       { id: "gf-m7", lessons: ["gf-l7-1", "gf-l7-2", "gf-l7-3", "gf-l7-4", "gf-l7-5", "gf-l7-6"] },
+    ],
+  },
+  {
+    id: "logistica",
+    title: "Logística e Full",
+    finalScope: "final-logistica",
+    finalSize: 12,
+    modules: [
       { id: "gf-m8", lessons: ["gf-l8-1", "gf-l8-2", "gf-l8-3", "gf-l8-4", "gf-l8-5", "gf-l8-6"] },
+    ],
+  },
+  {
+    id: "mercado",
+    title: "Mercado, produto e concorrência",
+    finalScope: "final-mercado",
+    finalSize: 12,
+    modules: [
       { id: "gf-m9", lessons: ["gf-l9-1", "gf-l9-2", "gf-l9-3", "gf-l9-4", "gf-l9-5"] },
+    ],
+  },
+  {
+    id: "promoads",
+    title: "Promoções e Ads",
+    finalScope: "final-promoads",
+    finalSize: 20,
+    modules: [
       { id: "gf-m10", lessons: ["gf-l10-1", "gf-l10-2", "gf-l10-3"] },
       { id: "gf-m11", lessons: ["gf-l11-1", "gf-l11-2", "gf-l11-3", "gf-l11-4", "gf-l11-5", "gf-l11-6"] },
+    ],
+  },
+  {
+    id: "dados",
+    title: "Dados, diagnóstico e plano de conta",
+    finalScope: "final-dados",
+    finalSize: 20,
+    modules: [
       { id: "gf-m12", lessons: ["gf-l12-1", "gf-l12-2", "gf-l12-3", "gf-l12-4"] },
       { id: "gf-m13", lessons: ["gf-l13-1", "gf-l13-2", "gf-l13-3", "gf-l13-4"] },
+    ],
+  },
+  {
+    id: "comunic",
+    title: "Comunicação e rotina de trabalho",
+    finalScope: "final-comunic",
+    finalSize: 12,
+    modules: [
       { id: "gf-m14", lessons: ["gf-l14-1", "gf-l14-2", "gf-l14-3", "gf-l14-4"] },
     ],
   },

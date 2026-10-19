@@ -14,10 +14,10 @@ export default [
   },
   {
     id: "gf-m6-02", module: M, topic: "Escolha do regime",
-    q: "O cliente diz: “meu amigo paga menos imposto no Simples, vou pedir o Simples também”. Qual é a melhor resposta do assessor?",
+    q: "O cliente diz: “meu amigo paga menos imposto no Simples, vou pedir o Simples também”. Qual é a melhor resposta?",
     options: [
       "Se o amigo paga menos, o Simples é o melhor regime para qualquer empresa do ramo",
-      "O assessor pode pedir a troca agora, já que não existe prazo para mudar de regime",
+      "Você pode pedir a troca agora, já que não existe prazo para mudar de regime",
       "Regime só importa para quem fatura muito e não muda a margem dos produtos",
       "Depende de margem, mix e faturamento de cada empresa, e o contador decide"
     ],
@@ -79,7 +79,7 @@ export default [
     options: [
       "O CFOP classifica o produto em 8 dígitos para calcular o imposto",
       "Primeiro dígito 5 indica saída dentro do estado",
-      "O assessor pode escolher o CFOP completo sem consultar o contador",
+      "Você pode escolher o CFOP completo sem consultar o contador",
       "Primeiro dígito 6 indica saída para outro estado",
       "Devolução é a nota no sentido contrário, com CFOP próprio"
     ],
@@ -88,7 +88,7 @@ export default [
   },
   {
     id: "gf-m6-08", module: M, topic: "Conversa com o contador",
-    q: "Qual atitude do assessor na conversa com o contador do cliente está ERRADA?",
+    q: "Qual atitude na conversa com o contador do cliente está ERRADA?",
     options: [
       "Levar o pedido e o print da nota junto com a dúvida",
       "Pedir a orientação por escrito para guardar o motivo da resposta",
@@ -96,7 +96,7 @@ export default [
       "Perguntar “isso está certo?” em vez de afirmar a resposta pronta"
     ],
     answer: [2],
-    why: "O assessor não finge ser contador: pergunta, leva provas e registra a resposta. Prometer ao seller algo que o contador não confirmou é o erro.",
+    why: "Você não finge ser contador: pergunta, leva provas e registra a resposta. Prometer ao seller algo que o contador não confirmou é o erro.",
   },
   {
     id: "gf-m6-09", module: M, topic: "Origem da mercadoria",
@@ -112,7 +112,7 @@ export default [
   },
   {
     id: "gf-m6-10", module: M, topic: "Auditoria de cadastro",
-    q: "Ao auditar 10 produtos, o assessor acha um com ST e CEST vazio. O que faz?",
+    q: "Ao auditar 10 produtos, você acha um com ST e CEST vazio. O que faz?",
     options: [
       "Preenche com o CEST de um produto parecido para não deixar o campo vazio",
       "Deixa vazio, porque o CEST só existe para produto importado de outro país",
@@ -173,7 +173,7 @@ export default [
   },
   {
     id: "gf-m6-15", module: M, topic: "ST na conta",
-    q: "O produto tem ST e o custo de compra já traz o ICMS da cadeia. O que o assessor faz?",
+    q: "O produto tem ST e o custo de compra já traz o ICMS da cadeia. O que você faz?",
     options: [
       "Pergunta ao contador como tratar o ICMS da ST, para não contar duas vezes",
       "Soma o ICMS de novo no preço mínimo, para garantir uma margem mais segura",
@@ -222,7 +222,7 @@ export default [
   },
   {
     id: "gf-m6-19", module: M, topic: "Repasse e conciliação",
-    q: "O seller diz que o repasse veio errado. Qual é a melhor resposta do assessor?",
+    q: "O seller diz que o repasse veio errado. Qual é a melhor resposta?",
     options: [
       "Cruzar o pedido com o extrato e as notas, explicando cada desconto item a item",
       "Dizer que o marketplace errou e pedir o estorno sem conferir nenhum dado",
@@ -230,7 +230,7 @@ export default [
       "Pedir ao contador para refazer as notas até o valor bater com o repasse"
     ],
     answer: [0],
-    why: "Conciliar é mostrar a conta: pedido, extrato e nota. Sem conferir, o assessor pode acusar o marketplace sem razão, e nota não se refaz para bater com repasse.",
+    why: "Conciliar é mostrar a conta: pedido, extrato e nota. Sem conferir, você pode acusar o marketplace sem razão, e nota não se refaz para bater com repasse.",
   },
   {
     id: "gf-m6-20", module: M, topic: "Rotina de conciliação",
@@ -259,7 +259,7 @@ export default [
   },
   {
     id: "gf-m6-22", module: M, topic: "Decisão de regime",
-    q: "O cliente quer trocar de regime porque o regime B ganhou na simulação. O que o assessor faz?",
+    q: "O cliente quer trocar de regime porque o regime B ganhou na simulação. O que você faz?",
     options: [
       "Pede a troca já, pois a simulação mostra o regime ideal para sempre",
       "Leva a simulação ao contador, que avalia regras, prazos e custos da troca",

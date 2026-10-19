@@ -238,7 +238,7 @@ export default [
     q: "Onde confirmar datas e regras de uma campanha de data dupla antes de montar o plano?",
     options: [
       "No calendário do ano passado, porque as datas e as regras se repetem iguais todo ano",
-      "Com o próprio seller, que sempre conhece o calendário da plataforma melhor que o assessor",
+      "Com o próprio seller, que sempre conhece o calendário da plataforma melhor que você",
       "Em blogs de e-commerce, que costumam atualizar as regras antes da própria plataforma",
       "No calendário oficial e na documentação da Shopee, que mudam e valem só para o período",
     ],

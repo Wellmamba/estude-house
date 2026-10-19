@@ -1,300 +1,267 @@
-const M = "gf-m1";
+// Banco de questões do módulo "Comece por aqui": funções do Assessor e do Gestor de Performance, como estudar e o ciclo da conta.
+// Números de conta são fictícios (exemplo).
 export default [
-  /* ---- Aula 1: os 4 níveis ---- */
   {
-    id: "gf-m1-01", module: M, topic: "Os 4 níveis",
-    q: "Qual frase descreve melhor o N0, Trainee?",
-    options: [
-      "Cuida da carteira e decide preço, promoção e logística das contas",
-      "Opera a conta, ajusta anúncio e roda a rotina semanal com supervisão",
-      "Entende como o marketplace funciona e fala a língua do mercado",
-      "Monta plano estratégico, faz análise complexa e forma novas pessoas",
-    ],
-    answer: [2],
-    why: "O N0 é o Trainee: parte do zero e aprende a falar a língua do mercado. Operar com supervisão é N1, decidir a carteira é N2 e montar plano estratégico é N3.",
-  },
-  {
-    id: "gf-m1-02", module: M, topic: "Subir de nível",
-    q: "Um colega diz: “já tenho um ano de casa, então subo pro N2 automaticamente”. O que a regra da Mamba diz?",
-    options: [
-      "Só sobe com entrega prática aprovada; tempo de casa sozinho não basta",
-      "Sobe sim, porque o tempo de casa vale mais que qualquer entrega prática",
-      "Sobe se o gestor pedir, mesmo sem a prova final do nível anterior",
-      "Sobe depois de decorar o painel, que é o que a prova final cobra",
-    ],
-    answer: [0],
-    why: "A regra é nada de passar de nível sem entrega prática aprovada. Tempo de casa e decorar painel não provam que você sabe operar, analisar, explicar e decidir.",
-  },
-  {
-    id: "gf-m1-03", module: M, topic: "Provas finais",
-    q: "Quais pares de nível e prova final estão corretos? Marque todas as corretas.",
-    options: [
-      "N0, Trainee: explicar uma venda do clique ao repasse",
-      "N1, Assessor: assumir uma conta e apresentar plano de 90 dias",
-      "N2, Gestor: assumir uma conta e apresentar plano de 90 dias",
-      "N3, Estrategista: plano estratégico complexo, mais formar e avaliar um N1",
-      "N0, Trainee: rodar a rotina semanal e entregar relatório claro",
-    ],
-    answer: [0, 2, 3],
-    why: "N0 explica uma venda ponta a ponta, N2 assume uma conta e apresenta o plano de 90 dias, e N3 entrega plano complexo e forma um N1. Rodar a rotina semanal é a prova do N1.",
-  },
-  {
-    id: "gf-m1-04", module: M, topic: "Os 4 níveis",
-    q: "Qual destas afirmações sobre os níveis está ERRADA?",
-    options: [
-      "O N1 opera conta, ajusta anúncio e roda a rotina com supervisão",
-      "O N2 é dono do resultado e decide preço, promoção e logística",
-      "O N3 monta plano estratégico e também forma outras pessoas",
-      "O N0 já assume sozinho a carteira de contas e responde pelo resultado",
-    ],
-    answer: [3],
-    why: "Assumir a carteira e responder pelo resultado é do N2. O N0 está começando do zero e aprende a falar a língua do mercado.",
-  },
-  {
-    id: "gf-m1-05", module: M, topic: "Os 4 níveis",
-    q: "Você é N1 e o seller pede que você decida sozinho preço e promoção de toda a carteira. O que combina com o seu nível?",
-    options: [
-      "Aceitar na hora, porque todo assessor responde sozinho pela carteira inteira",
-      "Seguir operando com supervisão e levar a decisão de carteira ao gestor",
-      "Recusar e passar a conta para outra pessoa sem explicar nada ao seller",
-      "Decidir só o preço e deixar a promoção parada até alguém perguntar por ela",
-    ],
-    answer: [1],
-    why: "O N1 opera com supervisão. Decidir preço, promoção e logística da carteira é papel do N2, o Gestor de Performance, que é dono do resultado.",
-  },
-  {
-    id: "gf-m1-06", module: M, topic: "Tempo de cada nível",
-    q: "Qual nível leva, em média, de 4 a 6 meses para ser alcançado (tempo aproximado)?",
-    options: [
-      "N0, Trainee, que leva de 4 a 6 meses de estudo seguido",
-      "N1, Assessor, que leva de 4 a 6 meses de supervisão",
-      "N3, Estrategista, que fecha a formação em 4 a 6 meses",
-      "N2, Gestor de Performance, que leva de 4 a 6 meses",
-    ],
-    answer: [3],
-    why: "O tempo aproximado é: N0 de 3 a 4 semanas, N1 de 2 a 3 meses e N2 de 4 a 6 meses. O N3 é contínuo, sem data pra acabar.",
-  },
-  {
-    id: "gf-m1-07", module: M, topic: "Operar, analisar, explicar, decidir",
-    q: "Quais atitudes mostram que você vai além de “saber mexer no painel”? Marque todas as corretas.",
-    options: [
-      "Explicar ao seller por que um número da conta mudou",
-      "Decidir com base no dado real que a conta mostra",
-      "Operar seguindo o passo a passo, sem entender o motivo",
-      "Analisar o que está por trás de cada indicador da conta",
-      "Repetir o benchmark do blog como se fosse a sua conta",
-    ],
-    answer: [0, 1, 3],
-    why: "A formação quer gente que opera, analisa, explica e decide. Seguir passo a passo sem entender e repetir benchmark como se fosse a conta é só mexer no painel.",
-  },
-  {
-    id: "gf-m1-08", module: M, topic: "Provas finais",
-    q: "Um trainee consegue explicar uma venda do clique ao repasse (o dinheiro que o marketplace paga ao vendedor). Qual prova final isso cumpre?",
-    options: [
-      "A do N1, Assessor, que pede rodar a rotina semanal de uma conta",
-      "A do N3, Estrategista, que pede formar e avaliar um colega N1",
-      "A do N0, Trainee, que pede explicar uma venda de ponta a ponta",
-      "A do N2, Gestor, que pede apresentar um plano de 90 dias",
-    ],
-    answer: [2],
-    why: "Explicar uma venda de ponta a ponta, do clique ao repasse, é exatamente a prova final do N0, Trainee. As outras provas são de níveis acima.",
-  },
-
-  /* ---- Aula 2: como cada módulo funciona ---- */
-  {
-    id: "gf-m1-09", module: M, topic: "Formato do módulo",
-    q: "Qual é a ordem das 5 partes que todo módulo segue?",
-    options: [
-      "Por que importa, conteúdo, mão na massa, erro clássico, check de saída",
-      "Conteúdo, por que importa, erro clássico, mão na massa, check de saída",
-      "Por que importa, mão na massa, conteúdo, check de saída, erro clássico",
-      "Check de saída, conteúdo, por que importa, mão na massa, erro clássico",
-    ],
-    answer: [0],
-    why: "Todo módulo abre com o por que importa, passa pelo conteúdo e pela mão na massa, mostra o erro clássico e fecha com o check de saída.",
-  },
-  {
-    id: "gf-m1-10", module: M, topic: "Regras de ouro",
-    q: "Você terminou a leitura de um módulo e quer pular a mão na massa porque “já entendeu a teoria”. O que a formação diz?",
-    options: [
-      "Pode pular, pois entender a teoria já vale como entrega prática",
-      "Faça a mão na massa: sem entrega prática ninguém passa de nível",
-      "Pule, mas refaça o check de saída duas vezes para compensar",
-      "Faça só se o gestor cobrar, porque ela é opcional no formato",
-    ],
-    answer: [1],
-    why: "A primeira regra de ouro é nada de passar de nível sem entrega prática. Entender no papel é diferente de fazer na conta.",
-  },
-  {
-    id: "gf-m1-11", module: M, topic: "Dado da conta",
-    q: "Uma venda de R$ 80 tem produto R$ 36, comissão R$ 10, frete R$ 14, imposto R$ 5 e ads (anúncio pago) R$ 3 (números de exemplo). Qual é a margem?",
-    options: [
+    "id": "gf-m1-11",
+    "module": "gf-m1",
+    "topic": "Dado da conta",
+    "q": "Uma venda de R$ 80 tem produto R$ 36, comissão R$ 10, frete R$ 14, imposto R$ 5 e ads (anúncio pago) R$ 3 (números de exemplo). Qual é a margem?",
+    "options": [
       "12%, porque a sobra de R$ 12 é o valor da margem",
       "20%, que é o número de referência do blog",
       "15%, porque sobram R$ 12 de um preço de R$ 80",
-      "36%, que é o que sobra se esquecer frete e ads",
+      "36%, que é o que sobra se esquecer frete e ads"
     ],
-    answer: [2],
-    why: "80 - 36 - 10 - 14 - 5 - 3 = 12 de sobra. Margem = 12 / 80 = 15%. O blog é só referência, e esquecer frete e ads infla a margem para 36%.",
+    "answer": [
+      2
+    ],
+    "why": "80 - 36 - 10 - 14 - 5 - 3 = 12 de sobra. Margem = 12 / 80 = 15%. O blog é só referência, e esquecer frete e ads infla a margem para 36%."
   },
   {
-    id: "gf-m1-12", module: M, topic: "Fontes e revisão",
-    q: "Quais afirmações sobre as etiquetas de revisão estão corretas? Marque todas as corretas.",
-    options: [
+    "id": "gf-m1-12",
+    "module": "gf-m1",
+    "topic": "Fontes e revisão",
+    "q": "Quais afirmações sobre as etiquetas de revisão estão corretas? Marque todas as corretas.",
+    "options": [
       "Revisar trimestral pede conferir a regra a cada 3 meses",
       "Revisar sempre que mudar pede conferir assim que a regra mudar",
       "As etiquetas liberam usar a aula sem checar a fonte oficial",
       "Aparecem em assuntos que mudam rápido, como taxas e programas",
-      "Só aparecem em aulas de imposto, o único assunto que muda",
+      "Só aparecem em aulas de imposto, o único assunto que muda"
     ],
-    answer: [0, 1, 3],
-    why: "As etiquetas avisam que o assunto muda: conferir a cada 3 meses ou assim que a regra mudar. A fonte final continua sendo a documentação oficial, e não só imposto muda.",
+    "answer": [
+      0,
+      1,
+      3
+    ],
+    "why": "As etiquetas avisam que o assunto muda: conferir a cada 3 meses ou assim que a regra mudar. A fonte final continua sendo a documentação oficial, e não só imposto muda."
   },
   {
-    id: "gf-m1-13", module: M, topic: "Fontes e revisão",
-    q: "Um seller cita, no grupo de vendedores, uma regra de frete e pergunta se ela vale. Qual é o próximo passo?",
-    options: [
+    "id": "gf-m1-13",
+    "module": "gf-m1",
+    "topic": "Fontes e revisão",
+    "q": "Um seller cita, no grupo de vendedores, uma regra de frete e pergunta se ela vale. Qual é o próximo passo?",
+    "options": [
       "Confirmar que vale, porque vendedores experientes costumam acertar",
       "Pedir um print do grupo e usar a regra mais citada entre eles",
       "Procurar um blog que repita a regra e confiar no mais recente",
-      "Conferir a regra na documentação oficial da plataforma antes de usar",
+      "Conferir a regra na documentação oficial da plataforma antes de usar"
     ],
-    answer: [3],
-    why: "Regras mudam, e a fonte final é a documentação oficial da plataforma. Grupo de vendedores e blog servem como pista, nunca como decisão.",
+    "answer": [
+      3
+    ],
+    "why": "Regras mudam, e a fonte final é a documentação oficial da plataforma. Grupo de vendedores e blog servem como pista, nunca como decisão."
   },
   {
-    id: "gf-m1-14", module: M, topic: "Mão na massa",
-    q: "O que é uma conta anonimizada, usada nos exercícios de mão na massa?",
-    options: [
-      "Conta real com nome e dados do cliente escondidos de todos",
-      "Conta criada do zero só para teste, com produtos e vendas inventados",
-      "Conta de um cliente antigo que já saiu da carteira da Mamba",
-      "Conta que fica sem nome de loja por falta de cadastro completo",
-    ],
-    answer: [0],
-    why: "Conta anonimizada é uma conta real com nome e dados escondidos. A conta-teste é outra coisa: uma conta criada só para treinar.",
-  },
-  {
-    id: "gf-m1-15", module: M, topic: "Benchmark e dado",
-    q: "Qual destas afirmações sobre benchmark e dado da conta está ERRADA?",
-    options: [
+    "id": "gf-m1-15",
+    "module": "gf-m1",
+    "topic": "Benchmark e dado",
+    "q": "Qual destas afirmações sobre benchmark e dado da conta está ERRADA?",
+    "options": [
       "Benchmark é um número de referência do mercado, como a média da categoria",
       "Benchmark de blog serve como verdade final na hora de decidir o preço",
       "Quando o benchmark e a conta divergem, vale o que a conta mostra",
-      "O dado da conta mostra quanto aquela loja vende, paga e lucra",
+      "O dado da conta mostra quanto aquela loja vende, paga e lucra"
     ],
-    answer: [1],
-    why: "Benchmark é referência, não verdade. A verdade é o dado da conta, que mostra o que a loja vende, paga e lucra de fato.",
+    "answer": [
+      1
+    ],
+    "why": "Benchmark é referência, não verdade. A verdade é o dado da conta, que mostra o que a loja vende, paga e lucra de fato."
   },
   {
-    id: "gf-m1-16", module: M, topic: "Benchmark e dado",
-    q: "Uma venda de R$ 100 deixa sobra de R$ 12 com frete de R$ 12. Se o frete cair para R$ 6 e o resto não mudar, qual será a margem? (números de exemplo)",
-    options: [
+    "id": "gf-m1-16",
+    "module": "gf-m1",
+    "topic": "Benchmark e dado",
+    "q": "Uma venda de R$ 100 deixa sobra de R$ 12 com frete de R$ 12. Se o frete cair para R$ 6 e o resto não mudar, qual será a margem? (números de exemplo)",
+    "options": [
       "6%, porque o frete menor tira R$ 6 da sobra",
       "12%, porque a margem só muda se o preço mudar",
       "18%, porque a sobra sobe para R$ 18 em R$ 100",
-      "24%, porque a sobra dobra quando o frete cai",
+      "24%, porque a sobra dobra quando o frete cai"
     ],
-    answer: [2],
-    why: "Frete R$ 6 menor deixa R$ 6 a mais: a sobra vai de R$ 12 para R$ 18. Margem = 18 / 100 = 18%. Cada custo mexe na margem.",
-  },
-
-  /* ---- Aula 3: a imersão e a nota ---- */
-  {
-    id: "gf-m1-17", module: M, topic: "Rotina da imersão",
-    q: "Qual é a ordem dos blocos de um dia da imersão, da manhã ao fim da tarde (sem contar a pausa)?",
-    options: [
-      "Sessão ao vivo, aquecimento, mão na massa, soft skill, check de saída",
-      "Aquecimento, mão na massa, sessão ao vivo, check de saída, soft skill",
-      "Aquecimento, sessão ao vivo, soft skill, mão na massa, check de saída",
-      "Aquecimento, sessão ao vivo, mão na massa, soft skill, check de saída",
+    "answer": [
+      2
     ],
-    answer: [3],
-    why: "O dia começa com o aquecimento, segue com a sessão ao vivo, depois a mão na massa, o soft skill do dia e fecha com o check de saída.",
+    "why": "Frete R$ 6 menor deixa R$ 6 a mais: a sobra vai de R$ 12 para R$ 18. Margem = 18 / 100 = 18%. Cada custo mexe na margem."
   },
   {
-    id: "gf-m1-18", module: M, topic: "Nota e aprovação",
-    q: "Check de saída 90%, entregas 70%, provas 60% e banca 50% (números de exemplo; pesos 15, 30, 20 e 35). Qual é a nota geral?",
-    options: [
-      "64,0, que fica abaixo dos 70% e não aprova no geral",
-      "67,5, que é a média simples das quatro notas dadas",
-      "72,0, que passa dos 70% se os pesos forem invertidos",
-      "50,5, que ignora o check de saída por ser só diário",
-    ],
-    answer: [0],
-    why: "90x0,15=13,5; 70x0,30=21; 60x0,20=12; 50x0,35=17,5. A soma dá 64,0, abaixo dos 70%. A média simples (67,5) ignora os pesos.",
-  },
-  {
-    id: "gf-m1-19", module: M, topic: "Nota e aprovação",
-    q: "Alguém fechou a imersão com 85% de nota geral, mas ficou com 45% em um eixo. O que acontece?",
-    options: [
-      "Aprova direto, porque 85% passa dos 70% exigidos no geral",
-      "Refaz o eixo com mentoria, pois nenhum eixo pode ficar abaixo de 50%",
-      "Refaz a imersão inteira, porque um eixo baixo reprova todas as áreas",
-      "Aprova se a banca passou de 70%, mesmo com o eixo abaixo do piso",
-    ],
-    answer: [1],
-    why: "Aprovar exige 70% no geral e nenhum eixo abaixo de 50%. Quem fica abaixo refaz só aquele eixo, com mentoria.",
-  },
-  {
-    id: "gf-m1-20", module: M, topic: "Nota e aprovação",
-    q: "Quais afirmações sobre a aprovação e o peso da nota estão corretas? Marque todas as corretas.",
-    options: [
-      "A banca final com case real vale 35% da nota",
-      "O check de saída diário vale 30% da nota",
-      "Para aprovar, o geral precisa de 70% ou mais",
-      "Quem passa na banca aprova mesmo com eixo abaixo de 50%",
-      "Nenhum eixo pode ficar abaixo de 50% para aprovar",
-    ],
-    answer: [0, 2, 4],
-    why: "A banca vale 35%, o geral precisa de 70% e nenhum eixo pode ficar abaixo de 50%. O check de saída vale 15% e a banca não anula o piso dos eixos.",
-  },
-  {
-    id: "gf-m1-21", module: M, topic: "Matriz de domínio",
-    q: "Na matriz de domínio, uma pessoa executa o assunto sozinha, mas ainda não ensina outras. Qual nota ela recebe?",
-    options: [
-      "Nota 1, porque entende o assunto, mas ainda precisa de ajuda pra fazer",
-      "Nota 3, porque executar sozinha já mostra que ensina e decide sob pressão",
-      "Nota 2, porque executa sozinha, sem precisar de ajuda no assunto",
-      "Nota 0, porque nunca viu o assunto em uma situação real de trabalho",
-    ],
-    answer: [2],
-    why: "A escala é 0 nunca viu, 1 entende, 2 executa sozinho e 3 ensina e decide sob pressão. Quem faz sozinho, mas ainda não ensina, está no 2.",
-  },
-  {
-    id: "gf-m1-22", module: M, topic: "Depois da imersão",
-    q: "Você está no dia 30, contando do primeiro dia da imersão. Em qual fase deveria estar, pelo combinado?",
-    options: [
-      "Shadowing: acompanhando contas reais com um gestor sênior",
-      "Assumindo contas pequenas, com supervisão e reavaliação por eixo",
-      "Ainda na imersão de 15 dias, nas sessões ao vivo da manhã",
-      "Na trilha N3, formando novos colegas e atualizando módulos",
-    ],
-    answer: [0],
-    why: "A imersão vai do dia 1 ao 15. Do dia 16 ao 45 vem o shadowing, com conta real e gestor sênior. Contas pequenas começam no dia 46 e a trilha N3 no mês 4.",
-  },
-  {
-    id: "gf-m1-23", module: M, topic: "Priorização",
-    q: "Quatro ações de uma conta (exemplo). Qual vem primeiro pela matriz impacto x esforço?",
-    options: [
+    "id": "gf-m1-23",
+    "module": "gf-m1",
+    "topic": "Priorização",
+    "q": "Quatro ações de uma conta (exemplo). Qual vem primeiro pela matriz impacto x esforço?",
+    "options": [
       "Refazer todas as fotos: impacto alto e esforço alto",
       "Trocar a fonte do banner: impacto baixo e esforço baixo",
       "Migrar o catálogo todo: impacto baixo e esforço alto",
-      "Corrigir um título: impacto alto e esforço baixo",
+      "Corrigir um título: impacto alto e esforço baixo"
     ],
-    answer: [3],
-    why: "Impacto alto com esforço baixo vem primeiro: é o canto de cima à esquerda da matriz. Impacto alto com esforço alto pede planejamento.",
+    "answer": [
+      3
+    ],
+    "why": "Impacto alto com esforço baixo vem primeiro: é o canto de cima à esquerda da matriz. Impacto alto com esforço alto pede planejamento."
   },
   {
-    id: "gf-m1-24", module: M, topic: "Rotina da imersão",
-    q: "A imersão tem 15 dias úteis, com 8 horas de trabalho por dia (9h às 18h, menos 1h de almoço). Quantas horas são no total?",
-    options: [
-      "135 horas, contando 9 horas por dia, com o almoço",
-      "120 horas, que é 15 dias vezes 8 horas por dia",
-      "100 horas, que é 5 dias por semana vezes 20 horas",
-      "150 horas, que é 15 dias vezes 10 horas por dia",
+    "id": "gf-m1-25",
+    "module": "gf-m1",
+    "topic": "Funções",
+    "q": "Na Mamba, quem desenvolve a estratégia da conta e quem a executa na conta do cliente?",
+    "options": [
+      "O Assessor desenvolve a estratégia e o Gestor de Performance a executa",
+      "O Gestor de Performance desenvolve e o Assessor executa na conta do cliente",
+      "As duas funções fazem sempre as mesmas tarefas, nos mesmos horários",
+      "A estratégia vem pronta do cliente e o time só repassa as ordens"
     ],
-    answer: [1],
-    why: "15 dias x 8 horas = 120 horas, que é o valor aproximado da imersão. Contar o almoço ou inventar 10 horas por dia infla o total.",
+    "answer": [
+      0
+    ],
+    "why": "O Assessor Estratégico desenvolve a estratégia e o Gestor de Performance a executa na conta do cliente."
   },
+  {
+    "id": "gf-m1-26",
+    "module": "gf-m1",
+    "topic": "Mesmo nível",
+    "q": "Um colega diz: “o Gestor de Performance é só o próximo passo do Assessor”. Qual é a resposta correta?",
+    "options": [
+      "Sim, quem executa bem por mais de um ano passa a desenvolver a estratégia da conta",
+      "São funções diferentes, com rotinas próprias, no mesmo nível de conhecimento",
+      "Sim, o Assessor é a fase inicial e o Gestor de Performance a fase final",
+      "Não, o Gestor de Performance só precisa saber executar as tarefas do dia"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "Não existe escada entre as funções. São rotinas diferentes, com o mesmo nível de conhecimento."
+  },
+  {
+    "id": "gf-m1-27",
+    "module": "gf-m1",
+    "topic": "Mesmo conhecimento",
+    "q": "Quais afirmações sobre a base de conhecimento das duas funções estão corretas? Marque todas as corretas.",
+    "options": [
+      "O Assessor precisa entender como a estratégia é executada na conta",
+      "O Gestor de Performance precisa entender por que a estratégia é essa",
+      "A formação em e-commerce e marketplaces é a mesma para as duas funções",
+      "O Gestor de Performance não precisa saber preço, fiscal nem logística",
+      "Só o Assessor precisa ler os números da conta do cliente"
+    ],
+    "answer": [
+      0,
+      1,
+      2
+    ],
+    "why": "As duas funções estudam a mesma base: preço, fiscal, logística, Ads e dados. Uma entende o trabalho da outra.",
+    "multi": true
+  },
+  {
+    "id": "gf-m1-28",
+    "module": "gf-m1",
+    "topic": "Ciclo da conta",
+    "q": "Qual é a ordem do ciclo de uma ação na conta, da estratégia ao ajuste?",
+    "options": [
+      "Execução, diagnóstico, plano, prioridade e leitura do resultado",
+      "Plano, execução, leitura do resultado, diagnóstico e prioridade",
+      "Diagnóstico, prioridade, plano, execução e leitura do resultado",
+      "Prioridade, execução, plano, leitura do resultado e diagnóstico"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "O ciclo começa no diagnóstico, segue para prioridade e plano, passa pela execução e termina na leitura do resultado."
+  },
+  {
+    "id": "gf-m1-29",
+    "module": "gf-m1",
+    "topic": "Passagem de bastão",
+    "q": "O que uma boa passagem da estratégia para a execução precisa trazer?",
+    "options": [
+      "Apenas a lista de produtos, para quem executa decidir o resto da ação",
+      "Somente a meta do mês, sem prazo nem responsável definidos",
+      "A decisão final sobre o regime tributário do cliente na conta",
+      "O que fazer, em qual conta, até quando e como medir o resultado"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "A passagem traz ação, conta, prazo, meta e métrica. Sem isso a execução vira palpite."
+  },
+  {
+    "id": "gf-m1-30",
+    "module": "gf-m1",
+    "topic": "Retorno do dado",
+    "q": "A ação foi executada e a margem não subiu como o plano previa. O que fazer?",
+    "options": [
+      "Levar o dado de volta à estratégia e ajustar o plano com a causa",
+      "Repetir a mesma ação até o número bater, sem rever o plano da conta",
+      "Esperar o fim do mês para só então olhar o resultado da ação",
+      "Culpar o marketplace e manter a estratégia como estava antes"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "O resultado volta para a estratégia: quando o número foge do previsto, o plano é ajustado a partir da causa."
+  },
+  {
+    "id": "gf-m1-31",
+    "module": "gf-m1",
+    "topic": "Estratégia e execução",
+    "q": "Qual frase descreve a diferença entre estratégia e execução?",
+    "options": [
+      "Estratégia é só a reunião com o cliente; execução é o relatório mensal da conta",
+      "Estratégia define o quê e em que ordem; execução aplica na conta e mede",
+      "Estratégia é mexer nos anúncios; execução é pensar no plano da conta",
+      "Estratégia é do cliente e a execução é sempre feita pela plataforma"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "Estratégia define o que mexer e em que ordem. Execução aplica o plano na conta do cliente e mede o efeito."
+  },
+  {
+    "id": "gf-m1-32",
+    "module": "gf-m1",
+    "topic": "Como a trilha funciona",
+    "q": "O que libera o certificado de uma trilha na plataforma?",
+    "options": [
+      "Assistir a todos os vídeos da plataforma em um único dia",
+      "Concluir só a primeira aula de cada módulo da trilha",
+      "Ser aprovado na prova final da trilha, depois das aulas",
+      "Postar no feed da plataforma por sete dias seguidos"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "O certificado é liberado ao passar na prova final da trilha."
+  },
+  {
+    "id": "gf-m1-33",
+    "module": "gf-m1",
+    "topic": "Estratégia e execução",
+    "q": "Por que estratégia sem execução e execução sem estratégia não bastam?",
+    "options": [
+      "Porque o cliente só aceita ações que tenham sido feitas em dupla",
+      "Porque a plataforma pede dois responsáveis em cada ação na conta",
+      "Porque as duas têm sempre o mesmo resultado, em qualquer conta",
+      "Plano sem ação não muda a conta, e ação sem plano vira correria"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "Sem execução o plano fica no papel, e sem estratégia a execução vira correria sem prioridade."
+  },
+  {
+    "id": "gf-m1-34",
+    "module": "gf-m1",
+    "topic": "Mesmo nível",
+    "q": "O que significa dizer que o Assessor e o Gestor de Performance estão no mesmo nível?",
+    "options": [
+      "Têm rotinas diferentes, mas o mesmo patamar de conhecimento",
+      "Fazem as mesmas tarefas, nos mesmos horários, todos os dias",
+      "O Gestor de Performance responde ao Assessor em toda decisão",
+      "Quem desenvolve a estratégia ganha mais autonomia que o outro"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "Mesmo nível é mesmo patamar de conhecimento. As rotinas e as tarefas de cada função seguem diferentes."
+  }
 ];

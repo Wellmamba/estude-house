@@ -16,7 +16,7 @@ export default [
   },
   {
     id: "gf-m13-02", module: M, topic: "Nota com critério",
-    q: "Dois assessores deram notas diferentes ao preço da mesma conta: um deu 8 e o outro deu 4. O que provavelmente faltou no raio-X?",
+    q: "Duas pessoas do time deram notas diferentes ao preço da mesma conta: um deu 8 e o outro deu 4. O que provavelmente faltou no raio-X?",
     options: [
       "Um limite de notas, porque só valores pares evitam divergência entre quem avalia",
       "Mais uma frente de análise, porque o preço sozinho não explica a nota de ninguém",
@@ -24,7 +24,7 @@ export default [
       "Um terceiro avaliador, que decide o desempate sem precisar de critério nenhum",
     ],
     answer: [2],
-    why: "Sem critério escrito antes de olhar o dado, a nota vira opinião. Com o critério definido (por exemplo, margem acima do mínimo), dois assessores chegam no mesmo número.",
+    why: "Sem critério escrito antes de olhar o dado, a nota vira opinião. Com o critério definido (por exemplo, margem acima do mínimo), duas pessoas chegam no mesmo número.",
   },
   {
     id: "gf-m13-03", module: M, topic: "Preço mínimo",

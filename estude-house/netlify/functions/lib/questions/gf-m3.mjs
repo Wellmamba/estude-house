@@ -43,7 +43,7 @@ export default [
     q: "Qual afirmação sobre permissões de usuário está ERRADA?",
     options: [
       "Cada usuário pode ter acesso só ao que a função exige, como apenas mensagens e pós-venda",
-      "Dar acesso de usuário permite ao cliente retirar o acesso do assessor quando quiser",
+      "Dar acesso de usuário permite ao cliente retirar o acesso do time da Mamba quando quiser",
       "Quem sai do time deve perder o acesso à conta no mesmo dia em que deixa a função",
       "Compartilhar a senha do dono é aceitável quando o cliente autoriza, pois ele assume o risco",
     ],
@@ -237,7 +237,7 @@ export default [
       "Decidir pelo bom senso e emitir do jeito mais simples, para não atrasar o despacho do pedido",
     ],
     answer: [0],
-    why: "Conteúdo fiscal é educativo: quem decide regime e nota é o contador do cliente. Assessor não deve chutar nem prometer o que não sabe.",
+    why: "Conteúdo fiscal é educativo: quem decide regime e nota é o contador do cliente. Quem cuida da conta não deve chutar nem prometer o que não sabe.",
   },
 
   /* ───── Aula 5: programas, benefícios, Loja Oficial e auditoria ───── */
@@ -292,7 +292,7 @@ export default [
   },
   {
     id: "gf-m3-24", module: M, topic: "Benefícios de frete",
-    q: "Um benefício de frete deixa o anúncio mais atrativo. O que o assessor deve conferir antes de aderir?",
+    q: "Um benefício de frete deixa o anúncio mais atrativo. O que você deve conferir antes de aderir?",
     options: [
       "Se o concorrente também aderiu, porque aderir sempre é melhor que ficar de fora em qualquer conta",
       "Se o benefício está aberto para todos, porque o custo dele nunca entra no preço do produto",

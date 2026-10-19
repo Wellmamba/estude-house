@@ -35,13 +35,13 @@ import gfM11 from "./gf-m11.mjs";
 import gfM12 from "./gf-m12.mjs";
 import gfM13 from "./gf-m13.mjs";
 import gfM14 from "./gf-m14.mjs";
-import gfFinal from "./gf-final.mjs";
+import formacaoFinais from "./formacao-finais.mjs";
 
 // Formato de cada questão:
 // { id, module, topic, q, options: [...], answer: [índices corretos], why }
 // answer com 1 índice = escolha única; com 2+ = múltipla escolha (tudo ou nada).
 
-export const QUESTIONS = [...m0, ...m1, ...m2, ...m3, ...m4, ...m5, ...m6, ...final, ...rtM1, ...rtM2, ...rtM3, ...rtM4, ...rtFinal, ...bppM1, ...bppM2, ...bppM3, ...bppFinal, ...liveM1, ...liveM2, ...liveM3, ...liveM4, ...liveM5, ...liveFinal, ...gfM1, ...gfM2, ...gfM3, ...gfM4, ...gfM5, ...gfM6, ...gfM7, ...gfM8, ...gfM9, ...gfM10, ...gfM11, ...gfM12, ...gfM13, ...gfM14, ...gfFinal];
+export const QUESTIONS = [...m0, ...m1, ...m2, ...m3, ...m4, ...m5, ...m6, ...final, ...rtM1, ...rtM2, ...rtM3, ...rtM4, ...rtFinal, ...bppM1, ...bppM2, ...bppM3, ...bppFinal, ...liveM1, ...liveM2, ...liveM3, ...liveM4, ...liveM5, ...liveFinal, ...gfM1, ...gfM2, ...gfM3, ...gfM4, ...gfM5, ...gfM6, ...gfM7, ...gfM8, ...gfM9, ...gfM10, ...gfM11, ...gfM12, ...gfM13, ...gfM14, ...formacaoFinais];
 
 const BUILTIN_COUNT = QUESTIONS.length;
 const map = new Map(QUESTIONS.map((q) => [q.id, q]));
