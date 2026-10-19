@@ -1,6 +1,6 @@
 # Nova interface: Feed enxuto, menu do gestor, Reels e avisos no aparelho
 
-Versão do site: `2026-10-18-q`. Confira em `/api/health`: o campo `build` deve mostrar essa versão e o campo `push` deve mostrar `ativo`.
+Versão do site: `2026-10-18-r`. Confira em `/api/health`: o campo `build` deve mostrar essa versão e o campo `push` deve mostrar `ativo`.
 
 ## 1. O que mudou na tela
 
@@ -24,6 +24,8 @@ Versão do site: `2026-10-18-q`. Confira em `/api/health`: o campo `build` deve 
 
 - Mostra os vídeos dos posts publicados e dos destaques no ar **dos últimos 30 dias**, um por vez, na vertical, com play automático e sem som no começo (o som liga no ícone e fica ligado nos próximos).
 - Ordem: vídeos novos (últimas 72 horas) que a pessoa ainda não viu vêm primeiro, do mais novo ao mais antigo. O resto vem embaralhado, e os já vistos por último. Se chegar vídeo novo enquanto a pessoa assiste, ele entra como o próximo.
+- A lista **não acaba**: ao chegar perto do último, vem outra rodada embaralhada (sem repetir o mesmo vídeo em seguida).
+- No iPhone e em celulares com economia de bateria o navegador pode bloquear o play automático. Nesse caso aparece o botão **Toque para assistir** no meio do vídeo; o som começa desligado e liga no ícone.
 - Cada vídeo roda **até 30 segundos**. Se o vídeo for mais longo, ao chegar nos 30 segundos aparece um botão no meio da tela: **Ir para o post** (nos destaques: **Ver destaque**). Vídeos curtos ficam repetindo até a pessoa arrastar.
 - **Hype** e **comentários** são os mesmos do post: o número é o mesmo no Feed e nos Reels, e o XP segue as mesmas regras.
 - Entram vídeos enviados pelo Cloudinary e links de YouTube (inclui Shorts), Vimeo, Loom, Google Drive e arquivos mp4/webm/mov. O Drive não toca sozinho: pede um toque em "Toque para assistir". GIFs não entram.
