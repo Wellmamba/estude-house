@@ -87,5 +87,10 @@ console.log("Conteúdo");
   const back = fs.readFileSync(path.join(root, "netlify/functions/api.mjs"), "utf8").match(/const BUILD = "([^"]+)"/)?.[1];
   assert.ok(front && front === back, `versão do site (${front}) e do servidor (${back}) precisam ser iguais`);
   ok(`a versão do site e a do servidor são iguais (${back})`);
+  const html = fs.readFileSync(pub("index.html"), "utf8");
+  const urls = [...html.matchAll(/(?:src|href)="(\/(?:assets|trilhas)\/[^"?]+\.(?:js|css))(\?v=[^"]*)?"/g)];
+  assert.ok(urls.length > 5);
+  for (const [, u, v] of urls) assert.equal(v, "?v=" + back, `${u} no index.html sem a versão atual — rode: node scripts/stamp-version.mjs`);
+  ok(`todos os ${urls.length} arquivos do index.html carregam com ?v=${back}`);
 }
 console.log(`\n${passed} verificações de conteúdo passaram.`);

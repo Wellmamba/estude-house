@@ -151,7 +151,7 @@ console.log("Anexos e links");
   r = await call("GET", "health"); assert.equal(r.data.uploads, "cloudinary");
   r = await call("POST", "feed/upload-sign", { token: ana.token });
   assert.equal(r.status, 200);
-  const expect = crypto.createHash("sha1").update(`folder=estude-house&timestamp=${r.data.timestamp}segredo`).digest("hex");
+  const expect = crypto.createHash("sha1").update(`allowed_formats=${r.data.allowed_formats}&folder=estude-house&timestamp=${r.data.timestamp}segredo`).digest("hex");
   assert.equal(r.data.signature, expect); assert.equal(r.data.apiKey, "key123"); assert.ok(!JSON.stringify(r.data).includes("segredo"));
   ok("assinatura do upload confere e não vaza o segredo");
   for (const url of ["https://res.cloudinary.com/outro/image/upload/x.jpg", "http://res.cloudinary.com/mamba/image/upload/x.jpg", "https://evil.com/mamba/x.jpg"]) {

@@ -1,6 +1,6 @@
 # Nova interface: Feed enxuto, menu do gestor, Reels e avisos no aparelho
 
-Versão do site: `2026-10-18-r`. Confira em `/api/health`: o campo `build` deve mostrar essa versão e o campo `push` deve mostrar `ativo`.
+Versão do site: `2026-10-18-s`. Confira em `/api/health`: o campo `build` deve mostrar essa versão e o campo `push` deve mostrar `ativo`.
 
 ## 1. O que mudou na tela
 
@@ -80,3 +80,12 @@ Boas práticas: no máximo 1 aviso manual por dia, título com até 40 letras, u
 - Reconhecer: fixar o melhor case da semana no topo do Feed e citar o autor (@) num destaque.
 - Dar retorno rápido: aprovar em até 1 dia útil. O aviso de "Posts para aprovar" aparece na faixa do Feed e na fila do gestor.
 - Reels como vitrine: vídeo curto de aluno entra nos Reels depois de aprovado, com hype.
+
+## Segurança e velocidade para 300+ pessoas (build `2026-10-18-s`)
+- **Teste novo:** `node test/security.mjs` (permissões de todas as rotas de gestão, sessões, trava de senha, entradas maliciosas, cabeçalhos). Já está no `npm test`. `node test/load.mjs 300` simula 300 pessoas juntas.
+- **Cache no servidor** (segundos, por instância) e **ranking** calculado uma vez por minuto e compartilhado: o ranking pode demorar até ~1 min para refletir XP novo.
+- **Sessão:** trocar a senha ou desativar a conta derruba as sessões abertas. Login trava por conta (5 erros) e por endereço.
+- **Cabeçalhos:** política de conteúdo (sem script de terceiros), HSTS, nosniff etc. no `netlify.toml`. Se um dia usar script/fonte de outro site, ele precisa ser liberado ali.
+- **Upload:** só formatos de imagem, vídeo, áudio e documento entram no Cloudinary.
+- **Arquivos do site** ficam em cache por 1 ano com `?v=BUILD`: ao mudar o BUILD (api.mjs + lib.js), rode `node scripts/stamp-version.mjs`.
+- O Feed confere novidades a cada ~30 s (com variação aleatória) só com a aba aberta.
