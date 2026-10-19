@@ -67,6 +67,20 @@ console.log("Conteúdo");
   ok(`trilha bpp: os 8 vídeos oficiais estão nas aulas e há ${quizzes.length} quizzes de verificação`);
 }
 {
+  // Trilha Live Commerce Shopee: os 15 vídeos oficiais da playlist são obrigatórios, cada um em uma aula, e toda aula tem quiz.
+  const live = win.TRILHAS.find((t) => t.id === "live");
+  assert.ok(live, "trilha live ausente");
+  const ids = ["yZkls1yTXfU", "gCNuzvjlBo0", "mEOxqUZEXos", "jmW8lp-5nag", "tCWlR7CMP68", "VkUzF95Vsw8", "6osFUlAAmBs", "v4q5CtzJuIQ", "2FQpUlo8Nxk", "hA3OiqrhZh0", "x7h1XCb7DEY", "Uj6MTz9s8_o", "QlPc8ncVHyg", "WQhJ-JJoQuM", "zghs-pK29Ow"];
+  const got = live.modules.flatMap((m) => m.lessons.flatMap((l) => l.blocks.filter((b) => b.t === "video").map((b) => b.id)));
+  for (const id of ids) assert.ok(got.includes(id), "vídeo obrigatório ausente na trilha live: " + id);
+  assert.equal(new Set(got).size, got.length, "vídeo repetido na trilha live");
+  assert.equal(got.length, ids.length, "a trilha live deve ter exatamente os 15 vídeos");
+  for (const l of live.modules.flatMap((m) => m.lessons)) assert.ok(l.blocks.some((b) => b.t === "quiz"), l.id + " sem quiz");
+  const lessons = live.modules.flatMap((m) => m.lessons);
+  assert.equal(lessons.length, 17);
+  ok(`trilha live: os 15 vídeos oficiais estão nas aulas e há ${lessons.length} aulas com quiz`);
+}
+{
   const files = [];
   for (const f of fs.readdirSync(path.join(root, "netlify/functions/lib/questions"))) if (/^(?!index)[\w-]+\.mjs$/.test(f)) files.push("netlify/functions/lib/questions/" + f);
   for (const d of trailDirs) if (fs.existsSync(pub(`trilhas/${d}/practice.js`))) files.push(`public/trilhas/${d}/practice.js`);
