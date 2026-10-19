@@ -44,6 +44,19 @@ const BUILTIN_TRAILS = [
     ],
   },
   {
+    id: "live",
+    title: "Live Commerce Shopee",
+    finalScope: "final-live",
+    finalSize: 20,
+    modules: [
+      { id: "live-m1", examSize: 8, lessons: ["live-l1-1", "live-l1-2", "live-l1-3"] },
+      { id: "live-m2", examSize: 8, lessons: ["live-l2-1", "live-l2-2", "live-l2-3", "live-l2-4"] },
+      { id: "live-m3", examSize: 8, lessons: ["live-l3-1", "live-l3-2", "live-l3-3", "live-l3-4"] },
+      { id: "live-m4", examSize: 8, lessons: ["live-l4-1", "live-l4-2", "live-l4-3"] },
+      { id: "live-m5", examSize: 8, lessons: ["live-l5-1", "live-l5-2", "live-l5-3"] },
+    ],
+  },
+  {
     id: "gf",
     title: "Grade de Formação Mamba",
     finalScope: "final-gf",
