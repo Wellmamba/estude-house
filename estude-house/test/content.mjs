@@ -54,6 +54,19 @@ console.log("Conteúdo");
   ok(`todos os quizzes das aulas têm 3 versões ou mais (${total} versões no total)`);
 }
 {
+  // Trilha Brand Protection Program: os 8 vídeos oficiais são obrigatórios, na ordem da playlist, cada um numa aula.
+  const bpp = win.TRILHAS.find((t) => t.id === "bpp");
+  assert.ok(bpp, "trilha bpp ausente");
+  const ids = ["WOs5Liq-N-0", "5HyKcokl9nk", "Yuam9PU0TD4", "r2V3RuoWWn4", "CLUZlDWrOYg", "rsLYznpOws4", "m4oEACXivkw", "PvUdAP1dfWc"];
+  const got = bpp.modules.flatMap((m) => m.lessons.flatMap((l) => l.blocks.filter((b) => b.t === "video").map((b) => b.id)));
+  for (const id of ids) assert.ok(got.includes(id), "vídeo obrigatório ausente na trilha bpp: " + id);
+  assert.equal(new Set(got).size, got.length, "vídeo repetido na trilha bpp");
+  for (const l of bpp.modules.flatMap((m) => m.lessons)) assert.ok(l.blocks.some((b) => b.t === "video") || ["bpp-l3-1", "bpp-l3-2", "bpp-l3-3"].includes(l.id), l.id + " sem vídeo");
+  const quizzes = bpp.modules.flatMap((m) => m.lessons.flatMap((l) => l.blocks.filter((b) => b.t === "quiz")));
+  assert.ok(quizzes.length >= 14);
+  ok(`trilha bpp: os 8 vídeos oficiais estão nas aulas e há ${quizzes.length} quizzes de verificação`);
+}
+{
   const files = [];
   for (const f of fs.readdirSync(path.join(root, "netlify/functions/lib/questions"))) if (/^(?!index)[\w-]+\.mjs$/.test(f)) files.push("netlify/functions/lib/questions/" + f);
   for (const d of trailDirs) if (fs.existsSync(pub(`trilhas/${d}/practice.js`))) files.push(`public/trilhas/${d}/practice.js`);

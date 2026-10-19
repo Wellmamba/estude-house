@@ -1,6 +1,6 @@
 # Nova interface: Feed enxuto, menu do gestor, Reels e avisos no aparelho
 
-Versão do site: `2026-10-18-s`. Confira em `/api/health`: o campo `build` deve mostrar essa versão e o campo `push` deve mostrar `ativo`.
+Versão do site: `2026-10-19-a`. Confira em `/api/health`: o campo `build` deve mostrar essa versão e o campo `push` deve mostrar `ativo`.
 
 ## 1. O que mudou na tela
 
@@ -81,7 +81,7 @@ Boas práticas: no máximo 1 aviso manual por dia, título com até 40 letras, u
 - Dar retorno rápido: aprovar em até 1 dia útil. O aviso de "Posts para aprovar" aparece na faixa do Feed e na fila do gestor.
 - Reels como vitrine: vídeo curto de aluno entra nos Reels depois de aprovado, com hype.
 
-## Segurança e velocidade para 300+ pessoas (build `2026-10-18-s`)
+## Segurança e velocidade para 300+ pessoas (build `2026-10-19-a`)
 - **Teste novo:** `node test/security.mjs` (permissões de todas as rotas de gestão, sessões, trava de senha, entradas maliciosas, cabeçalhos). Já está no `npm test`. `node test/load.mjs 300` simula 300 pessoas juntas.
 - **Cache no servidor** (segundos, por instância) e **ranking** calculado uma vez por minuto e compartilhado: o ranking pode demorar até ~1 min para refletir XP novo.
 - **Sessão:** trocar a senha ou desativar a conta derruba as sessões abertas. Login trava por conta (5 erros) e por endereço.
