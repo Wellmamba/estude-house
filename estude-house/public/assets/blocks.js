@@ -91,7 +91,7 @@
     return h("figure", { class: "video" }, frame,
       h("figcaption", { class: "video-cap" },
         h("b", { text: b.title }),
-        h("span", null, `Canal oficial da PriceBot${b.dur ? " · " + b.dur : ""}`),
+        h("span", null, `${b.channel ? "Canal " + b.channel : "Canal oficial da PriceBot"}${b.dur ? " · " + b.dur : ""}`),
         b.note ? h("span", { html: "<strong>Para assistir:</strong> " + M.esc(b.note) }) : null,
         h("a", { class: "small", target: "_blank", rel: "noopener", href: "https://www.youtube.com/watch?v=" + b.id, text: "Abrir no YouTube" })));
   }
