@@ -198,6 +198,14 @@
     const g = guard("usuarios"); if (g) return g;
     try { await M.refreshMe(); } catch {}
     const box = h("div");
+    /* o que está aberto some do estado a cada recarga (liberar trilha recarrega a tela): guardo aqui */
+    const opened = new Set();
+    const det = (key, cls, head, ...kids) => {
+      const el = h("details", { class: cls, open: opened.has(key) }, h("summary", null, head, cls === "acc-in" ? h("span", { class: "acc-c", "aria-hidden": "true" }) : null), ...kids);
+      el.addEventListener("toggle", () => { if (el.open) opened.add(key); else opened.delete(key); });
+      return el;
+    };
+    const acc = (key, title, sum, ...kids) => det(key, "acc", [h("span", { class: "acc-t", text: title }), sum ? h("span", { class: "acc-s", text: sum }) : null, h("span", { class: "acc-c", "aria-hidden": "true" })], h("div", { class: "acc-b" }, ...kids));
     async function load() {
       let d;
       try { d = await M.get("admin/users/" + id); } catch (ex) { box.replaceChildren(h("div", { class: "empty" }, h("h3", { text: ex.message }), h("a", { class: "btn btn-gold", href: "#/admin/usuarios" }, "Voltar"))); return; }
@@ -214,39 +222,72 @@
       }
       box.replaceChildren(
         h("a", { class: "small", href: "#/admin/usuarios" }, "← Todos os acessos"),
-        h("div", { class: "page-head", style: "margin-top:12px" },
-          h("h2", { text: u.name }), h("p", { text: u.email }),
-          h("div", { class: "row" }, h("span", { class: "chip " + (u.role !== "aluno" ? "chip-gold" : ""), text: M.roleLabel(u) }),
-            u.active ? h("span", { class: "chip chip-good", text: "Ativo" }) : h("span", { class: "chip chip-bad", text: "Desativado" }),
-            h("span", { class: "chip", text: `${u.xp} XP` }), h("span", { class: "chip", text: "Criado em " + M.fmtDate(u.createdAt) }), h("span", { class: "chip", text: "Último acesso " + M.fmtDateTime(u.lastLoginAt) }))),
-        pe ? h("section", { class: "panel" }, h("h3", { text: "Permissões do sub-administrador" }),
+        h("header", { class: "uhero" },
+          h("div", { class: "uhero-av" }, M.avatar(u, 96)),
+          h("div", { class: "uhero-main" },
+            h("h2", { text: u.name }),
+            h("p", { class: "uhero-mail", text: u.email }),
+            h("div", { class: "row" }, h("span", { class: "chip " + (u.role !== "aluno" ? "chip-gold" : ""), text: M.roleLabel(u) }),
+              u.active ? h("span", { class: "chip chip-good", text: "Ativo" }) : h("span", { class: "chip chip-bad", text: "Desativado" }),
+              u.nickname ? h("a", { class: "chip", href: M.profileHref(u), text: "@" + u.nickname }) : null),
+            h("p", { class: "muted small", style: "margin:8px 0 0", text: "Criado em " + M.fmtDate(u.createdAt) })),
+          h("div", { class: "uhero-stats" }, [
+            ["XP", u.xp], ["Aulas feitas", u.lessonsDone || 0],
+            ["Provas aprovadas", Object.values(p.exams || {}).filter((e) => e && e.status === "approved").length],
+            ["Último acesso", u.lastLoginAt ? M.fmtDateTime(u.lastLoginAt) : "—"]].map(([k, v]) =>
+            h("div", { class: "ustat" }, h("strong", { text: String(v) }), h("span", { text: k }))))),
+        h("div", { class: "acc-bar" }, h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Abrir tudo", onclick: () => box.querySelectorAll("details.acc").forEach((x) => { x.open = true; }) }),
+          h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Recolher tudo", onclick: () => box.querySelectorAll("details.acc, details.acc-in").forEach((x) => { x.open = false; }) })),
+        pe ? acc("perms", "Permissões do sub-administrador", `${(u.perms || []).length} marcadas`,
           h("p", { class: "muted small", style: "margin:0 0 10px", text: "Marque só o que esta pessoa precisa. A mudança vale na próxima vez que ela abrir uma página." }),
           pe.node,
           h("div", { class: "row", style: "margin-top:12px" }, h("button", { class: "btn btn-gold btn-sm", type: "button", text: "Salvar permissões", onclick: () => act(() => M.api("PATCH", "admin/users/" + id, { perms: pe.get() }), "Permissões salvas.") }))) : null,
-        u.role === "subadmin" && !pe ? h("section", { class: "panel" }, h("h3", { text: "Permissões" }),
+        u.role === "subadmin" && !pe ? acc("perms", "Permissões", `${(u.perms || []).length} marcadas`,
           h("p", { class: "muted small", style: "margin:0", text: (u.perms || []).length ? (u.perms || []).map((k) => M.PERMS.find((x) => x.k === k)?.label || k).join(" · ") : "Nenhuma permissão marcada." })) : null,
-        u.role === "aluno" ? h("section", { class: "panel" }, h("h3", { text: "Trilhas liberadas" }),
-          h("p", { class: "muted small", style: "margin:0 0 10px", text: "Trilhas marcadas como \"só alunos escolhidos\" aparecem aqui para você liberar ou tirar. As outras já aparecem para todos os alunos." }),
-          h("div", { class: "perm-list" }, M.allTrails().map((t) => {
-            const restricted = M.isRestricted(t.id);
+        u.role === "aluno" ? (() => {
+          const all = M.allTrails();
+          const restr = all.filter((t) => M.isRestricted(t.id)), free = all.filter((t) => !M.isRestricted(t.id));
+          const given = restr.filter((t) => (u.trailAccess || []).includes(t.id)).length;
+          const item = (t) => {
             const has = (u.trailAccess || []).includes(t.id);
-            const cb = h("input", { type: "checkbox", id: "ta-" + t.id, checked: restricted ? has : true, disabled: !restricted });
-            if (restricted) cb.addEventListener("change", () => {
+            const cb = h("input", { type: "checkbox", id: "ta-" + t.id, checked: has });
+            cb.addEventListener("change", () => {
               const cur = new Set(u.trailAccess || []);
               if (cb.checked) cur.add(t.id); else cur.delete(t.id);
               act(() => M.api("PATCH", "admin/users/" + id, { trails: [...cur] }), cb.checked ? "Trilha liberada para " + u.name + "." : "Trilha retirada. O progresso dele fica guardado.");
             });
-            return h("label", { class: "perm-item", for: "ta-" + t.id }, cb, h("span", null, h("strong", { text: t.title }), h("span", { class: "muted small", text: restricted ? (has ? "Liberada para este aluno" : "Não liberada para este aluno") : "Para todos os alunos" })));
-          }))) : null,
-        M.trails().map((t) => h("section", { class: "panel" }, h("h3", { text: M.trails().length > 1 ? "Andamento · " + t.title : "Andamento" }),
-          h("div", { class: "table-wrap" }, h("table", { class: "tbl", style: "min-width:520px" },
-            h("thead", null, h("tr", null, ["Módulo", "Aulas", "Prova", "Melhor nota", "Tentativas"].map((x) => h("th", { text: x })))),
-            h("tbody", null, [...t.modules.map((m, i) => ({ id: m.id, name: `${m.n}. ${m.title}`, st: p.trails[t.id].modules[i] })), { id: M.finalScope(t), name: "Prova final", st: null }].map((r) => {
-              const e = p.exams[r.id];
-              return h("tr", null, h("td", { text: r.name }), h("td", { text: r.st ? `${r.st.done}/${r.st.total}` : "—" }),
-                h("td", null, finalChip(e?.status)), h("td", { text: e?.bestPct ? e.bestPct + "%" : "—" }), h("td", { text: e?.attempts || 0 }));
-            })))))),
-        h("section", { class: "panel" }, h("h3", { text: "Gestão do acesso" }),
+            return h("label", { class: "perm-item", for: "ta-" + t.id }, cb, h("span", null, h("strong", { text: t.title }), h("span", { class: "muted small", text: has ? "Liberada" : "Não liberada" })));
+          };
+          return acc("trails", "Trilhas liberadas", restr.length ? `${given} de ${restr.length} escolhidas` : "todas abertas para todos",
+            restr.length
+              ? [h("p", { class: "muted small", style: "margin:0 0 10px", text: "Estas trilhas são só para alunos escolhidos. Marque as que esta pessoa pode ver." }), h("div", { class: "perm-list perm-cols" }, restr.map(item))]
+              : h("p", { class: "muted small", style: "margin:0", text: "Nenhuma trilha está em \"só alunos escolhidos\": todas aparecem para todos os alunos." }),
+            free.length ? det("trails-free", "acc-in", [h("span", { class: "acc-t", text: `${free.length} trilhas abertas para todos os alunos` })], h("div", { class: "chips" }, free.map((t) => h("span", { class: "chip", text: t.title })))) : null);
+        })() : null,
+        (() => {
+          const rows = M.trails().map((t) => {
+            const v = p.trails[t.id] || {}, ex = [...t.modules.map((m) => p.exams[m.id]), p.exams[M.finalScope(t)]].filter(Boolean);
+            return { t, v, on: (v.lessonsDone || 0) > 0 || ex.length > 0 };
+          });
+          const on = rows.filter((r) => r.on), off = rows.filter((r) => !r.on);
+          const sum = on.length ? `${on.length} ${on.length === 1 ? "trilha com atividade" : "trilhas com atividade"}` : "sem atividade ainda";
+          return acc("prog", "Andamento", sum,
+            on.length ? h("div", { class: "prog-list" }, on.map(({ t, v }) => {
+              const pct = v.lessonsTotal ? Math.round((v.lessonsDone / v.lessonsTotal) * 100) : 0;
+              return det("prog-" + t.id, "acc-in", [h("span", { class: "acc-t", text: t.title }),
+                h("span", { class: "pbar", "aria-hidden": "true" }, h("i", { style: `width:${pct}%` })),
+                h("span", { class: "acc-s", text: `${v.lessonsDone}/${v.lessonsTotal} aulas` }), v.finalStatus ? finalChip(v.finalStatus) : null],
+                h("div", { class: "table-wrap" }, h("table", { class: "tbl", style: "min-width:520px" },
+                  h("thead", null, h("tr", null, ["Módulo", "Aulas", "Prova", "Melhor nota", "Tentativas"].map((x) => h("th", { text: x })))),
+                  h("tbody", null, [...t.modules.map((m, i) => ({ id: m.id, name: `${m.n}. ${m.title}`, st: p.trails[t.id].modules[i] })), { id: M.finalScope(t), name: "Prova final", st: null }].map((r) => {
+                    const e = p.exams[r.id];
+                    return h("tr", null, h("td", { text: r.name }), h("td", { text: r.st ? `${r.st.done}/${r.st.total}` : "—" }),
+                      h("td", null, e?.status ? finalChip(e.status) : "—"), h("td", { text: e?.bestPct ? e.bestPct + "%" : "—" }), h("td", { text: e?.attempts || 0 }));
+                  })))));
+            })) : h("p", { class: "muted small", style: "margin:0", text: "Esta pessoa ainda não fez nenhuma aula nem prova." }),
+            off.length ? det("prog-idle", "acc-in", [h("span", { class: "acc-t", text: `${off.length} ${off.length === 1 ? "trilha sem atividade" : "trilhas sem atividade"}` })], h("div", { class: "chips" }, off.map((r) => h("span", { class: "chip", text: r.t.title })))) : null);
+        })(),
+        acc("manage", "Gestão do acesso", "perfil, senha, zerar, remover",
           noTouch ? h("p", { class: "muted small", text: "Só administradores mexem em gestores." }) : null,
           locked ? h("p", { class: "muted small", text: u.master ? "O acesso master não pode ter perfil alterado, ser desativado ou removido." : "Você não pode alterar o próprio perfil nem desativar o próprio acesso aqui." }) : null,
           h("div", { class: "grid grid-2" },
@@ -301,7 +342,7 @@
                 });
                 return s;
               })()))),
-        h("section", { class: "panel" }, h("h3", { text: "Histórico de provas" }),
+        acc("hist", "Histórico de provas", d.history.length ? `${d.history.length} ${d.history.length === 1 ? "tentativa" : "tentativas"}` : "nenhuma ainda",
           d.history.length ? h("div", { class: "table-wrap" }, h("table", { class: "tbl", style: "min-width:520px" },
             h("thead", null, h("tr", null, ["Quando", "Prova", "Tipo", "Resultado", "Nota"].map((t) => h("th", { text: t })))),
             h("tbody", null, d.history.map((x) => h("tr", null, h("td", { text: M.fmtDateTime(x.at) }), h("td", { text: M.examName(x.scope, true) }),

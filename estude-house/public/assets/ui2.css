@@ -277,3 +277,54 @@ html, body { max-width: 100%; overflow-x: clip; }
 .tabbar { will-change: transform; backface-visibility: hidden; -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(21, 11, 43, .98); }
 body { min-height: 100dvh; }
 .shell { min-height: 100dvh; }
+
+/* ───── perfil de um acesso (admin): cabeçalho com foto + seções que recolhem ───── */
+.uhero { display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; align-items: center; margin: 12px 0 16px; padding: 20px; border-radius: 18px; border: 1px solid var(--line); background: linear-gradient(135deg, rgba(85, 37, 131, .55), rgba(36, 20, 72, .9)); }
+.uhero-av .avatar { width: 96px !important; height: 96px !important; font-size: 2.2rem !important; border-width: 3px; box-shadow: 0 0 0 3px rgba(253, 185, 39, .25); }
+.uhero-main { min-width: 0; }
+.uhero-main h2 { margin: 0 0 2px; overflow-wrap: anywhere; line-height: 1.05; }
+.uhero-mail { margin: 0 0 10px; color: var(--muted); overflow-wrap: anywhere; }
+.uhero-stats { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.ustat { display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: rgba(0, 0, 0, .22); border: 1px solid var(--line); min-width: 0; }
+.ustat strong { font-family: var(--display); font-size: 1.35rem; line-height: 1.1; overflow-wrap: anywhere; }
+.ustat span { font-size: .78rem; color: var(--muted); }
+.acc-bar { display: flex; gap: 8px; justify-content: flex-end; margin: 0 0 10px; }
+.acc { background: #241448; border: 1px solid var(--line); border-radius: var(--radius); }
+.acc + .acc { margin-top: 10px; }
+.acc > summary, .acc-in > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 12px 16px; }
+.acc > summary::-webkit-details-marker, .acc-in > summary::-webkit-details-marker { display: none; }
+.acc > summary:hover { background: rgba(255, 255, 255, .03); border-radius: var(--radius); }
+.acc-t { font-family: var(--display); font-weight: 800; font-size: 1.15rem; letter-spacing: .01em; }
+.acc-s { color: var(--muted); font-size: .85rem; margin-left: auto; text-align: right; }
+.acc > summary .acc-s { margin-left: auto; }
+.acc-c { flex: none; width: 10px; height: 10px; border-right: 2px solid var(--gold); border-bottom: 2px solid var(--gold); transform: rotate(45deg); transition: transform .15s; margin: -4px 4px 0 2px; }
+.acc[open] > summary .acc-c, .acc-in[open] > summary .acc-c { transform: rotate(-135deg); margin-top: 4px; }
+.acc[open] > summary { border-bottom: 1px solid var(--line); }
+.acc-b { padding: 16px; }
+.acc-b .panel, .acc-b h3 { margin-top: 0; }
+.acc-in { border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, .03); margin-top: 12px; }
+.acc-in > summary { min-height: 44px; padding: 8px 12px; font-weight: 700; font-size: .92rem; color: var(--muted); }
+.acc-in > summary .acc-t { font-family: var(--body); font-size: .95rem; color: var(--text); }
+.acc-in > .table-wrap, .acc-in > .chips { padding: 0 12px 12px; }
+.prog-list .acc-in:first-child { margin-top: 0; }
+.prog-list .acc-in > summary { flex-wrap: wrap; row-gap: 6px; }
+.prog-list .acc-in .acc-s { margin-left: 0; }
+.pbar { flex: 1 1 90px; min-width: 70px; max-width: 220px; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, .12); overflow: hidden; margin-left: auto; }
+.pbar i { display: block; height: 100%; background: var(--gold); border-radius: 99px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.perm-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 760px) {
+  .uhero { grid-template-columns: 1fr; justify-items: start; padding: 16px; }
+  .uhero-av .avatar { width: 80px !important; height: 80px !important; }
+  .uhero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .perm-cols { grid-template-columns: 1fr; }
+  .acc-bar { justify-content: stretch; }
+  .acc-bar .btn { flex: 1; }
+  .acc > summary { flex-wrap: wrap; row-gap: 2px; }
+  .acc-s { margin-left: 0; text-align: left; order: 3; flex-basis: 100%; }
+  .acc-t { flex: 1; }
+  .acc-c { order: 2; }
+}
+.acc-in > summary .acc-c { margin-left: auto; }
+.prog-list .acc-in > summary .acc-c { margin-left: 4px; }
+.prog-list + .acc-in { margin-top: 12px; }
