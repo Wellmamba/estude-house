@@ -19,7 +19,7 @@ O gestor (admin ou sub-adm) sempre vê todas as trilhas. O botão **Ativa/Inativ
 O cartão mostra o resumo, por exemplo "Só alunos escolhidos (12 de 80)".
 
 **Pelo aluno**
-Admin > **Acessos** > abra o aluno > quadro **Trilhas liberadas**. As trilhas em modo "só escolhidos" têm uma caixa para liberar ou tirar; as demais mostram "Para todos os alunos". (Quem tem a permissão *Acessos e painel* faz isso também.)
+Admin > **Acessos** > abra o aluno > seção **Trilhas liberadas** (o perfil tem foto, resumo no topo e seções que abrem e fecham). As trilhas em modo "só escolhidos" têm uma caixa para liberar ou tirar; as demais mostram "Para todos os alunos". (Quem tem a permissão *Acessos e painel* faz isso também.)
 
 ## Regras
 - Quem perde o acesso **não perde o que estudou**: progresso, provas e certificado ficam guardados e voltam se a trilha for liberada de novo.
