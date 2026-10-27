@@ -158,12 +158,6 @@ r = await call("GET", "admin/signups", { token: alu });
 assert.equal(r.status, 403);
 ok("aluno não acessa a fila de cadastros");
 
-// quem está na fila não aparece no ranking nem na busca de pessoas
-r = await call("GET", "people/check?nick=teste", { token: alu });
-r = await call("GET", "search?q=Fabio", { token: alu });
-assert.ok(!r.data.people.some((p) => p.name.startsWith("Fábio")));
-ok("quem aguarda aprovação não aparece na busca de pessoas");
-
 // interruptor de emergência
 process.env.SIGNUP_APPROVAL = "off";
 r = await reg("Gil Prado", "gil@exemplo.com");

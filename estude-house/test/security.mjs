@@ -40,7 +40,7 @@ const sub = { ...(await call("POST", "auth/login", { body: { email: "sub@exemplo
 
 console.log("Sem sessão: tudo fecha");
 {
-  const rotas = ["me", "feed", "feed/pulse", "notifs", "engage/ranking", "reels", "destaques", "forum", "provas", "trails/custom", "push/status", "people/mentions", "search?q=ab", "admin/overview", "admin/users", "admin/logs"];
+  const rotas = ["me", "feed/status", "notifs", "forum", "forum/recentes", "forum/envios", "provas", "trails/custom", "push/status", "search?q=ab", "admin/overview", "admin/users", "admin/logs"];
   for (const rt of rotas) { r = await call("GET", rt); assert.equal(r.status, 401, rt + " deveria exigir login"); }
   r = await call("GET", "me", { token: "lixo.lixo" }); assert.equal(r.status, 401);
   ok(`${rotas.length} rotas respondem 401 sem login (e com token inventado)`);
@@ -55,7 +55,7 @@ console.log("Áreas do gestor: aluno e sub-adm sem permissão não passam");
   const found = new Set();
   for (const d of dirs) for (const f of fs.readdirSync(d)) if (f.endsWith(".mjs")) for (const m of fs.readFileSync(path.join(d, f), "utf8").matchAll(/"(admin\/[a-z0-9/_-]+)"/g)) found.add(m[1]);
   const bases = [...found].filter((x) => !x.endsWith("/"));
-  const extra = ["admin/users/x", "admin/users/x/reset", "admin/feed/x/approve", "admin/feed/x/reject", "admin/tags/x", "admin/signups", "admin/signups/x/approve", "admin/signups/x/reject", "admin/provas/x", "admin/trails/x", "admin/trails/x/publish", "admin/trails/categories", "admin/trails/x/category", "destaques/x", "destaques/x/post", "forum/importar-manuais", "forum/envios/x/aprovar", "forum/envios/x/reprovar", "trails/custom/x", "trails/x/active", "trails/x/ativar"];
+  const extra = ["admin/users/x", "admin/users/x/reset", "admin/signups", "admin/signups/x/approve", "admin/signups/x/reject", "admin/provas/x", "admin/trails/x", "admin/trails/x/publish", "admin/trails/categories", "admin/trails/x/category", "forum/importar-manuais", "forum/envios/x/aprovar", "forum/envios/x/reprovar", "trails/custom/x", "trails/x/active", "trails/x/ativar"];
   const alvo = [...new Set([...bases, ...extra])];
   let n = 0;
   for (const who of [ana, { token: sub.token }]) {
@@ -72,16 +72,15 @@ console.log("Áreas do gestor: aluno e sub-adm sem permissão não passam");
 
 console.log("Cada pessoa só mexe no que é dela");
 {
-  r = await call("POST", "feed/post", { token: ana.token, body: { text: "Meu post esperando aprovação" } });
-  assert.ok(r.status === 201, JSON.stringify(r.data)); const pid = r.data.post.id;
-  assert.equal(r.data.status, "pending");
-  r = await call("GET", "feed/post/" + pid, { token: beto.token }); assert.equal(r.status, 404);
-  r = await call("DELETE", "feed/post/" + pid, { token: beto.token }); assert.ok([403, 404].includes(r.status));
-  r = await call("POST", "feed/hype/" + pid, { token: beto.token }); assert.equal(r.status, 404);
-  r = await call("POST", "feed/comment/" + pid, { token: beto.token, body: { text: "oi" } }); assert.ok([403, 404].includes(r.status));
-  r = await call("GET", "feed", { token: beto.token }); assert.ok(!r.data.posts.some((p) => p.id === pid));
-  r = await call("GET", "feed/post/" + pid, { token: ana.token }); assert.equal(r.status, 200);
-  ok("post que espera aprovação: só o autor e o gestor enxergam; os outros não veem, não dão hype, não comentam, não apagam");
+  r = await call("POST", "forum/envios", { token: ana.token, body: { type: "duvida", title: "Minha dúvida esperando análise", text: "Texto da dúvida da Ana, ainda sem aprovação." } });
+  assert.ok(r.status === 201, JSON.stringify(r.data)); const pid = r.data.item.id;
+  assert.equal(r.data.item.status, "pending");
+  r = await call("GET", "forum/envios", { token: beto.token }); assert.ok(!r.data.items.some((p) => p.id === pid));
+  r = await call("GET", "forum/envios", { token: ana.token }); assert.ok(r.data.items.some((p) => p.id === pid));
+  r = await call("POST", `forum/envios/${pid}/aprovar`, { token: beto.token, body: {} }); assert.equal(r.status, 403);
+  r = await call("DELETE", "forum/envios/" + pid, { token: beto.token }); assert.ok([403, 404].includes(r.status));
+  r = await call("GET", "forum/recentes", { token: beto.token }); assert.ok(!JSON.stringify(r.data).includes("Minha dúvida esperando análise"));
+  ok("dúvida que espera análise: só a autora e o gestor enxergam; os outros não veem, não aprovam, não apagam");
 
   r = await call("POST", "exam/submit", { token: beto.token, body: { attemptId: "a_inventado", answers: {} } }); assert.equal(r.status, 404);
   r = await call("GET", "admin/users/" + ana.id, { token: beto.token }); assert.equal(r.status, 403);
@@ -142,12 +141,9 @@ console.log("Tentativas de adivinhar senha");
 
 console.log("Entradas maliciosas");
 {
-  r = await call("POST", "feed/post", { token: adm.token, body: { text: "oi", media: [{ type: "link", url: "javascript:alert(1)" }] } }); assert.equal(r.status, 400);
-  r = await call("POST", "feed/post", { token: adm.token, body: { text: "oi", media: [{ type: "link", url: "data:text/html,<script>alert(1)</script>" }] } }); assert.equal(r.status, 400);
-  r = await call("POST", "feed/post", { token: adm.token, body: { text: "oi", media: [{ type: "image", url: "https://evil.example.com/x.png" }] } }); assert.equal(r.status, 400);
   r = await call("POST", "auth/profile", { token: adm.token, body: { avatar: "javascript:alert(1)" } }); assert.equal(r.status, 400);
   r = await call("POST", "auth/profile", { token: adm.token, body: { nickname: "<script>alert(1)</script>" } }); assert.equal(r.status, 400);
-  ok("link com javascript:/data:, anexo de outro site, foto de outro site e @ com código são recusados");
+  ok("foto de outro site e @ com código são recusados");
 
   const bad = ['<img src=x onerror=alert(1)>', '<script>alert(1)</script>', '<b onclick="x()">negrito</b>', '<a href="javascript:x">l</a>', '<iframe src=x></iframe>', '<svg onload=x>'];
   for (const b of bad) { const out = cleanHtml(b, 600); assert.ok(!/<(?!\/?(?:b|i|u|mark|br)>)/i.test(out), "sobrou tag perigosa em: " + out); assert.ok(!/<[a-z]+[^>]*\son/i.test(out), out); }
@@ -155,11 +151,11 @@ console.log("Entradas maliciosas");
   ok("texto de aulas: só negrito, itálico, sublinhado, marca-texto e quebra de linha passam; o resto vira texto");
 
   r = await call("POST", "auth/login", { raw: "x".repeat(1_100_000) }); assert.equal(r.status, 413);
-  r = await call("POST", "feed/post", { token: adm.token, raw: JSON.stringify({ text: "a".repeat(1_200_000) }) }); assert.equal(r.status, 413);
+  r = await call("POST", "forum/envios", { token: adm.token, raw: JSON.stringify({ text: "a".repeat(1_200_000) }) }); assert.equal(r.status, 413);
   ok("corpo de requisição acima de 1 MB é recusado (6 MB só na gestão)");
 
   r = await call("POST", "auth/login", { raw: "{isso nao e json" }); assert.ok([400, 401].includes(r.status));
-  r = await call("POST", "feed/post", { token: adm.token, raw: "null" }); assert.ok(r.status >= 400 && r.status < 500, String(r.status));
+  r = await call("POST", "forum/envios", { token: adm.token, raw: "null" }); assert.ok(r.status >= 400 && r.status < 500, String(r.status));
   ok("JSON quebrado ou vazio não derruba o servidor");
 
   r = await call("POST", "admin/push/broadcast", { token: adm.token, body: { title: "x", body: "y", link: "https://evil.example.com" } }); assert.equal(r.status, 400);

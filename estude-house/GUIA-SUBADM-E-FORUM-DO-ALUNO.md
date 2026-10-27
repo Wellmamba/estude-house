@@ -10,23 +10,19 @@ O **administrador** escolhe uma pessoa, muda o perfil para **Sub-administrador**
 - Na lista em massa, o perfil `sub` cria um sub-adm sem permissões (você marca depois).
 - Para tirar: volte o perfil para *Aluno*. Perde tudo na hora.
 
-**As 7 permissões**
+**As 5 permissões**
 
 | Permissão | Libera |
 |---|---|
-| Aprovações | Aprovar cadastros e posts do feed |
-| Moderação | Remover posts e comentários, gerenciar tags e o filtro de palavras |
-| Publicar | Publicar direto no feed, criar enquetes, fixar posts, usar @todos e gerenciar os Destaques |
+| Aprovações | Aprovar cadastros novos |
+| Publicar | Enviar avisos para o time (sino e celular) |
 | Fórum | Escrever o Fórum oficial e aprovar as dúvidas e sugestões dos alunos |
 | Trilhas | Criar, editar, ativar e desativar trilhas e ver o banco de questões |
-| Engajamento | Configurar XP, metas e regras |
 | Acessos e painel | Ver o painel, os alunos e os registros; criar acessos de aluno e zerar progresso |
 
 **Regras**
 - O menu do sub-adm mostra só as áreas liberadas. Se ele abrir um endereço sem permissão, é levado à primeira área que pode usar. O servidor também barra (não é só esconder botão).
 - Só o **administrador** muda perfis, define permissões, remove acessos e mexe em outros gestores. Sub-adm com *Acessos e painel* cuida apenas de alunos (criar, redefinir senha, desativar, zerar progresso).
-- Sub-adm sem *Publicar* posta como aluno (vai para aprovação).
-- Sub-adm não ganha XP, não faz check-in e não aparece no ranking.
 - O master (`ADMIN_EMAILS`) é sempre administrador e não pode ser alterado.
 - Mudou a permissão? Vale na próxima página que a pessoa abrir (o menu é refeito sozinho).
 
@@ -42,13 +38,9 @@ O aluno tem no menu **Dúvidas e sugestões**.
 4. Envio aprovado não se edita nem se apaga (já é publicação oficial; o gestor edita no Fórum). Em **Já respondidos** o gestor vê o histórico.
 5. Na Busca, quando não acha nada, o aluno vê o botão *Mandar como dúvida para o fórum*.
 
-## 3. Check-in diário
+## 3. Fórum com o manual do suporte
 
-Quando o aluno marca o check-in, o balão sai do feed (e some também se ele marcar pelo painel de XP). No dia seguinte volta.
-
-## 4. Fórum com o manual do suporte
-
-As 90 publicações do manual (Amazon, Mercado Livre, Shopee, TikTok Shop, Bling e Upseller) entram com **Admin > Fórum > Importar manuais para o fórum**. Detalhes em `GUIA-DESTAQUES-E-FORUM.md`.
+As 90 publicações do manual (Amazon, Mercado Livre, Shopee, TikTok Shop, Bling e Upseller) entram com **Admin > Fórum > Importar manuais para o fórum**.
 
 ## Onde está no código
 `netlify/functions/lib/auth.mjs` (`PERMS`, `can`, `isStaff`), `api.mjs` (rotas `admin/*` com permissão por área), `lib/forum.mjs` (`forum/envios`), `public/assets/admin.js` (Acessos e permissões), `public/assets/forum.js` (telas do aluno e do gestor), `test/subadmin.mjs`.

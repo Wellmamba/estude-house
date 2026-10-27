@@ -39,40 +39,32 @@ console.log("Sub-adm: o administrador escolhe o perfil e as permissões");
 
   r = await call("GET", "me", { token: bia.token });
   assert.equal(r.data.user.role, "subadmin"); assert.deepEqual(r.data.user.perms, ["aprovar", "forum"]);
-  assert.equal(r.data.engage.xp, 0); ok("/me mostra o perfil e as permissões");
+  ok("/me mostra o perfil e as permissões");
 
   r = await call("PATCH", "admin/users/" + cau.id, { token: adm.token, body: { role: "subadmin" } });
   assert.deepEqual(r.data.user.perms, []); ok("sub-adm novo começa sem nenhuma permissão");
 
   // sem permissão: tudo fechado
-  for (const [m, route] of [["GET", "admin/users"], ["GET", "admin/overview"], ["GET", "admin/logs"], ["GET", "admin/feed/pending"], ["GET", "admin/signups"], ["GET", "admin/engage/config"], ["GET", "admin/moderation"], ["GET", "admin/questions"], ["GET", "forum"]]) {
+  for (const [m, route] of [["GET", "admin/users"], ["GET", "admin/overview"], ["GET", "admin/logs"], ["GET", "admin/signups"], ["GET", "admin/questions"], ["GET", "forum"]]) {
     r = await call(m, route, { token: cau.token });
     assert.equal(r.status, 403, `${route} deveria dar 403, deu ${r.status}`);
   }
   ok("sub-adm sem permissão não entra em nenhuma área de gestão");
-  r = await call("POST", "admin/tags", { token: cau.token, body: { name: "x", color: "gold" } });
-  assert.equal(r.status, 403);
   r = await call("POST", "forum", { token: cau.token, body: { title: "Teste", text: "Teste de texto" } });
   assert.equal(r.status, 403);
-  r = await call("POST", "destaques", { token: cau.token, body: { title: "Teste", slides: [{ text: "x" }] } });
-  assert.equal(r.status, 403);
   r = await call("GET", "admin/trails", { token: cau.token });
-  assert.equal(r.status, 403); ok("nem tags, fórum, destaques ou trilhas");
+  assert.equal(r.status, 403); ok("nem fórum ou trilhas");
 
   // com permissão: só aquelas
-  r = await call("GET", "admin/feed/pending", { token: bia.token });
-  assert.equal(r.status, 200); ok("com 'aprovar' abre a fila de posts");
   r = await call("GET", "admin/signups", { token: bia.token });
   assert.notEqual(r.status, 403); ok("e a de cadastros");
   r = await call("GET", "admin/users", { token: bia.token });
   assert.equal(r.status, 403); ok("mas não vê os acessos (falta 'usuarios')");
-  r = await call("POST", "admin/tags", { token: bia.token, body: { name: "x", color: "gold" } });
-  assert.equal(r.status, 403); ok("nem mexe em tags (falta 'moderar')");
   r = await call("POST", "forum", { token: bia.token, body: { title: "Cadastro de produto", category: "Bling", text: "Passo a passo do cadastro." } });
   assert.equal(r.status, 201, JSON.stringify(r.data)); ok("com 'forum' escreve no fórum oficial");
 
-  r = await call("PATCH", "admin/users/" + cau.id, { token: adm.token, body: { perms: ["usuarios", "moderar", "publicar"] } });
-  assert.deepEqual(r.data.user.perms, ["usuarios", "moderar", "publicar"]); ok("admin ajusta as permissões depois");
+  r = await call("PATCH", "admin/users/" + cau.id, { token: adm.token, body: { perms: ["usuarios", "publicar"] } });
+  assert.deepEqual(r.data.user.perms, ["usuarios", "publicar"]); ok("admin ajusta as permissões depois");
 
   // limites do sub-adm com 'usuarios'
   r = await call("GET", "admin/users", { token: cau.token });
@@ -81,7 +73,7 @@ console.log("Sub-adm: o administrador escolhe o perfil e as permissões");
   assert.equal(r.status, 403); ok("sub-adm não promove ninguém");
   r = await call("PATCH", "admin/users/" + bia.id, { token: cau.token, body: { active: false } });
   assert.equal(r.status, 403); ok("nem mexe em outro gestor");
-  r = await call("PATCH", "admin/users/" + cau.id, { token: cau.token, body: { perms: ["aprovar", "usuarios", "moderar", "publicar", "forum", "trilhas", "engajamento"] } });
+  r = await call("PATCH", "admin/users/" + cau.id, { token: cau.token, body: { perms: ["aprovar", "usuarios", "publicar", "forum", "trilhas"] } });
   assert.equal(r.status, 403); ok("nem aumenta as próprias permissões");
   r = await call("DELETE", "admin/users/" + leo.id, { token: cau.token });
   assert.equal(r.status, 403); ok("nem remove acessos");
@@ -90,52 +82,19 @@ console.log("Sub-adm: o administrador escolhe o perfil e as permissões");
   r = await call("POST", "admin/users/" + leo.id + "/reset", { token: cau.token, body: { scope: "all" } });
   assert.equal(r.status, 200); ok("mas zera o progresso de aluno");
 
-  r = await call("POST", "admin/users", { token: adm.token, body: { name: "Duda Sub", email: "duda@exemplo.com", role: "subadmin", perms: ["moderar"] } });
-  assert.equal(r.status, 201); assert.equal(r.data.user.role, "subadmin"); assert.deepEqual(r.data.user.perms, ["moderar"]);
+  r = await call("POST", "admin/users", { token: adm.token, body: { name: "Duda Sub", email: "duda@exemplo.com", role: "subadmin", perms: ["publicar"] } });
+  assert.equal(r.status, 201); assert.equal(r.data.user.role, "subadmin"); assert.deepEqual(r.data.user.perms, ["publicar"]);
   ok("admin já cria o acesso como sub-adm com permissões");
 
   r = await call("PATCH", "admin/users/" + bia.id, { token: adm.token, body: { role: "aluno" } });
   assert.equal(r.data.user.role, "aluno"); assert.equal(r.data.user.perms, undefined);
-  r = await call("GET", "admin/feed/pending", { token: bia.token });
+  r = await call("GET", "admin/signups", { token: bia.token });
   assert.equal(r.status, 403); ok("voltou a aluno: perde tudo na hora");
   r = await call("PATCH", "admin/users/" + bia.id, { token: adm.token, body: { role: "subadmin", perms: ["aprovar", "forum"] } });
   assert.equal(r.status, 200);
 
   r = await call("PATCH", "admin/users/" + adm.id, { token: adm.token, body: { role: "aluno" } });
   assert.equal(r.status, 403); ok("o master continua intocável");
-}
-
-console.log("Sub-adm: feed");
-{
-  // Bia (aprovar) posta como se fosse aluna: vai para a fila. Caio (publicar) publica direto.
-  let r = await call("POST", "feed/post", { token: cau.token, body: { text: "Aviso do Caio" } });
-  assert.equal(r.status, 201); assert.equal(r.data.status, "published"); ok("sub-adm com 'publicar' publica direto");
-  const postCaio = r.data.post.id;
-  r = await call("POST", "feed/post", { token: bia.token, body: { text: "Post da Bia" } });
-  assert.equal(r.data.status, "pending"); ok("sem 'publicar' o post vai para aprovação");
-  const postBia = r.data.post.id;
-  r = await call("POST", "feed/post", { token: ana.token, body: { text: "Post da Ana" } });
-  const postAna = r.data.post.id;
-
-  r = await call("GET", "me", { token: bia.token });
-  assert.equal(r.data.pending, 2); ok("/me conta os posts pendentes para quem aprova");
-  r = await call("GET", "me", { token: cau.token });
-  assert.equal(r.data.pending, 0); ok("e não conta para quem não aprova");
-
-  r = await call("POST", `admin/feed/${postAna}/approve`, { token: cau.token });
-  assert.equal(r.status, 403); ok("sem 'aprovar' não aprova");
-  r = await call("POST", `admin/feed/${postAna}/approve`, { token: bia.token });
-  assert.equal(r.status, 200); ok("com 'aprovar' aprova o post do aluno");
-
-  r = await call("DELETE", "feed/post/" + postAna, { token: bia.token });
-  assert.equal(r.status, 403); ok("sem 'moderar' não apaga post dos outros");
-  r = await call("DELETE", "feed/post/" + postAna, { token: cau.token });
-  assert.equal(r.status, 200); ok("com 'moderar' apaga");
-
-  r = await call("GET", "me", { token: cau.token });
-  assert.equal(r.data.engage.xp, 0); ok("sub-adm não ganha XP de engajamento");
-  r = await call("POST", "engage/checkin", { token: cau.token });
-  assert.notEqual(r.status, 201);
 }
 
 console.log("Fórum do aluno: enviar, aprovar e reprovar");

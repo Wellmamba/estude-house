@@ -8,8 +8,6 @@ import crypto from "node:crypto";
 import handler from "../netlify/functions/api.mjs";
 import { setClock } from "../netlify/functions/lib/clock.mjs";
 import * as push from "../netlify/functions/lib/push.mjs";
-import * as jobs from "../netlify/functions/lib/push-jobs.mjs";
-import { videoLink, pickVideo } from "../netlify/functions/lib/videos.mjs";
 
 let passed = 0;
 const ok = (m) => { passed++; console.log("  ✓", m); };
@@ -87,10 +85,10 @@ console.log("Preferências e teste");
 {
   let r = await call("GET", "push/status", { token: ana.token });
   assert.ok(Object.values(r.data.prefs).every((v) => v === true));
-  assert.ok(r.data.cats.interacoes && r.data.cats.videos && r.data.cats.lembretes);
+  assert.ok(r.data.cats.meus_posts && r.data.cats.avisos && r.data.cats.provas);
   ok("tudo vem ligado por padrão e a lista de categorias acompanha");
-  r = await call("PUT", "push/prefs", { token: ana.token, body: { videos: false, naoexiste: false } });
-  assert.equal(r.data.prefs.videos, false); assert.equal(r.data.prefs.avisos, true); assert.ok(!("naoexiste" in r.data.prefs));
+  r = await call("PUT", "push/prefs", { token: ana.token, body: { provas: false, naoexiste: false } });
+  assert.equal(r.data.prefs.provas, false); assert.equal(r.data.prefs.avisos, true); assert.ok(!("naoexiste" in r.data.prefs));
   ok("a pessoa desliga uma categoria sem mexer nas outras");
   sent.length = 0;
   r = await call("POST", "push/test", { token: ana.token });
@@ -99,38 +97,26 @@ console.log("Preferências e teste");
   r = await call("POST", "push/test", { token: (await signup("Sem Aparelho", "sem@exemplo.com")).token });
   assert.equal(r.status, 409);
   ok("o teste chega no aparelho; quem não ativou recebe um aviso claro");
-  await call("PUT", "push/prefs", { token: ana.token, body: { videos: true } });
+  await call("PUT", "push/prefs", { token: ana.token, body: { provas: true } });
 }
 
 console.log("Avisos nascem das notificações do sino");
 {
   sent.length = 0;
-  const p = await call("POST", "feed/post", { token: ana.token, body: { text: "Olá time", kind: "case" } });
-  assert.equal(p.status, 201); assert.equal(p.data.post.kind, "case"); assert.equal(p.data.status, "pending");
-  let r = await call("POST", "feed/post", { token: ana.token, body: { text: "tipo errado", kind: "xyz" } });
-  assert.equal(r.status, 400);
-  ok("o tipo do post (curiosidade, case, dica, conquista) é guardado e validado");
-  r = await call("POST", `admin/feed/${p.data.post.id}/approve`, { token: adm.token, body: {} });
-  assert.equal(r.status, 200);
-  const a = sent.find((s) => /aprovado/i.test(s.payload.title));
-  assert.ok(a, "aprovar manda aviso ao autor"); assert.ok(a.payload.url.includes("/#/post/"));
-  ok("aprovar um post avisa o autor no aparelho e abre o post");
+  const e = await call("POST", "forum/envios", { token: ana.token, body: { type: "duvida", title: "Como emitir NF de devolução?", text: "Estou no Bling e não acho o botão da devolução." } });
+  assert.equal(e.status, 201, JSON.stringify(e.data));
+  let r = await call("POST", `forum/envios/${e.data.item.id}/aprovar`, { token: adm.token, body: {} });
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  const a = sent.find((s) => /virou publica/i.test(s.payload.title) && s.endpoint === subAna.endpoint);
+  assert.ok(a, "aprovar manda aviso ao autor"); assert.ok(a.payload.url.includes("#/forum/"));
+  ok("aprovar uma dúvida avisa o autor no aparelho e abre a publicação");
 
+  await call("PUT", "push/prefs", { token: ana.token, body: { meus_posts: false } });
   sent.length = 0;
-  const post = (await call("POST", "feed/post", { token: adm.token, body: { text: "Fala @ana, bora?" } })).data.post;
-  assert.ok(sent.some((s) => /marcou/i.test(s.payload.title) && s.endpoint === subAna.endpoint));
-  ok("marcar alguém com @ avisa no aparelho");
-  sent.length = 0;
-  await call("POST", `feed/comment/${post.id}`, { token: beto.token, body: { text: "Comentário do Beto" } });
-  assert.ok(!sent.some((s) => s.endpoint === subAna.endpoint), "comentário em post de outra pessoa não avisa a Ana");
-  await call("POST", `feed/comment/${(await call("POST", "feed/post", { token: adm.token, body: { text: "outro" } })).data.post.id}`, { token: ana.token, body: { text: "ok" } });
-  ok("só quem deve é avisado");
-
-  await call("PUT", "push/prefs", { token: ana.token, body: { interacoes: false } });
-  sent.length = 0;
-  await call("POST", "feed/post", { token: adm.token, body: { text: "Ei @ana de novo" } });
+  const e2 = await call("POST", "forum/envios", { token: ana.token, body: { type: "sugestao", title: "Aula sobre Shopee Ads", text: "Seria bom ter uma aula só sobre anúncios da Shopee." } });
+  await call("POST", `forum/envios/${e2.data.item.id}/aprovar`, { token: adm.token, body: {} });
   assert.ok(!sent.some((s) => s.endpoint === subAna.endpoint));
-  await call("PUT", "push/prefs", { token: ana.token, body: { interacoes: true } });
+  await call("PUT", "push/prefs", { token: ana.token, body: { meus_posts: true } });
   ok("categoria desligada não manda aviso");
 }
 
@@ -155,9 +141,9 @@ console.log("Aviso do gestor para o time");
   assert.equal(r.status, 400);
   ok("só gestor envia; título e destino são conferidos (destino só dentro do sistema)");
   sent.length = 0;
-  r = await call("POST", "admin/push/broadcast", { token: adm.token, body: { title: "Reunião hoje", body: "Às 16h no Meet", url: "#/reels", audience: "alunos" } });
+  r = await call("POST", "admin/push/broadcast", { token: adm.token, body: { title: "Reunião hoje", body: "Às 16h no Meet", url: "#/trilhas", audience: "alunos" } });
   assert.equal(r.status, 200); assert.ok(r.data.people >= 1);
-  assert.ok(sent.every((s) => s.payload.url === "/#/reels" && s.payload.title === "Reunião hoje"));
+  assert.ok(sent.every((s) => s.payload.url === "/#/trilhas" && s.payload.title === "Reunião hoje"));
   ok("o aviso chega nos aparelhos e abre a tela escolhida");
   const n = await call("GET", "notifs", { token: ana.token });
   assert.ok(n.data.items.some((i) => i.type === "all" && /Reunião hoje/.test(i.text)));
@@ -175,76 +161,4 @@ console.log("Aviso do gestor para o time");
   ok("aviso só para gestores não aparece para alunos");
 }
 
-console.log("Reels");
-{
-  assert.deepEqual(videoLink("https://www.youtube.com/shorts/abcDEF12345"), { provider: "youtube", id: "abcDEF12345", short: true });
-  assert.equal(videoLink("https://youtu.be/abcDEF12345").provider, "youtube");
-  assert.equal(videoLink("https://vimeo.com/123456").provider, "vimeo");
-  assert.equal(videoLink("https://www.loom.com/share/abc123def").provider, "loom");
-  assert.equal(videoLink("https://drive.google.com/file/d/AbC_123/view").provider, "drive");
-  assert.equal(videoLink("https://site.com/v.mp4").provider, "file");
-  assert.equal(videoLink("https://site.com/pagina"), null);
-  assert.equal(pickVideo([{ type: "video", url: "https://res.cloudinary.com/x/video/upload/a.gif", name: "a.gif" }]), null);
-  assert.equal(pickVideo([{ type: "image", url: "https://x/y.jpg" }, { type: "link", url: "https://youtu.be/abcDEF12345" }]).provider, "youtube");
-  ok("reconhece vídeos de YouTube (inclui Shorts), Vimeo, Loom, Drive e mp4; GIF e páginas comuns não entram");
-
-  let r = await call("GET", "reels", { token: ana.token });
-  assert.equal(r.status, 200); assert.equal(r.data.items.length, 0);
-  const v1 = (await call("POST", "feed/post", { token: adm.token, body: { text: "Vídeo antigo", media: [{ type: "link", url: "https://youtu.be/aaaaaaaaaaa" }] } })).data.post;
-  now += 31 * 86400e3; // um mês depois
-  const v2 = (await call("POST", "feed/post", { token: adm.token, body: { text: "Vídeo recente", media: [{ type: "link", url: "https://www.youtube.com/shorts/bbbbbbbbbbb" }] } })).data.post;
-  await call("POST", "feed/post", { token: adm.token, body: { text: "Só texto" } });
-  r = await call("GET", "reels", { token: ana.token });
-  assert.deepEqual(r.data.items.map((i) => i.postId), [v2.id]);
-  assert.ok(r.data.items[0].fresh); assert.equal(r.data.maxSeconds, 30);
-  ok("só entram posts com vídeo dos últimos 30 dias; os mais novos vêm marcados");
-  const h1 = await call("POST", `feed/hype/${v2.id}`, { token: ana.token });
-  assert.equal(h1.status, 200);
-  r = await call("GET", "reels", { token: ana.token });
-  assert.equal(r.data.items[0].hypes, 1); assert.equal(r.data.items[0].hyped, true);
-  const feed = await call("GET", "feed", { token: ana.token });
-  assert.equal(feed.data.posts.find((p) => p.id === v2.id).hypes, 1);
-  ok("o hype nos Reels é o mesmo hype do post (mesma contagem no Feed)");
-  now += 4 * 86400e3;
-  r = await call("GET", "reels", { token: ana.token });
-  assert.ok(r.data.items.length === 1 && r.data.items[0].fresh === false);
-  ok("depois de 72 horas o vídeo deixa de ser tratado como novo");
-}
-
-console.log("Lembretes automáticos");
-{
-  now = Date.parse("2026-10-21T09:00:00-03:00"); // quarta-feira
-  sent.length = 0;
-  let r = await jobs.run("checkin");
-  assert.ok(sent.some((s) => s.endpoint === subAna.endpoint && /check-in/i.test(s.payload.title)), "lembrete de check-in");
-  assert.ok(!sent.some((s) => /Wellington/.test(s.payload.body || "")), "gestor não recebe");
-  ok("lembrete de check-in vai para alunos com aviso ativo");
-  sent.length = 0;
-  const ck = await call("POST", "engage/checkin", { token: ana.token });
-  assert.equal(ck.status, 200);
-  r = await jobs.run("checkin");
-  assert.ok(!sent.some((s) => s.endpoint === subAna.endpoint));
-  ok("quem já fez o check-in hoje não é lembrado");
-  const subBeto = fakeSub("beto");
-  await call("POST", "push/subscribe", { token: beto.token, body: { subscription: subBeto, label: "Beto" } });
-  await call("PUT", "push/prefs", { token: beto.token, body: { lembretes: false } });
-  sent.length = 0;
-  await jobs.run("checkin");
-  assert.ok(!sent.some((s) => s.endpoint === subBeto.endpoint));
-  await call("PUT", "push/prefs", { token: beto.token, body: { lembretes: true } });
-  await jobs.run("checkin");
-  assert.ok(sent.some((s) => s.endpoint === subBeto.endpoint && /check-in/i.test(s.payload.title)));
-  ok("quem desligou os lembretes não recebe (e volta a receber ao religar)");
-  now = Date.parse("2026-10-22T18:00:00-03:00");
-  sent.length = 0;
-  await jobs.run("streak");
-  assert.ok(sent.some((s) => s.endpoint === subAna.endpoint && /sequência/i.test(s.payload.title)), "sequência em risco (fez check-in ontem, hoje não)");
-  ok("sequência em risco: quem fez check-in ontem e ainda não fez hoje é avisado");
-  now = Date.parse("2026-10-26T09:00:00-03:00"); // segunda
-  sent.length = 0;
-  await jobs.run("weekly");
-  assert.ok(sent.some((s) => s.endpoint === subAna.endpoint && /semana/i.test(s.payload.title)));
-  ok("resumo da semana sai na segunda-feira");
-}
-
-console.log(`\n${passed} verificações de avisos e Reels passaram.`);
+console.log(`\n${passed} verificações de avisos passaram.`);

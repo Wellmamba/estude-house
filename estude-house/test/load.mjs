@@ -26,7 +26,7 @@ const snap = () => ({ ...OPS });
 const diff = (a) => { const b = OPS; return { get: b.get - a.get, set: b.set - a.set, keys: b.keys - a.keys }; };
 const pct = (arr, p) => { const s = [...arr].sort((x, y) => x - y); return s[Math.min(s.length - 1, Math.floor(s.length * p))]; };
 
-/* ── semeia: gestor, N alunos já com apelido, posts, hypes e comentários ── */
+/* ── semeia: gestor, N alunos ── */
 const lat = process.env.BLOB_LAT_MS; process.env.BLOB_LAT_MS = "0";
 const users = await store("users"), emails = await store("emails"), nicks = await store("nicks");
 const passHash = hashPassword("Senha1234");
@@ -38,25 +38,13 @@ for (let i = 0; i < N + 1; i++) {
   people.push({ ...u, token: signToken(id) });
 }
 const admin = people[0], students = people.slice(1);
-const postIds = [];
-for (let i = 0; i < 25; i++) {
-  const r = await call("POST", "feed/post", { token: admin.token, body: { text: `Post número ${i} do time. Veja como ficou @aluno${i + 1}`, kind: ["dica", "case", "curiosidade"][i % 3] } });
-  assert.equal(r.status, 201, JSON.stringify(r.data)); postIds.push(r.data.post?.id || r.data.id);
-}
-for (let i = 0; i < 60; i++) {
-  const s = students[i % students.length], pid = postIds[i % postIds.length];
-  await call("POST", `feed/hype/${pid}`, { token: s.token }); if (i % 3 === 0) await call("POST", `feed/comment/${pid}`, { token: s.token, body: { text: "Muito bom!" } });
-}
-for (const s of students.slice(0, 80)) await call("POST", "engage/checkin", { token: s.token });
 process.env.BLOB_LAT_MS = lat;
-console.log(`Semeado: ${N} alunos, ${postIds.length} posts. Latência simulada do banco: ${lat} ms por operação.\n`);
+console.log(`Semeado: ${N} alunos. Latência simulada do banco: ${lat} ms por operação.\n`);
 
 /* ── custo de cada tela para UMA pessoa (cache frio e depois quente) ── */
 const me = students[5];
 const routes = [
-  ["me", "GET", "me"], ["feed", "GET", "feed"], ["feed/pulse", "GET", "feed/pulse"], ["feed/tags", "GET", "feed/tags"], ["notifs", "GET", "notifs"],
-  ["destaques", "GET", "destaques"], ["reels", "GET", "reels"], ["engage/me", "GET", "engage/me"], ["ranking (semana)", "GET", "engage/ranking?period=week"],
-  ["people/mentions", "GET", "people/mentions"], ["push/status", "GET", "push/status"],
+  ["me", "GET", "me"], ["notifs", "GET", "notifs"], ["forum/recentes", "GET", "forum/recentes"], ["busca", "GET", "search?q=nota"], ["push/status", "GET", "push/status"],
 ];
 console.log("Operações no banco por requisição (1ª vez → 2ª vez, com cache):");
 const cost = {};
@@ -68,7 +56,7 @@ for (const [label, m, r] of routes) {
 }
 
 /* ── todo mundo junto: cada pessoa faz a rotina de abrir o app e ficar uns minutos ── */
-const mix = [["me"], ["feed"], ["destaques"], ["notifs"], ["feed/pulse"], ["engage/me"], ["engage/ranking?period=week"], ["feed/pulse"], ["me"], ["feed/pulse"]];
+const mix = [["me"], ["forum/recentes"], ["notifs"], ["me"], ["search?q=nota"], ["notifs"], ["me"], ["forum/recentes"], ["me"], ["notifs"]];
 const times = []; let errors = 0, byStatus = {};
 const t0 = performance.now(); const o0 = snap();
 await Promise.all(students.map(async (s, i) => {
@@ -80,12 +68,3 @@ console.log(`\n${N} pessoas × ${mix.length} requisições juntas: ${times.lengt
 console.log(`  tempo por requisição: mediana ${Math.round(pct(times, .5))} ms · p95 ${Math.round(pct(times, .95))} ms · máx ${Math.round(Math.max(...times))} ms`);
 console.log(`  operações no banco: ${od.get} leituras, ${od.keys} listagens, ${od.set} gravações (${((od.get + od.keys) / times.length).toFixed(1)} leituras por requisição)`);
 console.log(`  respostas: ${JSON.stringify(byStatus)} · erros: ${errors}`);
-
-/* ── gravações ao mesmo tempo: todo mundo dá hype e comenta no mesmo post ── */
-const target = postIds[0];
-const h0 = performance.now();
-const rs = await Promise.all(students.map((s) => call("POST", `feed/hype/${target}`, { token: s.token })));
-const hy = await call("GET", `feed/post/${target}`, { token: admin.token });
-const hp = hy.data.post;
-console.log(`\nHype simultâneo de ${N} pessoas no mesmo post: ${Math.round(performance.now() - h0)} ms · falhas: ${rs.filter((r) => r.status >= 400).length} · hypes contados: ${hp?.hypes}`);
-if (process.env.STRICT) { assert.ok(hp.hypes >= N); }

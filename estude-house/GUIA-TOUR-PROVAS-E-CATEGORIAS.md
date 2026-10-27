@@ -1,7 +1,7 @@
 # Tour guiado, provas avulsas e categorias de trilhas
 
 ## Tour guiado (primeiro login)
-- Na **primeira vez** que a pessoa chega ao Feed, abre sozinho um passeio de ~13 passos: Feed, Destaques, Trilhas, categorias e busca, Ranking, XP, Busca, Notificações, Dúvidas e sugestões, Certificados e Minha conta. Gestores veem passos extras (novo destaque, gestão de trilhas e provas, aprovações).
+- Na **primeira vez** que a pessoa chega ao Feed, abre sozinho um passeio de ~10 passos: Feed das trilhas, Trilhas, categorias e busca, Busca, Notificações, Dúvidas e sugestões, Certificados e Minha conta. Gestores veem passos extras (novo destaque, gestão de trilhas e provas, aprovações).
 - Funciona no celular e no computador. Dá para **Pular tour** (ou Esc), voltar e avançar (setas do teclado também).
 - Pular ou concluir marca como visto **na conta da pessoa** (vale em qualquer aparelho). Cada pessoa vê uma vez.
 - Quem já tinha conta antes desta versão também vê uma vez, no próximo acesso.
@@ -47,4 +47,4 @@ Observação: prova avulsa não dá XP nem certificado.
 
 **Técnico.** Rotas (exigem a permissão *trilhas*): `GET/PUT admin/trails/categories` e `POST admin/trails/:id/category`. Os dados ficam no meta das trilhas (`cats.list` e `cats.map`), vão para o aluno no `/me` (`cats`) e valem para qualquer id de trilha. Testes em `test/categories.mjs`.
 
-**Correção junto.** A lista de aulas de um módulo tinha um bloco preto atrás, por conflito de nome de CSS com o feed de Reels. A lista agora usa a classe própria `lesson-reel`.
+**Correção junto.** A lista de aulas de um módulo tinha um bloco preto atrás, por conflito de nome de CSS com um antigo feed de vídeos. A lista agora usa a classe própria `lesson-reel`.

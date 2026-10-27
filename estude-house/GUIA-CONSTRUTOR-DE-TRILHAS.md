@@ -40,7 +40,7 @@ Uma tela em branco com formato à escolha (vertical, retrato, quadrado ou largo)
 ### Vídeos
 Três jeitos: **enviar arquivo**, **colar link** (YouTube, Vimeo, Loom, Google Drive ou arquivo mp4) ou **gravar** (câmera ou tela, até 5 minutos). A reprodução começa sozinha quando o card aparece; arquivos tentam tocar com som e, se o navegador barrar, tocam mudos com o botão "Tocar com som".
 
-> **Envio de arquivo e gravação precisam do Cloudinary configurado** (veja `COMO-CONFIGURAR-FEED-E-UPLOAD.md`). Sem ele, o botão avisa e o gestor usa links.
+> **Envio de arquivo e gravação precisam do Cloudinary configurado** (veja `COMO-CONFIGURAR-FOTO-DE-PERFIL.md`). Sem ele, o botão avisa e o gestor usa links.
 
 ## Segurança do conteúdo
 O servidor limpa tudo que o gestor salva: no texto só passam negrito, itálico, sublinhado, marca-texto e quebra de linha; links só `https`; cores só em hexadecimal; fontes só as da lista; tipos de card desconhecidos são descartados. As respostas das provas nunca vão para o navegador do aluno.
