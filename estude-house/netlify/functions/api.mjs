@@ -7,13 +7,10 @@ import { TRAILS, EXAM_SIZE, RULES, FINAL_FAIL_RESETS_ALL, XP, trailById, trailOf
 import { QUESTIONS, byId } from "./lib/questions/index.mjs";
 import * as trailsLib from "./lib/trails.mjs";
 import * as social from "./lib/social.mjs";
-import * as eng from "./lib/engage.mjs";
 import * as signup from "./lib/signup.mjs";
 import * as notify from "./lib/notify.mjs";
-import * as destaques from "./lib/destaques.mjs";
 import * as provas from "./lib/provas.mjs";
 import * as forum from "./lib/forum.mjs";
-import * as reelsLib from "./lib/reels.mjs";
 import * as pushLib from "./lib/push.mjs";
 import { now } from "./lib/clock.mjs";
 import { outcomeFor, drawQuestionIds, buildItems, publicQuestions, grade, reviewItem } from "./lib/exam.mjs";
@@ -24,7 +21,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-27-b";
+const BUILD = "2026-10-28-a";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -98,7 +95,7 @@ async function findByEmail(email) {
   return id ? loadUser(id) : null;
 }
 
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, nickname: u.nickname || null, avatar: u.avatar || null, team: u.teamId || null, ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}) });
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, avatar: u.avatar || null, ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}) });
 
 function computeXp(p) {
   const lessons = Object.keys(p.lessons).length * XP.lesson;
@@ -426,17 +423,14 @@ async function certificate(req, user, url) {
 
 /* ---------- administração ---------- */
 
-function userSummary(u, p, e) {
+function userSummary(u, p) {
   return {
     id: u.id, name: u.name, email: u.email, role: u.role, active: u.active !== false,
     createdAt: u.createdAt, lastLoginAt: u.lastLoginAt,
     lessonsDone: Object.keys(p.lessons).length,
     trails: Object.fromEntries(TRAILS.map((t) => { const v = trailView(p, t); return [t.id, { lessonsDone: v.lessonsDone, modulesApproved: v.modulesApproved, finalStatus: v.finalStatus }]; })),
-    xp: computeXp(p) + (e?.xp || 0),
-    xpEngage: e?.xp || 0,
-    nickname: u.nickname || null,
+    xp: computeXp(p),
     avatar: u.avatar || null,
-    team: u.teamId || null,
     master: isMaster(u.email),
     ...(u.role === "aluno" ? { trailAccess: u.trailAccess || [] } : {}),
     ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}),
@@ -456,14 +450,14 @@ async function allUsers() {
 async function allWithProgress() {
   return clone(await cached("adm:all", 15000, async () => {
     const list = await allUsers();
-    const [progs, engs] = await Promise.all([pmap(list, (u) => loadProgress(u.id), 24), pmap(list, (u) => eng.loadEng(u.id), 24)]);
-    return list.map((u, i) => ({ u, p: progs[i], e: engs[i] }));
+    const progs = await pmap(list, (u) => loadProgress(u.id), 24);
+    return list.map((u, i) => ({ u, p: progs[i] }));
   }));
 }
 
 async function adminOverview() {
   const all = (await allWithProgress()).filter(({ u }) => !u.access || u.access === "active");
-  const rows = all.map(({ u, p, e }) => userSummary(u, p, e));
+  const rows = all.map(({ u, p }) => userSummary(u, p));
   const alunos = rows.filter((r) => r.role === "aluno");
   const alunoRows = all.filter(({ u }) => u.role === "aluno");
   const trails = {};
@@ -501,7 +495,7 @@ async function adminOverview() {
 }
 
 async function adminUsers() {
-  const rows = (await allWithProgress()).filter(({ u }) => !u.access || u.access === "active").map(({ u, p, e }) => userSummary(u, p, e));
+  const rows = (await allWithProgress()).filter(({ u }) => !u.access || u.access === "active").map(({ u, p }) => userSummary(u, p));
   rows.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   return json({ users: rows });
 }
@@ -510,7 +504,7 @@ async function adminUserDetail(id) {
   const u = await loadUser(id);
   if (!u) fail(404, "Usuário não encontrado.");
   const p = await loadProgress(id);
-  return json({ user: userSummary(u, p, await eng.loadEng(id)), progress: progressView(p), history: [...(p.history || [])].reverse() });
+  return json({ user: userSummary(u, p), progress: progressView(p), history: [...(p.history || [])].reverse() });
 }
 
 /* só o admin cria e muda gestores; sub-adm com a permissão "usuários" mexe apenas em alunos */
@@ -531,10 +525,8 @@ async function adminCreateUser(req, admin, body) {
     const problem = passwordProblem(password, email);
     if (problem) fail(400, problem);
   }
-  if (body.team && !(await social.teamExists(String(body.team)))) fail(400, "Esse time não existe mais.");
   const user = await createUser({ name, email, password, role, perms: body.perms, createdBy: admin.id });
-  if (body.team) { user.teamId = String(body.team); await saveUser(user); }
-  await logEvent(req, "admin_criou_acesso", admin, { target: email, role: user.role, ...(user.teamId ? { time: user.teamId } : {}) });
+  await logEvent(req, "admin_criou_acesso", admin, { target: email, role: user.role });
   return json({ user: userSummary(user, emptyProgress()), password: generated ? password : null }, 201);
 }
 
@@ -602,13 +594,6 @@ async function adminPatchUser(req, admin, id, body) {
     u.trailAccess = [...new Set((Array.isArray(body.trails) ? body.trails : []).map(String).filter((t) => ok.has(t)))]; changes.trilhas = u.trailAccess.join(",") || "nenhuma";
     trailsChanged = true;
   }
-  if (body.team !== undefined) {
-    if (body.team) {
-      if (!(await social.teamExists(String(body.team)))) fail(400, "Esse time não existe mais.");
-      u.teamId = String(body.team);
-    } else delete u.teamId;
-    changes.time = u.teamId || "nenhum";
-  }
   if (body.avatar !== undefined) {
     // a gestão cadastra ou remove a foto de quem ela pode editar (sub-adm só em alunos: onlyAdminTouchesStaff acima)
     const url = social.cleanImageUrl(body.avatar, (c, m) => fail(c, String(m).replace("Brasão", "Foto")));
@@ -629,7 +614,7 @@ async function adminPatchUser(req, admin, id, body) {
   }
   await saveUser(u);
   if (trailsChanged) await trailsLib.bumpVersion().catch(() => {});
-  if (avatarChanged || body.team !== undefined) social.bustPeople();
+  if (avatarChanged) social.bustPeople();
   await logEvent(req, "admin_alterou_usuario", admin, { target: u.email, ...changes });
   return json({ user: userSummary(u, await loadProgress(id)), passwordChanged: !!newPassword });
 }
@@ -682,7 +667,6 @@ async function removeUser(u) {
   await (await store("emails")).delete(emailKey(u.email));
   await (await store("progress")).delete("p:" + u.id);
   await (await store("eng")).delete("e:" + u.id);
-  if (u.nickname) await (await store("nicks")).delete("n:" + u.nickname);
   await signup.untrack(u.id);
   await notify.forget(u.id);
 }
@@ -751,16 +735,13 @@ async function handleApi(req, context) {
     await trailsLib.sync().catch((e) => console.error("trilhas não carregaram", e));
 
     if (path === "me" && method === "GET") {
-      const [p, e, pending, pendingSignups, unread, newDest, pendingForum] = await Promise.all([
+      const [p, pendingSignups, unread, pendingForum] = await Promise.all([
         loadProgress(user.id),
-        user.role === "aluno" ? eng.loadEng(user.id) : null,
-        can(user, "aprovar") ? social.pendingCount() : 0,
         can(user, "aprovar") ? signup.pendingCount() : 0,
         notify.unreadCount(user).catch(() => 0),
-        destaques.unseenCount(user).catch(() => 0),
         can(user, "forum") ? forum.pendingCount().catch(() => 0) : 0,
       ]);
-      return json({ user: { ...publicUser(user), tourSeen: !!user.tourAt }, progress: progressView(p), engage: e ? eng.summary(e) : { xp: 0, streak: 0, checkedToday: false }, pending, pendingSignups, pendingForum, unread, destaques: newDest, ctv: trailsLib.version(), inactive: trailsLib.inactive(), restricted: trailsLib.restricted(), cats: trailsLib.categories(), hidden: hiddenIdsFor(user, TRAILS.map((t) => t.id)), rules: { ...RULES, examSize: EXAM_SIZE } });
+      return json({ user: { ...publicUser(user), tourSeen: !!user.tourAt }, progress: progressView(p), pendingSignups, pendingForum, unread, ctv: trailsLib.version(), inactive: trailsLib.inactive(), restricted: trailsLib.restricted(), cats: trailsLib.categories(), hidden: hiddenIdsFor(user, TRAILS.map((t) => t.id)), rules: { ...RULES, examSize: EXAM_SIZE } });
     }
     // tour guiado: marca que a pessoa já viu (ou volta a mostrar no próximo acesso)
     if (path === "auth/tour" && method === "POST") {
@@ -792,12 +773,8 @@ async function handleApi(req, context) {
     const ctx2 = { json, fail, logEvent, loadUser, saveUser, allUsers, publicUser };
     const trails_ = await trailsLib.handle(ctx2, { req, method, path, url, body, user });
     if (trails_) return trails_;
-    const dest_ = await destaques.handle(ctx2, { req, method, path, url, body, user });
-    if (dest_) return dest_;
     const push_ = await pushLib.handle(ctx2, { req, method, path, url, body, user });
     if (push_) return push_;
-    const reels_ = await reelsLib.handle(ctx2, { req, method, path, url, body, user });
-    if (reels_) return reels_;
     const provas_ = await provas.handle(ctx2, { req, method, path, url, body, user });
     if (provas_) return provas_;
     const forum_ = await forum.handle(ctx2, { req, method, path, url, body, user });
@@ -810,7 +787,7 @@ async function handleApi(req, context) {
       if (path === "admin/overview" && method === "GET") { need("usuarios"); return await adminOverview(); }
       if (parts[1] === "signups") {
         need("aprovar");
-        const r = await signup.handleAdmin({ json, fail, logEvent, loadUser, saveUser, findByEmail, removeUser, teamExists: social.teamExists }, { req, method, path, body, admin });
+        const r = await signup.handleAdmin({ json, fail, logEvent, loadUser, saveUser, findByEmail, removeUser }, { req, method, path, body, admin });
         if (r) return r;
       }
       if (path === "admin/users" && method === "GET") { need("usuarios"); return await adminUsers(); }

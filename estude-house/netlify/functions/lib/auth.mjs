@@ -125,14 +125,12 @@ export function isLive(u) {
 /* ---------- perfis de gestão ----------
    admin    = acesso total (o master é sempre admin)
    subadmin = só as áreas que o admin marcar em `perms`
-   aluno    = aprende, posta (com aprovação), participa */
+   aluno    = estuda as trilhas, faz as provas e usa o fórum */
 export const PERMS = {
-  aprovar: "Aprovar cadastros e posts do feed",
-  moderar: "Remover posts e comentários, gerenciar tags e o filtro de palavras",
-  publicar: "Publicar direto no feed, criar enquetes, fixar posts, usar @todos e gerenciar os Destaques",
+  aprovar: "Aprovar cadastros e entregar o código de ativação",
+  publicar: "Enviar avisos para o time (sino e aparelho)",
   forum: "Escrever o Fórum oficial e aprovar as dúvidas e sugestões dos alunos",
-  trilhas: "Criar, editar, ativar e desativar trilhas e ver o banco de questões",
-  engajamento: "Configurar XP, metas e regras de engajamento",
+  trilhas: "Criar, editar, ativar e desativar trilhas e provas e ver o banco de questões",
   usuarios: "Ver o painel, os alunos e os registros; criar acessos de aluno e zerar progresso",
 };
 export const PERM_KEYS = Object.keys(PERMS);

@@ -8,18 +8,12 @@ import * as notify from "./notify.mjs";
 
 /* o que cada pessoa pode ligar ou desligar */
 export const CATS = {
-  interacoes: { label: "Marcações e comentários", hint: "Quando alguém marca você com @ ou comenta no seu post." },
-  meus_posts: { label: "Aprovação dos meus posts", hint: "Quando o gestor aprova ou recusa um post ou uma dúvida sua." },
+  meus_posts: { label: "Respostas às minhas dúvidas", hint: "Quando o gestor aprova ou responde uma dúvida ou sugestão sua no fórum." },
   avisos: { label: "Avisos da equipe", hint: "Comunicados dos gestores para o time." },
   provas: { label: "Provas e trilhas novas", hint: "Quando uma prova ou trilha é liberada para você." },
-  videos: { label: "Vídeos novos nos Reels", hint: "No máximo um aviso a cada 6 horas." },
-  lembretes: { label: "Lembrete de check-in e sequência", hint: "Um lembrete por dia útil, só se você ainda não fez o check-in." },
-  resumo: { label: "Resumo da semana", hint: "Toda segunda-feira: como o time foi e quem lidera o ranking." },
-  comunidade: { label: "Posts da minha comunidade", hint: "Quando a gestão publica algo só para o seu time. No máximo um aviso a cada 10 minutos." },
-  curiosidade: { label: "Mensagem do dia", hint: "Uma curiosidade diferente por dia útil, chamando você para abrir o app." },
 };
-const TYPE_CAT = { mention: "interacoes", comment: "interacoes", approved: "meus_posts", rejected: "meus_posts", forum_ok: "meus_posts", forum_no: "meus_posts", all: "avisos", broadcast: "avisos", prova_nova: "provas", reel: "videos", checkin: "lembretes", streak: "lembretes", weekly: "resumo", community: "comunidade" };
-const THROTTLE = { videos: 6 * 3600e3, comunidade: 10 * 60e3 };
+const TYPE_CAT = { forum_ok: "meus_posts", forum_no: "meus_posts", all: "avisos", broadcast: "avisos", prova_nova: "provas" };
+const THROTTLE = {};
 const MAX_SUBS = 6;
 /* só aceitamos endereços dos serviços de push dos navegadores (evita mandar o servidor chamar sites quaisquer) */
 const PUSH_HOSTS = [/(^|\.)googleapis\.com$/, /(^|\.)push\.services\.mozilla\.com$/, /(^|\.)push\.apple\.com$/, /(^|\.)notify\.windows\.com$/, /(^|\.)mozaws\.net$/];
@@ -128,16 +122,10 @@ export async function sendTo(uid, payload, { cat = "avisos", throttle = THROTTLE
 
 /* A notificação do sino vira também um aviso no aparelho. */
 const TEXT = {
-  mention: (n, by) => [`${by} marcou você`, n.where === "comment" ? "em um comentário" : "em um post"],
-  comment: (n, by) => [`${by} comentou no seu post`, ""],
-  approved: () => ["Seu post foi aprovado 🎉", "Ele já está no Feed e rendeu XP."],
-  rejected: () => ["Seu post precisa de ajustes", ""],
   forum_ok: () => ["Sua dúvida virou publicação", "O gestor aprovou e já está no fórum."],
   forum_no: () => ["Sua dúvida foi analisada", "Veja a resposta do gestor."],
   prova_nova: () => ["Prova liberada para você", "Abra as Trilhas e faça quando puder."],
-  reel: (n, by) => [`${by} publicou um vídeo novo`, ""],
   all: (n, by) => [`${by} avisou a equipe`, ""],
-  community: (n, by) => [`Novo na comunidade ${n.where}`.slice(0, 60), `${by} publicou`],
 };
 export function payloadFor(type, { by, postId, text, link, where }) {
   const f = TEXT[type];
@@ -145,7 +133,7 @@ export function payloadFor(type, { by, postId, text, link, where }) {
   const who = by?.nickname ? "@" + by.nickname : (by?.name || "Alguém").split(" ")[0];
   const [title, lead] = f({ where }, who);
   const body = clip([lead, text].filter(Boolean).join(": ").replace(/^: /, ""), 140) || lead;
-  const url = link ? link.replace(/^\//, "") : postId ? "#/post/" + postId : "#/";
+  const url = link ? link.replace(/^\//, "") : "#/";
   return { title, body, url: "/" + url.replace(/^\/?/, ""), tag: `${type}-${postId || "x"}` };
 }
 export async function sendNotice(uid, type, info) {

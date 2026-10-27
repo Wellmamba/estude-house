@@ -251,6 +251,12 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     return null;
   }
 
+  /* últimas publicações do fórum (para o Feed das trilhas): qualquer pessoa logada */
+  if (path === "forum/recentes" && method === "GET") {
+    const docs = (await all()).slice(0, 4);
+    return json({ items: docs.map((d) => ({ id: d.id, title: d.title, category: d.category || null, snippet: String(d.text || "").replace(/\s+/g, " ").trim().slice(0, 140), createdAt: d.createdAt })) });
+  }
+
   const id = parts[1];
   if (!id) return null;
   const found = await find(id);

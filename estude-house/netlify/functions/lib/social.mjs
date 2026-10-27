@@ -1,69 +1,21 @@
-// Feed, hype, comentários, moderação, apelido (@), perfil, busca e envio de arquivos.
-// Chaves: feed/pub:<tempo invertido>:<id> (publicados, mais novos primeiro), feed/pend:<autor>:<tempo>:<id> (aguardando),
-// feed/rej:<autor>:<tempo>:<id> (recusados), feed/ix:<id> (onde está cada post), feed/au:<autor>:<tempo invertido>:<id> (posts por pessoa),
-// hypes/<post>:<pessoa>, comments/<post>:<tempo>-<sufixo>, nicks/n:<apelido>.
-// Comunidades por time: post restrito vira feed/cm:<time>:<tempo invertido>:<id> (fora de pub:, então busca, Reels e perfil nunca o listam); lista de times em feed/teams.
+// Foto de perfil (Cloudinary), sino de notificações e busca no fórum.
+// O Feed social, os Reels, os Destaques, as comunidades por time e o engajamento (XP/ranking) saíram do sistema:
+// o foco agora é Trilhas, Fórum e Busca.
 import crypto from "node:crypto";
 import { store, pmap, cached, bust as dbBust } from "./db.mjs";
-import { newId, isLive, can, isStaff } from "./auth.mjs";
 import { now } from "./clock.mjs";
-import * as eng from "./engage.mjs";
-import * as mod from "./moderation.mjs";
 import * as notify from "./notify.mjs";
-import { match, snippet } from "./textsearch.mjs";
 import * as forum from "./forum.mjs";
-import * as wpush from "./push.mjs";
-import { pickVideo } from "./videos.mjs";
 
-const MAX_TEXT = 2000, MAX_COMMENT = 500, MAX_MEDIA = 4, PAGE = 12, MAX_PENDING = 3;
-const MAX_TAGS = 30, MAX_PINNED = 3, MAX_QUESTIONS = 6, MAX_OPTIONS = 8;
-const TAG_COLORS = ["gold", "purple", "green", "red", "blue", "orange", "pink", "gray"];
-const BLOCKED_MSG = "Não foi possível enviar: o texto tem linguagem ofensiva. Reescreva com respeito.";
-const RESERVED = new Set(["admin", "adm", "mamba", "suporte", "gestor", "gestora", "estude", "house", "root", "todos", "all", "everyone", "eu", "voce", "ninguem", "moderador"]);
-const MEDIA_TYPES = ["image", "video", "file", "link"];
-// Tipos de post que o aluno pode escolher: dão contexto e estimulam compartilhar aprendizados.
-export const KINDS = ["curiosidade", "case", "dica", "conquista"];
-
-const t13 = (n) => String(n).padStart(13, "0");
-const inv = (ts) => t13(9e12 - ts);
-
-/* ---------- cache curto por instância (só para leituras repetidas em rajada) ---------- */
-// Cache de curta duração (em db.mjs): centenas de pessoas pedem o mesmo Feed ao mesmo tempo.
-const TTL = 5000;
 const memo = (key, ttl, fn) => cached("s:" + key, ttl, fn);
-const bust = (prefix) => { dbBust("s:" + prefix); if (prefix.startsWith("posts")) dbBust("reels:"); };
 
 /* ---------- envio de arquivos (Cloudinary) ---------- */
 const cloud = () => ({ name: process.env.CLOUDINARY_CLOUD_NAME || "", key: process.env.CLOUDINARY_API_KEY || "", secret: process.env.CLOUDINARY_API_SECRET || "" });
 export const uploadsOn = () => { const c = cloud(); return !!(c.name && c.key && c.secret); };
 
-export function sanitizeMedia(list, fail) {
-  if (list == null) return [];
-  if (!Array.isArray(list)) fail(400, "Anexos inválidos.");
-  if (list.length > MAX_MEDIA) fail(400, `No máximo ${MAX_MEDIA} anexos por post.`);
-  return list.map((m) => {
-    const type = String(m?.type || "");
-    if (!MEDIA_TYPES.includes(type)) fail(400, "Tipo de anexo inválido.");
-    const raw = String(m.url || "").trim();
-    let u;
-    try { u = new URL(raw); } catch { fail(400, "Um dos links é inválido."); }
-    if (raw.length > 700) fail(400, "Link longo demais.");
-    if (type === "link") {
-      if (!["http:", "https:"].includes(u.protocol)) fail(400, "Use links que começam com http ou https.");
-    } else {
-      if (!uploadsOn()) fail(400, "O envio de arquivos ainda não está configurado.");
-      if (u.protocol !== "https:" || u.hostname !== "res.cloudinary.com" || !u.pathname.startsWith(`/${cloud().name}/`)) fail(400, "Arquivo não reconhecido. Envie pelo botão de anexar.");
-    }
-    const out = { type, url: u.href };
-    if (m.name) out.name = String(m.name).replace(/[\u0000-\u001f]/g, " ").trim().slice(0, 120);
-    if (Number.isFinite(Number(m.bytes))) out.bytes = Math.max(0, Math.round(Number(m.bytes)));
-    return out;
-  });
-}
-
 // Só estes tipos de arquivo entram no Cloudinary da empresa (nada de página, script ou executável).
-export const UPLOAD_FORMATS = "jpg,jpeg,png,gif,webp,avif,heic,heif,bmp,tif,tiff,mp4,mov,m4v,webm,mkv,avi,3gp,ogv,wmv,mpeg,mpg,mp3,m4a,wav,pdf,doc,docx,xls,xlsx,ppt,pptx,csv,txt,rtf,zip,odt,ods,odp";
-function signUpload(user) {
+export const UPLOAD_FORMATS = "jpg,jpeg,png,gif,webp,avif,heic,heif,bmp,tif,tiff";
+function signUpload() {
   const c = cloud();
   const params = { allowed_formats: UPLOAD_FORMATS, folder: "estude-house", timestamp: Math.floor(Date.now() / 1000) };
   const toSign = Object.keys(params).sort().map((k) => `${k}=${params[k]}`).join("&");
@@ -71,724 +23,73 @@ function signUpload(user) {
   return { cloudName: c.name, apiKey: c.key, ...params, signature, url: `https://api.cloudinary.com/v1_1/${c.name}/auto/upload` };
 }
 
-/* ---------- textos ---------- */
-export const cleanMultiline = (s, max) => String(s ?? "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0009\u000b-\u001f]/g, " ").replace(/\n{3,}/g, "\n\n").trim().slice(0, max);
-
-/* ---------- gravação dos posts ---------- */
-const feed = () => store("feed");
-const pubKey = (d) => (d.communityId ? `cm:${d.communityId}:${inv(d.publishedAt)}:${d.id}` : `pub:${inv(d.publishedAt)}:${d.id}`);
-const pendKey = (d) => `pend:${d.authorId}:${t13(d.createdAt)}:${d.id}`;
-const rejKey = (d) => `rej:${d.authorId}:${t13(d.createdAt)}:${d.id}`;
-const auKey = (d) => `au:${d.authorId}:${inv(d.publishedAt)}:${d.id}`;
-
-// Chaves extras de um post publicado: por autor (au), por tag (tg) e fixados (pin).
-const tgKey = (d) => `tg:${d.tag}:${inv(d.publishedAt)}:${d.id}`;
-const pinKey = (d) => `pin:${inv(d.pinnedAt)}:${d.id}`;
-const extraKeys = (d) => (d.status !== "published" || d.communityId ? [] : [auKey(d), d.tag ? tgKey(d) : null, d.pinnedAt ? pinKey(d) : null].filter(Boolean));
-
-async function putPost(d, kind) {
-  const f = await feed();
-  const k = kind === "pub" ? pubKey(d) : kind === "pend" ? pendKey(d) : rejKey(d);
-  await Promise.all([
-    f.set(k, d),
-    f.set("ix:" + d.id, { k, st: d.status, a: d.authorId }),
-    ...(kind === "pub" ? extraKeys(d).map((x) => f.set(x, { k })) : []),
-  ]);
-  bust("posts");
-}
-
-/* publica na hora um post em nome de alguém (usado quando um card de destaque vira post do feed) */
-export async function publishFor(authorId, { text, media, poll }) {
-  const t = now();
-  const doc = { id: newId("po_"), authorId, text: cleanMultiline(text, MAX_TEXT), media: media || [], createdAt: t, status: "published", publishedAt: t };
-  if (poll) doc.poll = poll;
-  await putPost(doc, "pub");
-  return doc;
-}
-
-// Troca tag ou fixação de um post publicado, mantendo os índices em dia.
-async function updatePost(found, change) {
-  const f = await feed();
-  const before = found.doc;
-  const after = { ...before, ...change };
-  if (!after.tag) delete after.tag;
-  if (!after.pinnedAt) delete after.pinnedAt;
-  const oldKeys = new Set(extraKeys(before)), newKeys = new Set(extraKeys(after));
-  await f.set(found.key, after);
-  await Promise.all([
-    ...[...oldKeys].filter((x) => !newKeys.has(x)).map((x) => f.delete(x)),
-    ...[...newKeys].filter((x) => !oldKeys.has(x)).map((x) => f.set(x, { k: found.key })),
-  ]);
-  bust("posts");
-  return after;
-}
-
-/* vídeo novo no Feed: quem ligou "Vídeos novos" recebe um aviso (no máximo um a cada 6 horas) e o vídeo entra nos Reels */
-async function announceVideo(doc, author) {
-  if (!pickVideo(doc.media)) return;
-  const p = wpush.payloadFor("reel", { by: author, postId: doc.id, text: doc.text });
-  if (!p) return;
-  p.url = "/#/reels"; p.tag = "reel";
-  await Promise.race([wpush.broadcast({ payload: p, cat: "videos", exclude: [doc.authorId] }), new Promise((r) => setTimeout(r, 5000))]).catch(() => {});
-}
-
-/* ---------- tags ---------- */
-async function loadTags() {
-  const d = await (await feed()).get("tags");
-  return Array.isArray(d?.list) ? d.list : [];
-}
-const saveTags = async (list) => (await feed()).set("tags", { list });
-const tagView = (t) => ({ id: t.id, name: t.name, color: t.color });
-function tagName(raw, list, fail, selfId) {
-  const name = String(raw ?? "").replace(/\s+/g, " ").trim();
-  if (name.length < 2 || name.length > 24) fail(400, "O nome da tag precisa ter de 2 a 24 letras.");
-  if (list.some((t) => t.id !== selfId && t.name.toLowerCase() === name.toLowerCase())) fail(409, "Já existe uma tag com esse nome.");
-  return name;
-}
-
-/* ---------- times (comunidades) ---------- */
-const MAX_TEAMS = 20;
-async function loadTeams() {
-  const d = await (await feed()).get("teams");
-  return Array.isArray(d?.list) ? d.list : [];
-}
-const saveTeams = async (list) => { await (await feed()).set("teams", { list }); bust("teams"); };
-export const teamView = (t) => ({ id: t.id, name: t.name, color: t.color, emoji: t.emoji || "", crest: t.crest || null });
-export const teamExists = async (id) => (await loadTeams()).some((t) => t.id === id);
-function teamName(raw, list, fail, selfId) {
-  const name = String(raw ?? "").replace(/\s+/g, " ").trim();
-  if (name.length < 2 || name.length > 30) fail(400, "O nome do time precisa ter de 2 a 30 letras.");
-  if (list.some((t) => t.id !== selfId && t.name.toLowerCase() === name.toLowerCase())) fail(409, "Já existe um time com esse nome.");
-  return name;
-}
-// brasão: foto enviada pelo botão (Cloudinary da empresa). Vazio = sem foto.
-function cleanCrest(raw, fail) {
+/* foto de perfil: só imagem enviada ao Cloudinary da plataforma. Vazio = sem foto. */
+export function cleanImageUrl(raw, fail) {
   const v = String(raw ?? "").trim();
   if (!v) return null;
   let u;
-  try { u = new URL(v); } catch { fail(400, "Brasão inválido."); }
-  if (v.length > 500 || u.protocol !== "https:" || u.hostname !== "res.cloudinary.com" || !u.pathname.startsWith(`/${cloud().name}/image/upload/`)) fail(400, "Brasão não reconhecido. Envie pelo botão de foto.");
+  try { u = new URL(v); } catch { fail(400, "Foto inválida."); }
+  if (v.length > 500 || u.protocol !== "https:" || u.hostname !== "res.cloudinary.com" || !u.pathname.startsWith(`/${cloud().name}/image/upload/`)) fail(400, "Foto não reconhecida. Envie pelo botão de foto.");
   return u.href;
 }
-/* foto de perfil e brasão seguem a mesma regra: só imagem enviada ao Cloudinary da plataforma */
-export const cleanImageUrl = (raw, fail) => cleanCrest(raw, fail);
-export const bustPeople = () => { bust("people"); bust("posts"); };
-const cleanEmoji = (raw) => Array.from(String(raw ?? "").replace(/\s+/g, "").trim()).slice(0, 4).join("");
-// quem vê o post de uma comunidade: a gestão e os membros daquele time
-export const canSeePost = (d, user) => !d.communityId || isStaff(user) || user.teamId === d.communityId;
+export const bustPeople = () => { dbBust("s:people"); };
 
-// ids de quem é do time + a gestão (quem pode receber aviso de @ num post de comunidade)
-// quem recebe o aviso de um post de comunidade: o time (aluno, adm ou sub), menos quem postou
-async function teamAudience(ctx, teamId, exceptId) {
-  const all = await ctx.allUsers();
-  return all.filter((u) => isLive(u) && u.teamId === teamId && u.id !== exceptId).map((u) => u.id);
-}
-async function teamMembers(ctx, teamId) {
-  const all = await ctx.allUsers();
-  return new Set(all.filter((u) => isLive(u) && (u.teamId === teamId || isStaff(u))).map((u) => u.id));
-}
-
-/* ---------- enquetes ---------- */
-const oneLine = (s, n) => String(s ?? "").replace(/\s+/g, " ").trim().slice(0, n);
-function sanitizePoll(p, fail) {
-  if (p == null) return null;
-  const qs = Array.isArray(p.questions) ? p.questions : [];
-  if (!qs.length) fail(400, "A enquete precisa de pelo menos uma pergunta.");
-  if (qs.length > MAX_QUESTIONS) fail(400, `No máximo ${MAX_QUESTIONS} perguntas por enquete.`);
-  return {
-    mode: p.mode === "secret" ? "secret" : "open",
-    closed: false,
-    questions: qs.map((q, i) => {
-      const text = oneLine(q?.text, 140);
-      if (text.length < 3) fail(400, `Escreva a pergunta ${i + 1}.`);
-      const opts = (Array.isArray(q?.options) ? q.options : []).map((o) => oneLine(o, 80)).filter(Boolean);
-      if (opts.length < 2) fail(400, `A pergunta ${i + 1} precisa de pelo menos 2 opções.`);
-      if (opts.length > MAX_OPTIONS) fail(400, `No máximo ${MAX_OPTIONS} opções por pergunta.`);
-      if (new Set(opts.map((o) => o.toLowerCase())).size !== opts.length) fail(400, `A pergunta ${i + 1} tem opções repetidas.`);
-      return { text, options: opts };
-    }),
-  };
-}
-// Votos: polls/<post>:<pergunta>:<pessoa>:<opção>. Ler só as chaves já basta para contar.
-async function pollFor(d, user) {
-  const p = d.poll;
-  if (!p) return null;
-  const admin = isStaff(user);
-  const live = d.status === "published";
-  const keys = live ? await memo("polls:" + d.id, TTL, async () => (await store("polls")).keys({ prefix: d.id + ":" })) : [];
-  const counts = p.questions.map((q) => q.options.map(() => 0));
-  const mine = {}, voters = new Set();
-  for (const k of keys) {
-    const [, qi, uid, oi] = k.split(":");
-    if (counts[qi]?.[oi] === undefined) continue;
-    counts[qi][oi]++; voters.add(uid);
-    if (uid === user.id) mine[qi] = Number(oi);
-  }
-  return {
-    mode: p.mode, closed: !!p.closed, live,
-    voters: admin || (p.mode === "open" && (voters.has(user.id) || p.closed)) ? voters.size : undefined,
-    questions: p.questions.map((q, qi) => {
-      const my = mine[qi] ?? null;
-      const show = live && (admin || (p.mode === "open" && (my !== null || p.closed)));
-      const total = counts[qi].reduce((a, b) => a + b, 0);
-      return {
-        text: q.text, mine: my, total: show ? total : undefined,
-        options: q.options.map((t, oi) => (show ? { t, n: counts[qi][oi], pct: total ? Math.round((counts[qi][oi] / total) * 100) : 0 } : { t })),
-      };
-    }),
-  };
-}
-
-async function findPost(id, user) {
-  const f = await feed();
-  const ix = await f.get("ix:" + id);
-  if (!ix) return null;
-  const doc = await f.get(ix.k);
-  if (!doc) return null;
-  if (user && !canSeePost(doc, user)) return null; // post de outra comunidade some como se não existisse
-  return { doc, key: ix.k };
-}
-
-/* ---------- visão dos posts ---------- */
 async function authorsFor(ctx, ids) {
   const uniq = [...new Set(ids)];
   const users = await pmap(uniq, (id) => ctx.loadUser(id));
   const map = new Map();
   uniq.forEach((id, i) => {
     const u = users[i];
-    map.set(id, u ? { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role, teamId: u.teamId || null } : { id, name: "Pessoa removida", nickname: null, avatar: null, role: "aluno" });
+    map.set(id, u ? { id: u.id, name: u.name, avatar: u.avatar || null, role: u.role } : { id, name: "Pessoa removida", avatar: null, role: "aluno" });
   });
   return map;
 }
 
-async function countsFor(id, meId) {
-  return memo("posts:c:" + id, TTL, async () => {
-    const [h, c] = await Promise.all([(await store("hypes")).keys({ prefix: id + ":" }), (await store("comments")).keys({ prefix: id + ":" })]);
-    return { hypers: h.map((k) => k.slice(id.length + 1)), comments: c.length };
-  }).then((x) => ({ hypes: x.hypers.length, comments: x.comments, hyped: x.hypers.includes(meId) }));
-}
-
-export async function views(ctx, docs, user, { withCounts = true } = {}) {
-  const [authors, tags, polls, teams] = await Promise.all([authorsFor(ctx, docs.map((d) => d.authorId)), loadTags(), pmap(docs, (d) => pollFor(d, user)), loadTeams()]);
-  const tagMap = new Map(tags.map((t) => [t.id, t])), teamMap = new Map(teams.map((t) => [t.id, t]));
-  const counts = withCounts ? await pmap(docs, (d) => (d.status === "published" ? countsFor(d.id, user.id) : { hypes: 0, comments: 0, hyped: false })) : [];
-  const authorOf = (id) => { const a = authors.get(id); const { teamId, ...rest } = a; return { ...rest, team: teamId && teamMap.has(teamId) ? teamView(teamMap.get(teamId)) : null }; };
-  return docs.map((d, i) => ({
-    id: d.id, author: authorOf(d.authorId), text: d.text, media: d.media || [],
-    tag: d.tag && tagMap.has(d.tag) ? tagView(tagMap.get(d.tag)) : null, kind: d.kind || null, pinned: !!d.pinnedAt, poll: polls[i], community: d.communityId && teamMap.has(d.communityId) ? teamView(teamMap.get(d.communityId)) : null,
-    status: d.status, createdAt: d.createdAt, publishedAt: d.publishedAt || null, reason: d.reason || null,
-    ...(withCounts ? counts[i] : {}),
-    canDelete: can(user, "moderar") || d.authorId === user.id,
-  }));
-}
-
 /* ---------- rotas ---------- */
-export async function handle(ctx, { req, method, path, url, body, user }) {
+export async function handle(ctx, { method, path, url, body, user }) {
   const { json, fail } = ctx;
-  const parts = path.split("/");
-  /* admin faz tudo; sub-adm só o que tem na lista de permissões */
-  const isAdmin = can(user, "publicar"); // publica direto, cria enquete, fixa, escolhe tag
-  const canMod = can(user, "moderar"), canApprove = can(user, "aprovar");
-  const needPerm = (ok) => { if (!ok) fail(403, "Você não tem permissão para esta área."); };
 
-  /* --- feed --- */
-  /* O feed junta o geral (pub:) com as comunidades que a pessoa pode ver: o time dela, ou todos para a gestão.
-     Cada fonte já vem ordenada; o sufixo "<tempo invertido>:<id>" ordena as fontes entre si e serve de marcador de página. */
-  const suffixOf = (k) => (/(\d{13}:[^:]+)$/.exec(k) || [])[1] || "";
-  const streamsFor = async (comm) => {
-    if (comm) {
-      if (!isStaff(user) && user.teamId !== comm) fail(404, "Comunidade não encontrada.");
-      return [`cm:${comm}:`];
-    }
-    const ids = isStaff(user) ? (await loadTeams()).map((t) => t.id) : user.teamId ? [user.teamId] : [];
-    return ["pub:", ...ids.map((id) => `cm:${id}:`)];
-  };
-  if (path === "feed" && method === "GET") {
-    const f = await feed();
-    const author = url.searchParams.get("author") || "";
-    const tag = url.searchParams.get("tag") || "";
-    const comm = url.searchParams.get("community") || "";
-    const after = url.searchParams.get("after") || "";
-    const indirect = !!(author || tag);
-    const streams = indirect ? [author ? `au:${author}:` : `tg:${tag}:`] : await streamsFor(comm);
-    const cut = suffixOf(after);
-    // cada fonte é lida (e guardada por 3 s) uma vez; quem posta ou apaga limpa na hora
-    const lists = await Promise.all(streams.map((p) => memo(`posts:keys:${p}|${cut}`, 3000, () => f.keys({ prefix: p, after: cut ? p + cut : "", limit: PAGE + 1 }))));
-    const merged = lists.flat().map((k) => ({ k, s: suffixOf(k) })).sort((x, y) => (x.s < y.s ? -1 : x.s > y.s ? 1 : 0));
-    const page = merged.slice(0, PAGE).map((x) => x.k);
-    const pageDocs = (await memo(`posts:docs:${page.join(",")}`, 3000, async () => pmap(page, async (k) => (indirect ? (await f.get((await f.get(k))?.k || "x")) : f.get(k))))).filter(Boolean);
-    let docs = pageDocs.filter((d) => canSeePost(d, user));
-    if (!indirect && !comm) {
-      // fixados: ficam no topo do feed principal e não se repetem na lista comum
-      const pins = await memo("posts:pins", 3000, async () => (await pmap(await f.keys({ prefix: "pin:" }), async (k) => f.get((await f.get(k))?.k || "x"))).filter((d) => d && d.status === "published"));
-      const pinIds = new Set(pins.map((d) => d.id));
-      docs = docs.filter((d) => !pinIds.has(d.id));
-      if (!after) docs = [...pins, ...docs];
-    }
-    return json({ posts: await views(ctx, docs, user), next: merged.length > PAGE ? page[page.length - 1] : null });
-  }
-  // Sondagem leve: o navegador pergunta de tempos em tempos se há post novo, sem baixar o feed inteiro.
-  // Sem "since" devolve o marcador do topo atual; com "since" conta quantos posts são mais novos que ele.
-  if (path === "feed/pulse" && method === "GET") {
-    const f = await feed();
-    const tag = url.searchParams.get("tag") || "";
-    const comm = url.searchParams.get("community") || "";
-    const since = suffixOf(url.searchParams.get("since") || "") || (url.searchParams.get("since") || "");
-    const streams = tag ? [`tg:${tag}:`] : await streamsFor(comm);
-    const lists = await Promise.all(streams.map((p) => memo(`posts:pulse:${p}`, 4000, () => f.keys({ prefix: p, limit: 21 }))));
-    const sufs = lists.flat().map(suffixOf).sort();
-    const pins = await memo("posts:pulse:pins", 4000, async () => (await f.keys({ prefix: "pin:" })).join("|"));
-    const fresh = since ? sufs.filter((k) => k < since).length : 0;
-    return json({ top: sufs[0] || "", fresh, more: fresh >= 21, pins });
-  }
-  if (path === "feed/teams" && method === "GET") {
-    const teams = await memo("teams", 10000, loadTeams);
-    return json({ teams: teams.map(teamView), mine: user.teamId || null });
-  }
-  if (path === "feed/tags" && method === "GET") return json({ tags: (await loadTags()).map(tagView), colors: TAG_COLORS });
-  if (path === "feed/status" && method === "GET") {
-    const cfg = await eng.loadCfg();
-    return json({ uploads: uploadsOn(), maxMedia: MAX_MEDIA, maxText: MAX_TEXT, maxQuestions: MAX_QUESTIONS, maxOptions: MAX_OPTIONS, maxPinned: MAX_PINNED, postXp: cfg.xp.post, kinds: KINDS });
-  }
+  if (path === "feed/status" && method === "GET") return json({ uploads: uploadsOn() });
   if (path === "feed/upload-sign" && method === "POST") {
-    if (!uploadsOn()) fail(503, "O envio de arquivos ainda não foi configurado pela administração.");
+    if (!uploadsOn()) fail(503, "O envio de fotos ainda não foi configurado pela administração.");
     const rl = await store("rl");
     const key = "up:" + user.id;
     const s = (await rl.get(key)) || { n: 0, at: 0 };
     if (now() - s.at > 3600e3) { s.n = 0; s.at = now(); }
     if (++s.n > 40) fail(429, "Muitos envios seguidos. Tente de novo em alguns minutos.");
     await rl.set(key, s);
-    return json(signUpload(user));
-  }
-  if (path === "feed/mine" && method === "GET") {
-    const f = await feed();
-    const keys = [...await f.keys({ prefix: `pend:${user.id}:` }), ...await f.keys({ prefix: `rej:${user.id}:` })];
-    const docs = (await pmap(keys, (k) => f.get(k))).filter(Boolean).sort((a, b) => b.createdAt - a.createdAt);
-    return json({ posts: await views(ctx, docs, user, { withCounts: false }), maxPending: MAX_PENDING });
-  }
-  if (path === "feed/post" && method === "POST") {
-    const text = cleanMultiline(body.text, MAX_TEXT);
-    const media = sanitizeMedia(body.media, fail);
-    if (body.poll != null && !isAdmin) fail(403, "Só gestores criam enquetes.");
-    const poll = sanitizePoll(body.poll, fail);
-    if (!text && !media.length && !poll) fail(400, "Escreva algo ou anexe um arquivo, link ou enquete.");
-    let tag = null;
-    if (body.tag) {
-      if (!isAdmin) fail(403, "Só gestores escolhem a tag do post.");
-      if (!(await loadTags()).some((t) => t.id === body.tag)) fail(400, "Essa tag não existe mais.");
-      tag = String(body.tag);
-    }
-    let communityId = null;
-    if (body.community) {
-      if (!isAdmin) fail(403, "Só gestores escolhem a comunidade do post.");
-      if (!(await loadTeams()).some((t) => t.id === body.community)) fail(400, "Essa comunidade não existe mais.");
-      communityId = String(body.community);
-      if (body.pinned) fail(400, "Post de comunidade não pode ser fixado no feed geral.");
-    }
-    const bad = await mod.check(text, user);
-    if (bad) { await ctx.logEvent(req, "post_bloqueado", user, { palavra: bad }); fail(422, BLOCKED_MSG); }
-    const f = await feed();
-    if (body.pinned && isAdmin && (await f.keys({ prefix: "pin:" })).length >= MAX_PINNED) fail(409, `No máximo ${MAX_PINNED} posts fixados. Desafixe um antes.`);
-    if (!isAdmin) {
-      const pending = await f.keys({ prefix: `pend:${user.id}:` });
-      if (pending.length >= MAX_PENDING) fail(429, `Você já tem ${MAX_PENDING} posts aguardando aprovação. Espere a análise do gestor.`);
-    }
-    const t = now();
-    const doc = { id: newId("po_"), authorId: user.id, text, media, createdAt: t, status: isAdmin ? "published" : "pending", publishedAt: isAdmin ? t : null };
-    if (poll) doc.poll = poll;
-    if (tag) doc.tag = tag;
-    if (communityId) doc.communityId = communityId;
-    if (body.kind != null && body.kind !== "") {
-      if (!KINDS.includes(body.kind)) fail(400, "Tipo de post inválido.");
-      doc.kind = body.kind;
-    }
-    if (isAdmin && body.pinned) doc.pinnedAt = t;
-    await putPost(doc, isAdmin ? "pub" : "pend");
-    await ctx.logEvent(req, "post_criado", user, { post: doc.id, status: doc.status, ...(communityId ? { comunidade: communityId } : {}) });
-    if (isAdmin) { await notify.notifyMentions({ text, author: user, postId: doc.id, where: "post", ...(communityId ? { only: await teamMembers(ctx, communityId) } : {}) }); if (!communityId) await announceVideo(doc, user); else { const team = (await loadTeams()).find((x) => x.id === communityId); if (team) await notify.notifyTeam({ by: user, team, ids: await teamAudience(ctx, communityId, user.id), postId: doc.id, text }); } }
-    const [view] = await views(ctx, [doc], user);
-    return json({ post: view, status: doc.status }, 201);
-  }
-  if (parts[0] === "feed" && parts[1] === "post" && parts[2]) {
-    const found = await findPost(parts[2], user);
-    if (method === "GET") {
-      if (!found || (found.doc.status !== "published" && found.doc.authorId !== user.id && !canApprove && !canMod)) fail(404, "Post não encontrado.");
-      return json({ post: (await views(ctx, [found.doc], user))[0] });
-    }
-    if (method === "PATCH") {
-      needPerm(isAdmin || canMod);
-      if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
-      const change = {};
-      if (body.tag !== undefined) {
-        if (body.tag && !(await loadTags()).some((t) => t.id === body.tag)) fail(400, "Essa tag não existe mais.");
-        change.tag = body.tag ? String(body.tag) : null;
-      }
-      if (body.pinned && found.doc.communityId) fail(400, "Post de comunidade não pode ser fixado no feed geral.");
-      if (body.pinned !== undefined) {
-        if (body.pinned && !found.doc.pinnedAt) {
-          const pins = await (await feed()).keys({ prefix: "pin:" });
-          if (pins.length >= MAX_PINNED) fail(409, `No máximo ${MAX_PINNED} posts fixados. Desafixe um antes.`);
-        }
-        change.pinnedAt = body.pinned ? found.doc.pinnedAt || now() : null;
-      }
-      if (body.pollClosed !== undefined) {
-        if (!found.doc.poll) fail(400, "Esse post não tem enquete.");
-        change.poll = { ...found.doc.poll, closed: !!body.pollClosed };
-      }
-      const after = await updatePost(found, change);
-      bust("polls:" + after.id);
-      await ctx.logEvent(req, "post_editado", user, { post: after.id, ...(body.tag !== undefined ? { tag: after.tag || "nenhuma" } : {}), ...(body.pinned !== undefined ? { fixado: !!after.pinnedAt } : {}), ...(body.pollClosed !== undefined ? { enquete_encerrada: !!after.poll?.closed } : {}) });
-      return json({ post: (await views(ctx, [after], user))[0] });
-    }
-    if (method === "DELETE") {
-      if (!found) fail(404, "Post não encontrado.");
-      if (!canMod && found.doc.authorId !== user.id) fail(403, "Só quem publicou ou a administração pode remover.");
-      const f = await feed();
-      await Promise.all([f.delete(found.key), f.delete("ix:" + found.doc.id), ...extraKeys(found.doc).map((x) => f.delete(x))]);
-      const [hs, cs, ps] = [await store("hypes"), await store("comments"), await store("polls")];
-      await Promise.all([
-        found.doc.poll ? ps.keys({ prefix: found.doc.id + ":" }).then((ks) => pmap(ks, (k) => ps.delete(k))) : null,
-        hs.keys({ prefix: found.doc.id + ":" }).then((ks) => pmap(ks, (k) => hs.delete(k))),
-        cs.keys({ prefix: found.doc.id + ":" }).then((ks) => pmap(ks, (k) => cs.delete(k))),
-      ]);
-      bust("posts");
-      await ctx.logEvent(req, "post_removido", user, { post: found.doc.id, autor: found.doc.authorId });
-      return json({ ok: true });
-    }
+    return json(signUpload());
   }
 
-  /* --- enquete: votar (uma resposta por pergunta, sem trocar depois) --- */
-  if (parts[0] === "feed" && parts[1] === "vote" && parts[2] && method === "POST") {
-    const found = await findPost(parts[2], user);
-    if (!found || found.doc.status !== "published" || !found.doc.poll) fail(404, "Enquete não encontrada.");
-    const poll = found.doc.poll;
-    if (poll.closed) fail(409, "Essa enquete foi encerrada.");
-    const qi = Number(body.q), oi = Number(body.o);
-    if (!Number.isInteger(qi) || !poll.questions[qi] || !Number.isInteger(oi) || !poll.questions[qi].options[oi]) fail(400, "Opção inválida.");
-    const ps = await store("polls");
-    const had = await ps.keys({ prefix: `${found.doc.id}:${qi}:${user.id}:` });
-    if (had.length) fail(409, "Você já respondeu essa pergunta.");
-    await ps.set(`${found.doc.id}:${qi}:${user.id}:${oi}`, { at: now() });
-    bust("polls:" + found.doc.id);
-    return json({ poll: await pollFor(found.doc, user) });
-  }
-
-  /* --- hype --- */
-  if (parts[0] === "feed" && parts[1] === "hype" && parts[2] && method === "POST") {
-    const found = await findPost(parts[2], user);
-    if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
-    const hs = await store("hypes");
-    const k = `${found.doc.id}:${user.id}`;
-    let gained = 0, goals = [];
-    if (!(await hs.get(k))) {
-      await hs.set(k, { at: now() });
-      bust("posts:c:" + found.doc.id);
-      if (found.doc.authorId !== user.id) ({ gained, goals } = await eng.record(user, "hype", "Hype em um post"));
-    }
-    const c = await countsFor(found.doc.id, user.id);
-    return json({ ...c, hyped: true, gained, goals });
-  }
-
-  /* --- comentários --- */
-  if (parts[0] === "feed" && parts[1] === "comments" && parts[2] && method === "GET") {
-    const found = await findPost(parts[2], user);
-    if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
-    const cs = await store("comments");
-    const keys = await cs.keys({ prefix: found.doc.id + ":", limit: 200 });
-    const docs = (await pmap(keys, (k) => cs.get(k))).filter(Boolean);
-    const authors = await authorsFor(ctx, docs.map((c) => c.authorId));
-    return json({ comments: docs.map((c) => ({ id: c.id, author: authors.get(c.authorId), text: c.text, at: c.at, canDelete: canMod || c.authorId === user.id })) });
-  }
-  if (parts[0] === "feed" && parts[1] === "comment" && parts[2] && method === "POST") {
-    const found = await findPost(parts[2], user);
-    if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
-    const text = cleanMultiline(body.text, MAX_COMMENT).replace(/\n+/g, " ");
-    if (text.length < 1) fail(400, "Escreva o comentário.");
-    const bad = await mod.check(text, user);
-    if (bad) { await ctx.logEvent(req, "comentario_bloqueado", user, { post: found.doc.id, palavra: bad }); fail(422, BLOCKED_MSG); }
-    const t = now();
-    const c = { id: `${t13(t)}-${newId().slice(0, 5)}`, postId: found.doc.id, authorId: user.id, text, at: t };
-    await (await store("comments")).set(`${found.doc.id}:${c.id}`, c);
-    bust("posts:c:" + found.doc.id);
-    const told = await notify.notifyMentions({ text, author: user, postId: found.doc.id, where: "comment", ...(found.doc.communityId ? { only: await teamMembers(ctx, found.doc.communityId) } : {}) });
-    if (found.doc.authorId !== user.id && !told.sent.includes(found.doc.authorId)) await notify.notifyUser(found.doc.authorId, "comment", user, found.doc.id, text);
-    let gained = 0, goals = [];
-    if (text.length >= 8) ({ gained, goals } = await eng.record(user, "comment", "Comentário em um post"));
-    const a = await authorsFor(ctx, [user.id]);
-    return json({ comment: { id: c.id, author: a.get(user.id), text, at: t, canDelete: true }, gained, goals }, 201);
-  }
-  if (parts[0] === "feed" && parts[1] === "comment" && parts[2] && parts[3] && method === "DELETE") {
-    const cs = await store("comments");
-    const k = `${parts[2]}:${parts[3]}`;
-    const c = await cs.get(k);
-    if (!c) fail(404, "Comentário não encontrado.");
-    if (!canMod && c.authorId !== user.id) fail(403, "Só quem comentou ou a administração pode remover.");
-    await cs.delete(k);
-    bust("posts:c:" + parts[2]);
-    return json({ ok: true });
-  }
-
-  /* --- moderação --- */
-  if (path === "admin/feed/pending" && method === "GET") {
-    needPerm(canApprove);
-    const f = await feed();
-    const keys = await f.keys({ prefix: "pend:" });
-    const docs = (await pmap(keys, (k) => f.get(k))).filter(Boolean).sort((a, b) => a.createdAt - b.createdAt);
-    return json({ posts: await views(ctx, docs, user, { withCounts: false }) });
-  }
-  if (parts[0] === "admin" && parts[1] === "feed" && parts[2] && ["approve", "reject"].includes(parts[3]) && method === "POST") {
-    needPerm(canApprove);
-    const found = await findPost(parts[2], user);
-    if (!found || found.doc.status !== "pending") fail(404, "Esse post não está mais aguardando aprovação.");
-    const f = await feed();
-    const d = found.doc;
-    await f.delete(found.key);
-    if (parts[3] === "approve") {
-      d.status = "published"; d.publishedAt = now(); d.approvedBy = user.id;
-      await putPost(d, "pub");
-      const author = await ctx.loadUser(d.authorId);
-      const r = author ? await eng.record(author, "post", "Post aprovado no feed") : { gained: 0, goals: [] };
-      await ctx.logEvent(req, "post_aprovado", user, { post: d.id, autor: author?.email || d.authorId, xp: r.gained });
-      if (author) await notify.notifyMentions({ text: d.text, author, postId: d.id, where: "post" });
-      await notify.notifyUser(d.authorId, "approved", user, d.id, d.text || "Seu post");
-      if (author) await announceVideo(d, author);
-      return json({ ok: true, xp: r.gained });
-    }
-    d.status = "rejected"; d.reason = cleanMultiline(body.reason, 200).replace(/\n+/g, " ") || null; d.reviewedBy = user.id;
-    await putPost(d, "rej");
-    await ctx.logEvent(req, "post_recusado", user, { post: d.id, motivo: d.reason || "" });
-    await notify.notifyUser(d.authorId, "rejected", user, d.id, d.reason || d.text || "Seu post");
-    return json({ ok: true });
-  }
-  if (path === "admin/engage/config" && method === "GET") { needPerm(can(user, "engajamento")); return json({ config: await eng.loadCfg(), metrics: eng.METRICS, defaults: eng.DEFAULT_CFG }); }
-  if (path === "admin/engage/config" && method === "PUT") {
-    needPerm(can(user, "engajamento"));
-    const cfg = await eng.saveCfg(body, newId, fail);
-    await ctx.logEvent(req, "admin_config_engajamento", user, { metas: cfg.goals.length });
-    return json({ config: cfg });
-  }
-
-  /* --- times / comunidades (gestão) --- */
-  if (path === "admin/teams" && method === "GET") {
-    needPerm(can(user, "usuarios") || isAdmin);
-    const [teams, users] = await Promise.all([loadTeams(), ctx.allUsers()]);
-    const members = {};
-    for (const u of users) if (u.teamId && isLive(u)) members[u.teamId] = (members[u.teamId] || 0) + 1;
-    return json({ teams: teams.map((t) => ({ ...teamView(t), members: members[t.id] || 0 })), colors: TAG_COLORS, max: MAX_TEAMS, uploads: uploadsOn() });
-  }
-  if (path === "admin/teams" && method === "POST") {
-    needPerm(can(user, "usuarios"));
-    const list = await loadTeams();
-    if (list.length >= MAX_TEAMS) fail(400, `No máximo ${MAX_TEAMS} times.`);
-    const t = { id: newId("tm_"), name: teamName(body.name, list, fail), color: TAG_COLORS.includes(body.color) ? body.color : "gold", emoji: cleanEmoji(body.emoji), crest: cleanCrest(body.crest, fail), createdAt: now() };
-    await saveTeams([...list, t]);
-    await ctx.logEvent(req, "time_criado", user, { time: t.name });
-    return json({ team: teamView(t) }, 201);
-  }
-  if (parts[0] === "admin" && parts[1] === "teams" && parts[2] && ["PATCH", "DELETE"].includes(method)) {
-    needPerm(can(user, "usuarios"));
-    const list = await loadTeams();
-    const t = list.find((x) => x.id === parts[2]);
-    if (!t) fail(404, "Time não encontrado.");
-    if (method === "PATCH") {
-      if (body.name !== undefined) t.name = teamName(body.name, list, fail, t.id);
-      if (body.color !== undefined) { if (!TAG_COLORS.includes(body.color)) fail(400, "Cor inválida."); t.color = body.color; }
-      if (body.emoji !== undefined) t.emoji = cleanEmoji(body.emoji);
-      if (body.crest !== undefined) t.crest = cleanCrest(body.crest, fail);
-      await saveTeams(list);
-      bust("posts");
-      await ctx.logEvent(req, "time_editado", user, { time: t.name });
-      return json({ team: teamView(t) });
-    }
-    const [users, f] = await Promise.all([ctx.allUsers(), feed()]);
-    const n = users.filter((u) => u.teamId === t.id).length;
-    if (n) fail(409, `O time ${t.name} ainda tem ${n} ${n === 1 ? "pessoa" : "pessoas"}. Mude o time delas antes de apagar.`);
-    if ((await f.keys({ prefix: `cm:${t.id}:`, limit: 1 })).length) fail(409, `O time ${t.name} tem posts na comunidade. Apague os posts antes de remover o time.`);
-    await saveTeams(list.filter((x) => x.id !== t.id));
-    await ctx.logEvent(req, "time_removido", user, { time: t.name });
-    return json({ ok: true });
-  }
-
-  /* --- tags (gestão) e moderação --- */
-  if (path === "admin/tags" && method === "POST") {
-    needPerm(canMod);
-    const list = await loadTags();
-    if (list.length >= MAX_TAGS) fail(400, `No máximo ${MAX_TAGS} tags.`);
-    const t = { id: newId("tg_"), name: tagName(body.name, list, fail), color: TAG_COLORS.includes(body.color) ? body.color : "gold", createdAt: now() };
-    await saveTags([...list, t]);
-    await ctx.logEvent(req, "tag_criada", user, { tag: t.name });
-    return json({ tag: tagView(t), tags: [...list, t].map(tagView) }, 201);
-  }
-  if (parts[0] === "admin" && parts[1] === "tags" && parts[2] && ["PATCH", "DELETE"].includes(method)) {
-    needPerm(canMod);
-    const list = await loadTags();
-    const t = list.find((x) => x.id === parts[2]);
-    if (!t) fail(404, "Tag não encontrada.");
-    if (method === "PATCH") {
-      if (body.name !== undefined) t.name = tagName(body.name, list, fail, t.id);
-      if (body.color !== undefined) { if (!TAG_COLORS.includes(body.color)) fail(400, "Cor inválida."); t.color = body.color; }
-      await saveTags(list);
-      bust("posts");
-      await ctx.logEvent(req, "tag_editada", user, { tag: t.name });
-      return json({ tags: list.map(tagView) });
-    }
-    const f = await feed();
-    await Promise.all([saveTags(list.filter((x) => x.id !== t.id)), f.keys({ prefix: `tg:${t.id}:` }).then((ks) => pmap(ks, (k) => f.delete(k)))]);
-    bust("posts");
-    await ctx.logEvent(req, "tag_removida", user, { tag: t.name });
-    return json({ tags: list.filter((x) => x.id !== t.id).map(tagView) });
-  }
-  if (path === "admin/moderation" && method === "GET") { needPerm(canMod); return json({ moderation: await mod.loadMod() }); }
-  if (path === "admin/moderation" && method === "PUT") {
-    needPerm(canMod);
-    const m = await mod.saveMod(body, fail);
-    await ctx.logEvent(req, "admin_moderacao", user, { filtro: m.on ? "ligado" : "desligado", palavras: m.words.length });
-    return json({ moderation: m });
-  }
-  if (path === "admin/moderation/test" && method === "POST") {
-    needPerm(canMod);
-    const m = await mod.loadMod();
-    return json({ hit: mod.offense(String(body.text || ""), m.words) });
-  }
-
-  /* --- notificações e lista para marcar pessoas --- */
+  /* --- sino --- */
   if (path === "notifs" && method === "GET") {
     const { items } = await notify.listFor(user);
     const authors = await authorsFor(ctx, items.map((i) => i.by).filter(Boolean));
     return json({ items: items.map((i) => ({ ...i, by: i.by ? authors.get(i.by) : null })), unread: items.filter((i) => i.unread).length });
   }
   if (path === "notifs/read" && method === "POST") { await notify.markRead(user); return json({ ok: true }); }
-  if (path === "people/mentions" && method === "GET") {
-    const people = await memo("people", 30000, () => ctx.allUsers());
-    return json({
-      people: people.filter((u) => isLive(u) && u.nickname).map((u) => ({ id: u.id, name: u.name, nickname: u.nickname, avatar: u.avatar || null, role: u.role }))
-        .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")).slice(0, 600),
-      todos: isAdmin,
-    });
-  }
 
-  /* --- XP, check-in e ranking --- */
-  if (path === "engage/me" && method === "GET") return json(await eng.view(user));
-  if (path === "engage/checkin" && method === "POST") return json(await eng.checkin(user, fail));
-  if (path === "engage/ranking" && method === "GET") {
-    const period = ["week", "month", "all"].includes(url.searchParams.get("period")) ? url.searchParams.get("period") : "week";
-    const students = (await ctx.allUsers()).filter((u) => u.role === "aluno" && isLive(u));
-    return json(await eng.ranking(period, students, user.id));
-  }
-
-  /* --- apelido e perfil --- */
+  /* --- foto de perfil --- */
   if (path === "auth/profile" && method === "POST") {
-    if (body.nickname === undefined && body.avatar === undefined) fail(400, "Nada para salvar.");
+    if (body.avatar === undefined) fail(400, "Nada para salvar.");
     let changed = false;
-    if (body.nickname !== undefined) {
-      const nick = String(body.nickname ?? "").trim().replace(/^@/, "").toLowerCase();
-      const bad = nickProblem(nick);
-      if (bad) fail(400, bad);
-      if (nick !== user.nickname) {
-        if (user.nickname && user.nickAt && now() - user.nickAt < 7 * 864e5) fail(429, "Você pode trocar o @ de novo depois de 7 dias.");
-        const ns = await store("nicks");
-        const owner = await ns.get("n:" + nick);
-        if (owner && owner !== user.id) fail(409, "Esse @ já está em uso. Escolha outro.");
-        await ns.set("n:" + nick, user.id);
-        if (user.nickname) await ns.delete("n:" + user.nickname);
-        user.nickname = nick; user.nickAt = now();
-        changed = true;
-      }
+    const raw = String(body.avatar || "").trim();
+    if (!raw) { if (user.avatar) { delete user.avatar; changed = true; } }
+    else {
+      if (!uploadsOn()) fail(400, "O envio de fotos ainda não está configurado.");
+      const href = cleanImageUrl(raw, fail);
+      if (href !== user.avatar) { user.avatar = href; changed = true; }
     }
-    if (body.avatar !== undefined) {
-      const raw = String(body.avatar || "").trim();
-      if (!raw) { if (user.avatar) { delete user.avatar; changed = true; } }
-      else {
-        if (!uploadsOn()) fail(400, "O envio de fotos ainda não está configurado.");
-        let u;
-        try { u = new URL(raw); } catch { fail(400, "Foto inválida."); }
-        if (raw.length > 500 || u.protocol !== "https:" || u.hostname !== "res.cloudinary.com" || !u.pathname.startsWith(`/${cloud().name}/image/upload/`)) fail(400, "Foto não reconhecida. Envie pelo botão de foto.");
-        if (u.href !== user.avatar) { user.avatar = u.href; changed = true; }
-      }
-    }
-    if (changed) { await ctx.saveUser(user); bust("people"); bust("posts"); }
+    if (changed) { await ctx.saveUser(user); bustPeople(); }
     return json({ user: ctx.publicUser(user) });
   }
-  if (path === "people/check" && method === "GET") {
-    const nick = String(url.searchParams.get("nick") || "").trim().replace(/^@/, "").toLowerCase();
-    const bad = nickProblem(nick);
-    if (bad) return json({ ok: false, reason: bad });
-    const owner = await (await store("nicks")).get("n:" + nick);
-    return json(owner && owner !== user.id ? { ok: false, reason: "Esse @ já está em uso." } : { ok: true });
-  }
-  if (parts[0] === "people" && parts[1] && method === "GET") {
-    const key = decodeURIComponent(parts[1]).replace(/^@/, "").toLowerCase();
-    const id = (await (await store("nicks")).get("n:" + key)) || parts[1];
-    const u = await ctx.loadUser(id);
-    if (!u || !isLive(u)) fail(404, "Pessoa não encontrada.");
-    const e = u.role === "aluno" ? eng.summary(await eng.loadEng(u.id)) : null;
-    return json({ person: { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role, joinedAt: u.createdAt, engage: e } });
-  }
 
-  /* --- busca --- */
-  if (path === "search" && method === "GET") return json(await search(ctx, user, String(url.searchParams.get("q") || "").slice(0, 80), String(url.searchParams.get("tag") || "")));
-
+  /* --- busca: o conteúdo das trilhas é pesquisado no navegador; aqui entram o Fórum (e só ele) --- */
+  if (path === "search" && method === "GET") {
+    const q = String(url.searchParams.get("q") || "").slice(0, 80);
+    if (q.replace(/[^\p{L}\p{N}]/gu, "").length < 2) return json({ forum: [] });
+    return json({ forum: await memo("forum:" + q.toLowerCase(), 3000, () => forum.search(q)) });
+  }
   return null;
 }
 
-function nickProblem(nick) {
-  if (!/^[a-z][a-z0-9_.]{2,19}$/.test(nick)) return "O @ precisa ter de 3 a 20 caracteres: letras minúsculas, números, ponto ou sublinhado, começando por letra.";
-  if (/[._]{2}/.test(nick) || /[._]$/.test(nick)) return "O @ não pode ter sinais repetidos nem terminar em ponto ou sublinhado.";
-  if (RESERVED.has(nick)) return "Esse @ é reservado. Escolha outro.";
-  return null;
-}
-
-/* ---------- busca em pessoas e posts ---------- */
-async function search(ctx, user, q, tagId = "") {
-  const tags = await loadTags();
-  const tag = tagId ? tags.find((t) => t.id === tagId) : null;
-  if (tagId && !tag) return { people: [], posts: [], forum: [], tag: null };
-  if (norm1(q).length < 2) {
-    if (!tag) return { people: [], posts: [], forum: [] };
-    // só a tag escolhida: lista os posts mais recentes dela
-    const f = await feed();
-    const keys = await f.keys({ prefix: `tg:${tag.id}:`, limit: 15 });
-    const docs = (await pmap(keys, async (k) => f.get((await f.get(k))?.k || "x"))).filter(Boolean);
-    const authors = await authorsFor(ctx, docs.map((p) => p.authorId));
-    return { people: [], forum: [], tag: tagView(tag), posts: docs.map((p) => ({ id: p.id, author: authors.get(p.authorId), snippet: String(p.text || (p.poll ? "Enquete: " + p.poll.questions[0].text : "") || (p.media || []).map((m) => m.name || m.url).join(" ")).slice(0, 160), publishedAt: p.publishedAt, media: (p.media || []).map((m) => m.type), tag: tagView(tag) })) };
-  }
-  const people = await memo("people", 30000, () => ctx.allUsers());
-  const qPerson = q.replace(/^@/, "");
-  const pRows = [];
-  for (const u of tag ? [] : people) {
-    if (!isLive(u)) continue;
-    const m = match(qPerson, [{ text: u.name, weight: 3 }, { text: u.nickname || "", weight: 3 }, ...(isStaff(user) ? [{ text: u.email, weight: 2 }] : [])]);
-    if (m) pRows.push({ s: m.score, p: { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role } });
-  }
-  pRows.sort((a, b) => b.s - a.s);
-
-  const posts = await memo("posts:recent", 30000, async () => {
-    const f = await feed();
-    const keys = await f.keys({ prefix: "pub:", limit: 300 });
-    return (await pmap(keys, (k) => f.get(k))).filter(Boolean);
-  });
-  const authors = await authorsFor(ctx, posts.map((p) => p.authorId));
-  const hRows = [];
-  const tagMap = new Map(tags.map((t) => [t.id, t]));
-  for (const p of posts) {
-    if (tag && p.tag !== tag.id) continue;
-    const a = authors.get(p.authorId);
-    const links = (p.media || []).filter((m) => m.type === "link").map((m) => m.url).join(" ");
-    const files = (p.media || []).map((m) => m.name || "").join(" ");
-    const pollText = p.poll ? p.poll.questions.map((x) => x.text + " " + x.options.join(" ")).join(" ") : "";
-    const m = match(q, [{ text: p.text, weight: 1 }, { text: `${a.name} ${a.nickname || ""}`, weight: 1.5 }, { text: files + " " + links, weight: 0.8 }, { text: pollText, weight: 1 }, { text: tagMap.get(p.tag)?.name || "", weight: 1.2 }]);
-    if (m) hRows.push({ s: m.score + p.publishedAt / 1e15, p, a });
-  }
-  hRows.sort((a, b) => b.s - a.s);
-  return {
-    people: pRows.slice(0, 8).map((r) => r.p),
-    forum: tag ? [] : await forum.search(q),
-    tag: tag ? tagView(tag) : undefined,
-    posts: hRows.slice(0, 15).map(({ p, a }) => ({ id: p.id, author: a, snippet: snippet(p.text || (p.poll ? "Enquete: " + p.poll.questions[0].text : "") || (p.media || []).map((m) => m.name || m.url).join(" "), q), publishedAt: p.publishedAt, media: (p.media || []).map((m) => m.type), tag: tagMap.get(p.tag) ? tagView(tagMap.get(p.tag)) : null })),
-  };
-}
-const norm1 = (s) => String(s || "").replace(/[^\p{L}\p{N}]/gu, "");
-
-export async function pendingCount() {
-  return memo("posts:pend", 8000, async () => (await (await feed()).keys({ prefix: "pend:" })).length);
-}
