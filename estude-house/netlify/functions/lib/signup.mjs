@@ -83,6 +83,8 @@ export async function handleAdmin(ctx, { req, method, path, body, admin }) {
   if (parts[3] === "approve" && method === "POST") {
     if (u.access === "invited") ctx.fail(409, "Esse cadastro já foi aprovado. Use Gerar novo código se a pessoa perdeu o código.");
     delete u.rejectReason;
+    // o time do aluno novo é definido pela gestão já na aprovação
+    if (body.team) { if (!(await ctx.teamExists(String(body.team)))) ctx.fail(400, "Esse time não existe mais."); u.teamId = String(body.team); }
     return ctx.json(await issue(ctx, req, admin, u, false));
   }
   if (parts[3] === "resend" && method === "POST") {

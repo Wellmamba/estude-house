@@ -45,8 +45,10 @@ async function push(userId, item) {
 const base = (type, by, postId, text, link) => ({ id: newId("n_"), type, at: now(), by: by?.id || null, postId: postId || null, text: clip(text), ...(link ? { link } : {}) });
 
 // Avisa quem foi marcado. `where`: "post" ou "comment". Devolve os ids avisados (para não avisar duas vezes).
-export async function notifyMentions({ text, author, postId, where, skip = [] }) {
-  const { ids, all } = await mentionsIn(text, author);
+// only (Set de ids): post de comunidade avisa só quem pode ver; @todos não vale ali.
+export async function notifyMentions({ text, author, postId, where, skip = [], only = null }) {
+  const m = await mentionsIn(text, author);
+  const ids = only ? m.ids.filter((i) => only.has(i)) : m.ids, all = only ? false : m.all;
   const sent = [];
   if (all) {
     const s = await store("notif");

@@ -2,6 +2,7 @@
 // Chaves: feed/pub:<tempo invertido>:<id> (publicados, mais novos primeiro), feed/pend:<autor>:<tempo>:<id> (aguardando),
 // feed/rej:<autor>:<tempo>:<id> (recusados), feed/ix:<id> (onde está cada post), feed/au:<autor>:<tempo invertido>:<id> (posts por pessoa),
 // hypes/<post>:<pessoa>, comments/<post>:<tempo>-<sufixo>, nicks/n:<apelido>.
+// Comunidades por time: post restrito vira feed/cm:<time>:<tempo invertido>:<id> (fora de pub:, então busca, Reels e perfil nunca o listam); lista de times em feed/teams.
 import crypto from "node:crypto";
 import { store, pmap, cached, bust as dbBust } from "./db.mjs";
 import { newId, isLive, can, isStaff } from "./auth.mjs";
@@ -75,7 +76,7 @@ export const cleanMultiline = (s, max) => String(s ?? "").replace(/\r\n?/g, "\n"
 
 /* ---------- gravação dos posts ---------- */
 const feed = () => store("feed");
-const pubKey = (d) => `pub:${inv(d.publishedAt)}:${d.id}`;
+const pubKey = (d) => (d.communityId ? `cm:${d.communityId}:${inv(d.publishedAt)}:${d.id}` : `pub:${inv(d.publishedAt)}:${d.id}`);
 const pendKey = (d) => `pend:${d.authorId}:${t13(d.createdAt)}:${d.id}`;
 const rejKey = (d) => `rej:${d.authorId}:${t13(d.createdAt)}:${d.id}`;
 const auKey = (d) => `au:${d.authorId}:${inv(d.publishedAt)}:${d.id}`;
@@ -83,7 +84,7 @@ const auKey = (d) => `au:${d.authorId}:${inv(d.publishedAt)}:${d.id}`;
 // Chaves extras de um post publicado: por autor (au), por tag (tg) e fixados (pin).
 const tgKey = (d) => `tg:${d.tag}:${inv(d.publishedAt)}:${d.id}`;
 const pinKey = (d) => `pin:${inv(d.pinnedAt)}:${d.id}`;
-const extraKeys = (d) => (d.status !== "published" ? [] : [auKey(d), d.tag ? tgKey(d) : null, d.pinnedAt ? pinKey(d) : null].filter(Boolean));
+const extraKeys = (d) => (d.status !== "published" || d.communityId ? [] : [auKey(d), d.tag ? tgKey(d) : null, d.pinnedAt ? pinKey(d) : null].filter(Boolean));
 
 async function putPost(d, kind) {
   const f = await feed();
@@ -145,6 +146,40 @@ function tagName(raw, list, fail, selfId) {
   return name;
 }
 
+/* ---------- times (comunidades) ---------- */
+const MAX_TEAMS = 20;
+async function loadTeams() {
+  const d = await (await feed()).get("teams");
+  return Array.isArray(d?.list) ? d.list : [];
+}
+const saveTeams = async (list) => { await (await feed()).set("teams", { list }); bust("teams"); };
+export const teamView = (t) => ({ id: t.id, name: t.name, color: t.color, emoji: t.emoji || "", crest: t.crest || null });
+export const teamExists = async (id) => (await loadTeams()).some((t) => t.id === id);
+function teamName(raw, list, fail, selfId) {
+  const name = String(raw ?? "").replace(/\s+/g, " ").trim();
+  if (name.length < 2 || name.length > 30) fail(400, "O nome do time precisa ter de 2 a 30 letras.");
+  if (list.some((t) => t.id !== selfId && t.name.toLowerCase() === name.toLowerCase())) fail(409, "Já existe um time com esse nome.");
+  return name;
+}
+// brasão: foto enviada pelo botão (Cloudinary da empresa). Vazio = sem foto.
+function cleanCrest(raw, fail) {
+  const v = String(raw ?? "").trim();
+  if (!v) return null;
+  let u;
+  try { u = new URL(v); } catch { fail(400, "Brasão inválido."); }
+  if (v.length > 500 || u.protocol !== "https:" || u.hostname !== "res.cloudinary.com" || !u.pathname.startsWith(`/${cloud().name}/image/upload/`)) fail(400, "Brasão não reconhecido. Envie pelo botão de foto.");
+  return u.href;
+}
+const cleanEmoji = (raw) => Array.from(String(raw ?? "").replace(/\s+/g, "").trim()).slice(0, 4).join("");
+// quem vê o post de uma comunidade: a gestão e os membros daquele time
+export const canSeePost = (d, user) => !d.communityId || isStaff(user) || user.teamId === d.communityId;
+
+// ids de quem é do time + a gestão (quem pode receber aviso de @ num post de comunidade)
+async function teamMembers(ctx, teamId) {
+  const all = await ctx.allUsers();
+  return new Set(all.filter((u) => isLive(u) && (u.teamId === teamId || isStaff(u))).map((u) => u.id));
+}
+
 /* ---------- enquetes ---------- */
 const oneLine = (s, n) => String(s ?? "").replace(/\s+/g, " ").trim().slice(0, n);
 function sanitizePoll(p, fail) {
@@ -196,12 +231,14 @@ async function pollFor(d, user) {
   };
 }
 
-async function findPost(id) {
+async function findPost(id, user) {
   const f = await feed();
   const ix = await f.get("ix:" + id);
   if (!ix) return null;
   const doc = await f.get(ix.k);
-  return doc ? { doc, key: ix.k } : null;
+  if (!doc) return null;
+  if (user && !canSeePost(doc, user)) return null; // post de outra comunidade some como se não existisse
+  return { doc, key: ix.k };
 }
 
 /* ---------- visão dos posts ---------- */
@@ -224,12 +261,12 @@ async function countsFor(id, meId) {
 }
 
 export async function views(ctx, docs, user, { withCounts = true } = {}) {
-  const [authors, tags, polls] = await Promise.all([authorsFor(ctx, docs.map((d) => d.authorId)), loadTags(), pmap(docs, (d) => pollFor(d, user))]);
-  const tagMap = new Map(tags.map((t) => [t.id, t]));
+  const [authors, tags, polls, teams] = await Promise.all([authorsFor(ctx, docs.map((d) => d.authorId)), loadTags(), pmap(docs, (d) => pollFor(d, user)), loadTeams()]);
+  const tagMap = new Map(tags.map((t) => [t.id, t])), teamMap = new Map(teams.map((t) => [t.id, t]));
   const counts = withCounts ? await pmap(docs, (d) => (d.status === "published" ? countsFor(d.id, user.id) : { hypes: 0, comments: 0, hyped: false })) : [];
   return docs.map((d, i) => ({
     id: d.id, author: authors.get(d.authorId), text: d.text, media: d.media || [],
-    tag: d.tag && tagMap.has(d.tag) ? tagView(tagMap.get(d.tag)) : null, kind: d.kind || null, pinned: !!d.pinnedAt, poll: polls[i],
+    tag: d.tag && tagMap.has(d.tag) ? tagView(tagMap.get(d.tag)) : null, kind: d.kind || null, pinned: !!d.pinnedAt, poll: polls[i], community: d.communityId && teamMap.has(d.communityId) ? teamView(teamMap.get(d.communityId)) : null,
     status: d.status, createdAt: d.createdAt, publishedAt: d.publishedAt || null, reason: d.reason || null,
     ...(withCounts ? counts[i] : {}),
     canDelete: can(user, "moderar") || d.authorId === user.id,
@@ -246,40 +283,58 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   const needPerm = (ok) => { if (!ok) fail(403, "Você não tem permissão para esta área."); };
 
   /* --- feed --- */
+  /* O feed junta o geral (pub:) com as comunidades que a pessoa pode ver: o time dela, ou todos para a gestão.
+     Cada fonte já vem ordenada; o sufixo "<tempo invertido>:<id>" ordena as fontes entre si e serve de marcador de página. */
+  const suffixOf = (k) => (/(\d{13}:[^:]+)$/.exec(k) || [])[1] || "";
+  const streamsFor = async (comm) => {
+    if (comm) {
+      if (!isStaff(user) && user.teamId !== comm) fail(404, "Comunidade não encontrada.");
+      return [`cm:${comm}:`];
+    }
+    const ids = isStaff(user) ? (await loadTeams()).map((t) => t.id) : user.teamId ? [user.teamId] : [];
+    return ["pub:", ...ids.map((id) => `cm:${id}:`)];
+  };
   if (path === "feed" && method === "GET") {
     const f = await feed();
     const author = url.searchParams.get("author") || "";
     const tag = url.searchParams.get("tag") || "";
+    const comm = url.searchParams.get("community") || "";
     const after = url.searchParams.get("after") || "";
     const indirect = !!(author || tag);
-    const prefix = author ? `au:${author}:` : tag ? `tg:${tag}:` : "pub:";
-    // a página do Feed é a mesma para todos: guardada por 3 s na instância (quem posta ou apaga limpa na hora)
-    const { keys, page, docs: pageDocs } = await memo(`posts:page:${prefix}|${after}`, 3000, async () => {
-      const keys = await f.keys({ prefix, after, limit: PAGE + 1 });
-      const page = keys.slice(0, PAGE);
-      return { keys, page, docs: (await pmap(page, async (k) => (indirect ? (await f.get((await f.get(k))?.k || "x")) : f.get(k)))).filter(Boolean) };
-    });
-    let docs = pageDocs;
-    if (!indirect) {
+    const streams = indirect ? [author ? `au:${author}:` : `tg:${tag}:`] : await streamsFor(comm);
+    const cut = suffixOf(after);
+    // cada fonte é lida (e guardada por 3 s) uma vez; quem posta ou apaga limpa na hora
+    const lists = await Promise.all(streams.map((p) => memo(`posts:keys:${p}|${cut}`, 3000, () => f.keys({ prefix: p, after: cut ? p + cut : "", limit: PAGE + 1 }))));
+    const merged = lists.flat().map((k) => ({ k, s: suffixOf(k) })).sort((x, y) => (x.s < y.s ? -1 : x.s > y.s ? 1 : 0));
+    const page = merged.slice(0, PAGE).map((x) => x.k);
+    const pageDocs = (await memo(`posts:docs:${page.join(",")}`, 3000, async () => pmap(page, async (k) => (indirect ? (await f.get((await f.get(k))?.k || "x")) : f.get(k))))).filter(Boolean);
+    let docs = pageDocs.filter((d) => canSeePost(d, user));
+    if (!indirect && !comm) {
       // fixados: ficam no topo do feed principal e não se repetem na lista comum
       const pins = await memo("posts:pins", 3000, async () => (await pmap(await f.keys({ prefix: "pin:" }), async (k) => f.get((await f.get(k))?.k || "x"))).filter((d) => d && d.status === "published"));
       const pinIds = new Set(pins.map((d) => d.id));
       docs = docs.filter((d) => !pinIds.has(d.id));
       if (!after) docs = [...pins, ...docs];
     }
-    return json({ posts: await views(ctx, docs, user), next: keys.length > PAGE ? page[page.length - 1] : null });
+    return json({ posts: await views(ctx, docs, user), next: merged.length > PAGE ? page[page.length - 1] : null });
   }
   // Sondagem leve: o navegador pergunta de tempos em tempos se há post novo, sem baixar o feed inteiro.
   // Sem "since" devolve o marcador do topo atual; com "since" conta quantos posts são mais novos que ele.
   if (path === "feed/pulse" && method === "GET") {
     const f = await feed();
     const tag = url.searchParams.get("tag") || "";
-    const since = url.searchParams.get("since") || "";
-    const prefix = tag ? `tg:${tag}:` : "pub:";
-    const { keys, pins } = await memo(`posts:pulse:${prefix}`, 4000, async () => ({ keys: await f.keys({ prefix, limit: 21 }), pins: (await f.keys({ prefix: "pin:" })).join("|") }));
-    const top = keys[0] || "";
-    const fresh = since ? keys.filter((k) => k < since).length : 0;
-    return json({ top, fresh, more: fresh >= 21, pins });
+    const comm = url.searchParams.get("community") || "";
+    const since = suffixOf(url.searchParams.get("since") || "") || (url.searchParams.get("since") || "");
+    const streams = tag ? [`tg:${tag}:`] : await streamsFor(comm);
+    const lists = await Promise.all(streams.map((p) => memo(`posts:pulse:${p}`, 4000, () => f.keys({ prefix: p, limit: 21 }))));
+    const sufs = lists.flat().map(suffixOf).sort();
+    const pins = await memo("posts:pulse:pins", 4000, async () => (await f.keys({ prefix: "pin:" })).join("|"));
+    const fresh = since ? sufs.filter((k) => k < since).length : 0;
+    return json({ top: sufs[0] || "", fresh, more: fresh >= 21, pins });
+  }
+  if (path === "feed/teams" && method === "GET") {
+    const teams = await memo("teams", 10000, loadTeams);
+    return json({ teams: teams.map(teamView), mine: user.teamId || null });
   }
   if (path === "feed/tags" && method === "GET") return json({ tags: (await loadTags()).map(tagView), colors: TAG_COLORS });
   if (path === "feed/status" && method === "GET") {
@@ -314,6 +369,13 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
       if (!(await loadTags()).some((t) => t.id === body.tag)) fail(400, "Essa tag não existe mais.");
       tag = String(body.tag);
     }
+    let communityId = null;
+    if (body.community) {
+      if (!isAdmin) fail(403, "Só gestores escolhem a comunidade do post.");
+      if (!(await loadTeams()).some((t) => t.id === body.community)) fail(400, "Essa comunidade não existe mais.");
+      communityId = String(body.community);
+      if (body.pinned) fail(400, "Post de comunidade não pode ser fixado no feed geral.");
+    }
     const bad = await mod.check(text, user);
     if (bad) { await ctx.logEvent(req, "post_bloqueado", user, { palavra: bad }); fail(422, BLOCKED_MSG); }
     const f = await feed();
@@ -326,19 +388,20 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const doc = { id: newId("po_"), authorId: user.id, text, media, createdAt: t, status: isAdmin ? "published" : "pending", publishedAt: isAdmin ? t : null };
     if (poll) doc.poll = poll;
     if (tag) doc.tag = tag;
+    if (communityId) doc.communityId = communityId;
     if (body.kind != null && body.kind !== "") {
       if (!KINDS.includes(body.kind)) fail(400, "Tipo de post inválido.");
       doc.kind = body.kind;
     }
     if (isAdmin && body.pinned) doc.pinnedAt = t;
     await putPost(doc, isAdmin ? "pub" : "pend");
-    await ctx.logEvent(req, "post_criado", user, { post: doc.id, status: doc.status });
-    if (isAdmin) { await notify.notifyMentions({ text, author: user, postId: doc.id, where: "post" }); await announceVideo(doc, user); }
+    await ctx.logEvent(req, "post_criado", user, { post: doc.id, status: doc.status, ...(communityId ? { comunidade: communityId } : {}) });
+    if (isAdmin) { await notify.notifyMentions({ text, author: user, postId: doc.id, where: "post", ...(communityId ? { only: await teamMembers(ctx, communityId) } : {}) }); if (!communityId) await announceVideo(doc, user); }
     const [view] = await views(ctx, [doc], user);
     return json({ post: view, status: doc.status }, 201);
   }
   if (parts[0] === "feed" && parts[1] === "post" && parts[2]) {
-    const found = await findPost(parts[2]);
+    const found = await findPost(parts[2], user);
     if (method === "GET") {
       if (!found || (found.doc.status !== "published" && found.doc.authorId !== user.id && !canApprove && !canMod)) fail(404, "Post não encontrado.");
       return json({ post: (await views(ctx, [found.doc], user))[0] });
@@ -351,6 +414,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
         if (body.tag && !(await loadTags()).some((t) => t.id === body.tag)) fail(400, "Essa tag não existe mais.");
         change.tag = body.tag ? String(body.tag) : null;
       }
+      if (body.pinned && found.doc.communityId) fail(400, "Post de comunidade não pode ser fixado no feed geral.");
       if (body.pinned !== undefined) {
         if (body.pinned && !found.doc.pinnedAt) {
           const pins = await (await feed()).keys({ prefix: "pin:" });
@@ -386,7 +450,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
 
   /* --- enquete: votar (uma resposta por pergunta, sem trocar depois) --- */
   if (parts[0] === "feed" && parts[1] === "vote" && parts[2] && method === "POST") {
-    const found = await findPost(parts[2]);
+    const found = await findPost(parts[2], user);
     if (!found || found.doc.status !== "published" || !found.doc.poll) fail(404, "Enquete não encontrada.");
     const poll = found.doc.poll;
     if (poll.closed) fail(409, "Essa enquete foi encerrada.");
@@ -402,7 +466,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
 
   /* --- hype --- */
   if (parts[0] === "feed" && parts[1] === "hype" && parts[2] && method === "POST") {
-    const found = await findPost(parts[2]);
+    const found = await findPost(parts[2], user);
     if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
     const hs = await store("hypes");
     const k = `${found.doc.id}:${user.id}`;
@@ -418,7 +482,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
 
   /* --- comentários --- */
   if (parts[0] === "feed" && parts[1] === "comments" && parts[2] && method === "GET") {
-    const found = await findPost(parts[2]);
+    const found = await findPost(parts[2], user);
     if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
     const cs = await store("comments");
     const keys = await cs.keys({ prefix: found.doc.id + ":", limit: 200 });
@@ -427,7 +491,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     return json({ comments: docs.map((c) => ({ id: c.id, author: authors.get(c.authorId), text: c.text, at: c.at, canDelete: canMod || c.authorId === user.id })) });
   }
   if (parts[0] === "feed" && parts[1] === "comment" && parts[2] && method === "POST") {
-    const found = await findPost(parts[2]);
+    const found = await findPost(parts[2], user);
     if (!found || found.doc.status !== "published") fail(404, "Post não encontrado.");
     const text = cleanMultiline(body.text, MAX_COMMENT).replace(/\n+/g, " ");
     if (text.length < 1) fail(400, "Escreva o comentário.");
@@ -437,7 +501,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const c = { id: `${t13(t)}-${newId().slice(0, 5)}`, postId: found.doc.id, authorId: user.id, text, at: t };
     await (await store("comments")).set(`${found.doc.id}:${c.id}`, c);
     bust("posts:c:" + found.doc.id);
-    const told = await notify.notifyMentions({ text, author: user, postId: found.doc.id, where: "comment" });
+    const told = await notify.notifyMentions({ text, author: user, postId: found.doc.id, where: "comment", ...(found.doc.communityId ? { only: await teamMembers(ctx, found.doc.communityId) } : {}) });
     if (found.doc.authorId !== user.id && !told.sent.includes(found.doc.authorId)) await notify.notifyUser(found.doc.authorId, "comment", user, found.doc.id, text);
     let gained = 0, goals = [];
     if (text.length >= 8) ({ gained, goals } = await eng.record(user, "comment", "Comentário em um post"));
@@ -465,7 +529,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
   }
   if (parts[0] === "admin" && parts[1] === "feed" && parts[2] && ["approve", "reject"].includes(parts[3]) && method === "POST") {
     needPerm(canApprove);
-    const found = await findPost(parts[2]);
+    const found = await findPost(parts[2], user);
     if (!found || found.doc.status !== "pending") fail(404, "Esse post não está mais aguardando aprovação.");
     const f = await feed();
     const d = found.doc;
@@ -493,6 +557,47 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     const cfg = await eng.saveCfg(body, newId, fail);
     await ctx.logEvent(req, "admin_config_engajamento", user, { metas: cfg.goals.length });
     return json({ config: cfg });
+  }
+
+  /* --- times / comunidades (gestão) --- */
+  if (path === "admin/teams" && method === "GET") {
+    needPerm(can(user, "usuarios") || isAdmin);
+    const [teams, users] = await Promise.all([loadTeams(), ctx.allUsers()]);
+    const members = {};
+    for (const u of users) if (u.teamId && isLive(u)) members[u.teamId] = (members[u.teamId] || 0) + 1;
+    return json({ teams: teams.map((t) => ({ ...teamView(t), members: members[t.id] || 0 })), colors: TAG_COLORS, max: MAX_TEAMS, uploads: uploadsOn() });
+  }
+  if (path === "admin/teams" && method === "POST") {
+    needPerm(can(user, "usuarios"));
+    const list = await loadTeams();
+    if (list.length >= MAX_TEAMS) fail(400, `No máximo ${MAX_TEAMS} times.`);
+    const t = { id: newId("tm_"), name: teamName(body.name, list, fail), color: TAG_COLORS.includes(body.color) ? body.color : "gold", emoji: cleanEmoji(body.emoji), crest: cleanCrest(body.crest, fail), createdAt: now() };
+    await saveTeams([...list, t]);
+    await ctx.logEvent(req, "time_criado", user, { time: t.name });
+    return json({ team: teamView(t) }, 201);
+  }
+  if (parts[0] === "admin" && parts[1] === "teams" && parts[2] && ["PATCH", "DELETE"].includes(method)) {
+    needPerm(can(user, "usuarios"));
+    const list = await loadTeams();
+    const t = list.find((x) => x.id === parts[2]);
+    if (!t) fail(404, "Time não encontrado.");
+    if (method === "PATCH") {
+      if (body.name !== undefined) t.name = teamName(body.name, list, fail, t.id);
+      if (body.color !== undefined) { if (!TAG_COLORS.includes(body.color)) fail(400, "Cor inválida."); t.color = body.color; }
+      if (body.emoji !== undefined) t.emoji = cleanEmoji(body.emoji);
+      if (body.crest !== undefined) t.crest = cleanCrest(body.crest, fail);
+      await saveTeams(list);
+      bust("posts");
+      await ctx.logEvent(req, "time_editado", user, { time: t.name });
+      return json({ team: teamView(t) });
+    }
+    const [users, f] = await Promise.all([ctx.allUsers(), feed()]);
+    const n = users.filter((u) => u.teamId === t.id).length;
+    if (n) fail(409, `O time ${t.name} ainda tem ${n} ${n === 1 ? "pessoa" : "pessoas"}. Mude o time delas antes de apagar.`);
+    if ((await f.keys({ prefix: `cm:${t.id}:`, limit: 1 })).length) fail(409, `O time ${t.name} tem posts na comunidade. Apague os posts antes de remover o time.`);
+    await saveTeams(list.filter((x) => x.id !== t.id));
+    await ctx.logEvent(req, "time_removido", user, { time: t.name });
+    return json({ ok: true });
   }
 
   /* --- tags (gestão) e moderação --- */
