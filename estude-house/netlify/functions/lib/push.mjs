@@ -15,9 +15,11 @@ export const CATS = {
   videos: { label: "Vídeos novos nos Reels", hint: "No máximo um aviso a cada 6 horas." },
   lembretes: { label: "Lembrete de check-in e sequência", hint: "Um lembrete por dia útil, só se você ainda não fez o check-in." },
   resumo: { label: "Resumo da semana", hint: "Toda segunda-feira: como o time foi e quem lidera o ranking." },
+  comunidade: { label: "Posts da minha comunidade", hint: "Quando a gestão publica algo só para o seu time. No máximo um aviso a cada 10 minutos." },
+  curiosidade: { label: "Mensagem do dia", hint: "Uma curiosidade diferente por dia útil, chamando você para abrir o app." },
 };
-const TYPE_CAT = { mention: "interacoes", comment: "interacoes", approved: "meus_posts", rejected: "meus_posts", forum_ok: "meus_posts", forum_no: "meus_posts", all: "avisos", broadcast: "avisos", prova_nova: "provas", reel: "videos", checkin: "lembretes", streak: "lembretes", weekly: "resumo" };
-const THROTTLE = { videos: 6 * 3600e3 };
+const TYPE_CAT = { mention: "interacoes", comment: "interacoes", approved: "meus_posts", rejected: "meus_posts", forum_ok: "meus_posts", forum_no: "meus_posts", all: "avisos", broadcast: "avisos", prova_nova: "provas", reel: "videos", checkin: "lembretes", streak: "lembretes", weekly: "resumo", community: "comunidade" };
+const THROTTLE = { videos: 6 * 3600e3, comunidade: 10 * 60e3 };
 const MAX_SUBS = 6;
 /* só aceitamos endereços dos serviços de push dos navegadores (evita mandar o servidor chamar sites quaisquer) */
 const PUSH_HOSTS = [/(^|\.)googleapis\.com$/, /(^|\.)push\.services\.mozilla\.com$/, /(^|\.)push\.apple\.com$/, /(^|\.)notify\.windows\.com$/, /(^|\.)mozaws\.net$/];
@@ -100,7 +102,8 @@ export async function savePrefs(uid, input) {
 }
 
 /* ───── mandar para uma pessoa ───── */
-export async function sendTo(uid, payload, { cat = "avisos", throttle = THROTTLE[cat] || 0, force = false } = {}) {
+// key: nome do intervalo mínimo. Por padrão é a categoria; lembretes de tipos diferentes usam chaves próprias para não se bloquearem.
+export async function sendTo(uid, payload, { cat = "avisos", throttle = THROTTLE[cat] || 0, force = false, key = cat } = {}) {
   try {
     const s = await db();
     const subs = await subsOf(uid);
@@ -109,8 +112,8 @@ export async function sendTo(uid, payload, { cat = "avisos", throttle = THROTTLE
       if ((await prefsOf(uid))[cat] === false) return { sent: 0, devices: subs.length, skipped: "pref" };
       if (throttle) {
         const last = (await s.get("last:" + uid)) || {};
-        if (last[cat] && now() - last[cat] < throttle) return { sent: 0, devices: subs.length, skipped: "throttle" };
-        last[cat] = now();
+        if (last[key] && now() - last[key] < throttle) return { sent: 0, devices: subs.length, skipped: "throttle" };
+        last[key] = now();
         await s.set("last:" + uid, last);
       }
     }
@@ -134,6 +137,7 @@ const TEXT = {
   prova_nova: () => ["Prova liberada para você", "Abra as Trilhas e faça quando puder."],
   reel: (n, by) => [`${by} publicou um vídeo novo`, ""],
   all: (n, by) => [`${by} avisou a equipe`, ""],
+  community: (n, by) => [`Novo na comunidade ${n.where}`.slice(0, 60), `${by} publicou`],
 };
 export function payloadFor(type, { by, postId, text, link, where }) {
   const f = TEXT[type];

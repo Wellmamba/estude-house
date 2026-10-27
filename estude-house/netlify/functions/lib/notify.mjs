@@ -1,7 +1,7 @@
 // Notificações (o sino): menção por @apelido, @todos (só gestor), comentário no seu post e resultado de aprovação.
 // Cada pessoa tem um documento (u:<id>) com as últimas notificações e o horário da última leitura.
 // "@todos" não duplica para cada pessoa: vai uma vez para o mural "all", e cada um lê esse mural junto com o seu.
-import { store, cached, bust, clone } from "./db.mjs";
+import { store, cached, bust, clone, pmap } from "./db.mjs";
 import { newId, can } from "./auth.mjs";
 import { now } from "./clock.mjs";
 import * as wpush from "./push.mjs";
@@ -81,11 +81,24 @@ export async function notifyAll({ by, title, text, link, audience = "todos" }) {
 }
 const isStaffRole = (u) => u?.role === "admin" || u?.role === "subadmin";
 
+// Post de comunidade: cada time tem o seu mural (t:<time>), então não disputa lugar com os avisos de todos.
+// `ids` são as pessoas do time (menos quem postou); recebem também o aviso no aparelho, se tiverem ativado.
+export async function notifyTeam({ by, team, ids, postId, text }) {
+  const s = await store("notif");
+  const d = (await s.get("t:" + team.id)) || { items: [] };
+  d.items = [{ ...base("community", by, postId, text), where: team.name }, ...d.items].slice(0, KEEP);
+  await s.set("t:" + team.id, d);
+  await Promise.race([
+    pmap(ids, (id) => wpush.sendNotice(id, "community", { by, postId, text, where: team.name }).catch(() => {}), 16),
+    new Promise((r) => setTimeout(r, 6000)),
+  ]);
+}
+
 // Lista da pessoa: as dela + @todos (a partir de quando ela entrou), mais novas primeiro.
 export async function listFor(user, limit = 30) {
-  const [mine, all] = await Promise.all([doc("u:" + user.id), doc("all")]);
+  const [mine, all, team] = await Promise.all([doc("u:" + user.id), doc("all"), user.teamId ? doc("t:" + user.teamId) : { items: [] }]);
   const since = user.createdAt || 0;
-  const items = [...mine.items, ...all.items.filter((i) => i.at >= since && i.by !== user.id && (!i.aud || (i.aud === "gestores") === isStaffRole(user)))].sort((a, b) => b.at - a.at).slice(0, limit);
+  const items = [...mine.items, ...team.items.filter((i) => i.at >= since && i.by !== user.id), ...all.items.filter((i) => i.at >= since && i.by !== user.id && (!i.aud || (i.aud === "gestores") === isStaffRole(user)))].sort((a, b) => b.at - a.at).slice(0, limit);
   return { items: items.map((i) => ({ ...i, unread: i.at > (mine.readAt || 0) })), readAt: mine.readAt || 0 };
 }
 export async function unreadCount(user) {

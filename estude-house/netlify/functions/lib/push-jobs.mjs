@@ -4,6 +4,7 @@ import { store, pmap } from "./db.mjs";
 import { now, dayKey, addDays } from "./clock.mjs";
 import * as push from "./push.mjs";
 import * as eng from "./engage.mjs";
+import { pickDaily } from "./daily.mjs";
 
 const pm = (l, f) => pmap(l, f, 32); // 32 pessoas ao mesmo tempo (a agenda do Netlify tem 30 s)
 const inv = (ts) => String(9e12 - ts).padStart(13, "0");
@@ -18,7 +19,8 @@ export async function run(kind) {
   const day = dayKey();
   const list = await students();
   let people = 0;
-  const give = async (u, payload, cat) => { const r = await push.sendTo(u.id, payload, { cat, throttle: 20 * 3600e3 }); if (r.sent) people++; };
+  // cada tipo tem o seu intervalo (key): o lembrete das 9h não pode bloquear o aviso de sequência das 18h
+  const give = async (u, payload, cat) => { const r = await push.sendTo(u.id, payload, { cat, key: payload.tag || cat, throttle: 20 * 3600e3 }); if (r.sent) people++; };
 
   if (kind === "checkin") {
     await pm(list, async (u) => {
@@ -41,6 +43,10 @@ export async function run(kind) {
         url: "/#/", tag: "streak",
       }, "lembretes");
     });
+  } else if (kind === "daily") {
+    // Mensagem do dia (tom de curiosidade). Todos os alunos com aviso ligado, mesmo quem já fez o check-in.
+    const msg = pickDaily(day);
+    await pm(list, (u) => give(u, msg, "curiosidade"));
   } else if (kind === "weekly") {
     const f = await store("feed");
     const cut = `pub:${inv(now() - 7 * 864e5)}:`;

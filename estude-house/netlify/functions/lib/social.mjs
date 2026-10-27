@@ -170,11 +170,19 @@ function cleanCrest(raw, fail) {
   if (v.length > 500 || u.protocol !== "https:" || u.hostname !== "res.cloudinary.com" || !u.pathname.startsWith(`/${cloud().name}/image/upload/`)) fail(400, "Brasão não reconhecido. Envie pelo botão de foto.");
   return u.href;
 }
+/* foto de perfil e brasão seguem a mesma regra: só imagem enviada ao Cloudinary da plataforma */
+export const cleanImageUrl = (raw, fail) => cleanCrest(raw, fail);
+export const bustPeople = () => { bust("people"); bust("posts"); };
 const cleanEmoji = (raw) => Array.from(String(raw ?? "").replace(/\s+/g, "").trim()).slice(0, 4).join("");
 // quem vê o post de uma comunidade: a gestão e os membros daquele time
 export const canSeePost = (d, user) => !d.communityId || isStaff(user) || user.teamId === d.communityId;
 
 // ids de quem é do time + a gestão (quem pode receber aviso de @ num post de comunidade)
+// quem recebe o aviso de um post de comunidade: o time (aluno, adm ou sub), menos quem postou
+async function teamAudience(ctx, teamId, exceptId) {
+  const all = await ctx.allUsers();
+  return all.filter((u) => isLive(u) && u.teamId === teamId && u.id !== exceptId).map((u) => u.id);
+}
 async function teamMembers(ctx, teamId) {
   const all = await ctx.allUsers();
   return new Set(all.filter((u) => isLive(u) && (u.teamId === teamId || isStaff(u))).map((u) => u.id));
@@ -248,7 +256,7 @@ async function authorsFor(ctx, ids) {
   const map = new Map();
   uniq.forEach((id, i) => {
     const u = users[i];
-    map.set(id, u ? { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role } : { id, name: "Pessoa removida", nickname: null, avatar: null, role: "aluno" });
+    map.set(id, u ? { id: u.id, name: u.name, nickname: u.nickname || null, avatar: u.avatar || null, role: u.role, teamId: u.teamId || null } : { id, name: "Pessoa removida", nickname: null, avatar: null, role: "aluno" });
   });
   return map;
 }
@@ -264,8 +272,9 @@ export async function views(ctx, docs, user, { withCounts = true } = {}) {
   const [authors, tags, polls, teams] = await Promise.all([authorsFor(ctx, docs.map((d) => d.authorId)), loadTags(), pmap(docs, (d) => pollFor(d, user)), loadTeams()]);
   const tagMap = new Map(tags.map((t) => [t.id, t])), teamMap = new Map(teams.map((t) => [t.id, t]));
   const counts = withCounts ? await pmap(docs, (d) => (d.status === "published" ? countsFor(d.id, user.id) : { hypes: 0, comments: 0, hyped: false })) : [];
+  const authorOf = (id) => { const a = authors.get(id); const { teamId, ...rest } = a; return { ...rest, team: teamId && teamMap.has(teamId) ? teamView(teamMap.get(teamId)) : null }; };
   return docs.map((d, i) => ({
-    id: d.id, author: authors.get(d.authorId), text: d.text, media: d.media || [],
+    id: d.id, author: authorOf(d.authorId), text: d.text, media: d.media || [],
     tag: d.tag && tagMap.has(d.tag) ? tagView(tagMap.get(d.tag)) : null, kind: d.kind || null, pinned: !!d.pinnedAt, poll: polls[i], community: d.communityId && teamMap.has(d.communityId) ? teamView(teamMap.get(d.communityId)) : null,
     status: d.status, createdAt: d.createdAt, publishedAt: d.publishedAt || null, reason: d.reason || null,
     ...(withCounts ? counts[i] : {}),
@@ -396,7 +405,7 @@ export async function handle(ctx, { req, method, path, url, body, user }) {
     if (isAdmin && body.pinned) doc.pinnedAt = t;
     await putPost(doc, isAdmin ? "pub" : "pend");
     await ctx.logEvent(req, "post_criado", user, { post: doc.id, status: doc.status, ...(communityId ? { comunidade: communityId } : {}) });
-    if (isAdmin) { await notify.notifyMentions({ text, author: user, postId: doc.id, where: "post", ...(communityId ? { only: await teamMembers(ctx, communityId) } : {}) }); if (!communityId) await announceVideo(doc, user); }
+    if (isAdmin) { await notify.notifyMentions({ text, author: user, postId: doc.id, where: "post", ...(communityId ? { only: await teamMembers(ctx, communityId) } : {}) }); if (!communityId) await announceVideo(doc, user); else { const team = (await loadTeams()).find((x) => x.id === communityId); if (team) await notify.notifyTeam({ by: user, team, ids: await teamAudience(ctx, communityId, user.id), postId: doc.id, text }); } }
     const [view] = await views(ctx, [doc], user);
     return json({ post: view, status: doc.status }, 201);
   }

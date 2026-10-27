@@ -24,7 +24,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-27-a";
+const BUILD = "2026-10-27-b";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -577,7 +577,7 @@ async function adminPatchUser(req, admin, id, body) {
   const master = isMaster(u.email);
   onlyAdminTouchesStaff(admin, u);
   const changes = {};
-  let trailsChanged = false;
+  let trailsChanged = false, avatarChanged = false;
   if (body.name !== undefined) {
     const n = cleanText(body.name, 80);
     if (n.length < 2) fail(400, "Nome inválido.");
@@ -609,6 +609,13 @@ async function adminPatchUser(req, admin, id, body) {
     } else delete u.teamId;
     changes.time = u.teamId || "nenhum";
   }
+  if (body.avatar !== undefined) {
+    // a gestão cadastra ou remove a foto de quem ela pode editar (sub-adm só em alunos: onlyAdminTouchesStaff acima)
+    const url = social.cleanImageUrl(body.avatar, (c, m) => fail(c, String(m).replace("Brasão", "Foto")));
+    if (url) u.avatar = url; else delete u.avatar;
+    changes.foto = url ? "definida" : "removida";
+    avatarChanged = true;
+  }
   if (body.active !== undefined) {
     if (master) fail(403, "O acesso master não pode ser desativado.");
     if (id === admin.id) fail(400, "Você não pode desativar o próprio acesso.");
@@ -622,6 +629,7 @@ async function adminPatchUser(req, admin, id, body) {
   }
   await saveUser(u);
   if (trailsChanged) await trailsLib.bumpVersion().catch(() => {});
+  if (avatarChanged || body.team !== undefined) social.bustPeople();
   await logEvent(req, "admin_alterou_usuario", admin, { target: u.email, ...changes });
   return json({ user: userSummary(u, await loadProgress(id)), passwordChanged: !!newPassword });
 }
