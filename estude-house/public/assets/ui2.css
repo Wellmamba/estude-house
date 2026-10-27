@@ -414,3 +414,15 @@ a.tag-chip { padding-block: 4px; }
   .fd-card.fd-hero .fd-title { font-size: 1.8rem; }
   .fd-cta { align-self: stretch; justify-content: center; }
 }
+
+/* Feed das trilhas: seções por categoria */
+.fd-list { gap: 26px; }
+.fd-sec-head { display: flex; align-items: baseline; gap: 10px; margin: 0 0 12px; }
+.fd-sec-head h3 { margin: 0; font-size: 1.7rem; line-height: 1.1; }
+.fd-sec-link { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--gold); text-decoration: none; font-weight: 700; }
+.fd-forum { display: grid; gap: 10px; }
+.fd-forum-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); color: var(--text); text-decoration: none; }
+.fd-forum-item:hover { border-color: var(--gold); }
+.fd-forum-item strong { display: block; }
+.fd-forum-item p { margin: 4px 0 0; }
+.fd + .fd, .fd .next-card { margin-bottom: 18px; }

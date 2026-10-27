@@ -12,7 +12,7 @@
     const staff = M.isAdmin();
     const list = [
       { emoji: "🏀", title: `Bem-vindo, ${M.firstName(u.name || "")}!`, text: "Este é o BRYANT SHOOT, o ambiente de estudos da Mamba. Em 1 minuto eu te mostro onde fica cada coisa. Dá para sair quando quiser.", route: "#/" },
-      { title: "Feed das trilhas", text: "A sua tela inicial. Mostra de onde continuar a aula, as provas liberadas, as trilhas para começar, o que você já conquistou e as novidades do fórum. Os filtros no topo separam cada tipo.", sel: [".fd-list", ".fd"], route: "#/", optional: true },
+      { title: "Feed das trilhas", text: "A sua tela inicial. Mostra as trilhas por categoria, com o seu progresso em cada uma. Abra uma trilha para ver os módulos e as aulas. Os filtros no topo separam o que está em andamento, o que ainda não começou e o que já terminou.", sel: [".fd-list", ".fd"], route: "#/", optional: true },
       { title: "Trilhas: onde você estuda", text: "Cada trilha tem aulas em formato Stories, quizzes, prova por módulo e uma prova final que libera o certificado.", sel: [SIDE("trails"), TAB("trails")] },
       { title: "Categorias e busca", text: "Com muitas trilhas, escolha uma categoria e veja quais trilhas ela tem. Também dá para buscar pelo nome e filtrar o que está em andamento. Provas liberadas para você aparecem aqui.", sel: [".cat-bar"], route: "#/trilhas", optional: true },
       { title: "Busca", text: "Procure aulas, módulos, trilhas e publicações do fórum de qualquer lugar do sistema.", sel: [".top-search", TAB("search")] },

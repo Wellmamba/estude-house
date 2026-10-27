@@ -1,5 +1,5 @@
-/* Feed das trilhas: a tela inicial. Reúne, num só fluxo, o que a pessoa precisa fazer e o que já conquistou nas trilhas:
-   continuar de onde parou, provas liberadas, trilhas para começar, aprovações, certificados e as últimas do fórum.
+/* Feed das trilhas: a tela inicial. Mostra as TRILHAS agrupadas por CATEGORIA (as aulas só aparecem ao abrir a trilha),
+   com um atalho para continuar de onde parou, as provas avulsas e as novidades do fórum.
    Tudo é montado a partir do andamento já carregado em M.session.progress (nada de posts nem de rede social). */
 (function () {
   const { h } = M;
@@ -50,123 +50,111 @@
     return box;
   };
 
-  const FILTERS = [["all", "Tudo"], ["go", "Continuar"], ["exam", "Provas"], ["new", "Para começar"], ["win", "Conquistas"], ["forum", "Fórum"]];
-
-  /* cartão do feed: cabeçalho (ícone + tipo + quando), título, texto, barra opcional e um botão */
-  function card({ kind, icon, label, when, title, text, meta, pct, cta, href, tone, hero }) {
-    return h("article", { class: "fd-card" + (tone ? " fd-" + tone : "") + (hero ? " fd-hero" : ""), "data-kind": kind },
-      h("header", { class: "fd-head" },
-        h("span", { class: "fd-ico", "aria-hidden": "true" }, M.icon(icon, 20)),
-        h("div", { class: "fd-who" }, h("strong", { text: label }), when ? h("span", { class: "muted small", text: when }) : null)),
-      h("h3", { class: "fd-title" }, href && !cta ? h("a", { href }, title) : title),
-      text ? h("p", { class: "fd-text", text }) : null,
-      meta && meta.length ? h("div", { class: "trail-meta" }, meta.map((m) => h("span", { text: m }))) : null,
-      pct != null ? h("div", { class: "fd-prog" }, h("div", { class: "bar", role: "progressbar", "aria-valuenow": String(pct), "aria-valuemin": "0", "aria-valuemax": "100" }, h("i", { style: `width:${pct}%` })), h("span", { class: "small muted", text: pct + "%" })) : null,
-      cta && href ? h("a", { class: "btn " + (hero ? "btn-gold" : "btn-ghost") + " fd-cta", href }, cta, M.icon("arrow", 18)) : null);
-  }
+  const FILTERS = [["all", "Tudo"], ["going", "Em andamento"], ["new", "Não iniciadas"], ["done", "Concluídas"], ["prova", "Provas"], ["forum", "Fórum"]];
+  const STATE_CHIP = { done: ["chip chip-good", "Concluída"], going: ["chip chip-gold", "Em andamento"], new: ["chip", "Não iniciada"] };
   const ago = (ts) => (ts ? M.timeAgo(ts) : "");
+  const catHref = (c) => "#/trilhas/c/" + encodeURIComponent(c);
+
+  /* cartão de trilha: o mesmo da tela Trilhas; leva para a página da trilha, onde ficam módulos e aulas */
+  function trailCard(t) {
+    const T = M.trailHelpers, v = M.tp(t), st = T.stateOfTrail(t), chip = STATE_CHIP[st], pct = M.pct(v.lessonsDone, v.lessonsTotal);
+    return h("a", { class: "trail-card" + (st === "done" ? " is-done" : ""), href: M.trailHref(t) },
+      h("div", { class: "row row-between" }, h("span", { class: "chip chip-tag", text: "Trilha" }),
+        h("span", { class: "row" }, M.isInactive(t.id) ? h("span", { class: "chip chip-bad", text: "Inativa" }) : M.isRestricted(t.id) ? h("span", { class: "chip chip-gold", text: "Só escolhidos" }) : null, h("span", { class: chip[0], text: chip[1] }))),
+      h("h3", { text: t.title }),
+      h("p", { class: "trail-tag", text: t.tagline || t.subtitle || "" }),
+      h("div", { class: "trail-meta" },
+        h("span", { text: `${t.modules.length} ${t.modules.length === 1 ? "módulo" : "módulos"}` }), h("span", { text: `${v.lessonsTotal} ${v.lessonsTotal === 1 ? "aula" : "aulas"}` }), h("span", { text: T.hoursText(T.minutesOf(t)) })),
+      h("div", { class: "trail-prog" },
+        h("div", { class: "bar", role: "progressbar", "aria-valuenow": String(pct), "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": `Progresso em ${t.title}` }, h("i", { style: `width:${pct}%` })),
+        h("span", { class: "small muted", text: `${v.lessonsDone}/${v.lessonsTotal} aulas · ${v.modulesApproved}/${t.modules.length} módulos aprovados` })),
+      h("span", { class: "trail-cta" }, st === "done" ? "Rever a trilha" : st === "going" ? "Continuar" : "Começar trilha", M.icon("arrow", 18)));
+  }
+  function provaCard(pv) {
+    const st = pv.status === "approved" ? "done" : pv.attempts ? "going" : "new";
+    const chip = st === "done" ? ["chip chip-good", "Aprovado"] : st === "going" ? ["chip chip-gold", `${pv.attempts} ${pv.attempts === 1 ? "tentativa" : "tentativas"}`] : ["chip chip-warn", "Para fazer"];
+    return h("a", { class: "trail-card is-prova" + (st === "done" ? " is-done" : ""), href: "#/prova/" + pv.id },
+      h("div", { class: "row row-between" }, h("span", { class: "chip chip-tag", text: "Prova" }), h("span", { class: chip[0], text: chip[1] })),
+      h("h3", { text: pv.title }),
+      h("p", { class: "trail-tag", text: pv.description || "Prova avulsa liberada pela administração." }),
+      h("div", { class: "trail-meta" }, h("span", { text: `${pv.total} ${pv.total === 1 ? "questão" : "questões"}` }), h("span", { text: `nota mínima ${pv.passPct}%` })),
+      h("span", { class: "trail-cta" }, st === "done" ? "Ver resultado" : st === "going" ? "Tentar de novo" : "Fazer a prova", M.icon("arrow", 18)));
+  }
+  const soonCard = (x) => h("div", { class: "trail-card is-soon", "aria-label": x.title + " (em breve)" },
+    h("div", { class: "row row-between" }, h("span", { class: "chip chip-tag", text: "Trilha" }), h("span", { class: "chip", text: "Em breve" })),
+    h("h3", { text: x.title }), h("p", { class: "trail-tag", text: x.tagline || "" }), h("span", { class: "trail-cta muted", text: "Disponível em breve" }));
 
   M.views.home = async function () {
     const [, provas, forum] = await Promise.all([M.refreshMe(), M.loadProvas(), M.get("forum/recentes").catch(() => ({ items: [] }))]);
     const T = M.trailHelpers, p = M.session.progress, trails = M.trails();
-    const items = []; /* { f: filtro, g: grupo (0 ação, 1 linha do tempo, 2 convite), at, node } */
+    const forumItems = forum.items || [];
 
-    /* 1) o que fazer agora: trilhas em andamento (próxima aula ou prova) */
-    const going = trails.filter((t) => T.stateOfTrail(t) === "going" && T.nextStep(t)).sort((a, b) => T.lastActivity(b, p) - T.lastActivity(a, p));
-    going.forEach((t, i) => {
-      const ns = T.nextStep(t), v = M.tp(t), last = T.lastActivity(t, p);
-      const isExam = ns.kind === "exam";
-      items.push({ f: isExam ? "exam" : "go", g: 0, at: last, hero: i === 0, node: card({
-        kind: isExam ? "exam" : "resume", icon: isExam ? "flag" : "play", tone: isExam ? "exam" : "",
-        label: i === 0 ? "Continue de onde parou" : isExam ? "Prova liberada" : "Em andamento",
-        when: last ? "última atividade " + ago(last) : "", hero: i === 0,
-        title: ns.kind === "lesson" ? ns.title : ns.retry ? ns.title + ": refazer os erros" : ns.title,
-        text: `${t.title}${ns.mod ? " · Módulo " + ns.mod.n : ""}`,
-        pct: M.pct(v.lessonsDone, v.lessonsTotal),
-        cta: ns.kind === "lesson" ? "Continuar aula" : ns.retry ? "Refazer os erros" : "Fazer a prova", href: ns.href,
-      }) });
-    });
-    /* trilha concluída: certificado */
-    trails.filter((t) => T.stateOfTrail(t) === "done").forEach((t) => {
-      const fin = (p.history || []).find((x) => x.scope === M.finalScope(t) && x.outcome === "aprovado");
-      const at = fin?.at || T.lastActivity(t, p);
-      items.push({ f: "win", g: 1, at, node: card({ kind: "cert", icon: "cert", tone: "win", label: "Certificado liberado", when: ago(at),
-        title: t.title, text: fin?.pct ? `Aprovado na prova final com ${M.fmtPct ? M.fmtPct(fin.pct) : Math.round(fin.pct) + "%"}. Veja, imprima ou salve em PDF.` : "Aprovado na prova final. Veja, imprima ou salve em PDF.",
-        cta: "Ver certificado", href: "#/cert/" + t.id }) });
-    });
-
-    /* 2) provas avulsas que ainda não foram aprovadas */
-    provas.filter((pv) => pv.status !== "approved").forEach((pv) => {
-      items.push({ f: "exam", g: 0, at: 0, node: card({ kind: "prova", icon: "flag", tone: "exam", label: "Prova para fazer", when: pv.attempts ? `${pv.attempts} ${pv.attempts === 1 ? "tentativa" : "tentativas"}` : "",
-        title: pv.title, text: pv.description || "Prova avulsa liberada pela administração.",
-        meta: [`${pv.total} ${pv.total === 1 ? "questão" : "questões"}`, `nota mínima ${pv.passPct}%`], cta: pv.attempts ? "Tentar de novo" : "Fazer a prova", href: "#/prova/" + pv.id }) });
-    });
-
-    /* 3) linha do tempo: provas aprovadas e aulas concluídas recentemente */
-    (p.history || []).filter((x) => x.outcome === "aprovado").forEach((x) => {
-      if (M.trailOfFinal(x.scope)) return; /* a prova final já aparece como certificado */
-      const final = false;
-      const t = M.trailOfModule(x.scope);
-      if (!t) return;
-      items.push({ f: "win", g: 1, at: x.at, node: card({ kind: "pass", icon: "check", tone: "win", label: final ? "Prova final aprovada" : "Módulo aprovado", when: ago(x.at),
-        title: final ? t.title : `Módulo ${M.modulo(x.scope)?.n ?? ""}: ${M.modulo(x.scope)?.title ?? ""}`.trim(), text: `${t.title}${x.pct != null ? " · nota " + Math.round(x.pct) + "%" : ""}`,
-        cta: final ? "Ver certificado" : "Ver o módulo", href: final ? "#/cert/" + t.id : "#/m/" + x.scope }) });
-    });
-    const lessonOf = new Map();
-    for (const t of trails) for (const m of t.modules) for (const l of m.lessons) lessonOf.set(l.id, { t, m, l });
-    const groups = new Map();
-    for (const [id, ts] of Object.entries(p.lessons || {})) {
-      const ref = lessonOf.get(id), at = Number(ts) || 0;
-      if (!ref || !at || Date.now() - at > 14 * DAY) continue;
-      const day = new Date(at).toDateString() + "|" + ref.t.id;
-      const g = groups.get(day) || { t: ref.t, at: 0, n: 0, last: null };
-      g.n++; if (at > g.at) { g.at = at; g.last = ref; }
-      groups.set(day, g);
-    }
-    for (const g of groups.values()) {
-      items.push({ f: "win", g: 1, at: g.at, node: card({ kind: "lessons", icon: "book", label: g.n === 1 ? "Aula concluída" : `${g.n} aulas concluídas`, when: ago(g.at),
-        title: g.n === 1 ? g.last.l.title : g.t.title, text: g.n === 1 ? `${g.t.title} · Módulo ${g.last.m.n}` : `Última: ${g.last.l.title}`, href: "#/l/" + g.last.l.id }) });
+    /* atalho: a trilha em andamento mais recente (abre a trilha, não a aula) */
+    const going = trails.filter((t) => T.stateOfTrail(t) === "going" && T.nextStep(t)).sort((a, b) => T.lastActivity(b, p) - T.lastActivity(a, p))[0];
+    let resume = null;
+    if (going) {
+      const ns = T.nextStep(going), v = M.tp(going), last = T.lastActivity(going, p);
+      resume = h("section", { class: "panel next-card", "aria-label": "Continuar estudando" },
+        h("div", null,
+          h("span", { class: "chip chip-gold", text: ns.kind === "exam" ? "Prova liberada nesta trilha" : "Continue de onde parou" }),
+          h("h3", { style: "margin-top:12px", text: going.title }),
+          h("p", { class: "muted", style: "margin:6px 0 0", text: `${M.pct(v.lessonsDone, v.lessonsTotal)}% concluída${last ? " · última atividade " + ago(last) : ""}` })),
+        h("a", { class: "btn btn-gold", href: M.trailHref(going) }, "Abrir trilha", M.icon("arrow", 18)));
     }
 
-    /* 4) novidades do fórum */
-    (forum.items || []).forEach((f) => {
-      items.push({ f: "forum", g: 1, at: f.createdAt, node: card({ kind: "forum", icon: "chat", label: "Novo no fórum" + (f.category ? " · " + f.category : ""), when: ago(f.createdAt),
-        title: f.title, text: f.snippet, cta: "Ler no fórum", href: "#/forum/" + f.id }) });
-    });
+    /* itens do catálogo: trilhas, provas avulsas e trilhas "em breve", todas com categoria */
+    const catOf = (tag) => { const c = String(tag || "").trim(); return !c || c.toLowerCase() === "trilha" ? "Geral" : c; };
+    const items = [];
+    for (const t of trails) items.push({ kind: "trail", cat: M.catOfTrail(t), state: T.stateOfTrail(t), t, last: T.lastActivity(t, p) });
+    for (const pv of provas) items.push({ kind: "prova", cat: catOf(pv.tag === "Provas" ? "" : pv.tag), state: pv.status === "approved" ? "done" : pv.attempts ? "going" : "new", pv });
+    for (const x of window.PROXIMAS || []) items.push({ kind: "soon", cat: x.id && M.session.cats?.map?.[x.id] ? M.session.cats.map[x.id] : catOf(x.tag), state: "new", x });
+    const order = M.session.cats?.list || [];
+    const rank = (c) => (c === "Geral" ? 1e6 : order.indexOf(c) >= 0 ? order.indexOf(c) : 1e5);
+    const STATE_ORDER = { going: 0, new: 1, done: 2 };
+    const KIND_ORDER = { trail: 0, prova: 1, soon: 2 };
+    const cats = [...new Set(items.map((i) => i.cat))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b, "pt-BR"));
 
-    /* 5) trilhas para começar (e as anunciadas como "em breve") */
-    trails.filter((t) => T.stateOfTrail(t) === "new").forEach((t) => {
-      const v = M.tp(t);
-      items.push({ f: "new", g: 2, at: 0, node: card({ kind: "new", icon: "rocket", label: "Trilha para começar", when: M.catOfTrail(t) === "Geral" ? "" : M.catOfTrail(t),
-        title: t.title, text: t.tagline || t.subtitle || "",
-        meta: [`${t.modules.length} ${t.modules.length === 1 ? "módulo" : "módulos"}`, `${v.lessonsTotal} ${v.lessonsTotal === 1 ? "aula" : "aulas"}`, T.hoursText(T.minutesOf(t))],
-        cta: "Começar trilha", href: M.trailHref(t) }) });
-    });
-    (window.PROXIMAS || []).forEach((x) => {
-      items.push({ f: "new", g: 2, at: 0, node: card({ kind: "soon", icon: "book", label: "Em breve", title: x.title, text: x.tagline || "" }) });
-    });
-
-    items.sort((a, b) => a.g - b.g || b.at - a.at);
-
-    /* barra de filtros e lista */
     const list = h("div", { class: "fd-list" });
-    const bar = h("div", { class: "fd-filters", role: "tablist", "aria-label": "Filtrar o feed" });
+    const bar = h("div", { class: "fd-filters", role: "tablist", "aria-label": "Filtrar" });
+    const countOf = (k) => k === "all" ? items.length + forumItems.length : k === "forum" ? forumItems.length : k === "prova" ? items.filter((i) => i.kind === "prova").length : items.filter((i) => i.kind !== "soon" && i.state === k).length;
+    function section(title, nodes, href) {
+      return h("section", { class: "fd-sec" },
+        h("div", { class: "fd-sec-head" }, h("h3", { text: title }), h("span", { class: "muted small", text: `${nodes.length}` }), href ? h("a", { class: "small fd-sec-link", href }, "Ver categoria ", M.icon("arrow", 14)) : null),
+        h("div", { class: "trail-grid dense" }, nodes));
+    }
     function draw() {
-      const cur = M.feedFilter || "all";
+      const cur = M.feedFilter && FILTERS.some(([k]) => k === M.feedFilter && (k === "all" || countOf(k))) ? M.feedFilter : "all";
       bar.replaceChildren(...FILTERS.map(([k, label]) => {
-        const n = k === "all" ? items.length : items.filter((i) => i.f === k).length;
+        const n = countOf(k);
         if (k !== "all" && !n) return null;
         return h("button", { class: "fd-chip", type: "button", role: "tab", "aria-selected": String(cur === k), onclick: () => { M.feedFilter = k; draw(); } }, label, h("b", { text: String(n) }));
       }).filter(Boolean));
-      const show = items.filter((i) => cur === "all" || i.f === cur);
-      list.replaceChildren(...(show.length ? show.map((i) => i.node) : [h("div", { class: "empty" }, h("h3", { text: "Nada por aqui" }), h("p", { text: "Quando houver novidades nesta categoria, elas aparecem neste espaço." }))]));
+      const out = [];
+      if (cur !== "forum") {
+        const show = items.filter((i) => i.kind !== "soon" && (cur === "all" || (cur === "prova" ? i.kind === "prova" : i.state === cur)));
+        const pool = cur === "all" || cur === "new" ? [...show, ...items.filter((i) => i.kind === "soon")] : show;
+        for (const c of cats) {
+          const mine = pool.filter((i) => i.cat === c)
+            .sort((a, b) => (STATE_ORDER[a.state] - STATE_ORDER[b.state]) || (KIND_ORDER[a.kind] - KIND_ORDER[b.kind]) || ((b.last || 0) - (a.last || 0)));
+          if (!mine.length) continue;
+          out.push(section(c === "Geral" ? "Trilhas" : c, mine.map((i) => i.kind === "trail" ? trailCard(i.t) : i.kind === "prova" ? provaCard(i.pv) : soonCard(i.x)), c !== "Geral" ? catHref(c) : null));
+        }
+      }
+      if ((cur === "all" || cur === "forum") && forumItems.length) {
+        out.push(h("section", { class: "fd-sec" },
+          h("div", { class: "fd-sec-head" }, h("h3", { text: "Novidades do fórum" }), h("span", { class: "muted small", text: String(forumItems.length) })),
+          h("div", { class: "fd-forum" }, forumItems.map((f) => h("a", { class: "fd-forum-item", href: "#/forum/" + f.id },
+            h("span", { class: "fd-ico", "aria-hidden": "true" }, M.icon("chat", 18)),
+            h("div", null, h("strong", { text: f.title }), h("span", { class: "muted small", text: [f.category, ago(f.createdAt)].filter(Boolean).join(" · ") }), f.snippet ? h("p", { class: "fd-text small", text: f.snippet }) : null))))));
+      }
+      list.replaceChildren(...(out.length ? out : [h("div", { class: "empty" }, h("h3", { text: "Nada por aqui" }), h("p", { text: "Quando houver novidades neste filtro, elas aparecem aqui." }))]));
     }
     draw();
 
     /* atalhos do gestor */
     const pend = (M.session.pendingSignups || 0) + (M.session.pendingForum || 0);
     const admin = M.isAdmin() ? h("section", { class: "panel fd-admin", "aria-label": "Atalhos do gestor" },
-      h("div", null, h("b", { text: "Gestão" }), h("p", { class: "muted small", text: pend ? `${pend} ${pend === 1 ? "pendência aguarda" : "pendências aguardam"} a sua análise (cadastros e fórum).` : "Nada aguardando análise agora." })),
+      h("div", null, h("b", { text: "Gestão" }), h("p", { class: "muted small", text: pend ? `${pend} ${pend === 1 ? "pendência aguarda" : "pendências aguardam"} a sua análise (cadastros e fórum).` : "Nada esperando análise agora." })),
       h("div", { class: "row", style: "flex-wrap:wrap" },
         M.can("trilhas") ? h("a", { class: "btn btn-ghost btn-sm", href: "#/admin/trilhas" }, "Trilhas") : null,
         M.can("aprovar") ? h("a", { class: "btn btn-ghost btn-sm", href: "#/admin/aprovacoes" }, "Aprovações") : null,
@@ -184,8 +172,8 @@
     return h("div", { class: "fd" },
       h("div", { class: "page-head" },
         h("h2", { text: "Olá, " + M.firstName(M.session.user.name) }),
-        h("p", { text: "Este é o seu feed das trilhas: o que continuar, as provas liberadas, o que você já conquistou e as novidades do fórum." })),
-      admin, stats,
+        h("p", { text: "Suas trilhas por categoria. Abra uma trilha para ver os módulos e as aulas." })),
+      admin, resume, stats,
       hasAny ? bar : null,
       hasAny ? list : h("div", { class: "empty" }, h("h3", { text: "Nenhuma trilha liberada para você ainda" }), h("p", { text: "Quando a administração liberar uma trilha, ela aparece aqui." })));
   };
