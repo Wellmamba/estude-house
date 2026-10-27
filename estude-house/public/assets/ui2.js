@@ -5,7 +5,7 @@
   /* ───── Você: no celular, o que antes abria o menu lateral do PC ───── */
   M.views.voce = async function () {
     await M.refreshMe();
-    const u = M.session.user, e = M.session.engage || {};
+    const u = M.session.user;
     const isStaff = M.isAdmin();
     const row = (href, icon, text, sub, badge, onclick) => {
       const el = h(onclick ? "button" : "a", { class: "vrow", ...(onclick ? { type: "button" } : { href }) },
@@ -18,21 +18,18 @@
     const section = (title, ...rows) => h("section", { class: "vsec" }, title ? h("h3", { class: "vsec-h", text: title }) : null, h("div", { class: "vlist" }, rows.filter(Boolean)));
 
     const head = h("section", { class: "panel vhead" },
-      h("a", { href: M.profileHref(u), "aria-label": "Meu perfil" }, M.avatar(u, 64)),
+      h("a", { href: "#/conta", "aria-label": "Minha conta" }, M.avatar(u, 64)),
       h("div", { class: "vhead-info" },
         h("strong", { text: u.name }),
-        h("span", { class: "muted small", text: u.nickname ? "@" + u.nickname : u.email }),
+        h("span", { class: "muted small", text: u.email }),
         h("div", { class: "row", style: "gap:6px;margin-top:6px;flex-wrap:wrap" },
           isStaff ? h("span", { class: "chip chip-gold chip-xs", text: u.role === "subadmin" ? "Sub-adm" : "Gestor" }) : h("span", { class: "chip chip-xs", text: "Aluno" }),
-          u.role === "aluno" ? h("span", { class: "chip chip-gold chip-xs" }, M.icon("bolt", 12), `${e.xp || 0} XP`) : null,
-          u.role === "aluno" && e.streak > 0 ? h("span", { class: "chip chip-xs" }, M.icon("fire", 12), `${e.streak} ${e.streak === 1 ? "dia" : "dias"}`) : null)));
+          u.role === "aluno" ? h("span", { class: "chip chip-gold chip-xs" }, M.icon("bolt", 12), `${M.totalXp()} pts`) : null)));
 
     const mine = section("Meu espaço",
-      row("#/conta", "user", "Minha conta", "Foto, @ e senha"),
-      row(M.profileHref(u), "image", "Meu perfil e posts", "Como o time vê você"),
+      row("#/conta", "user", "Minha conta", "Foto e senha"),
       row("#/cert", "cert", "Certificados", "Trilhas concluídas"),
-      u.role === "aluno" ? row("#/forum/envios", "chat", "Dúvidas e sugestões", "Fale com os gestores") : null,
-      u.role === "aluno" ? row("#/ranking", "trophy", "Ranking", "Veja sua posição") : null);
+      u.role === "aluno" ? row("#/forum/envios", "chat", "Dúvidas e sugestões", "Fale com os gestores") : null);
 
     const push = M.pushRow ? M.pushRow() : null;
 
@@ -51,13 +48,13 @@
   };
 
   /* ───── arrastar para o lado troca de aba (celular) ───── */
-  const TABS = ["home", "reels", "trails", "rank", "voce"];
-  const HREF = { home: "#/", reels: "#/reels", trails: "#/trilhas", rank: "#/ranking", voce: "#/voce" };
+  const TABS = ["home", "trails", "search", "voce"];
+  const HREF = { home: "#/", trails: "#/trilhas", search: "#/busca", voce: "#/voce" };
   const mobileLayout = () => document.documentElement.getAttribute("data-mode") === "mobile" || matchMedia("(max-width: 860px)").matches;
   const blocked = (el) => {
     /* não rouba o gesto de listas que rolam para o lado, campos de texto, janelas e telas cheias */
     for (let n = el; n && n !== document.body; n = n.parentElement) {
-      if (n.matches?.("input, textarea, select, .dst-overlay, .stories, .modal, .dlg, .xp-drawer, .tour-layer, .notif-panel, .emoji-pop, .no-swipe")) return true;
+      if (n.matches?.("input, textarea, select, .stories, .modal, .dlg, .tour-layer, .notif-panel, .emoji-pop, .no-swipe")) return true;
       const cs = n.nodeType === 1 ? getComputedStyle(n) : null;
       if (cs && /(auto|scroll)/.test(cs.overflowX) && n.scrollWidth > n.clientWidth + 4) return true;
     }

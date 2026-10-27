@@ -1,4 +1,4 @@
-/* Texto do post (links, @pessoas, #tags) e anexos: imagem, vídeo, arquivo e link com visualização. */
+/* Texto do fórum (links e #assuntos), destaque de busca e envio de imagens. */
 (function () {
   const { h } = M;
 
@@ -18,7 +18,7 @@
         if (label.length > 44) label = label.slice(0, 42) + "…";
         frag.append(h("a", { href: tok, target: "_blank", rel: "noopener noreferrer nofollow", class: "rich-link", text: label }));
       } else if (m[2]) {
-        frag.append(h("a", { href: "#/u/" + tok.slice(1), class: "rich-mention", text: tok }), tail);
+        frag.append(document.createTextNode(tok + tail));
       } else {
         frag.append(h("a", { href: "#/busca?q=" + encodeURIComponent(tok), class: "rich-tag", text: tok }));
       }

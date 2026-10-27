@@ -142,7 +142,7 @@
     try { if (m) localStorage.setItem(MODE_KEY, m); else localStorage.removeItem(MODE_KEY); } catch {}
     location.reload(); // recarrega para o navegador reler o tamanho da tela
   };
-  M.BUILD = "2026-10-27-b"; // igual ao BUILD de netlify/functions/api.mjs
+  M.BUILD = "2026-10-28-a"; // igual ao BUILD de netlify/functions/api.mjs
   M.modeSwitch = function ({ label = true } = {}) {
     const cur = M.effectiveMode(), saved = M.getMode();
     const opt = (k, icon, text) => M.h("button", { type: "button", class: "mode-opt", "aria-pressed": String(cur === k), onclick: () => { if (saved !== k) M.setMode(k); } }, M.icon(icon, 18), M.h("span", { text }));
@@ -155,8 +155,8 @@
   /* endereços das telas principais */
   M.homeHref = "#/";
   M.trailsHref = "#/trilhas";
-  /* XP total = XP das trilhas + XP de engajamento */
-  M.totalXp = () => (M.session.progress?.xp || 0) + (M.session.engage?.xp || 0);
+  /* XP total = XP das trilhas (aulas, módulos e prova final) */
+  M.totalXp = () => M.session.progress?.xp || 0;
 
   /* ───── pessoas ───── */
   const AV = ["#6b3fa0", "#8a52c8", "#4d2c86", "#b07d12", "#7a4bb3", "#a35fd1", "#5a3a9e", "#c28a14"];
@@ -174,7 +174,6 @@
   };
   /* foto de perfil: recorte quadrado leve, servido pelo Cloudinary */
   M.avatarUrl = (url, px) => (String(url).includes("/image/upload/") ? String(url).replace("/image/upload/", `/image/upload/c_fill,g_auto,w_${px},h_${px},f_auto,q_auto/`) : url);
-  M.profileHref = (p) => "#/u/" + encodeURIComponent(p.nickname || p.id);
   M.timeAgo = function (ts) {
     const s = Math.max(0, (Date.now() - ts) / 1000);
     if (s < 60) return "agora";
@@ -240,12 +239,10 @@
   M.isFull = () => M.session.user?.role === "admin";
   M.can = (perm) => { const u = M.session.user; return !!u && (u.role === "admin" || (u.role === "subadmin" && (u.perms || []).includes(perm))); };
   M.PERMS = [
-    { k: "aprovar", label: "Aprovações", desc: "Aprovar cadastros e posts do feed" },
-    { k: "moderar", label: "Moderação", desc: "Remover posts e comentários, gerenciar tags e o filtro de palavras" },
-    { k: "publicar", label: "Publicar", desc: "Publicar direto no feed, criar enquetes, fixar posts, usar @todos e gerenciar os Destaques" },
+    { k: "aprovar", label: "Aprovações", desc: "Aprovar cadastros e entregar o código de ativação" },
+    { k: "publicar", label: "Avisos", desc: "Enviar avisos para o time (sino e aparelho)" },
     { k: "forum", label: "Fórum", desc: "Escrever o Fórum oficial e aprovar as dúvidas e sugestões dos alunos" },
-    { k: "trilhas", label: "Trilhas", desc: "Criar, editar, ativar e desativar trilhas e ver o banco de questões" },
-    { k: "engajamento", label: "Engajamento", desc: "Configurar XP, metas e regras de engajamento" },
+    { k: "trilhas", label: "Trilhas", desc: "Criar, editar, ativar e desativar trilhas e provas e ver o banco de questões" },
     { k: "usuarios", label: "Acessos e painel", desc: "Ver o painel, os alunos e os registros; criar acessos de aluno e zerar progresso" },
   ];
   M.roleLabel = (u) => (u?.master ? "Master" : u?.role === "admin" ? "Administrador" : u?.role === "subadmin" ? "Sub-administrador" : "Aluno");

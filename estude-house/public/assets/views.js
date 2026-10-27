@@ -12,7 +12,7 @@
     M.session.user = d.user; M.session.progress = d.progress; M.session.rules = d.rules; M.session.inactive = d.inactive || []; M.session.restricted = d.restricted || []; M.session.cats = d.cats || { list: [], map: {} }; M.session.hidden = d.hidden || [];
     if (changed) M.resetShell();
     try { await M.syncCustomTrails(d.ctv); } catch (e) { console.warn("trilhas criadas não carregaram", e); }
-    M.session.engage = d.engage || { xp: 0, streak: 0, checkedToday: false }; M.session.pending = d.pending || 0; M.session.pendingSignups = d.pendingSignups || 0; M.session.pendingForum = d.pendingForum || 0; M.session.unread = d.unread || 0; M.session.destaques = d.destaques || 0;
+    M.session.pendingSignups = d.pendingSignups || 0; M.session.pendingForum = d.pendingForum || 0; M.session.unread = d.unread || 0;
     if (M.updateBell) M.updateBell();
     return d;
   };
@@ -107,11 +107,9 @@
 
   /* ───── menu do gestor em grupos: cada grupo vira um menu recolhível e uma faixa de abas no topo da tela ───── */
   M.adminGroups = () => [
-    { id: "com", label: "Comunidade", icon: "chat", items: [
+    { id: "com", label: "Comunicação", icon: "chat", items: [
       { key: "admin-approve", href: "#/admin/aprovacoes", icon: "flag", text: "Aprovações", perm: "aprovar", badge: true },
       { key: "admin-forum", href: "#/admin/forum", icon: "chat", text: "Fórum", perm: "forum", badge: true },
-      { key: "admin-tags", href: "#/admin/tags", icon: "tag", text: "Tags e moderação", perm: "moderar" },
-      { key: "admin-times", href: "#/admin/times", icon: "users", text: "Times e comunidades", perm: "usuarios" },
       { key: "admin-avisos", href: "#/admin/avisos", icon: "bell", text: "Avisos", perm: "publicar" },
     ] },
     { id: "cont", label: "Conteúdo", icon: "book", items: [
@@ -121,11 +119,10 @@
     ] },
     { id: "pes", label: "Pessoas", icon: "users", items: [
       { key: "admin-users", href: "#/admin/usuarios", icon: "users", text: "Acessos", perm: "usuarios" },
-      { key: "admin-engage", href: "#/admin/engajamento", icon: "bolt", text: "Engajamento", perm: "engajamento" },
       { key: "admin-logs", href: "#/admin/logs", icon: "list", text: "Logs", perm: "usuarios" },
     ] },
   ].map((g) => ({ ...g, items: g.items.filter((i) => M.can(i.perm)) })).filter((g) => g.items.length);
-  M.adminBadge = (key) => (key === "admin-approve" ? (M.session.pending || 0) + (M.session.pendingSignups || 0) : key === "admin-forum" ? M.session.pendingForum || 0 : 0);
+  M.adminBadge = (key) => (key === "admin-approve" ? M.session.pendingSignups || 0 : key === "admin-forum" ? M.session.pendingForum || 0 : 0);
   const grpState = () => { try { return JSON.parse(localStorage.getItem("eh-grp") || "{}"); } catch { return {}; } };
   const grpSave = (st) => { try { localStorage.setItem("eh-grp", JSON.stringify(st)); } catch {} };
 
@@ -150,10 +147,9 @@
     const link = (key, href, icon, text, badge) => h("a", { href, "data-key": key }, M.icon(icon), h("span", { text }), badge ? h("span", badge === "dst" ? { class: "nav-badge", "data-dst-badge": "", hidden: true } : { class: "nav-badge", hidden: true }) : null);
     const nav = h("nav", { class: "nav", "aria-label": "Principal" },
       h("div", { class: "nav-sep", text: "Estudos" }),
-      link("home", "#/", "home", "Feed", "dst"),
-      link("reels", "#/reels", "reels", "Reels"),
+      link("home", "#/", "home", "Feed"),
       link("trails", "#/trilhas", "book", "Trilhas"),
-      link("rank", "#/ranking", "trophy", "Ranking"),
+      link("search", "#/busca", "search", "Busca"),
       u.role === "aluno" ? link("forum-envios", "#/forum/envios", "chat", "Dúvidas e sugestões") : null,
       link("cert", "#/cert", "cert", "Certificados"),
       h("div", { class: "nav-sep", text: "Sua conta" }),
@@ -186,15 +182,14 @@
     });
     side.addEventListener("click", (e) => { if (e.target.closest("a")) setDrawer(false); });
     const crumbs = h("div", { class: "crumbs" });
-    const xp = h("button", { class: "chip chip-gold xp-btn", type: "button", "aria-label": "Abrir meu XP, check-in e metas", onclick: () => M.openXp() }, M.icon("bolt", 16), h("span", { class: "xp-val" }));
-    const sInput = h("input", { type: "search", placeholder: "Buscar pessoas, posts e aulas", "aria-label": "Buscar no sistema", enterkeyhint: "search" });
+    const sInput = h("input", { type: "search", placeholder: "Buscar aulas, trilhas e o fórum", "aria-label": "Buscar no sistema", enterkeyhint: "search" });
     const search = h("form", { class: "top-search", role: "search" }, M.icon("search", 18), sInput);
     search.addEventListener("submit", (e) => { e.preventDefault(); const v = sInput.value.trim(); if (v) location.hash = "#/busca?q=" + encodeURIComponent(v); });
-    const topBrand = h("a", { class: "top-brand", href: "#/", "aria-label": "BRYANT SHOOT: ir para o Feed" },
+    const topBrand = h("a", { class: "top-brand", href: "#/", "aria-label": "BRYANT SHOOT: ir para o Feed das trilhas" },
       h("span", { class: "brand-mark" }, svg(M.ballSvg(22))),
       h("span", { text: "BRYANT SHOOT" }));
     const searchBtn = h("a", { class: "icon-btn top-search-btn", href: "#/busca", "aria-label": "Buscar" }, M.icon("search", 22));
-    const top = h("header", { class: "top" }, menuBtn, topBrand, crumbs, h("span", { class: "spacer" }), search, searchBtn, M.bell(), xp);
+    const top = h("header", { class: "top" }, menuBtn, topBrand, crumbs, h("span", { class: "spacer" }), search, searchBtn, M.bell());
     const page = h("div", { class: "page", id: "main", tabindex: "-1" });
     const main = h("main", { class: "main" }, top, page);
 
@@ -205,11 +200,11 @@
       h("span", { class: "tab-ico" }, M.avatar(u, 28), h("i", { class: "tab-dot", "data-me-badge": "", hidden: true })), h("span", { class: "tab-txt", text: "Você" }));
     const setDrawer = (open) => { side.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", String(open)); };
     const tabbar = h("nav", { class: "tabbar", "aria-label": "Navegação do celular" },
-      tab("home", "#/", "home", "Feed", true), tab("reels", "#/reels", "reels", "Reels"), tab("trails", "#/trilhas", "book", "Trilhas"), tab("rank", "#/ranking", "trophy", "Ranking"), meTab);
+      tab("home", "#/", "home", "Feed"), tab("trails", "#/trilhas", "book", "Trilhas"), tab("search", "#/busca", "search", "Busca"), meTab);
     const root = h("div", { class: "shell" }, side, main, tabbar);
     root.addEventListener("click", (e) => { if (side.classList.contains("open") && !side.contains(e.target) && !menuBtn.contains(e.target)) setDrawer(false); });
     M.mount(root);
-    return { root, side, nav, crumbs, xp, page, tabbar, meTab };
+    return { root, side, nav, crumbs, page, tabbar, meTab };
   }
 
   /* soma das pendências de cada grupo, para o gestor ver sem abrir o menu */
@@ -226,10 +221,6 @@
   }
   M.paintGroupBadges = paintGroupBadges;
 
-  M.updateXpChip = function () {
-    const v = shell?.xp?.querySelector(".xp-val");
-    if (v) v.textContent = M.session.progress ? `${M.totalXp()} XP` : "";
-  };
   M.setPage = function (key, crumbParts, node, { wide = false } = {}) {
     if (!shell || !document.body.contains(shell.root)) shell = buildShell();
     const hashPath = (location.hash || "#/").split("?")[0];
@@ -245,20 +236,17 @@
       const el = c.href ? h("a", { href: c.href, text: c.text }) : h("span", { text: c.text });
       return i ? [" / ", el] : [el];
     }));
-    M.updateXpChip();
     shell.tabbar.querySelectorAll("a.tab").forEach((a) => { if (a.dataset.key === key) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
     const meKeys = /^(conta|cert|admin|voce|forum-envios)/.test(key);
     if (meKeys) { shell.meTab.setAttribute("data-on", ""); shell.meTab.setAttribute("aria-current", "page"); } else { shell.meTab.removeAttribute("data-on"); shell.meTab.removeAttribute("aria-current"); }
-    if (M.paintBadges) M.paintBadges();
     const badge = shell.nav.querySelector('[data-key="admin-approve"] .nav-badge');
-    const nPend = (M.session.pending || 0) + (M.session.pendingSignups || 0);
+    const nPend = M.session.pendingSignups || 0;
     if (badge) { badge.hidden = !(nPend > 0); badge.textContent = String(nPend || ""); }
     const fBadge = shell.nav.querySelector('[data-key="admin-forum"] .nav-badge');
     if (fBadge) { const n = M.session.pendingForum || 0; fBadge.hidden = !(n > 0); fBadge.textContent = String(n || ""); }
-    shell.page.className = "page" + (wide ? " page-wide" : "") + (key === "reels" ? " page-reels" : "");
+    shell.page.className = "page" + (wide ? " page-wide" : "");
     const strip = key.startsWith("admin") ? adminStrip() : null;
     shell.page.replaceChildren(...(strip ? [strip, node] : [node]));
-    document.body.classList.toggle("is-reels", key === "reels");
     paintGroupBadges();
     window.scrollTo(0, 0);
     shell.page.focus({ preventScroll: true });
@@ -418,6 +406,7 @@
     if (v.lessonsDone > 0 || v.modulesApproved > 0) return "going";
     return "new";
   }
+  M.trailHelpers = { nextStep, minutesOf, hoursText, lastActivity, stateOfTrail };
   const STATE_CHIP = { done: ["chip chip-good", "Concluída"], going: ["chip chip-gold", "Em andamento"], new: ["chip", "Não iniciada"] };
 
   /* ───── início: menu de trilhas ───── */
@@ -583,7 +572,7 @@
         stat(`${doneTrails}/${trails.length}`, trails.length === 1 ? "trilha concluída" : "trilhas concluídas"),
         stat(lessons, "aulas concluídas"),
         stat(mods, "módulos aprovados"),
-        stat(M.totalXp(), "pontos de experiência")),
+        stat(M.totalXp(), "pontos de trilha")),
       h("div", { class: "cat-bar" }, h("div", { class: "cat-tools" }, h("div", { class: "cat-search" }, M.icon("search", 18), search), stateSel)),
       result);
   };
@@ -608,7 +597,7 @@
     const stats = h("div", { class: "grid grid-4" },
       stat(`${done}/${total}`, "aulas concluídas"),
       stat(`${approved}/${t.modules.length}`, "módulos aprovados"),
-      stat(M.totalXp(), "pontos de experiência"),
+      stat(M.totalXp(), "pontos de trilha"),
       stat(v.finalStatus === "approved" ? "Aprovado" : v.finalUnlocked ? "Liberada" : "Bloqueada", "prova final", true));
 
     const modList = h("div", { class: "mod-list" }, t.modules.map((m, i) => {
@@ -743,11 +732,8 @@
         h("p", { style: "margin:0" }, h("strong", { text: u.name }), h("br"), h("span", { class: "muted", text: u.email })),
         h("p", { style: "margin:12px 0 0" }, h("span", { class: "chip " + (u.role !== "aluno" ? "chip-gold" : ""), text: M.roleLabel(u) }))),
       h("section", { class: "panel" }, h("h3", { text: "Foto de perfil" }),
-        h("p", { class: "muted small", style: "margin:0 0 12px", text: "Sua foto aparece nos posts, comentários, ranking e busca." }),
+        h("p", { class: "muted small", style: "margin:0 0 12px", text: "Sua foto aparece no sino, no fórum e nas telas da administração." }),
         M.avatarForm()),
-      h("section", { class: "panel" }, h("h3", { text: "Seu @ no feed" }),
-        h("p", { class: "muted small", style: "margin:0 0 12px", text: "O @ é o seu nome de usuário: o time te encontra na busca e te marca nos posts. Dá para trocar uma vez a cada 7 dias." }),
-        M.nickForm()),
       M.pushCard ? M.pushCard() : null,
       h("section", { class: "panel" }, h("h3", { text: "Tour guiado" }),
         h("p", { class: "muted small", style: "margin:0 0 12px", text: "Um passeio rápido mostrando onde fica cada coisa no BRYANT SHOOT." }),

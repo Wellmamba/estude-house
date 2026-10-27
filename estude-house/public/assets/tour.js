@@ -1,5 +1,5 @@
 /* Tour guiado do primeiro acesso: destaca partes da tela, uma por vez, com um cartão explicando.
-   Abre sozinho na primeira vez que a pessoa chega ao Feed e pode ser revisto em "Minha conta".
+   Abre sozinho na primeira vez que a pessoa chega ao Feed das trilhas e pode ser revisto em "Minha conta".
    Funciona no celular e no computador: cada passo tenta vários seletores e usa o primeiro que está visível. */
 (function () {
   const { h } = M;
@@ -12,27 +12,22 @@
     const staff = M.isAdmin();
     const list = [
       { emoji: "🏀", title: `Bem-vindo, ${M.firstName(u.name || "")}!`, text: "Este é o BRYANT SHOOT, o ambiente de estudos da Mamba. Em 1 minuto eu te mostro onde fica cada coisa. Dá para sair quando quiser.", route: "#/" },
-      { title: "Feed: o mural do time", text: "Posts, avisos, fotos e vídeos da equipe. Marque colegas com @, comente e reaja. Seu @ e sua foto você escolhe em Minha conta. Use os botões Curiosidade, Case, Dica e Conquista para postar mais rápido. No celular, arraste a tela para o lado para trocar de aba.", sel: [SIDE("home"), TAB("home")], route: "#/" },
-      { title: "Reels", text: "Vídeos do time dos últimos 30 dias, um por vez, como no Instagram. Eles tocam sozinhos por até 30 segundos; arraste para cima para o próximo, dê hype e toque em “Ir para o post” para ver mais.", sel: [SIDE("reels"), TAB("reels")] },
-      { title: "Destaques", text: "As bolinhas no topo do Feed são os Stories da equipe: novidades, metas e dicas. Bolinha com anel colorido é novidade. Assistir até o último card ganha XP.", sel: [".dst-bar .dst-item:not(.is-add)", ".dst-bar"], route: "#/", optional: true },
+      { title: "Feed das trilhas", text: "A sua tela inicial. Mostra de onde continuar a aula, as provas liberadas, as trilhas para começar, o que você já conquistou e as novidades do fórum. Os filtros no topo separam cada tipo.", sel: [".fd-list", ".fd"], route: "#/", optional: true },
       { title: "Trilhas: onde você estuda", text: "Cada trilha tem aulas em formato Stories, quizzes, prova por módulo e uma prova final que libera o certificado.", sel: [SIDE("trails"), TAB("trails")] },
       { title: "Categorias e busca", text: "Com muitas trilhas, escolha uma categoria e veja quais trilhas ela tem. Também dá para buscar pelo nome e filtrar o que está em andamento. Provas liberadas para você aparecem aqui.", sel: [".cat-bar"], route: "#/trilhas", optional: true },
-      { title: "Ranking", text: "Veja como o time está indo. Aulas, provas, check-in diário e participação no Feed dão XP.", sel: [SIDE("rank"), TAB("rank")] },
-      { title: "Seu XP e check-in", text: "Toque aqui para ver seu XP, fazer o check-in do dia e acompanhar suas metas.", sel: [".xp-btn"] },
-      { title: "Busca", text: "Procure pessoas, posts, aulas e dúvidas de qualquer lugar do sistema.", sel: [".top-search", TAB("search")] },
-      { title: "Notificações", text: "O sino pula quando há novidade: alguém marcou você, comentou no seu post, aprovou algo seu ou liberou uma prova. Em Você > Avisos neste aparelho dá para receber isso também no celular e no computador, mesmo com o site fechado.", sel: [".bell-btn"] },
+      { title: "Busca", text: "Procure aulas, módulos, trilhas e publicações do fórum de qualquer lugar do sistema.", sel: [".top-search", TAB("search")] },
+      { title: "Notificações", text: "O sino pula quando há novidade: um aviso da equipe, uma prova liberada ou a resposta a uma dúvida sua. Em Minha conta dá para receber isso também no celular e no computador, mesmo com o site fechado.", sel: [".bell-btn"] },
     ];
-    if (u.role === "aluno") list.push({ title: "Dúvidas e sugestões", text: "Mandou uma dúvida ou ideia? Os gestores analisam, e o que for útil vira publicação para todo mundo. No celular, fica no menu Você.", sel: [SIDE("forum-envios"), ME_TAB] });
+    if (u.role === "aluno") list.push({ title: "Dúvidas e sugestões", text: "Mandou uma dúvida ou ideia? Os gestores analisam, e o que for útil vira publicação do fórum para todo mundo. No celular, fica no menu Você.", sel: [SIDE("forum-envios"), ME_TAB] });
     list.push(
       { title: "Certificados", text: "Ao passar na prova final de uma trilha, o certificado fica disponível aqui. No celular, fica no menu Você.", sel: [SIDE("cert"), ME_TAB] },
-      { title: "Minha conta", text: "Escolha seu @, sua foto e a senha. Aqui você também troca entre tela de celular e de computador e pode rever este tour.", sel: [SIDE("conta"), ME_TAB] });
+      { title: "Minha conta", text: "Escolha sua foto e troque a senha. Aqui você também alterna entre tela de celular e de computador e pode rever este tour.", sel: [SIDE("conta"), ME_TAB] });
     if (staff) {
-      if (M.can("publicar")) list.push({ title: "Gestor: novo destaque", text: "O botão + cria um destaque. Você escolhe quanto tempo ele fica no ar (24 horas, 1 semana ou para sempre), pode pôr enquete em qualquer card e até acrescentar cards numa bolinha que já existe.", sel: [".dst-item.is-add"], route: "#/", optional: true });
       if (M.can("trilhas")) list.push({ title: "Gestor: trilhas e provas", text: "Em Gestão de trilhas você cria e edita trilhas, cria provas avulsas, escolhe quais alunos veem cada uma e acompanha os resultados.", sel: [SIDE("admin-trails"), '.nav-grp[data-grp="cont"] .nav-grp-h', ME_TAB] });
-      if (M.can("publicar")) list.push({ title: "Gestor: avisos para o time", text: "Em Comunidade > Avisos você manda uma notificação para o sininho e para o celular e o computador de quem ativou os avisos. Há ideias prontas de mensagem.", sel: [SIDE("admin-avisos"), '.nav-grp[data-grp="com"] .nav-grp-h', ME_TAB] });
-      if (M.can("aprovar")) list.push({ title: "Gestor: aprovações", text: "Novos cadastros e posts esperando liberação aparecem aqui, com o número de pendências.", sel: [SIDE("admin-approve"), '.nav-grp[data-grp="com"] .nav-grp-h', ME_TAB] });
+      if (M.can("publicar")) list.push({ title: "Gestor: avisos para o time", text: "Em Comunicação > Avisos você manda uma notificação para o sininho e para o celular e o computador de quem ativou os avisos. Há ideias prontas de mensagem.", sel: [SIDE("admin-avisos"), '.nav-grp[data-grp="com"] .nav-grp-h', ME_TAB] });
+      if (M.can("aprovar")) list.push({ title: "Gestor: aprovações", text: "Os cadastros novos esperando liberação aparecem aqui, com o número de pendências. Ao aprovar, você entrega o código de ativação.", sel: [SIDE("admin-approve"), '.nav-grp[data-grp="com"] .nav-grp-h', ME_TAB] });
     }
-    list.push({ emoji: "🏆", title: "Tudo pronto!", text: "Comece pelas trilhas: é lá que o XP começa a render. Para rever este tour depois, vá em Minha conta.", final: true });
+    list.push({ emoji: "🏆", title: "Tudo pronto!", text: "Comece pelo Feed ou direto pelas trilhas. Para rever este tour depois, vá em Minha conta.", final: true });
     return list;
   }
 

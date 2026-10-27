@@ -72,7 +72,7 @@
       const sub = r ? await r.pushManager.getSubscription().catch(() => null) : null;
       if (sub) { try { await M.post("push/unsubscribe", { endpoint: sub.endpoint }); } catch {} }
     },
-    /* mostra o convite no Feed: só se ainda não decidiu, e no máximo uma vez a cada 7 dias depois de dispensar */
+    /* mostra o convite no Feed das trilhas: só se ainda não decidiu, e no máximo uma vez a cada 7 dias depois de dispensar */
     async shouldAsk() {
       if (!supported() || Notification.permission !== "default") return false;
       try { const at = Number(localStorage.getItem("eh-push-ask") || 0); if (at && Date.now() - at < 7 * 864e5) return false; } catch {}
@@ -162,10 +162,10 @@
 
   /* ───── gestor: enviar aviso para o time ───── */
   const IDEAS = [
-    { t: "🎬 Vídeo novo nos Reels", b: "Acabou de entrar um vídeo novo. Dá 30 segundos e dá o seu hype!", u: "#/reels" },
-    { t: "🏆 Desafio da semana", b: "Quem bater a meta da semana ganha destaque no ranking. Bora?", u: "#/ranking" },
-    { t: "📚 Trilha nova liberada", b: "Uma trilha nova está disponível. Comece hoje e ganhe XP.", u: "#/trilhas" },
-    { t: "💡 Compartilhe um case", b: "Tem um resultado para contar? Poste no Feed e ganhe XP quando for aprovado.", u: "#/" },
+    { t: "📚 Trilha nova liberada", b: "Uma trilha nova está disponível. Comece hoje e avance no seu ritmo.", u: "#/trilhas" },
+    { t: "📝 Prova liberada", b: "Tem prova esperando por você. Abra o Feed e faça quando puder.", u: "#/" },
+    { t: "💬 Novo no fórum", b: "Saiu uma publicação nova no fórum. Vale a leitura.", u: "#/busca" },
+    { t: "🎓 Concluir a trilha", b: "Falta pouco para o certificado. Retome de onde parou.", u: "#/" },
     { t: "📣 Reunião do time", b: "Hoje às 16h. Traga seus números e dúvidas.", u: "#/" },
   ];
   M.views.adminAvisos = async function () {
@@ -173,7 +173,7 @@
     let stats = await M.get("admin/push");
     const title = h("input", { class: "input", id: "av-t", maxlength: "60", placeholder: "Título curto (aparece em negrito)", required: true });
     const text = h("textarea", { class: "textarea", id: "av-b", rows: "3", maxlength: "160", placeholder: "Mensagem (até 160 letras)", style: "font-family:var(--body)" });
-    const dest = h("select", { class: "select", id: "av-u" }, [["#/", "Feed"], ["#/reels", "Reels"], ["#/trilhas", "Trilhas"], ["#/ranking", "Ranking"], ["#/forum/envios", "Dúvidas e sugestões"]].map(([v, t]) => h("option", { value: v, text: t })));
+    const dest = h("select", { class: "select", id: "av-u" }, [["#/", "Feed das trilhas"], ["#/trilhas", "Trilhas"], ["#/busca", "Busca"], ["#/forum/envios", "Dúvidas e sugestões"]].map(([v, t]) => h("option", { value: v, text: t })));
     const aud = h("select", { class: "select", id: "av-a" }, [["todos", "Todo o time"], ["alunos", "Só alunos"], ["gestores", "Só gestores"]].map(([v, t]) => h("option", { value: v, text: t })));
     const count = h("span", { class: "muted small" });
     const upd = () => { count.textContent = `${text.value.length}/160`; };
