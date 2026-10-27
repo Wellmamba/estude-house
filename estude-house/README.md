@@ -83,6 +83,8 @@ Upload de foto, vídeo e arquivo usa o Cloudinary (variáveis `CLOUDINARY_CLOUD_
 ## Destaques e Fórum
 Destaques (Stories permanentes, só gestor posta, aluno assiste e ganha XP) e Fórum de listas úteis (só aparece na busca para o aluno). Destaques no formato Instagram (anel com a foto de quem postou, vídeo automático, gestor adiciona cartões, edita e converte em post do Feed) e botão que importa 90 publicações do manual do suporte para o Fórum. Veja `GUIA-DESTAQUES-E-FORUM.md`. A tela inicial agora se chama **Feed** e, no celular, tem menu inferior no estilo Instagram.
 
+**Comunidades por times:** a gestão cadastra os times (nome, cor, brasão ou bandeira), define o time de cada aluno e, ao publicar, escolhe quem vê o post (todos ou só um time). Veja `GUIA-COMUNIDADES-POR-TIME.md`.
+
 ## Sub-administrador e Fórum do aluno
 O administrador transforma um perfil em **Sub-adm** e marca as permissões (aprovações, moderação, publicar, fórum, trilhas, engajamento, acessos). O aluno envia **dúvidas e sugestões**; o gestor aprova (vira publicação do fórum oficial) ou reprova com motivo (volta ao aluno, que pode reenviar). O balão do check-in sai do feed depois de marcado. Veja `GUIA-SUBADM-E-FORUM-DO-ALUNO.md`.
 

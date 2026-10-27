@@ -311,7 +311,7 @@ console.log("Notificações e @");
 console.log("Atualização ao vivo (feed/pulse)");
 {
   let r = await call("GET", "feed/pulse", { token: ana.token });
-  assert.equal(r.status, 200); assert.ok(r.data.top.startsWith("pub:")); const base = r.data.top;
+  assert.equal(r.status, 200); assert.ok(/^\d{13}:/.test(r.data.top)); const base = r.data.top;
   r = await call("GET", "feed/pulse?since=" + encodeURIComponent(base), { token: ana.token });
   assert.equal(r.data.fresh, 0); ok("sem post novo, a sondagem diz 0");
   await publish({ text: "Novo 1" }); await publish({ text: "Novo 2" });
