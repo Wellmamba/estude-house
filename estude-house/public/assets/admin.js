@@ -96,8 +96,18 @@
   }
 
   /* ───── acessos ───── */
+  /* seletor de time (comunidade): value = id do time ou "" (sem time) */
+  const teamSelect = (value, attrs = {}) => {
+    const s = h("select", { class: "select", "aria-label": "Time (comunidade)", ...attrs }, h("option", { value: "", text: "Sem time" }),
+      M.teamsNow().map((t) => h("option", { value: t.id, text: (t.emoji ? t.emoji + " " : "") + t.name })));
+    s.value = M.teamsNow().some((t) => t.id === value) ? value : "";
+    return s;
+  };
+  const teamOf = (id) => (id ? M.teamsNow().find((t) => t.id === id) || null : null);
+
   M.views.adminUsers = async function () {
     const g = guard("usuarios"); if (g) return g;
+    await M.loadTeams(true).catch(() => []);
     let users = (await M.get("admin/users")).users;
     let q = "", role = "";
     const holder = h("div");
@@ -116,7 +126,7 @@
         h("thead", null, h("tr", null, ["Pessoa", "Perfil", "Aulas", "Módulos", "Final", "XP", "Último acesso", ""].map((t) => h("th", { text: t })))),
         h("tbody", null, rows.map((u) => h("tr", null,
           h("td", { class: "who" }, h("b", { text: u.name }), h("span", { text: (u.nickname ? "@" + u.nickname + " · " : "") + u.email })),
-          h("td", null, roleChip(u), u.role === "subadmin" ? h("span", { class: "muted small", style: "margin-left:6px", text: `${(u.perms || []).length} permissões` }) : null, u.active ? null : h("span", { class: "chip chip-bad", style: "margin-left:6px", text: "Desativado" })),
+          h("td", null, roleChip(u), teamOf(u.team) ? h("span", { style: "margin-left:6px" }, M.teamChip(teamOf(u.team), { link: false })) : null, u.role === "subadmin" ? h("span", { class: "muted small", style: "margin-left:6px", text: `${(u.perms || []).length} permissões` }) : null, u.active ? null : h("span", { class: "chip chip-bad", style: "margin-left:6px", text: "Desativado" })),
           h("td", { text: `${u.trails[t.id]?.lessonsDone ?? 0}/${M.totalLessons(t)}` }), h("td", { text: `${u.trails[t.id]?.modulesApproved ?? 0}/${t.modules.length}` }),
           h("td", null, finalChip(u.trails[t.id]?.finalStatus)), h("td", { text: u.xp }), h("td", { class: "small", text: M.fmtDateTime(u.lastLoginAt) }),
           h("td", null, h("a", { class: "btn btn-ghost btn-sm", href: "#/admin/usuarios/" + u.id }, "Abrir"))))))) : h("div", { class: "empty", text: "Nenhum acesso encontrado com esse filtro." }));
@@ -131,9 +141,12 @@
           M.isFull() ? h("option", { value: "admin", text: "Administrador (igual ao master)" }) : null);
         const pe = permsEditor([]);
         pe.node.hidden = true;
-        roleSel.addEventListener("change", () => { pe.node.hidden = roleSel.value !== "subadmin"; });
+        const teamSel = teamSelect("", { id: "n-team", name: "team" });
+        const teamField = h("div", { class: "field", hidden: !M.teamsNow().length }, h("label", { for: "n-team", text: "Time (comunidade)" }), teamSel, h("span", { class: "hint", text: "O aluno vê o feed geral e os posts da comunidade do time dele." }));
+        roleSel.addEventListener("change", () => { pe.node.hidden = roleSel.value !== "subadmin"; teamField.hidden = roleSel.value !== "aluno" || !M.teamsNow().length; });
         const form = h("form", { novalidate: true }, f("name", "Nome completo", "text", { required: true }), f("email", "E-mail", "email", { required: true }),
           h("div", { class: "field" }, h("label", { for: "n-role", text: "Perfil" }), roleSel),
+          teamField,
           pe.node,
           h("div", { class: "field" }, h("label", { for: "n-password", text: "Senha inicial (opcional)" }), h("input", { class: "input", id: "n-password", name: "password", type: "text", autocomplete: "off" }), h("span", { class: "hint", text: "Deixe em branco para gerar uma senha automática." })),
           err,
@@ -197,6 +210,7 @@
   M.views.adminUser = async function (id) {
     const g = guard("usuarios"); if (g) return g;
     try { await M.refreshMe(); } catch {}
+    await M.loadTeams(true).catch(() => []);
     const box = h("div");
     /* o que está aberto some do estado a cada recarga (liberar trilha recarrega a tela): guardo aqui */
     const opened = new Set();
@@ -229,7 +243,8 @@
             h("p", { class: "uhero-mail", text: u.email }),
             h("div", { class: "row" }, h("span", { class: "chip " + (u.role !== "aluno" ? "chip-gold" : ""), text: M.roleLabel(u) }),
               u.active ? h("span", { class: "chip chip-good", text: "Ativo" }) : h("span", { class: "chip chip-bad", text: "Desativado" }),
-              u.nickname ? h("a", { class: "chip", href: M.profileHref(u), text: "@" + u.nickname }) : null),
+              u.nickname ? h("a", { class: "chip", href: M.profileHref(u), text: "@" + u.nickname }) : null,
+              teamOf(u.team) ? M.teamChip(teamOf(u.team), { link: false }) : null),
             h("p", { class: "muted small", style: "margin:8px 0 0", text: "Criado em " + M.fmtDate(u.createdAt) })),
           h("div", { class: "uhero-stats" }, [
             ["XP", u.xp], ["Aulas feitas", u.lessonsDone || 0],
@@ -238,6 +253,11 @@
             h("div", { class: "ustat" }, h("strong", { text: String(v) }), h("span", { text: k }))))),
         h("div", { class: "acc-bar" }, h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Abrir tudo", onclick: () => box.querySelectorAll("details.acc").forEach((x) => { x.open = true; }) }),
           h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Recolher tudo", onclick: () => box.querySelectorAll("details.acc, details.acc-in").forEach((x) => { x.open = false; }) })),
+        u.role === "aluno" && (M.teamsNow().length || u.team) ? acc("team", "Comunidade (time)", teamOf(u.team)?.name || "Sem time",
+          h("p", { class: "muted small", style: "margin:0 0 10px", text: "O aluno vê o feed geral e os posts publicados só para a comunidade do time dele." }),
+          (() => { const s = teamSelect(u.team || "", { id: "u-team", style: "width:auto", disabled: noTouch });
+            s.addEventListener("change", () => act(() => M.api("PATCH", "admin/users/" + id, { team: s.value || null }), s.value ? "Time definido." : "Aluno sem time."));
+            return h("div", { class: "row" }, s, M.teamsNow().length ? null : h("a", { class: "small", href: "#/admin/times" }, "Cadastrar times")); })()) : null,
         pe ? acc("perms", "Permissões do sub-administrador", `${(u.perms || []).length} marcadas`,
           h("p", { class: "muted small", style: "margin:0 0 10px", text: "Marque só o que esta pessoa precisa. A mudança vale na próxima vez que ela abrir uma página." }),
           pe.node,
@@ -429,6 +449,7 @@
 
   async function signupsSection() {
     const box = h("section", { class: "panel" });
+    await M.loadTeams(true).catch(() => []);
     async function load() {
       const d = await M.get("admin/signups");
       M.session.pendingSignups = d.signups.filter((x) => x.access === "pending").length;
@@ -436,11 +457,13 @@
       const row = (x) => {
         const actions = [];
         if (x.access === "pending" || x.access === "rejected") {
+          const tsel = M.teamsNow().length ? teamSelect("", { style: "width:auto;min-height:34px;padding-block:2px", "aria-label": "Time de " + x.name }) : null;
+          if (tsel) actions.push(tsel);
           const ok = h("button", { class: "btn btn-gold btn-sm", type: "button" }, M.icon("check", 16), x.access === "rejected" ? "Aprovar mesmo assim" : "Aprovar");
           ok.addEventListener("click", async () => {
             ok.disabled = true;
             try {
-              const r = await M.post(`admin/signups/${x.id}/approve`);
+              const r = await M.post(`admin/signups/${x.id}/approve`, tsel && tsel.value ? { team: tsel.value } : {});
               M.toast(`Aprovado. Entregue o código para ${x.name}.`, "ok");
               await handoff(x, r);
               await load();

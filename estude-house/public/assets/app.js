@@ -18,12 +18,14 @@
     [/^#\/voce$/, "voce", () => ({ key: "voce", crumbs: [T("Você")], view: () => M.views.voce() })],
     [/^#\/ranking$/, "rank", () => ({ key: "rank", crumbs: [T("Ranking")], view: () => M.views.ranking() })],
     [/^#\/busca(?:\?(.*))?$/, "search", (m) => { const q = new URLSearchParams(m[1] || ""); return { key: "search", crumbs: [T("Busca")], view: () => M.views.search(q.get("q") || "", q.get("tag") || "") }; }],
+    [/^#\/comunidade\/([\w-]+)$/, "tag", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Comunidade")], view: () => M.views.home({ community: m[1] }) })],
     [/^#\/tag\/([\w-]+)$/, "tag", (m) => ({ key: "home", crumbs: [{ text: "Feed", href: "#/" }, T("Tag")], view: () => M.views.home({ tag: m[1] }) })],
     [/^#\/admin\/trilhas$/, "admin", () => ({ key: "admin-trails", crumbs: [T("Administração"), T("Trilhas")], view: () => M.views.adminTrails(), wide: true })],
     [/^#\/admin\/trilhas\/(c[0-9a-f]{6})$/, "admin", (m) => ({ key: "admin-trails", crumbs: [T("Administração"), { text: "Trilhas", href: "#/admin/trilhas" }, T("Editor")], view: () => M.views.trailBuilder(m[1]), wide: true, bare: true })],
     [/^#\/admin\/provas$/, "admin", () => ({ key: "admin-trails", crumbs: [T("Administração"), T("Provas avulsas")], view: () => M.views.adminProvas(), wide: true })],
     [/^#\/admin\/provas\/(pv[0-9a-f]{6})$/, "admin", (m) => ({ key: "admin-trails", crumbs: [T("Administração"), { text: "Provas avulsas", href: "#/admin/provas" }, T("Editor")], view: () => M.views.provaEditor(m[1]) })],
     [/^#\/prova\/(pv[0-9a-f]{6})$/, "prova", (m) => ({ key: "trails", crumbs: [{ text: "Trilhas", href: M.trailsHref }, T("Prova")], view: () => M.views.prova(m[1]) })],
+    [/^#\/admin\/times$/, "admin", () => ({ key: "admin-times", crumbs: [T("Administração"), T("Times e comunidades")], view: () => M.views.adminTeams(), wide: true })],
     [/^#\/admin\/tags$/, "admin", () => ({ key: "admin-tags", crumbs: [T("Administração"), T("Tags e moderação")], view: () => M.views.adminTags(), wide: true })],
     [/^#\/admin\/aprovacoes$/, "admin", () => ({ key: "admin-approve", crumbs: [T("Administração"), T("Aprovações")], view: () => M.views.adminApprovals(), wide: true })],
     [/^#\/admin\/avisos$/, "admin", () => ({ key: "admin-avisos", crumbs: [T("Administração"), T("Avisos")], view: () => M.views.adminAvisos() })],
@@ -85,7 +87,7 @@
     if (!def) { M.setPage("home", [{ text: "Página não encontrada" }], M.notFound()); return; }
     if (def.key.startsWith("admin")) {
       /* cada área do menu pede uma permissão; sem ela, a pessoa vai para a primeira área que pode usar */
-      const NEED = { admin: "usuarios", "admin-users": "usuarios", "admin-logs": "usuarios", "admin-q": "trilhas", "admin-trails": "trilhas", "admin-tags": "moderar", "admin-approve": "aprovar", "admin-engage": "engajamento", "admin-forum": "forum", "admin-avisos": "publicar" };
+      const NEED = { admin: "usuarios", "admin-users": "usuarios", "admin-logs": "usuarios", "admin-q": "trilhas", "admin-trails": "trilhas", "admin-tags": "moderar", "admin-times": "usuarios", "admin-approve": "aprovar", "admin-engage": "engajamento", "admin-forum": "forum", "admin-avisos": "publicar" };
       if (!M.isAdmin()) { location.hash = "#/"; return; }
       if (NEED[def.key] && !M.can(NEED[def.key])) {
         const first = [["usuarios", "#/admin"], ["aprovar", "#/admin/aprovacoes"], ["publicar", "#/admin/avisos"], ["forum", "#/admin/forum"], ["moderar", "#/admin/tags"], ["trilhas", "#/admin/trilhas"], ["engajamento", "#/admin/engajamento"]].find(([k]) => M.can(k));

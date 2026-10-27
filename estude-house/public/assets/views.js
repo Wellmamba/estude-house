@@ -111,6 +111,7 @@
       { key: "admin-approve", href: "#/admin/aprovacoes", icon: "flag", text: "Aprovações", perm: "aprovar", badge: true },
       { key: "admin-forum", href: "#/admin/forum", icon: "chat", text: "Fórum", perm: "forum", badge: true },
       { key: "admin-tags", href: "#/admin/tags", icon: "tag", text: "Tags e moderação", perm: "moderar" },
+      { key: "admin-times", href: "#/admin/times", icon: "users", text: "Times e comunidades", perm: "usuarios" },
       { key: "admin-avisos", href: "#/admin/avisos", icon: "bell", text: "Avisos", perm: "publicar" },
     ] },
     { id: "cont", label: "Conteúdo", icon: "book", items: [

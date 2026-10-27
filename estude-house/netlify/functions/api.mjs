@@ -24,7 +24,7 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-21-a";
+const BUILD = "2026-10-27-a";
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -98,7 +98,7 @@ async function findByEmail(email) {
   return id ? loadUser(id) : null;
 }
 
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, nickname: u.nickname || null, avatar: u.avatar || null, ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}) });
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, nickname: u.nickname || null, avatar: u.avatar || null, team: u.teamId || null, ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}) });
 
 function computeXp(p) {
   const lessons = Object.keys(p.lessons).length * XP.lesson;
@@ -436,6 +436,7 @@ function userSummary(u, p, e) {
     xpEngage: e?.xp || 0,
     nickname: u.nickname || null,
     avatar: u.avatar || null,
+    team: u.teamId || null,
     master: isMaster(u.email),
     ...(u.role === "aluno" ? { trailAccess: u.trailAccess || [] } : {}),
     ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}),
@@ -530,8 +531,10 @@ async function adminCreateUser(req, admin, body) {
     const problem = passwordProblem(password, email);
     if (problem) fail(400, problem);
   }
+  if (body.team && !(await social.teamExists(String(body.team)))) fail(400, "Esse time não existe mais.");
   const user = await createUser({ name, email, password, role, perms: body.perms, createdBy: admin.id });
-  await logEvent(req, "admin_criou_acesso", admin, { target: email, role: user.role });
+  if (body.team) { user.teamId = String(body.team); await saveUser(user); }
+  await logEvent(req, "admin_criou_acesso", admin, { target: email, role: user.role, ...(user.teamId ? { time: user.teamId } : {}) });
   return json({ user: userSummary(user, emptyProgress()), password: generated ? password : null }, 201);
 }
 
@@ -598,6 +601,13 @@ async function adminPatchUser(req, admin, id, body) {
     const ok = new Set(TRAILS.map((t) => t.id));
     u.trailAccess = [...new Set((Array.isArray(body.trails) ? body.trails : []).map(String).filter((t) => ok.has(t)))]; changes.trilhas = u.trailAccess.join(",") || "nenhuma";
     trailsChanged = true;
+  }
+  if (body.team !== undefined) {
+    if (body.team) {
+      if (!(await social.teamExists(String(body.team)))) fail(400, "Esse time não existe mais.");
+      u.teamId = String(body.team);
+    } else delete u.teamId;
+    changes.time = u.teamId || "nenhum";
   }
   if (body.active !== undefined) {
     if (master) fail(403, "O acesso master não pode ser desativado.");
@@ -792,7 +802,7 @@ async function handleApi(req, context) {
       if (path === "admin/overview" && method === "GET") { need("usuarios"); return await adminOverview(); }
       if (parts[1] === "signups") {
         need("aprovar");
-        const r = await signup.handleAdmin({ json, fail, logEvent, loadUser, saveUser, findByEmail, removeUser }, { req, method, path, body, admin });
+        const r = await signup.handleAdmin({ json, fail, logEvent, loadUser, saveUser, findByEmail, removeUser, teamExists: social.teamExists }, { req, method, path, body, admin });
         if (r) return r;
       }
       if (path === "admin/users" && method === "GET") { need("usuarios"); return await adminUsers(); }

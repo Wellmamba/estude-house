@@ -155,6 +155,7 @@
           post.pinned ? h("span", { class: "chip chip-gold chip-xs pin-chip" }, M.icon("pin", 12), "Fixado") : null,
           M.kindChip(post.kind),
           M.tagChip(post.tag),
+          M.teamChip(post.community),
           post.status === "pending" ? h("span", { class: "chip chip-warn chip-xs", text: "Aguardando aprovação" }) : null,
           post.status === "rejected" ? h("span", { class: "chip chip-bad chip-xs", text: "Recusado" }) : null),
         h("div", { class: "muted small" }, a.nickname ? "@" + a.nickname + " · " : "", h("a", { class: "muted", href: "#/post/" + post.id, text: M.timeAgo(when) }))),
@@ -284,7 +285,7 @@
   };
 
   /* ───── publicar ───── */
-  function composer({ uploads, onPosted, defaultTag = "", limits = {} }) {
+  function composer({ uploads, onPosted, defaultTag = "", defaultCommunity = "", limits = {} }) {
     const isAdm = M.can("publicar");
     const me = M.session.user;
     let items = [];
@@ -297,6 +298,19 @@
     const pollB = isAdm ? M.pollBuilder({ maxQuestions: limits.maxQuestions, maxOptions: limits.maxOptions }) : null;
     const tagSel = isAdm ? h("select", { class: "select", "aria-label": "Tag do post" }, h("option", { value: "", text: "Sem tag" })) : null;
     const pinChk = isAdm ? h("input", { type: "checkbox", id: "pin-new" }) : null;
+    // "Quem vê": todos ou só uma comunidade (time). Post de comunidade não fixa no topo do feed geral.
+    const teamSel = isAdm ? h("select", { class: "select", id: "team-new", "aria-label": "Quem vê o post" }, h("option", { value: "", text: "Todos" })) : null;
+    const teamRow = isAdm ? h("span", { class: "composer-team", hidden: true }, h("label", { class: "small muted", for: "team-new" }, M.icon("users", 14), "Quem vê"), teamSel) : null;
+    const syncPin = () => { if (!pinChk) return; pinChk.disabled = !!teamSel.value; if (teamSel.value) pinChk.checked = false; };
+    if (isAdm) {
+      teamSel.addEventListener("change", syncPin);
+      M.loadTeams(true).then((list) => {
+        if (!list.length) return;
+        teamSel.append(...list.map((t) => h("option", { value: t.id, text: (t.emoji ? t.emoji + " " : "") + t.name })));
+        teamSel.value = list.some((t) => t.id === defaultCommunity) ? defaultCommunity : "";
+        teamRow.hidden = false; syncPin();
+      });
+    }
     if (isAdm) M.loadTags(true).then((list) => { tagSel.append(...list.map((t) => h("option", { value: t.id, text: t.name }))); tagSel.value = list.some((t) => t.id === defaultTag) ? defaultTag : ""; });
     const fileInput = h("input", { type: "file", multiple: true, hidden: true, accept: "image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.txt,.zip" });
     const list = h("ul", { class: "att-list" });
@@ -378,7 +392,7 @@
     const kindRow = h("div", { class: "kind-row", role: "group", "aria-label": "Tipo do post" }, h("span", { class: "kind-lead", text: isAdm ? "Tipo:" : "Compartilhe:" }), kindBtns);
     const box = h("section", { class: "composer panel", "aria-label": "Novo post" },
       h("div", { class: "composer-top" }, M.avatar(me, 40), taHost), kindRow, list, linkRow, fileInput, pollB ? pollB.node : null,
-      isAdm ? h("div", { class: "composer-meta" }, h("label", { class: "small muted", for: "tag-new" }, M.icon("tag", 14), "Tag"), (tagSel.id = "tag-new", tagSel), h("label", { class: "check-inline small", for: "pin-new" }, pinChk, M.icon("pin", 14), "Fixar no topo")) : null,
+      isAdm ? h("div", { class: "composer-meta" }, h("label", { class: "small muted", for: "tag-new" }, M.icon("tag", 14), "Tag"), (tagSel.id = "tag-new", tagSel), teamRow, h("label", { class: "check-inline small", for: "pin-new" }, pinChk, M.icon("pin", 14), "Fixar no topo")) : null,
       h("div", { class: "composer-bar" }, tools, h("span", { class: "spacer", style: "flex:1" }), count, btn),
       isAdm ? null : h("p", { class: "composer-note small", text: `O gestor dá uma olhada rápida antes de publicar.${limits.postXp ? ` Quando entra no Feed, você ganha +${limits.postXp} XP e o time vê o seu nome.` : ""}` }));
     // fechado por padrão: só a caixa de texto, para o feed aparecer logo abaixo
@@ -400,11 +414,11 @@
       btn.disabled = true;
       const media = items.filter((i) => i.status === "done").map((i) => ({ type: i.type, url: i.url, name: i.type === "link" ? undefined : i.name, bytes: i.bytes }));
       try {
-        const extra = isAdm ? { tag: tagSel.value || undefined, pinned: pinChk.checked || undefined, poll: pollB.get() || undefined } : {};
+        const extra = isAdm ? { tag: tagSel.value || undefined, community: teamSel.value || undefined, pinned: pinChk.checked || undefined, poll: pollB.get() || undefined } : {};
         const r = await M.post("feed/post", { text: ta.value, media, kind: kind || undefined, ...extra });
         setKind("");
         ta.value = ""; ta.style.height = ""; items.forEach((i) => i.preview && URL.revokeObjectURL(i.preview)); items = [];
-        if (isAdm) { pollB.reset(); pollTool.classList.remove("on"); pinChk.checked = false; }
+        if (isAdm) { pollB.reset(); pollTool.classList.remove("on"); pinChk.checked = false; if (!defaultCommunity) teamSel.value = ""; syncPin(); }
         draw();
         M.toast(r.status === "pending" ? `Enviado! Assim que o gestor aprovar, seu post aparece no Feed${limits.postXp ? ` e você ganha +${limits.postXp} XP` : ""}.` : "Post publicado.", "ok");
         box.classList.add("is-compact"); document.activeElement?.blur?.();
@@ -418,9 +432,13 @@
   /* ───── início: o feed ───── */
   M.views.home = async function (opts = {}) {
     const tagId = opts.tag || "";
-    const [, status, tags] = await Promise.all([M.refreshMe(), M.get("feed/status").catch(() => ({ uploads: false })), M.loadTags(true)]);
+    const commId = opts.community || "";
+    const [, status, tags, teams] = await Promise.all([M.refreshMe(), M.get("feed/status").catch(() => ({ uploads: false })), M.loadTags(true), M.loadTeams(true)]);
     const isAdm = M.can("publicar");
     const curTag = tagId ? tags.find((t) => t.id === tagId) : null;
+    // a gestão vê todas as comunidades; o aluno vê só a do time dele
+    const myTeams = M.isAdmin() ? teams : teams.filter((t) => t.id === M.session.user.team);
+    const curTeam = commId ? teams.find((t) => t.id === commId) : null;
     const top = h("div", { class: "feed-top" });
     const dst = M.destaquesBar();
     const list = h("div", { class: "feed-list" });
@@ -526,7 +544,7 @@
     const liveWrap = h("div", { class: "live-wrap", role: "status", "aria-live": "polite" }, live);
     const tagBarTop = () => node.querySelector(".fbar, .composer");
     let base = null, pinsSig = "", timer = null;
-    const pulseUrl = (since) => { const q = new URLSearchParams(); if (tagId) q.set("tag", tagId); if (since) q.set("since", since); return "feed/pulse" + (q.toString() ? "?" + q : ""); };
+    const pulseUrl = (since) => { const q = new URLSearchParams(); if (tagId) q.set("tag", tagId); if (commId) q.set("community", commId); if (since) q.set("since", since); return "feed/pulse" + (q.toString() ? "?" + q : ""); };
     async function rebase() {
       try { const d = await M.get(pulseUrl()); base = d.top || "~"; pinsSig = d.pins || ""; } catch {}
     }
@@ -561,9 +579,12 @@
         const q = new URLSearchParams();
         if (next) q.set("after", next);
         if (tagId) q.set("tag", tagId);
+        if (commId) q.set("community", commId);
         const d = await M.get("feed" + (q.toString() ? "?" + q : ""));
         if (reset) list.replaceChildren();
-        if (!d.posts.length && reset) list.append(curTag
+        if (!d.posts.length && reset) list.append(curTeam
+          ? h("div", { class: "empty" }, h("h3", { text: `Nenhum post na comunidade ${curTeam.name}` }), h("p", { text: isAdm ? "Publique escolhendo esta comunidade em “Quem vê”." : "Quando a gestão publicar para o seu time, aparece aqui." }))
+          : curTag
           ? h("div", { class: "empty" }, h("h3", { text: `Nenhum post com a tag ${curTag.name}` }), h("p", { text: "Quando alguém publicar com essa tag, aparece aqui." }))
           : h("div", { class: "empty" }, h("h3", { text: "O Feed ainda está vazio" }), h("p", { text: isAdm ? "Publique o primeiro post para começar." : "Quando o gestor ou o time publicar, aparece aqui." })));
         d.posts.forEach((p) => list.append(M.postCard(p, { onChange: () => load(true) })));
@@ -576,15 +597,16 @@
     let composerBox = null;
     const mineBtn = isAdm ? null : h("button", { class: "fpill mine", type: "button", "aria-pressed": "false" }, M.icon("inbox", 14), "Meus posts");
     if (mineBtn) mineBtn.addEventListener("click", () => { tab = tab === "mine" ? "feed" : "mine"; mineBtn.setAttribute("aria-pressed", String(tab === "mine")); bar.classList.toggle("is-mine", tab === "mine"); load(true); });
-    const bar = tags.length || tagId || mineBtn ? h("nav", { class: "fbar", "aria-label": "Filtrar o Feed" },
+    const bar = tags.length || tagId || commId || myTeams.length || mineBtn ? h("nav", { class: "fbar", "aria-label": "Filtrar o Feed" },
       h("div", { class: "fbar-scroll" },
-        h("a", { class: "fpill" + (!tagId ? " on" : ""), href: "#/", "aria-current": !tagId ? "true" : null, text: "Todos" }),
+        h("a", { class: "fpill" + (!tagId && !commId ? " on" : ""), href: "#/", "aria-current": !tagId && !commId ? "true" : null, text: "Todos" }),
+        myTeams.map((t) => h("a", { class: "fpill team-pill tag-" + t.color + (t.id === commId ? " on" : ""), href: "#/comunidade/" + t.id, "aria-current": t.id === commId ? "true" : null }, M.teamBadge(t, 18), M.isAdmin() ? t.name : "Meu time")),
         tags.map((t) => h("a", { class: "fpill tag-" + t.color + (t.id === tagId ? " on" : ""), href: "#/tag/" + t.id, "aria-current": t.id === tagId ? "true" : null }, t.name)),
         tagId && !curTag ? h("span", { class: "muted small", text: "Essa tag não existe mais." }) : null),
       h("div", { class: "fbar-end" }, mineBtn,
         h("a", { class: "fpill ghost", href: "#/busca" + (tagId ? "?tag=" + tagId : ""), "aria-label": curTag ? "Buscar nesta tag" : "Buscar" }, M.icon("search", 14), h("span", { class: "fp-t", text: "Buscar" })))) : null;
-    composerBox = composer({ uploads: status.uploads, defaultTag: tagId, limits: status, onPosted: (r) => { rebase();
-        if (r.status === "published") { if (tab === "feed") { if (r.post.pinned || (tagId && r.post.tag?.id !== tagId)) load(true); else { list.querySelector(".empty")?.remove(); { const card = M.postCard(r.post, { onChange: () => load(true) }); const pins = list.querySelectorAll(":scope > .post.is-pinned"); if (pins.length) pins[pins.length - 1].after(card); else list.prepend(card); } } } }
+    composerBox = composer({ uploads: status.uploads, defaultTag: tagId, defaultCommunity: commId, limits: status, onPosted: (r) => { rebase();
+        if (r.status === "published") { if (tab === "feed") { if (r.post.pinned || (tagId && r.post.tag?.id !== tagId) || (commId && r.post.community?.id !== commId)) load(true); else { list.querySelector(".empty")?.remove(); { const card = M.postCard(r.post, { onChange: () => load(true) }); const pins = list.querySelectorAll(":scope > .post.is-pinned"); if (pins.length) pins[pins.length - 1].after(card); else list.prepend(card); } } } }
         else { tab = "mine"; if (mineBtn) { mineBtn.setAttribute("aria-pressed", "true"); bar.classList.add("is-mine"); } load(true); }
       } });
     const node = h("div", { class: "feed" }, dst, top, composerBox, bar, liveWrap, list, more);

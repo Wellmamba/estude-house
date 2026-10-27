@@ -134,6 +134,29 @@
   };
   M.setTags = (list) => { TAGS = list; };
 
+  /* ───── times (comunidades): brasão, bandeira ou emoji viram uma tag colorida ───── */
+  M.teamBadge = function (t, size = 22) {
+    const el = h("span", { class: "team-badge", style: `width:${size}px;height:${size}px;font-size:${Math.round(size * 0.62)}px`, "aria-hidden": "true" });
+    if (t.crest) {
+      const img = h("img", { src: M.avatarUrl(t.crest, size * 2), alt: "", loading: "lazy", decoding: "async" });
+      img.addEventListener("error", () => { img.remove(); el.textContent = t.emoji || (t.name || "?")[0].toUpperCase(); });
+      el.append(img);
+    } else el.textContent = t.emoji || (t.name || "?")[0].toUpperCase();
+    return el;
+  };
+  M.teamChip = function (team, { link = true } = {}) {
+    if (!team) return null;
+    return h(link ? "a" : "span", { class: "team-chip tag-" + team.color, ...(link ? { href: "#/comunidade/" + team.id, title: "Ver a comunidade " + team.name } : {}) }, M.teamBadge(team, 18), team.name);
+  };
+  let TEAMS = null;
+  M.loadTeams = async function (force) {
+    if (TEAMS && !force) return TEAMS;
+    try { TEAMS = (await M.get("feed/teams")).teams; } catch { TEAMS = TEAMS || []; }
+    return TEAMS;
+  };
+  M.setTeams = (list) => { TEAMS = list; };
+  M.teamsNow = () => TEAMS || [];
+
   /* ───── enquete: montar (gestor) ───── */
   M.pollBuilder = function ({ maxQuestions = 6, maxOptions = 8 } = {}) {
     let mode = "open";
@@ -337,5 +360,71 @@
     return h("div", null,
       h("div", { class: "page-head" }, h("h2", { text: "Tags e moderação" }), h("p", { text: "Organize os posts por tag e controle a linguagem dos comentários." })),
       tagBox, modBox);
+  };
+
+  /* ───── página: times e comunidades ───── */
+  M.views.adminTeams = async function () {
+    if (!M.can("usuarios")) return h("div", { class: "empty" }, h("h3", { text: "Área restrita" }), h("p", { text: "Somente administradores veem esta página." }));
+    let d = await M.get("admin/teams");
+    const box = h("section", { class: "panel" });
+    let draft = { name: "", emoji: "", color: "purple", crest: "" };
+    const COLORS = d.colors;
+    const sw = (cur, on) => h("div", { class: "swatches", role: "radiogroup", "aria-label": "Cor" }, COLORS.map((c) => h("button", { type: "button", role: "radio", "aria-checked": String(c === cur), class: "swatch tag-" + c + (c === cur ? " on" : ""), "aria-label": COLOR_NAMES[c] || c, title: COLOR_NAMES[c] || c, onclick: () => on(c) })));
+    /* envio do brasão: reduz a foto no navegador e manda para o Cloudinary da empresa, como a foto de perfil */
+    const crestPicker = (cur, onPick) => {
+      const input = h("input", { type: "file", accept: "image/png,image/jpeg,image/webp", hidden: true });
+      const btn = h("button", { class: "btn btn-ghost btn-sm", type: "button", disabled: !d.uploads, title: d.uploads ? "" : "O envio de fotos ainda não foi configurado (Cloudinary).", onclick: () => input.click() }, M.icon("camera", 16), cur ? "Trocar brasão" : "Enviar brasão");
+      input.addEventListener("change", async () => {
+        const file = input.files[0]; input.value = "";
+        if (!file) return;
+        if (!file.type.startsWith("image/") || file.type === "image/svg+xml") { M.toast("Escolha uma imagem em PNG ou JPG.", "err"); return; }
+        btn.disabled = true; btn.textContent = "Enviando…";
+        try {
+          const blob = await M.shrinkImage(file, { square: 256, limit: 1048576 });
+          const j = await M.cloudUpload(new File([blob], "brasao.jpg", { type: "image/jpeg" }), { kind: "image" });
+          onPick(j.secure_url);
+        } catch (e) { M.toast(e.message, "err"); draw(); }
+      });
+      return h("span", { class: "row", style: "gap:6px" }, btn, input, cur ? h("button", { class: "linkish", type: "button", onclick: () => onPick(""), text: "Tirar brasão" }) : null);
+    };
+    async function create(e) {
+      e.preventDefault();
+      try { await M.post("admin/teams", draft); draft = { name: "", emoji: "", color: draft.color, crest: "" }; M.toast("Time criado.", "ok"); await refresh(); }
+      catch (ex) { M.toast(ex.message, "err"); }
+    }
+    async function refresh() { d = await M.get("admin/teams"); M.setTeams(d.teams.map(({ members, ...t }) => t)); draw(); }
+    function draw() {
+      const nameIn = h("input", { class: "input", type: "text", maxlength: "30", value: draft.name, placeholder: "Nome do time (ex.: Time Roxo)", "aria-label": "Nome do novo time", oninput: (e) => { draft.name = e.target.value; } });
+      const emoIn = h("input", { class: "input team-emoji", type: "text", maxlength: "8", value: draft.emoji, placeholder: "🏀", "aria-label": "Emoji ou bandeira", oninput: (e) => { draft.emoji = e.target.value; } });
+      box.replaceChildren(
+        h("h3", { style: "margin-top:0", text: "Times e comunidades" }),
+        h("p", { class: "muted small", style: "margin:0 0 14px", text: "Cada time tem um nome e um brasão, uma bandeira em emoji ou uma foto. Ele vira uma tag nos posts. Você define o time de cada aluno na tela dele (ou ao aprovar o cadastro). Ao publicar, escolhe quem vê o post: todos ou só uma comunidade." }),
+        h("form", { class: "team-new", onsubmit: create },
+          h("div", { class: "team-new-row" }, M.teamBadge(draft, 40), nameIn, emoIn),
+          h("div", { class: "team-new-row" }, sw(draft.color, (c) => { draft.color = c; draw(); }), crestPicker(draft.crest, (u) => { draft.crest = u; draw(); }),
+            h("button", { class: "btn btn-gold", type: "submit", disabled: d.teams.length >= d.max }, M.icon("plus", 16), "Criar time"))),
+        d.teams.length ? h("ul", { class: "tag-rows team-rows" }, d.teams.map((t) => {
+          let name = t.name, emoji = t.emoji;
+          const inp = h("input", { class: "input", type: "text", maxlength: "30", value: t.name, "aria-label": "Nome do time " + t.name, oninput: (e) => { name = e.target.value; } });
+          const emo = h("input", { class: "input team-emoji", type: "text", maxlength: "8", value: t.emoji, "aria-label": "Emoji do time " + t.name, oninput: (e) => { emoji = e.target.value; } });
+          const patch = async (body, ok) => { try { await M.api("PATCH", "admin/teams/" + t.id, body); if (ok) M.toast(ok, "ok"); await refresh(); } catch (ex) { M.toast(ex.message, "err"); } };
+          return h("li", { class: "tag-row team-row" },
+            M.teamChip(t, { link: false }),
+            inp, emo,
+            h("button", { class: "btn btn-ghost btn-sm", type: "button", onclick: () => patch({ name, emoji }, "Time salvo."), text: "Salvar" }),
+            sw(t.color, (c) => patch({ color: c }, "Cor trocada.")),
+            crestPicker(t.crest, (u) => patch({ crest: u }, u ? "Brasão salvo." : "Brasão removido.")),
+            h("span", { class: "chip", text: `${t.members} ${t.members === 1 ? "pessoa" : "pessoas"}` }),
+            h("button", { class: "icon-btn", type: "button", "aria-label": "Apagar time " + t.name, onclick: async () => {
+              const ok = await M.confirm({ title: `Apagar o time “${t.name}”?`, text: "Só dá para apagar time sem pessoas e sem posts na comunidade.", ok: "Apagar", danger: true });
+              if (!ok) return;
+              try { await M.api("DELETE", "admin/teams/" + t.id); M.toast("Time apagado.", "ok"); await refresh(); } catch (ex) { M.toast(ex.message, "err"); }
+            } }, M.icon("trash", 16)));
+        })) : h("p", { class: "muted", style: "margin:16px 0 0", text: "Nenhum time ainda. Crie o primeiro acima." }));
+    }
+    draw();
+    return h("div", null,
+      h("div", { class: "page-head" }, h("h2", { text: "Times e comunidades" }), h("p", { text: "Defina os times, o brasão de cada um e quem vê os posts de cada comunidade." })),
+      box);
   };
 })();
