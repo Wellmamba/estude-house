@@ -76,7 +76,7 @@ Todas as trilhas vivem em `window.TRILHAS` (site) e em `TRAILS` (servidor, `mani
 
 ## Feed das trilhas, Fórum e Busca
 
-O foco do sistema são as **Trilhas**. O Início (`#/`) é o **Feed das trilhas**: cartões de "continuar de onde parou", provas liberadas, trilhas para começar, conquistas (módulos e provas aprovados) e novidades do fórum, com filtros no topo. A **Busca** (barra no topo) procura aulas, módulos e trilhas no navegador e publicações do fórum no servidor. O **Fórum** é só de leitura para o aluno, que manda dúvidas e sugestões pelo menu "Dúvidas e sugestões". A foto de perfil usa o Cloudinary (**`COMO-CONFIGURAR-FOTO-DE-PERFIL.md`**).
+O foco do sistema são as **Trilhas**. O Início (`#/`) é o **Feed das trilhas**: as trilhas agrupadas por categoria (com o progresso de cada uma), um atalho "continue de onde parou", as provas avulsas e as novidades do fórum, com filtros no topo. As aulas só aparecem ao abrir a trilha. A **Busca** (barra no topo) procura aulas, módulos e trilhas no navegador e publicações do fórum no servidor. O **Fórum** é só de leitura para o aluno, que manda dúvidas e sugestões pelo menu "Dúvidas e sugestões". A foto de perfil usa o Cloudinary (**`COMO-CONFIGURAR-FOTO-DE-PERFIL.md`**).
 
 Saíram do sistema: posts e comentários dos alunos, Hype, enquetes, tags, @, Reels, Destaques, Comunidades por time, ranking, check-in, metas e XP de engajamento. Os pontos mostrados ao aluno são só os das trilhas (aulas, módulos e prova final).
 
