@@ -344,3 +344,35 @@ a.team-chip:hover { background: rgba(var(--tc), .26); }
 .team-emoji { flex: 0 0 76px !important; width: 76px; text-align: center; }
 .team-row .team-chip { flex: none; }
 .team-row { gap: 8px; }
+
+/* ───── Comunidades: botão no celular, cartões na lateral do PC, cabeçalho do feed do time ───── */
+@media (min-width: 1180px) {
+  html:not([data-mode="mobile"]) .only-narrow { display: none !important; }
+}
+.comm-cta, .comm-pick > summary { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; text-decoration: none; color: var(--text); cursor: pointer; list-style: none;
+  background: linear-gradient(135deg, rgba(var(--tc), .22), rgba(var(--tc), .06)); border: 1px solid rgba(var(--tc), .55); min-height: 56px; }
+.comm-pick > summary::-webkit-details-marker { display: none; }
+.comm-pick { --tc: 253, 185, 39; }
+.comm-cta:hover, .comm-pick > summary:hover { background: linear-gradient(135deg, rgba(var(--tc), .32), rgba(var(--tc), .1)); }
+.cc-t { display: grid; flex: 1; min-width: 0; line-height: 1.25; }
+.cc-t strong { font-size: 1.02rem; }
+.cc-t .small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cc-badges { display: inline-flex; }
+.cc-badges .team-badge + .team-badge { margin-left: -8px; box-shadow: 0 0 0 2px var(--bg, #170b2e); }
+.comm-pick[open] > summary svg:last-child { transform: rotate(180deg); }
+.comm-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.rail-teams { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.rail-team { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; text-decoration: none; color: var(--text); background: rgba(10, 4, 28, .45); border: 1px solid transparent; }
+.rail-team:hover { background: rgba(var(--tc), .16); border-color: rgba(var(--tc), .5); }
+.rail-team.on { background: rgba(var(--tc), .22); border-color: rgba(var(--tc), .7); }
+.rail-team .rt-name { flex: 1; min-width: 0; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rail-team svg:last-child { color: rgba(var(--tc), 1); }
+.rail-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-chip.on { background: rgb(var(--tc)); color: #1a0f2e; border-color: rgb(var(--tc)); }
+a.tag-chip { padding-block: 4px; }
+.comm-head { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: linear-gradient(135deg, rgba(var(--tc), .24), rgba(var(--tc), .05)); border-color: rgba(var(--tc), .55); }
+.comm-head .team-badge { background: rgba(255, 255, 255, .12); }
+.comm-head-t { flex: 1; min-width: 0; display: grid; }
+.comm-head-t h2 { margin: 0; font-size: 1.5rem; line-height: 1.1; overflow-wrap: anywhere; }
+.uhero-photo { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 10px; }
+.uhero-av { display: flex; flex-direction: column; align-items: center; }

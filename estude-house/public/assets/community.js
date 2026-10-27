@@ -243,6 +243,7 @@
     forum_no: () => "reprovou a sua dúvida/sugestão. Veja o motivo",
     prova_nova: () => "liberou uma prova para você",
     reel: () => "publicou um vídeo novo nos Reels",
+    community: (n) => "publicou na comunidade " + (n.where || "do seu time"),
   };
   M.bell = function () {
     const badge = h("span", { class: "bell-n", hidden: true });

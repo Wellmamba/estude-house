@@ -142,8 +142,8 @@
         const pe = permsEditor([]);
         pe.node.hidden = true;
         const teamSel = teamSelect("", { id: "n-team", name: "team" });
-        const teamField = h("div", { class: "field", hidden: !M.teamsNow().length }, h("label", { for: "n-team", text: "Time (comunidade)" }), teamSel, h("span", { class: "hint", text: "O aluno vê o feed geral e os posts da comunidade do time dele." }));
-        roleSel.addEventListener("change", () => { pe.node.hidden = roleSel.value !== "subadmin"; teamField.hidden = roleSel.value !== "aluno" || !M.teamsNow().length; });
+        const teamField = h("div", { class: "field", hidden: !M.teamsNow().length }, h("label", { for: "n-team", text: "Time (comunidade)" }), teamSel, h("span", { class: "hint", text: "Alunos veem o feed geral e a comunidade do time. Adm e sub ganham a tag do time." }));
+        roleSel.addEventListener("change", () => { pe.node.hidden = roleSel.value !== "subadmin"; });
         const form = h("form", { novalidate: true }, f("name", "Nome completo", "text", { required: true }), f("email", "E-mail", "email", { required: true }),
           h("div", { class: "field" }, h("label", { for: "n-role", text: "Perfil" }), roleSel),
           teamField,
@@ -211,6 +211,7 @@
     const g = guard("usuarios"); if (g) return g;
     try { await M.refreshMe(); } catch {}
     await M.loadTeams(true).catch(() => []);
+    const uploadsOn = !!(await M.get("feed/status").catch(() => ({}))).uploads;
     const box = h("div");
     /* o que está aberto some do estado a cada recarga (liberar trilha recarrega a tela): guardo aqui */
     const opened = new Set();
@@ -231,13 +232,32 @@
       roleSel.value = u.role;
       roleSel.addEventListener("change", () => act(() => M.api("PATCH", "admin/users/" + id, { role: roleSel.value }), roleSel.value === "subadmin" ? "Agora é sub-administrador. Marque as permissões abaixo." : "Perfil atualizado."));
       const pe = u.role === "subadmin" && M.isFull() ? permsEditor(u.perms || []) : null;
+      /* a gestão cadastra ou tira a foto de quem ela pode editar (a mesma regra do time) */
+      function photoCtl(u) {
+        if (noTouch) return null;
+        const input = h("input", { type: "file", accept: "image/png,image/jpeg,image/webp", hidden: true });
+        const btn = h("button", { class: "btn btn-ghost btn-sm", type: "button", disabled: !uploadsOn, title: uploadsOn ? "" : "O envio de fotos ainda não foi configurado (Cloudinary).", onclick: () => input.click() }, M.icon("edit", 14), u.avatar ? "Trocar foto" : "Cadastrar foto");
+        const save = (url, msg) => act(() => M.api("PATCH", "admin/users/" + id, { avatar: url }), msg);
+        input.addEventListener("change", async () => {
+          const file = input.files[0]; input.value = "";
+          if (!file) return;
+          if (!file.type.startsWith("image/") || file.type === "image/svg+xml") { M.toast("Escolha uma foto em JPG ou PNG.", "err"); return; }
+          btn.disabled = true; btn.textContent = "Enviando…";
+          try {
+            const blob = await M.shrinkImage(file, { square: 512, limit: 2 * 1048576 });
+            const j = await M.cloudUpload(new File([blob], "perfil.jpg", { type: "image/jpeg" }), { kind: "image" });
+            await save(j.secure_url, "Foto salva.");
+          } catch (e) { M.toast(e.message, "err"); btn.disabled = false; btn.textContent = u.avatar ? "Trocar foto" : "Cadastrar foto"; }
+        });
+        return h("div", { class: "uhero-photo" }, btn, input, u.avatar ? h("button", { class: "linkish", type: "button", onclick: () => save("", "Foto removida."), text: "Tirar foto" }) : null);
+      }
       async function act(fn, okMsg) {
         try { await fn(); M.toast(okMsg, "ok"); await load(); } catch (ex) { M.toast(ex.message, "err"); await load(); }
       }
       box.replaceChildren(
         h("a", { class: "small", href: "#/admin/usuarios" }, "← Todos os acessos"),
         h("header", { class: "uhero" },
-          h("div", { class: "uhero-av" }, M.avatar(u, 96)),
+          h("div", { class: "uhero-av" }, M.avatar(u, 96), photoCtl(u)),
           h("div", { class: "uhero-main" },
             h("h2", { text: u.name }),
             h("p", { class: "uhero-mail", text: u.email }),
@@ -253,8 +273,8 @@
             h("div", { class: "ustat" }, h("strong", { text: String(v) }), h("span", { text: k }))))),
         h("div", { class: "acc-bar" }, h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Abrir tudo", onclick: () => box.querySelectorAll("details.acc").forEach((x) => { x.open = true; }) }),
           h("button", { class: "btn btn-ghost btn-sm", type: "button", text: "Recolher tudo", onclick: () => box.querySelectorAll("details.acc, details.acc-in").forEach((x) => { x.open = false; }) })),
-        u.role === "aluno" && (M.teamsNow().length || u.team) ? acc("team", "Comunidade (time)", teamOf(u.team)?.name || "Sem time",
-          h("p", { class: "muted small", style: "margin:0 0 10px", text: "O aluno vê o feed geral e os posts publicados só para a comunidade do time dele." }),
+        M.teamsNow().length || u.team ? acc("team", "Comunidade (time)", teamOf(u.team)?.name || "Sem time",
+          h("p", { class: "muted small", style: "margin:0 0 10px", text: u.role === "aluno" ? "O aluno vê o feed geral e os posts publicados só para a comunidade do time dele." : "A tag do time aparece no perfil e nos posts. Quem é da gestão enxerga todas as comunidades de qualquer forma, e recebe o aviso das publicações do time dele." }),
           (() => { const s = teamSelect(u.team || "", { id: "u-team", style: "width:auto", disabled: noTouch });
             s.addEventListener("change", () => act(() => M.api("PATCH", "admin/users/" + id, { team: s.value || null }), s.value ? "Time definido." : "Aluno sem time."));
             return h("div", { class: "row" }, s, M.teamsNow().length ? null : h("a", { class: "small", href: "#/admin/times" }, "Cadastrar times")); })()) : null,

@@ -152,6 +152,7 @@
         h("div", { class: "row", style: "gap:8px" },
           h("a", { class: "post-name", href: M.profileHref(a), text: a.name }),
           a.role === "admin" || a.role === "subadmin" ? h("span", { class: "chip chip-gold chip-xs", text: "Gestor" }) : null,
+          a.team && a.team.id !== post.community?.id ? M.teamChip(a.team) : null,
           post.pinned ? h("span", { class: "chip chip-gold chip-xs pin-chip" }, M.icon("pin", 12), "Fixado") : null,
           M.kindChip(post.kind),
           M.tagChip(post.tag),
@@ -535,6 +536,15 @@
         if (items.length) parts.push(h("section", { class: "panel rail-card" }, h("h3", { class: "rail-h", text: "Fila do gestor" }),
           h("ul", { class: "rail-queue" }, items.map(([t, n, href]) => h("li", null, h("a", { href }, h("span", { text: t }), h("b", { class: n ? "has" : "", text: String(n) })))))));
       }
+      /* comunidades e tags ficam na lateral no PC; no celular entram o botão "Minha comunidade" e as tags na barra */
+      const side = [];
+      if (myTeams.length) side.push(h("section", { class: "panel rail-card" }, h("h3", { class: "rail-h", text: M.isAdmin() ? "Comunidades" : "Minha comunidade" }),
+        M.isAdmin() ? null : h("p", { class: "small muted", style: "margin:0 0 8px", text: "Posts que só o seu time vê." }),
+        h("ul", { class: "rail-teams" }, myTeams.map((t) => h("li", null, h("a", { class: "rail-team tag-" + t.color + (t.id === commId ? " on" : ""), href: "#/comunidade/" + t.id, "aria-current": t.id === commId ? "true" : null }, M.teamBadge(t, 32), h("span", { class: "rt-name", text: t.name }), M.icon("chevr", 14)))))));
+      if (tags.length) side.push(h("section", { class: "panel rail-card" }, h("h3", { class: "rail-h", text: "Tags" }),
+        h("div", { class: "rail-tags" }, tags.map((t) => h("a", { class: "tag-chip tag-" + t.color + (t.id === tagId ? " on" : ""), href: "#/tag/" + t.id, "aria-current": t.id === tagId ? "true" : null }, M.icon("tag", 13), t.name))),
+        tagId ? h("a", { class: "rail-link", href: "#/" }, "Ver todos os posts", M.icon("chevr", 14)) : null));
+      parts.splice(1, 0, ...side);
       parts.push(h("a", { class: "panel rail-card rail-reels", href: "#/reels" }, h("span", { class: "rr-ico" }, M.icon("reels", 22)), h("div", null, h("strong", { text: "Reels do time" }), h("span", { class: "small muted", style: "display:block", text: "Vídeos recentes, um por vez" })), M.icon("chevr", 18)));
       rail.replaceChildren(...parts);
     }
@@ -597,11 +607,10 @@
     let composerBox = null;
     const mineBtn = isAdm ? null : h("button", { class: "fpill mine", type: "button", "aria-pressed": "false" }, M.icon("inbox", 14), "Meus posts");
     if (mineBtn) mineBtn.addEventListener("click", () => { tab = tab === "mine" ? "feed" : "mine"; mineBtn.setAttribute("aria-pressed", String(tab === "mine")); bar.classList.toggle("is-mine", tab === "mine"); load(true); });
-    const bar = tags.length || tagId || commId || myTeams.length || mineBtn ? h("nav", { class: "fbar", "aria-label": "Filtrar o Feed" },
+    const bar = tags.length || tagId || commId || mineBtn ? h("nav", { class: "fbar", "aria-label": "Filtrar o Feed" },
       h("div", { class: "fbar-scroll" },
-        h("a", { class: "fpill" + (!tagId && !commId ? " on" : ""), href: "#/", "aria-current": !tagId && !commId ? "true" : null, text: "Todos" }),
-        myTeams.map((t) => h("a", { class: "fpill team-pill tag-" + t.color + (t.id === commId ? " on" : ""), href: "#/comunidade/" + t.id, "aria-current": t.id === commId ? "true" : null }, M.teamBadge(t, 18), M.isAdmin() ? t.name : "Meu time")),
-        tags.map((t) => h("a", { class: "fpill tag-" + t.color + (t.id === tagId ? " on" : ""), href: "#/tag/" + t.id, "aria-current": t.id === tagId ? "true" : null }, t.name)),
+        commId ? null : h("a", { class: "fpill" + (!tagId ? " on" : ""), href: "#/", "aria-current": !tagId ? "true" : null, text: "Todos" }),
+        commId ? null : tags.map((t) => h("a", { class: "fpill only-narrow tag-" + t.color + (t.id === tagId ? " on" : ""), href: "#/tag/" + t.id, "aria-current": t.id === tagId ? "true" : null }, t.name)),
         tagId && !curTag ? h("span", { class: "muted small", text: "Essa tag não existe mais." }) : null),
       h("div", { class: "fbar-end" }, mineBtn,
         h("a", { class: "fpill ghost", href: "#/busca" + (tagId ? "?tag=" + tagId : ""), "aria-label": curTag ? "Buscar nesta tag" : "Buscar" }, M.icon("search", 14), h("span", { class: "fp-t", text: "Buscar" })))) : null;
@@ -609,7 +618,16 @@
         if (r.status === "published") { if (tab === "feed") { if (r.post.pinned || (tagId && r.post.tag?.id !== tagId) || (commId && r.post.community?.id !== commId)) load(true); else { list.querySelector(".empty")?.remove(); { const card = M.postCard(r.post, { onChange: () => load(true) }); const pins = list.querySelectorAll(":scope > .post.is-pinned"); if (pins.length) pins[pins.length - 1].after(card); else list.prepend(card); } } } }
         else { tab = "mine"; if (mineBtn) { mineBtn.setAttribute("aria-pressed", "true"); bar.classList.add("is-mine"); } load(true); }
       } });
-    const node = h("div", { class: "feed" }, dst, top, composerBox, bar, liveWrap, list, more);
+    const commHead = curTeam ? h("section", { class: "panel comm-head tag-" + curTeam.color }, M.teamBadge(curTeam, 52),
+      h("div", { class: "comm-head-t" }, h("span", { class: "muted small", text: "Comunidade" }), h("h2", { text: curTeam.name })),
+      h("a", { class: "btn btn-ghost btn-sm", href: "#/" }, "Feed geral")) : null;
+    /* só no celular (e na janela estreita): um botão que abre o feed do time, ou a lista de comunidades para a gestão */
+    const commStrip = commId || !myTeams.length ? null : M.isAdmin()
+      ? h("details", { class: "comm-pick only-narrow" }, h("summary", null, h("span", { class: "cc-badges" }, myTeams.slice(0, 3).map((t) => M.teamBadge(t, 26))), h("span", { class: "cc-t" }, h("strong", { text: "Comunidades" }), h("span", { class: "small muted", text: `${myTeams.length} ${myTeams.length === 1 ? "time" : "times"}` })), M.icon("chev", 18)),
+        h("ul", { class: "comm-list" }, myTeams.map((t) => h("li", null, h("a", { class: "rail-team tag-" + t.color, href: "#/comunidade/" + t.id }, M.teamBadge(t, 30), h("span", { class: "rt-name", text: t.name }), M.icon("chevr", 14))))))
+      : h("a", { class: "comm-cta only-narrow tag-" + myTeams[0].color, href: "#/comunidade/" + myTeams[0].id }, M.teamBadge(myTeams[0], 40),
+        h("span", { class: "cc-t" }, h("strong", { text: "Minha comunidade" }), h("span", { class: "small muted", text: myTeams[0].name })), M.icon("chevr", 18));
+    const node = h("div", { class: "feed" }, dst, top, commHead, commStrip, commId && !isAdm ? null : composerBox, bar, liveWrap, list, more);
     const layout = h("div", { class: "feed-layout" }, node, rail);
     drawTop();
     if (!isAdm && M.session.user.role === "aluno" && matchMedia("(min-width: 1180px)").matches) M.get("engage/me").then((v) => { railGoals = (v.goals || []).filter((g) => !g.done).concat((v.goals || []).filter((g) => g.done)); if (layout.isConnected) drawRail(); }).catch(() => {});
