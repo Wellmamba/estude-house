@@ -87,6 +87,18 @@ O administrador transforma um perfil em **Sub-adm** e marca as permissões (apro
 
 Novos cadastros ficam pendentes até um gestor aprovar em **Aprovações**; o gestor recebe um código de 6 dígitos, entrega à pessoa e ela digita para liberar o acesso (**COMO-FUNCIONA-A-APROVACAO.md**, sem e-mail). Há foto de perfil, redução automática de foto e o seletor Celular/Computador (login, menu e Minha conta). Detalhes em `COMO-CONFIGURAR-FOTO-DE-PERFIL.md`.
 
+## Backup do banco de dados (só master)
+
+No **Painel**, o master vê o bloco **Backup do banco de dados** com o botão **Baixar banco de dados**. Ele junta todos os bancos (acessos, progresso, provas, trilhas criadas, fórum, logs) num arquivo `bryant-shoot-banco-AAAA-MM-DD.json` na pasta de downloads, e cada download fica nos Logs. O arquivo tem dados pessoais e senhas já criptografadas: guarde em lugar seguro.
+
+Para abrir esse backup no seu computador (ambiente local, banco em memória que zera ao reiniciar):
+
+```
+BACKUP_FILE=caminho/bryant-shoot-banco-AAAA-MM-DD.json npm run local
+```
+
+Depois entre em http://localhost:8888 com os mesmos e-mails e senhas de produção. No Windows (PowerShell): `$env:BACKUP_FILE="C:\\caminho\\arquivo.json"; npm run local`.
+
 ## Desempenho e erros do Netlify Blobs
 
 - O acesso ao Blobs (`netlify/functions/lib/db.mjs`) **nunca fica em cache** entre chamadas: o token que o Netlify entrega expira, e reaproveitá-lo causava o erro "Failed to decode token: Token expired". Cada operação (e cada nova tentativa) pede um acesso novo.
