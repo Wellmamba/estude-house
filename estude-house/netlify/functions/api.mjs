@@ -21,7 +21,9 @@ export const config = { path: "/api/*" };
 
 const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 // Muda a cada correção publicada: abra /api/health no site para ver qual versão está no ar.
-const BUILD = "2026-10-28-b";
+const BUILD = "2026-10-29-a";
+/* bancos (stores do Netlify Blobs) incluídos no backup; "rl" (limite de tentativas) fica de fora */
+const BACKUP_STORES = ["users", "emails", "progress", "attempts", "trails", "provas", "provares", "provaatt", "forum", "signups", "invites", "notif", "push", "logs", "feed", "eng"];
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 class HttpError extends Error {
   constructor(status, message, extra) { super(message); this.status = status; this.extra = extra; }
@@ -95,7 +97,7 @@ async function findByEmail(email) {
   return id ? loadUser(id) : null;
 }
 
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, avatar: u.avatar || null, ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}) });
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, avatar: u.avatar || null, ...(isMaster(u.email) ? { master: true } : {}), ...(u.role === "subadmin" ? { perms: cleanPerms(u.perms) } : {}) });
 
 function computeXp(p) {
   const lessons = Object.keys(p.lessons).length * XP.lesson;
@@ -794,6 +796,16 @@ async function handleApi(req, context) {
       if (path === "admin/users" && method === "POST") { need("usuarios"); return await adminCreateUser(req, admin, body); }
       if (path === "admin/users/bulk" && method === "POST") { need("usuarios"); return await adminBulk(req, admin, body); }
       if (path === "admin/logs" && method === "GET") { need("usuarios"); return await adminLogs(url); }
+      if (parts[1] === "backup" && method === "GET") {
+        if (!isMaster(admin.email)) fail(403, "Só o acesso master baixa o backup do banco de dados.");
+        if (path === "admin/backup") { await logEvent(req, "backup_baixado", admin, {}); return json({ build: BUILD, at: now(), stores: BACKUP_STORES }); }
+        const name = parts[2];
+        if (!BACKUP_STORES.includes(name) || parts.length !== 3) fail(404, "Banco desconhecido.");
+        const st = await store(name);
+        const keys = await st.keys({ after: String(url.searchParams.get("after") || ""), limit: 60 });
+        const values = await pmap(keys, (k) => st.get(k));
+        return json({ store: name, entries: keys.map((k, i) => [k, values[i]]), next: keys.length === 60 ? keys[keys.length - 1] : null });
+      }
       if (path === "admin/questions" && method === "GET") { need("trilhas"); return adminQuestions(); }
       if (parts[1] === "users" && parts[2]) {
         need("usuarios");
