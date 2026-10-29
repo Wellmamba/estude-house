@@ -8,6 +8,14 @@ import { readFileSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 const api = (await import("../netlify/functions/api.mjs")).default;
+// BACKUP_FILE=caminho/bryant-shoot-banco-AAAA-MM-DD.json  →  carrega o backup baixado do painel no banco em memória
+if (process.env.BACKUP_FILE) {
+  const { store } = await import("../netlify/functions/lib/db.mjs");
+  const dump = JSON.parse(readFileSync(process.env.BACKUP_FILE, "utf8"));
+  let n = 0;
+  for (const [name, rows] of Object.entries(dump.stores || {})) { const st = await store(name); for (const [k, v] of Object.entries(rows)) { await st.set(k, v); n++; } }
+  console.log(`Backup carregado: ${n} registros (versão ${dump.build}, de ${dump.at}).`);
+}
 const root = join(fileURLToPath(new URL(".", import.meta.url)), "..", "public");
 const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".json": "application/json", ".webmanifest": "application/manifest+json", ".webm": "video/webm", ".mp4": "video/mp4" };
 const port = Number(process.env.PORT) || 8888;
