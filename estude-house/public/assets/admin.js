@@ -3,6 +3,7 @@
   const { h } = M;
 
   const LOG_LABELS = {
+    backup_baixado: "Backup do banco baixado",
     cadastro: "Cadastro", login: "Login", login_falhou: "Login falhou", aula_concluida: "Aula concluída",
     prova_iniciada: "Prova iniciada", prova_enviada: "Prova enviada", senha_alterada: "Senha alterada",
     admin_criou_acesso: "Admin criou acesso", admin_subiu_acessos: "Admin subiu lista", admin_alterou_usuario: "Admin alterou usuário",
@@ -80,9 +81,46 @@
     return h("div", null,
       h("div", { class: "page-head" }, h("h2", { text: "Painel" }), h("p", { text: "Visão master de todos os acessos e do andamento das trilhas." })),
       pick ? h("div", { class: "toolbar" }, h("label", { class: "small muted", text: "Trilha:" }), pick) : null,
-      holder);
+      holder,
+      M.session.user.master ? backupPanel() : null);
     function stat(v, l) { return h("div", { class: "stat" }, h("b", { text: v }), h("span", { text: l })); }
   };
+
+  /* backup do banco de dados: só o master. Lê cada banco aos poucos e entrega um único arquivo .json para guardar no computador */
+  function backupPanel() {
+    const msg = h("p", { class: "muted small", style: "margin:8px 0 0", role: "status" });
+    const btn = h("button", { class: "btn btn-gold", type: "button" }, M.icon("arrow", 18), " Baixar banco de dados");
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      try {
+        const info = await M.get("admin/backup");
+        const out = { app: "BRYANT SHOOT", build: info.build, at: new Date(info.at).toISOString(), stores: {} };
+        let total = 0;
+        for (const name of info.stores) {
+          const rows = {}; let after = "";
+          for (;;) {
+            msg.textContent = `Baixando "${name}"… ${total} registros até agora.`;
+            const r = await M.get("admin/backup/" + name + (after ? "?after=" + encodeURIComponent(after) : ""));
+            for (const [k, v] of r.entries) { rows[k] = v; total++; }
+            if (!r.next) break;
+            after = r.next;
+          }
+          out.stores[name] = rows;
+        }
+        const day = new Date().toISOString().slice(0, 10);
+        const blob = new Blob([JSON.stringify(out)], { type: "application/json" });
+        const a = h("a", { href: URL.createObjectURL(blob), download: `bryant-shoot-banco-${day}.json` });
+        document.body.appendChild(a); a.click(); a.remove();
+        msg.textContent = `Pronto: ${total} registros em ${info.stores.length} bancos. O arquivo foi para a sua pasta de downloads.`;
+        M.toast("Backup baixado.", "ok");
+      } catch (e) { msg.textContent = "Não foi possível baixar: " + e.message; M.toast(e.message, "err"); }
+      btn.disabled = false;
+    });
+    return h("section", { class: "panel", style: "margin-top:18px" },
+      h("h3", { text: "Backup do banco de dados" }),
+      h("p", { class: "muted small", style: "margin:0 0 12px", text: "Baixa tudo (acessos, progresso, provas, trilhas criadas, fórum e logs) num arquivo .json. O arquivo contém dados pessoais e senhas protegidas por criptografia: guarde em lugar seguro e não envie a ninguém." }),
+      btn, msg);
+  }
 
   function logTable(rows) {
     return h("table", { class: "tbl" },
